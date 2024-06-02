@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
 	// printf("grug_path: %s\ndll_path: %s\n", grug_path, dll_path);
 
 	if (grug_test_regenerate_dll(grug_path, dll_path)) {
-		fprintf(stderr, "%s in %s:%d\n", grug_error.msg, grug_error.filename, grug_error.line_number);
+		fprintf(stderr, "%s\n", grug_error.msg);
 		exit(EXIT_FAILURE);
 	}
 }
