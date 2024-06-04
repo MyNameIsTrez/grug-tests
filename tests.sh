@@ -86,8 +86,9 @@ run_test_ok() {
 		xxd $dll_path > $grug_hex_path
 		xxd $expected_dll_path > $expected_hex_path
 
-		# echo "Differing outputs:" >&2
-		# diff $grug_hex_path $expected_hex_path >&2
+		echo "The output differs from the expected output." >&2
+		echo "Run this to see the diff:" >&2
+		echo "diff $grug_hex_path $expected_hex_path" >&2
 
 		exit 1
 	fi
