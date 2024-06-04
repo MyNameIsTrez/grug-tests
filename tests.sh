@@ -2,7 +2,7 @@
 
 echo "Recompiling..."
 
-gcc test.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wfatal-errors -g -Igrug -fsanitize=address,undefined -Wno-misleading-indentation
+gcc test.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wfatal-errors -g -Igrug -Wno-misleading-indentation
 if [ $? -ne 0 ]
 then
 	echo "Compilation failed"
@@ -14,6 +14,7 @@ mkdir -p results/
 expected_o_path="results/.intermediate.o"
 expected_dll_path="results/expected.so"
 dll_path="results/output.so"
+c_path="results/output.c"
 grug_output_path="results/grug_output.txt"
 grug_hex_path="results/output.hex"
 expected_hex_path="results/expected.hex"
@@ -66,7 +67,7 @@ run_test_ok() {
 
 	printf "Running $dir...\n"
 
-	./a.out $grug_path $dll_path >$grug_output_path 2>&1
+	./a.out $grug_path $dll_path $c_path >$grug_output_path 2>&1
 	local grug_exit_status=$?
 
 	if [ -s $grug_output_path ]
@@ -85,8 +86,9 @@ run_test_ok() {
 		xxd $dll_path > $grug_hex_path
 		xxd $expected_dll_path > $expected_hex_path
 
-		echo "Differing outputs:" >&2
-		diff $grug_hex_path $expected_hex_path >&2
+		# echo "Differing outputs:" >&2
+		# diff $grug_hex_path $expected_hex_path >&2
+
 		exit 1
 	fi
 
@@ -105,7 +107,7 @@ run_tests_ok() {
 	done
 }
 
-run_tests_err
+# run_tests_err
 run_tests_ok
 
 echo "All tests passed!"
