@@ -1,0 +1,5 @@
+define() entity {
+    return {
+        .a = 42,
+    }
+}
