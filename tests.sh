@@ -3,6 +3,11 @@
 echo "Recompiling..."
 
 gcc test.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wfatal-errors -g -I. -Igrug -rdynamic -fsanitize=address,undefined -no-pie -DCONFIG_TRIPLET="\"x86_64-linux-gnu\"" -DTCC_TARGET_X86_64 -DONE_SOURCE=0 -DTCC_GITHASH="\"2024-03-03 mob@9d2068c6*\"" -fno-strict-aliasing -Wno-pointer-sign -Wno-sign-compare -Wno-unused-result -Wno-format-truncation -Wno-stringop-truncation -Wno-old-style-declaration -Wno-overlength-strings -Wno-implicit-fallthrough -Wno-missing-field-initializers -Wno-misleading-indentation
+if [ $? -ne 0 ]
+then
+	echo "Compilation failed"
+	exit 1
+fi
 
 mkdir -p results/
 
