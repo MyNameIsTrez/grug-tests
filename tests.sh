@@ -53,7 +53,7 @@ run_tests_err() {
 	# Loop over all directories in tests_err/ (non-recursively)
 	for dir in tests_err/*/
 	do
-		rm results/*
+		rm -f results/*
 		run_test_err $dir
 	done
 }
@@ -118,7 +118,7 @@ run_tests_ok() {
 	# Loop over all directories in tests_ok/ (non-recursively)
 	for dir in tests_ok/*/
 	do
-		rm results/*
+		rm -f results/*
 		run_test_ok $dir
 	done
 }
