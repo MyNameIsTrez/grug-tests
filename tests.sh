@@ -63,7 +63,12 @@ run_test_ok() {
 
 	local nasm_path=$dir"input.s"
 
-	nasm -f elf64 $nasm_path -o $expected_o_path && ld -shared --hash-style=sysv $expected_o_path -o $expected_dll_path && rm $expected_o_path
+	local grug_path=$dir"input.grug"
+
+	nasm $nasm_path -f elf64 -o $expected_o_path && ld -shared --hash-style=sysv $expected_o_path -o $expected_dll_path && rm $expected_o_path
+
+	# Rename the $nasm_path symbol to $grug_path, so the diff doesn't crap itself
+	objcopy --redefine-sym $nasm_path=$grug_path results/expected.so
 
 	gcc $dir"test.c" -Wall -Wextra -Werror -Wpedantic -Wfatal-errors -g -o $test_executable_path
 
@@ -73,8 +78,6 @@ run_test_ok() {
 		echo "The shared object nasm produced didn't pass test.c" >&2
 		exit 1
 	fi
-
-	local grug_path=$dir"input.grug"
 
 	printf "Running $dir...\n"
 
