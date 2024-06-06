@@ -1,14 +1,14 @@
-global define
 global define_type
+global define
 
 global get_globals_struct_size
 global init_globals_struct
 
 section .data
 
-define: dq 42
-
 define_type: db "entity", 0
+
+define: dq 42
 
 section .text
 
