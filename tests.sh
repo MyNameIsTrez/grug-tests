@@ -2,7 +2,7 @@
 
 echo "Recompiling..."
 
-gcc test.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wfatal-errors -g -Igrug -Wno-misleading-indentation
+gcc run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wfatal-errors -g -Igrug -Wno-misleading-indentation
 if [ $? -ne 0 ]
 then
 	echo "Compilation failed"
@@ -15,6 +15,7 @@ expected_o_path="results/.intermediate.o"
 expected_dll_path="results/expected.so"
 dll_path="results/output.so"
 c_path="results/output.c"
+test_executable_path="results/test"
 grug_output_path="results/grug_output.txt"
 grug_hex_path="results/output.hex"
 expected_hex_path="results/expected.hex"
@@ -43,7 +44,7 @@ run_test_err() {
 
 	if [ $grug_exit_status -eq 0 ]
 	then
-		echo "grug's test.c was expected to exit with status 1" >&2
+		echo "run.c was expected to exit with status 1" >&2
 		exit 1
 	fi
 }
@@ -63,6 +64,15 @@ run_test_ok() {
 	local nasm_path=$dir"input.s"
 
 	nasm -f elf64 $nasm_path -o $expected_o_path && ld -shared --hash-style=sysv $expected_o_path -o $expected_dll_path && rm $expected_o_path
+
+	gcc $dir"test.c" -Wall -Wextra -Werror -Wpedantic -Wfatal-errors -g -o $test_executable_path
+
+	$test_executable_path $expected_dll_path
+	if [ $? -ne 0 ]
+	then
+		echo "The shared object nasm produced didn't pass test.c" >&2
+		exit 1
+	fi
 
 	local grug_path=$dir"input.grug"
 
@@ -96,7 +106,7 @@ run_test_ok() {
 
 	if [ $grug_exit_status -ne 0 ]
 	then
-		echo "grug's test.c was expected to exit with status 0" >&2
+		echo "run.c was expected to exit with status 0" >&2
 		exit 1
 	fi
 }

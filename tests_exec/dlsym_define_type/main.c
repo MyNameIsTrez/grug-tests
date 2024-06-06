@@ -1,1 +1,0 @@
-// TODO: Use dlsym() together with assert() to check whether define_type is "entity"
