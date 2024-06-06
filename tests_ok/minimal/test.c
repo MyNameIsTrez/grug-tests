@@ -5,6 +5,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef size_t (*get_globals_struct_size)(void);
+typedef void (*init_globals_struct)(void *globals_struct);
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
+struct globals {
+};
+#pragma GCC diagnostic pop
+
 void *get(void *handle, char *label) {
     void *p = dlsym(handle, label);
     if (!p) {
@@ -30,4 +39,12 @@ int main(int argc, char *argv[]) {
 
     assert(strcmp(get(handle, "define_type"), "entity") == 0);
     assert(*(uint64_t *)get(handle, "define") == 42);
+
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wpedantic"
+    assert(((get_globals_struct_size)get(handle, "get_globals_struct_size"))() == 0);
+
+    struct globals g;
+    ((init_globals_struct)get(handle, "init_globals_struct"))(&g);
+    #pragma GCC diagnostic pop
 }
