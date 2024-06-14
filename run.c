@@ -4,35 +4,10 @@
 #include <stdlib.h>
 
 void init() {
-	grug_init((grug_init_data_t){
-		.types=(grug_type_t[]){
-			{ .name="i32", .size=4 },
-			{ .name="i64", .size=8 },
-			{ .name="string", .size=8 },
-			{ 0 }
-		},
-		.structs=(grug_struct_t[]){
-			{
-				.name="entity",
-				.fields=(grug_variable_t[]){
-					{ .name="a", .type="i64" },
-					{ 0 }
-				}
-			},
-			{ 0 }
-		},
-		.fns=(grug_fn_t[]){
-			{
-				.name="foo",
-				.return_type="i32",
-				.arguments=(grug_variable_t[]){
-					{ .name="a", .type="i64" },
-					{ .name="b", .type="i64" },
-					{ 0 }
-				}
-			},
-			{ 0 }
-		}
+	grug_init((grug_function_t[]){
+		{ .name="foo", .return_type="i32", .arguments=(grug_argument_t[]){ { .name="a", .type="i64" }, { .name="b", .type="i64" }, { 0 } } },
+		{ .name="bar", .return_type="f32", .arguments=(grug_argument_t[]){ { .name="x", .type="i32" }, { 0 } } },
+		{ 0 }
 	});
 }
 
