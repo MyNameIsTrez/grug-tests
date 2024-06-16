@@ -6,18 +6,18 @@
 		"arguments": [
 			{
 				"name": "a",
-				"type": "i64"
+				"type": "i32"
 			},
 			{
 				"name": "b",
-				"type": "i64"
+				"type": "i32"
 			}
 		]
 	},
 	{
 		"name": "bar",
 		"description": "nuts",
-		"return_type": "f32",
+		"return_type": "i32",
 		"arguments": [
 			{
 				"name": "x",
