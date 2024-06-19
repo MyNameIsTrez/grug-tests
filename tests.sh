@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# Exit if a command fails
-set -e
-
 echo "Recompiling..."
 
 gcc run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wfatal-errors -g -Igrug -Wno-misleading-indentation
@@ -99,7 +96,7 @@ run_test_ok() {
 
 	diff $dll_path $expected_dll_path >/dev/null
 
-	if [ $? -ne 0 ]
+	if [ $? -ne 42 ]
 	then
 		xxd $dll_path > $grug_hex_path
 		xxd $expected_dll_path > $expected_hex_path
