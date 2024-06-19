@@ -71,9 +71,10 @@ run_test_ok() {
 	nasm $nasm_path -f elf64 -o $expected_o_path && ld -shared --hash-style=sysv $expected_o_path -o $expected_dll_path && rm $expected_o_path
 
 	# Rename the $nasm_path symbol to $grug_path, so the diff doesn't crap itself
-	objcopy --redefine-sym $nasm_path=$grug_path results/expected.so
+	objcopy $expected_dll_path --redefine-sym $nasm_path=$grug_path
 
-	gcc $dir"test.c" -Wall -Wextra -Werror -Wpedantic -Wfatal-errors -g -o $test_executable_path
+	# -rdynamic allows the .so to call functions from test.c
+	gcc $dir"test.c" -Wall -Wextra -Werror -Wpedantic -Wfatal-errors -rdynamic -g -o $test_executable_path
 
 	$test_executable_path $expected_dll_path
 	if [ $? -ne 0 ]

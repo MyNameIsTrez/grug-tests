@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef void (*define)(void);
 typedef size_t (*get_globals_struct_size)(void);
 typedef void (*init_globals_struct)(void *globals_struct);
 
@@ -18,7 +19,15 @@ struct globals {
 };
 #pragma GCC diagnostic pop
 
-void *get(void *handle, char *label) {
+static struct entity entity_definition;
+
+void define_entity(uint64_t a) {
+	entity_definition = (struct entity){
+		.a = a,
+	};
+}
+
+static void *get(void *handle, char *label) {
 	void *p = dlsym(handle, label);
 	if (!p) {
 		fprintf(stderr, "dlsym: %s", dlerror());
@@ -43,16 +52,18 @@ int main(int argc, char *argv[]) {
 
 	assert(strcmp(get(handle, "define_type"), "entity") == 0);
 
-	struct entity e = *(struct entity *)get(handle, "define");
-	assert(e.a == 42);
-
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wpedantic"
-	get_globals_struct_size f = get(handle, "get_globals_struct_size");
-	size_t r = f();
+	define define = get(handle, "define");
+	define();
+	assert(entity_definition.a == 42);
+
+	get_globals_struct_size get_globals_struct_size = get(handle, "get_globals_struct_size");
+	size_t r = get_globals_struct_size();
 	assert(r == 0);
 
 	struct globals g;
-	((init_globals_struct)get(handle, "init_globals_struct"))(&g);
+	init_globals_struct init_globals_struct = get(handle, "init_globals_struct");
+	init_globals_struct(&g);
 	#pragma GCC diagnostic pop
 }
