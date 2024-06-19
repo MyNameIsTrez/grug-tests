@@ -96,7 +96,7 @@ run_test_ok() {
 
 	diff $dll_path $expected_dll_path >/dev/null
 
-	if [ $? -ne 42 ]
+	if [ $? -ne 0 ]
 	then
 		xxd $dll_path > $grug_hex_path
 		xxd $expected_dll_path > $expected_hex_path
