@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Exit if a command fails
+set -e
+
 echo "Recompiling..."
 
 gcc run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wfatal-errors -g -Igrug -Wno-misleading-indentation
