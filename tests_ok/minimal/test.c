@@ -6,7 +6,7 @@
 #include <string.h>
 
 typedef void (*define)(void);
-typedef size_t (*get_globals_struct_size)(void);
+typedef size_t (*get_globals_size)(void);
 typedef void (*init_globals_struct)(void *globals_struct);
 
 struct entity {
@@ -58,8 +58,8 @@ int main(int argc, char *argv[]) {
 	define();
 	assert(entity_definition.a == 42);
 
-	get_globals_struct_size get_globals_struct_size = get(handle, "get_globals_struct_size");
-	size_t r = get_globals_struct_size();
+	get_globals_size get_globals_size = get(handle, "get_globals_size");
+	size_t r = get_globals_size();
 	assert(r == 0);
 
 	struct globals g;

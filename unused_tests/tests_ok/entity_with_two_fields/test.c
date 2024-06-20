@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef size_t (*get_globals_struct_size)(void);
+typedef size_t (*get_globals_size)(void);
 typedef void (*init_globals_struct)(void *globals_struct);
 
 struct entity {
@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wpedantic"
-	get_globals_struct_size f = get(handle, "get_globals_struct_size");
+	get_globals_size f = get(handle, "get_globals_size");
 	size_t r = f();
 	assert(r == 0);
 
