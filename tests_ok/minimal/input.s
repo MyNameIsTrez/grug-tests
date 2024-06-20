@@ -1,5 +1,3 @@
-extern define_entity
-
 global define_type
 
 global define
@@ -11,6 +9,8 @@ section .data
 define_type: db "entity", 0
 
 section .text
+
+extern define_entity
 
 define:
 	mov rdi, 42
