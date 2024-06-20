@@ -6,7 +6,7 @@
 #include <string.h>
 
 typedef size_t (*get_globals_size)(void);
-typedef void (*init_globals)(void *globals_struct);
+typedef void (*init_globals)(void *globals);
 
 struct entity {
 	uint64_t a;
