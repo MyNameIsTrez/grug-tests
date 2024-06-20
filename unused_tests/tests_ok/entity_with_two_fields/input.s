@@ -2,7 +2,7 @@ global define_type
 global define
 
 global get_globals_size
-global init_globals_struct
+global init_globals
 
 section .data
 
@@ -18,5 +18,5 @@ get_globals_size:
 	mov eax, 0
 	ret
 
-init_globals_struct:
+init_globals:
 	ret

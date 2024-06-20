@@ -6,7 +6,7 @@
 #include <string.h>
 
 typedef size_t (*get_globals_size)(void);
-typedef void (*init_globals_struct)(void *globals_struct);
+typedef void (*init_globals)(void *globals_struct);
 
 struct entity {
 	uint64_t a;
@@ -55,6 +55,6 @@ int main(int argc, char *argv[]) {
 	assert(r == 0);
 
 	struct globals g;
-	((init_globals_struct)get(handle, "init_globals_struct"))(&g);
+	((init_globals)get(handle, "init_globals"))(&g);
 	#pragma GCC diagnostic pop
 }
