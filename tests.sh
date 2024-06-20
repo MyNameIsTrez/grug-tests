@@ -14,7 +14,6 @@ mkdir -p results/
 expected_o_path="results/.intermediate.o"
 expected_dll_path="results/expected.so"
 dll_path="results/output.so"
-c_path="results/output.c"
 test_executable_path="results/test"
 grug_output_path="results/grug_output.txt"
 grug_hex_path="results/output.hex"
@@ -82,7 +81,7 @@ run_test_ok() {
 
 	printf "Running $dir...\n"
 
-	./a.out $grug_path $dll_path $c_path >$grug_output_path 2>&1
+	./a.out $grug_path $dll_path >$grug_output_path 2>&1
 	local grug_exit_status=$?
 
 	if [ -s $grug_output_path ]
