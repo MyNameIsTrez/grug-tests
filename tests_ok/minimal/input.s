@@ -18,8 +18,10 @@ define:
 	ret
 
 get_globals_size:
-	mov eax, 0
+	mov eax, 8
 	ret
 
 init_globals:
+	mov dword [rdi+0], 420
+	mov dword [rdi+4], 1337
 	ret

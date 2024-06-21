@@ -9,3 +9,5 @@
 Check the terminal or the generated `results` directory to inspect any errors.
 
 If you want to see the detailed logs, add `-DLOGGING` at the end of line 5 of `tests.sh`.
+
+Once you've ran `./tests.sh`, you can run `objdump -D results/expected.so` to display the assembler contents grug is expected to produce.

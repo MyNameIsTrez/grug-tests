@@ -13,12 +13,6 @@ struct entity {
 	uint64_t a;
 };
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpedantic"
-struct globals {
-};
-#pragma GCC diagnostic pop
-
 static struct entity entity_definition;
 
 void define_entity(uint64_t a) {
@@ -59,11 +53,14 @@ int main(int argc, char *argv[]) {
 	assert(entity_definition.a == 42);
 
 	get_globals_size get_globals_size = get(handle, "get_globals_size");
-	size_t r = get_globals_size();
-	assert(r == 0);
+	size_t globals_size = get_globals_size();
+	assert(globals_size == 8);
 
-	struct globals g;
+	void *g = malloc(globals_size);
 	init_globals init_globals = get(handle, "init_globals");
-	init_globals(&g);
+	init_globals(g);
+	assert(((uint32_t*)g)[0] == 420);
+	assert(((uint32_t*)g)[1] == 1337);
+	free(g);
 	#pragma GCC diagnostic pop
 }
