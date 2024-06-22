@@ -22,6 +22,6 @@ get_globals_size:
 	ret
 
 init_globals:
-	mov dword [rdi+0], 420
+	mov dword [byte rdi+0], 420
 	mov dword [rdi+4], 1337
 	ret
