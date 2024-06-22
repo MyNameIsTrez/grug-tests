@@ -11,13 +11,15 @@ typedef void (*init_globals)(void *globals);
 
 struct entity {
 	uint64_t a;
+	uint64_t b;
 };
 
 static struct entity entity_definition;
 
-void define_entity(uint64_t a) {
+void define_entity(uint64_t a, uint64_t b) {
 	entity_definition = (struct entity){
 		.a = a,
+		.b = b,
 	};
 }
 
@@ -51,6 +53,7 @@ int main(int argc, char *argv[]) {
 	define define = get(handle, "define");
 	define();
 	assert(entity_definition.a == 42);
+	assert(entity_definition.b == 69);
 
 	get_globals_size get_globals_size = get(handle, "get_globals_size");
 	size_t globals_size = get_globals_size();
