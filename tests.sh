@@ -123,7 +123,7 @@ run_tests_ok() {
 	done
 }
 
-# run_tests_err
+run_tests_err
 run_tests_ok
 
 echo "All tests passed!"
