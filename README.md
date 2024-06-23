@@ -1,6 +1,6 @@
 # grug tests
 
-These is the test suite for [my programming language called grug](https://github.com/MyNameIsTrez/grug/).
+This is the test suite of [my programming language called grug](https://github.com/MyNameIsTrez/grug/).
 
 ## Running
 
