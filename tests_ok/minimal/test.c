@@ -10,13 +10,13 @@ typedef size_t (*get_globals_size)(void);
 typedef void (*init_globals)(void *globals);
 
 struct entity {
-	uint32_t a;
-	uint32_t b;
+	int32_t a;
+	int32_t b;
 };
 
 static struct entity entity_definition;
 
-void define_entity(uint32_t a, uint32_t b) {
+void define_entity(int32_t a, int32_t b) {
 	entity_definition = (struct entity){
 		.a = a,
 		.b = b,
@@ -62,8 +62,8 @@ int main(int argc, char *argv[]) {
 	void *g = malloc(globals_size);
 	init_globals init_globals = get(handle, "init_globals");
 	init_globals(g);
-	assert(((uint32_t*)g)[0] == 420);
-	assert(((uint32_t*)g)[1] == 1337);
+	assert(((int32_t*)g)[0] == 420);
+	assert(((int32_t*)g)[1] == 1337);
 	free(g);
 	#pragma GCC diagnostic pop
 }
