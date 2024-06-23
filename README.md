@@ -1,5 +1,7 @@
 # grug tests
 
+These is the test suite for [my programming language called grug](https://github.com/MyNameIsTrez/grug/).
+
 ## Running
 
 1. Clone this repository and enter it.
