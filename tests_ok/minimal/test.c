@@ -10,13 +10,13 @@ typedef size_t (*get_globals_size)(void);
 typedef void (*init_globals)(void *globals);
 
 struct entity {
-	uint64_t a;
-	uint64_t b;
+	uint32_t a;
+	uint32_t b;
 };
 
 static struct entity entity_definition;
 
-void define_entity(uint64_t a, uint64_t b) {
+void define_entity(uint32_t a, uint32_t b) {
 	entity_definition = (struct entity){
 		.a = a,
 		.b = b,
