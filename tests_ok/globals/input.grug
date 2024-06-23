@@ -3,3 +3,6 @@ define() entity {
         .a = 42,
     }
 }
+
+uses: i32 = 420
+armor: i32 = 1337

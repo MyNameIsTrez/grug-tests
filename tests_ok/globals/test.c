@@ -5,21 +5,23 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef void (*define)(void);
 typedef size_t (*get_globals_size)(void);
 typedef void (*init_globals)(void *globals);
 
 struct entity {
-	uint64_t a;
-	uint64_t b;
+	int32_t a;
 };
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpedantic"
-struct globals {
-};
-#pragma GCC diagnostic pop
+static struct entity entity_definition;
 
-void *get(void *handle, char *label) {
+void define_entity(int32_t a) {
+	entity_definition = (struct entity){
+		.a = a,
+	};
+}
+
+static void *get(void *handle, char *label) {
 	void *p = dlsym(handle, label);
 	if (!p) {
 		fprintf(stderr, "dlsym: %s", dlerror());
@@ -44,17 +46,21 @@ int main(int argc, char *argv[]) {
 
 	assert(strcmp(get(handle, "define_type"), "entity") == 0);
 
-	struct entity e = *(struct entity *)get(handle, "define");
-	assert(e.a == 42);
-	assert(e.b == 69);
-
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wpedantic"
-	get_globals_size f = get(handle, "get_globals_size");
-	size_t r = f();
-	assert(r == 0);
+	define define = get(handle, "define");
+	define();
+	assert(entity_definition.a == 42);
 
-	struct globals g;
-	((init_globals)get(handle, "init_globals"))(&g);
+	get_globals_size get_globals_size = get(handle, "get_globals_size");
+	size_t globals_size = get_globals_size();
+	assert(globals_size == 8);
+
+	void *g = malloc(globals_size);
+	init_globals init_globals = get(handle, "init_globals");
+	init_globals(g);
+	assert(((int32_t*)g)[0] == 420);
+	assert(((int32_t*)g)[1] == 1337);
+	free(g);
 	#pragma GCC diagnostic pop
 }

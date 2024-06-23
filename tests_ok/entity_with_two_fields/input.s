@@ -14,6 +14,7 @@ extern define_entity
 
 define:
 	mov rdi, 42
+	mov rsi, 69
 	call define_entity wrt ..plt
 	ret
 
