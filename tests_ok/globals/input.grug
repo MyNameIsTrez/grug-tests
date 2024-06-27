@@ -1,6 +1,6 @@
 define() a {
     return {
-        .a = 42,
+        .x = 42,
     }
 }
 

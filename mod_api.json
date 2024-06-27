@@ -5,7 +5,7 @@
 			"description": "foo",
 			"arguments": [
 				{
-					"name": "a",
+					"name": "x",
 					"type": "i32"
 				}
 			]
@@ -15,11 +15,11 @@
 			"description": "foo",
 			"arguments": [
 				{
-					"name": "a",
+					"name": "x",
 					"type": "i32"
 				},
 				{
-					"name": "b",
+					"name": "y",
 					"type": "i32"
 				}
 			]
@@ -31,7 +31,7 @@
 			"description": "foo",
 			"arguments": [
 				{
-					"name": "a",
+					"name": "self",
 					"type": "i32"
 				}
 			]
@@ -41,11 +41,11 @@
 			"description": "foo",
 			"arguments": [
 				{
-					"name": "a",
+					"name": "self",
 					"type": "i32"
 				},
 				{
-					"name": "b",
+					"name": "x",
 					"type": "i32"
 				}
 			]
@@ -55,24 +55,46 @@
 		{
 			"name": "a",
 			"description": "foo",
-			"arguments": [
-				{
-					"name": "a",
-					"type": "i32"
-				}
-			]
+			"arguments": []
 		},
 		{
 			"name": "b",
 			"description": "foo",
 			"return_type": "i32",
+			"arguments": []
+		},
+		{
+			"name": "c",
+			"description": "foo",
 			"arguments": [
 				{
-					"name": "a",
+					"name": "x",
+					"type": "i32"
+				}
+			]
+		},
+		{
+			"name": "d",
+			"description": "foo",
+			"return_type": "i32",
+			"arguments": [
+				{
+					"name": "x",
+					"type": "i32"
+				}
+			]
+		},
+		{
+			"name": "e",
+			"description": "foo",
+			"return_type": "i32",
+			"arguments": [
+				{
+					"name": "x",
 					"type": "i32"
 				},
 				{
-					"name": "b",
+					"name": "y",
 					"type": "i32"
 				}
 			]
