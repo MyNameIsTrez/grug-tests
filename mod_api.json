@@ -1,8 +1,19 @@
 [
 	{
-		"name": "foo",
-		"description": "deez",
-		"return_type": "i32",
+		"name": "define_a",
+		"description": "foo",
+		"return_type": "void",
+		"arguments": [
+			{
+				"name": "a",
+				"type": "i32"
+			}
+		]
+	},
+	{
+		"name": "define_b",
+		"description": "foo",
+		"return_type": "void",
 		"arguments": [
 			{
 				"name": "a",
@@ -10,17 +21,6 @@
 			},
 			{
 				"name": "b",
-				"type": "i32"
-			}
-		]
-	},
-	{
-		"name": "bar",
-		"description": "nuts",
-		"return_type": "i32",
-		"arguments": [
-			{
-				"name": "x",
 				"type": "i32"
 			}
 		]

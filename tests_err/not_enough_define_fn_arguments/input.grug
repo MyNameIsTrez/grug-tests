@@ -1,0 +1,5 @@
+define() b {
+    return {
+        .a = 42,
+    }
+}
