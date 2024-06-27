@@ -11,7 +11,6 @@ define_type: db "a", 0
 section .text
 
 extern define_a
-extern define_b
 
 define:
 	mov rdi, 42
