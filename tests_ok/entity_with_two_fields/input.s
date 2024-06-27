@@ -6,16 +6,16 @@ global init_globals
 
 section .data
 
-define_type: db "entity", 0
+define_type: db "b", 0
 
 section .text
 
-extern define_entity
+extern define_b
 
 define:
 	mov rdi, 42
 	mov rsi, 69
-	call define_entity wrt ..plt
+	call define_b wrt ..plt
 	ret
 
 get_globals_size:

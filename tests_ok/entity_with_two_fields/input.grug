@@ -1,4 +1,4 @@
-define() entity {
+define() b {
     return {
         .a = 42,
         .b = 69,

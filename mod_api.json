@@ -1,28 +1,81 @@
-[
-	{
-		"name": "define_a",
-		"description": "foo",
-		"return_type": "void",
-		"arguments": [
-			{
-				"name": "a",
-				"type": "i32"
-			}
-		]
-	},
-	{
-		"name": "define_b",
-		"description": "foo",
-		"return_type": "void",
-		"arguments": [
-			{
-				"name": "a",
-				"type": "i32"
-			},
-			{
-				"name": "b",
-				"type": "i32"
-			}
-		]
-	}
-]
+{
+	"define_functions": [
+		{
+			"name": "define_a",
+			"description": "foo",
+			"arguments": [
+				{
+					"name": "a",
+					"type": "i32"
+				}
+			]
+		},
+		{
+			"name": "define_b",
+			"description": "foo",
+			"arguments": [
+				{
+					"name": "a",
+					"type": "i32"
+				},
+				{
+					"name": "b",
+					"type": "i32"
+				}
+			]
+		}
+	],
+	"on_functions": [
+		{
+			"name": "on_a",
+			"description": "foo",
+			"arguments": [
+				{
+					"name": "a",
+					"type": "i32"
+				}
+			]
+		},
+		{
+			"name": "on_b",
+			"description": "foo",
+			"arguments": [
+				{
+					"name": "a",
+					"type": "i32"
+				},
+				{
+					"name": "b",
+					"type": "i32"
+				}
+			]
+		}
+	],
+	"game_functions": [
+		{
+			"name": "a",
+			"description": "foo",
+			"arguments": [
+				{
+					"name": "a",
+					"type": "i32"
+				}
+			]
+		},
+		{
+			"name": "b",
+			"description": "foo",
+			"return_type": "i32",
+			"arguments": [
+				{
+					"name": "a",
+					"type": "i32"
+				},
+				{
+					"name": "b",
+					"type": "i32"
+				}
+			]
+		}
+	]
+}

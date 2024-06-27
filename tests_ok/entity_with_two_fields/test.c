@@ -9,15 +9,15 @@ typedef void (*define)(void);
 typedef size_t (*get_globals_size)(void);
 typedef void (*init_globals)(void *globals);
 
-struct entity {
+struct b {
 	int32_t a;
 	int32_t b;
 };
 
-static struct entity entity_definition;
+static struct b b_definition;
 
-void define_entity(int32_t a, int32_t b) {
-	entity_definition = (struct entity){
+void define_b(int32_t a, int32_t b) {
+	b_definition = (struct b){
 		.a = a,
 		.b = b,
 	};
@@ -46,14 +46,14 @@ int main(int argc, char *argv[]) {
 		exit(EXIT_FAILURE);
 	}
 
-	assert(strcmp(get(handle, "define_type"), "entity") == 0);
+	assert(strcmp(get(handle, "define_type"), "b") == 0);
 
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wpedantic"
 	define define = get(handle, "define");
 	define();
-	assert(entity_definition.a == 42);
-	assert(entity_definition.b == 69);
+	assert(b_definition.a == 42);
+	assert(b_definition.b == 69);
 
 	get_globals_size get_globals_size = get(handle, "get_globals_size");
 	size_t globals_size = get_globals_size();
