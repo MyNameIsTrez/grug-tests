@@ -23,9 +23,9 @@ error_diff_path="results/error_diff_path.txt"
 run_test_err() {
 	local dir=$1
 
-	local grug_path=$dir"input.grug"
-
 	printf "Running $dir...\n"
+
+	local grug_path=$dir"input.grug"
 
 	./a.out $grug_path $dll_path >$grug_output_path 2>&1
 	local grug_exit_status=$?
@@ -60,6 +60,8 @@ run_tests_err() {
 run_test_ok() {
 	local dir=$1
 
+	printf "Running $dir...\n"
+
 	local nasm_path=$dir"input.s"
 
 	local grug_path=$dir"input.grug"
@@ -78,8 +80,6 @@ run_test_ok() {
 		echo "The shared object nasm produced didn't pass test.c" >&2
 		exit 1
 	fi
-
-	printf "Running $dir...\n"
 
 	./a.out $grug_path $dll_path >$grug_output_path 2>&1
 	local grug_exit_status=$?
