@@ -1,3 +1,5 @@
 .vscode
 results
 a.out
+expected_elf.hex
+output_elf.hex

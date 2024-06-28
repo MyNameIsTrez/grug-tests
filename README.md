@@ -14,4 +14,14 @@ If you want to see the detailed logs, add `-DLOGGING` at the end of line 5 of `t
 
 Once you've ran `./tests.sh`, you can run `objdump -D results/expected.so` to display the assembler contents grug is expected to produce.
 
-Use [gdbgui](https://www.gdbgui.com/) to step through the code, like `gdbgui "a.out tests_err/define_fn_different_name/input.grug results/expected.so"`
+## gdbgui
+
+Use [gdbgui](https://www.gdbgui.com/) to step through the code:
+
+`gdbgui "a.out tests_err/define_fn_different_name/input.grug results/expected.so"`
+`gdbgui "a.out tests_ok/define_with_two_fields/input.grug results/expected.so"`
+
+## readelf
+
+`readelf -a results/output.so > output_elf.hex`
+`readelf -a results/expected.so > expected_elf.hex`

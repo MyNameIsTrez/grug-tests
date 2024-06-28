@@ -4,9 +4,15 @@ global define
 global get_globals_size
 global init_globals
 
+global on_fns
+
 section .data
 
 define_type: db "b", 0
+
+on_fns:
+	dq 0
+	dq 0
 
 section .text
 

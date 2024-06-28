@@ -19,20 +19,6 @@
 							"type": "i32"
 						}
 					]
-				},
-				{
-					"name": "on_b",
-					"description": "foo",
-					"arguments": [
-						{
-							"name": "self",
-							"type": "i32"
-						},
-						{
-							"name": "x",
-							"type": "i32"
-						}
-					]
 				}
 			]
 		},
