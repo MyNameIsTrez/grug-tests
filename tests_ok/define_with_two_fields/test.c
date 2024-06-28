@@ -26,7 +26,7 @@ void define_b(int32_t a, int32_t b) {
 static void *get(void *handle, char *label) {
 	void *p = dlsym(handle, label);
 	if (!p) {
-		fprintf(stderr, "dlsym: %s", dlerror());
+		fprintf(stderr, "dlsym: %s\n", dlerror());
 		exit(EXIT_FAILURE);
 	}
 	return p;

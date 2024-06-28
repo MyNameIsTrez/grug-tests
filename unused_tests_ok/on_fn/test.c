@@ -9,8 +9,14 @@ typedef void (*define)(void);
 typedef size_t (*get_globals_size)(void);
 typedef void (*init_globals)(void *globals);
 
+void on_a(void);
+
 struct a {
 	int32_t a;
+};
+
+struct my_on_fns {
+	typeof(on_a) *a;
 };
 
 static struct a a_definition;
@@ -54,13 +60,14 @@ int main(int argc, char *argv[]) {
 
 	get_globals_size get_globals_size = get(handle, "get_globals_size");
 	size_t globals_size = get_globals_size();
-	assert(globals_size == 8);
+	assert(globals_size == 0);
 
 	void *g = malloc(globals_size);
 	init_globals init_globals = get(handle, "init_globals");
 	init_globals(g);
-	assert(((int32_t*)g)[0] == 420);
-	assert(((int32_t*)g)[1] == 1337);
 	free(g);
+
+	struct my_on_fns *on_fns = get(handle, "on_fns");
+	on_fns->a();
 	#pragma GCC diagnostic pop
 }

@@ -1,19 +1,45 @@
 {
-	"define_functions": [
+	"entities": [
 		{
-			"name": "define_a",
+			"name": "a",
 			"description": "foo",
-			"arguments": [
+			"fields": [
 				{
 					"name": "x",
 					"type": "i32"
 				}
+			],
+			"on_functions": [
+				{
+					"name": "on_a",
+					"description": "foo",
+					"arguments": [
+						{
+							"name": "self",
+							"type": "i32"
+						}
+					]
+				},
+				{
+					"name": "on_b",
+					"description": "foo",
+					"arguments": [
+						{
+							"name": "self",
+							"type": "i32"
+						},
+						{
+							"name": "x",
+							"type": "i32"
+						}
+					]
+				}
 			]
 		},
 		{
-			"name": "define_b",
+			"name": "b",
 			"description": "foo",
-			"arguments": [
+			"fields": [
 				{
 					"name": "x",
 					"type": "i32"
@@ -22,31 +48,31 @@
 					"name": "y",
 					"type": "i32"
 				}
-			]
-		}
-	],
-	"on_functions": [
-		{
-			"name": "on_a",
-			"description": "foo",
-			"arguments": [
+			],
+			"on_functions": [
 				{
-					"name": "self",
-					"type": "i32"
-				}
-			]
-		},
-		{
-			"name": "on_b",
-			"description": "foo",
-			"arguments": [
-				{
-					"name": "self",
-					"type": "i32"
+					"name": "on_a",
+					"description": "foo",
+					"arguments": [
+						{
+							"name": "self",
+							"type": "i32"
+						}
+					]
 				},
 				{
-					"name": "x",
-					"type": "i32"
+					"name": "on_b",
+					"description": "foo",
+					"arguments": [
+						{
+							"name": "self",
+							"type": "i32"
+						},
+						{
+							"name": "x",
+							"type": "i32"
+						}
+					]
 				}
 			]
 		}

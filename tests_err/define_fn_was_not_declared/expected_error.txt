@@ -1,1 +1,1 @@
-The function 'define_z' was not declared by mod_api.json
+The entity 'z' was not declared by mod_api.json

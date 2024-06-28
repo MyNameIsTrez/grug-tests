@@ -1,0 +1,8 @@
+define() a {
+    return {
+        .x = 42,
+    }
+}
+
+on_z(self: i32) {
+}
