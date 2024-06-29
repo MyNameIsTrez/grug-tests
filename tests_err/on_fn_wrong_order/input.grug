@@ -1,0 +1,12 @@
+define() b {
+    return {
+        .x = 42,
+        .y = 69,
+    }
+}
+
+on_b(self: i32) {
+}
+
+on_a(self: i32) {
+}

@@ -2,7 +2,7 @@
 
 echo "Recompiling..."
 
-gcc run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wfatal-errors -g -Igrug -Wno-misleading-indentation
+gcc run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wfatal-errors -g -Igrug -Wno-misleading-indentation -fsanitize=undefined
 if [ $? -ne 0 ]
 then
 	echo "Compilation failed"
