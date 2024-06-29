@@ -1,2 +1,0 @@
-// TODO: Improve message
-On fn was not declared
