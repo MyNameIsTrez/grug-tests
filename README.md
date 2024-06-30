@@ -23,5 +23,4 @@ Use [gdbgui](https://www.gdbgui.com/) to step through the code:
 
 ## readelf
 
-`readelf -a results/output.so > output_elf.hex`
-`readelf -a results/expected.so > expected_elf.hex`
+`clear && ./tests.sh; readelf -a results/output.so > output_elf.hex && readelf -a results/expected.so > expected_elf.hex`
