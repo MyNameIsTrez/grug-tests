@@ -9,21 +9,15 @@ typedef void (*define)(void);
 typedef size_t (*get_globals_size)(void);
 typedef void (*init_globals)(void *globals);
 
-void on_a(void);
-
-struct b {
+struct i {
 	int32_t x;
 	int32_t y;
 };
 
-struct my_on_fns {
-	typeof(on_a) *a;
-};
+static struct i i_definition;
 
-static struct b b_definition;
-
-void define_b(int32_t x, int32_t y) {
-	b_definition = (struct b){
+void define_i(int32_t x, int32_t y) {
+	i_definition = (struct i){
 		.x = x,
 		.y = y,
 	};
@@ -52,14 +46,14 @@ int main(int argc, char *argv[]) {
 		exit(EXIT_FAILURE);
 	}
 
-	assert(strcmp(get(handle, "define_type"), "b") == 0);
+	assert(strcmp(get(handle, "define_type"), "i") == 0);
 
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wpedantic"
 	define define = get(handle, "define");
 	define();
-	assert(b_definition.x == 42);
-	assert(b_definition.y == 69);
+	assert(i_definition.x == 42);
+	assert(i_definition.y == 69);
 
 	get_globals_size get_globals_size = get(handle, "get_globals_size");
 	size_t globals_size = get_globals_size();
@@ -69,8 +63,5 @@ int main(int argc, char *argv[]) {
 	init_globals init_globals = get(handle, "init_globals");
 	init_globals(g);
 	free(g);
-
-	struct my_on_fns *on_fns = get(handle, "on_fns");
-	on_fns->a();
 	#pragma GCC diagnostic pop
 }

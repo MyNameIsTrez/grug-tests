@@ -1,6 +1,7 @@
-define() h {
+define() i {
     return {
         .x = 42,
+        .y = 69,
     }
 }
 

@@ -1,1 +1,1 @@
-The entity 'b' expects 2 fields, but only got 1
+The entity 'c' expects 2 fields, but got 1

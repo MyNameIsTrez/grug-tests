@@ -1,4 +1,4 @@
-define() b {
+define() i {
     return {
         .x = 42,
         .y = 69,

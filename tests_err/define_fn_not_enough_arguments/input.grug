@@ -1,5 +1,5 @@
-define() b {
+define() c {
     return {
-        .a = 42,
+        .x = 42,
     }
 }

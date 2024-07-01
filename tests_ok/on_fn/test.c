@@ -11,7 +11,7 @@ typedef void (*init_globals)(void *globals);
 
 void on_a(void);
 
-struct a {
+struct h {
 	int32_t x;
 };
 
@@ -19,10 +19,10 @@ struct my_on_fns {
 	typeof(on_a) *a;
 };
 
-static struct a a_definition;
+static struct h h_definition;
 
-void define_a(int32_t x) {
-	a_definition = (struct a){
+void define_h(int32_t x) {
+	h_definition = (struct h){
 		.x = x,
 	};
 }
@@ -50,13 +50,13 @@ int main(int argc, char *argv[]) {
 		exit(EXIT_FAILURE);
 	}
 
-	assert(strcmp(get(handle, "define_type"), "a") == 0);
+	assert(strcmp(get(handle, "define_type"), "h") == 0);
 
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wpedantic"
 	define define = get(handle, "define");
 	define();
-	assert(a_definition.x == 42);
+	assert(h_definition.x == 42);
 
 	get_globals_size get_globals_size = get(handle, "get_globals_size");
 	size_t globals_size = get_globals_size();

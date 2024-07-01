@@ -19,7 +19,7 @@ Once you've ran `./tests.sh`, you can run `objdump -D results/expected.so` to di
 Use [gdbgui](https://www.gdbgui.com/) to step through the code:
 
 `gdbgui "a.out tests_err/define_fn_different_name/input.grug results/expected.so"`
-`gdbgui "a.out tests_ok/on_fn_entity_b/input.grug results/expected.so"`
+`gdbgui "a.out tests_ok/on_fn_entity_b_on_b/input.grug results/expected.so"`
 
 ## readelf
 

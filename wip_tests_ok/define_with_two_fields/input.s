@@ -8,7 +8,7 @@ global on_fns
 
 section .data
 
-define_type: db "b", 0
+define_type: db "i", 0
 
 on_fns:
 	dq 0
@@ -16,12 +16,12 @@ on_fns:
 
 section .text
 
-extern define_b
+extern define_i
 
 define:
 	mov rdi, 42
 	mov rsi, 69
-	call define_b wrt ..plt
+	call define_i wrt ..plt
 	ret
 
 get_globals_size:

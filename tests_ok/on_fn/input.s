@@ -10,18 +10,18 @@ global on_a
 
 section .data
 
-define_type: db "a", 0
+define_type: db "h", 0
 
 on_fns:
 	dq on_a
 
 section .text
 
-extern define_a
+extern define_h
 
 define:
 	mov rdi, 42
-	call define_a wrt ..plt
+	call define_h wrt ..plt
 	ret
 
 get_globals_size:

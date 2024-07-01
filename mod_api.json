@@ -1,29 +1,18 @@
 {
-	"entities": [
-		{
-			"name": "a",
+	"entities": {
+		"a": {
+			"description": "foo"
+		},
+		"b": {
 			"description": "foo",
 			"fields": [
 				{
 					"name": "x",
 					"type": "i32"
 				}
-			],
-			"on_functions": [
-				{
-					"name": "on_a",
-					"description": "foo",
-					"arguments": [
-						{
-							"name": "self",
-							"type": "i32"
-						}
-					]
-				}
 			]
 		},
-		{
-			"name": "b",
+		"c": {
 			"description": "foo",
 			"fields": [
 				{
@@ -34,10 +23,31 @@
 					"name": "y",
 					"type": "i32"
 				}
-			],
-			"on_functions": [
-				{
-					"name": "on_a",
+			]
+		},
+		"d": {
+			"description": "foo",
+			"on_functions": {
+				"on_a": {
+					"description": "foo"
+				}
+			}
+		},
+		"e": {
+			"description": "foo",
+			"on_functions": {
+				"on_a": {
+					"description": "foo"
+				},
+				"on_b": {
+					"description": "foo"
+				}
+			}
+		},
+		"f": {
+			"description": "foo",
+			"on_functions": {
+				"on_a": {
 					"description": "foo",
 					"arguments": [
 						{
@@ -45,9 +55,13 @@
 							"type": "i32"
 						}
 					]
-				},
-				{
-					"name": "on_b",
+				}
+			}
+		},
+		"g": {
+			"description": "foo",
+			"on_functions": {
+				"on_a": {
 					"description": "foo",
 					"arguments": [
 						{
@@ -60,23 +74,75 @@
 						}
 					]
 				}
-			]
+			}
+		},
+		"h": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "x",
+					"type": "i32"
+				}
+			],
+			"on_functions": {
+				"on_a": {
+					"description": "foo",
+					"arguments": [
+						{
+							"name": "self",
+							"type": "i32"
+						}
+					]
+				}
+			}
+		},
+		"i": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "x",
+					"type": "i32"
+				},
+				{
+					"name": "y",
+					"type": "i32"
+				}
+			],
+			"on_functions": {
+				"on_a": {
+					"description": "foo",
+					"arguments": [
+						{
+							"name": "self",
+							"type": "i32"
+						}
+					]
+				},
+				"on_b": {
+					"description": "foo",
+					"arguments": [
+						{
+							"name": "self",
+							"type": "i32"
+						},
+						{
+							"name": "x",
+							"type": "i32"
+						}
+					]
+				}
+			}
 		}
-	],
-	"game_functions": [
-		{
-			"name": "a",
-			"description": "foo",
-			"arguments": []
+	},
+	"game_functions": {
+		"a": {
+			"description": "foo"
 		},
-		{
-			"name": "b",
+		"b": {
 			"description": "foo",
-			"return_type": "i32",
-			"arguments": []
+			"return_type": "i32"
 		},
-		{
-			"name": "c",
+		"c": {
 			"description": "foo",
 			"arguments": [
 				{
@@ -85,8 +151,7 @@
 				}
 			]
 		},
-		{
-			"name": "d",
+		"d": {
 			"description": "foo",
 			"return_type": "i32",
 			"arguments": [
@@ -96,8 +161,7 @@
 				}
 			]
 		},
-		{
-			"name": "e",
+		"e": {
 			"description": "foo",
 			"return_type": "i32",
 			"arguments": [
@@ -111,5 +175,5 @@
 				}
 			]
 		}
-	]
+	}
 }

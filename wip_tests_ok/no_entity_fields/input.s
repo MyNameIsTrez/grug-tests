@@ -6,24 +6,19 @@ global init_globals
 
 global on_fns
 
-global on_a
-
 section .data
 
-define_type: db "b", 0
+define_type: db "a", 0
 
 on_fns:
-	dq on_a
 	dq 0
 
 section .text
 
-extern define_b
+extern define_a
 
 define:
-	mov rdi, 42
-	mov rsi, 69
-	call define_b wrt ..plt
+	call define_a wrt ..plt
 	ret
 
 get_globals_size:
@@ -31,7 +26,4 @@ get_globals_size:
 	ret
 
 init_globals:
-	ret
-
-on_a:
 	ret

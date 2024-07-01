@@ -1,6 +1,5 @@
-define() a {
+define() d {
     return {
-        .x = 42,
     }
 }
 

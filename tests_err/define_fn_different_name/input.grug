@@ -1,4 +1,4 @@
-define() a {
+define() b {
     return {
         .y = 42,
     }
