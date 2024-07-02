@@ -16,7 +16,7 @@ Once you've ran `./tests.sh`, you can run `objdump -D results/expected.so` to di
 
 ## gdb
 
-`gdb --args a.out tests_ok/on_fn_entity_b_on_b/input.grug results/expected.so`
+`gdb --args a.out tests_ok/on_fn_two/input.grug results/expected.so`
 
 ## gdbgui
 
