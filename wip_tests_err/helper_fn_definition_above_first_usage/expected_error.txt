@@ -1,0 +1,1 @@
+Move the helper function 'foo' below the on_ function 'on_a', where it's called for the first time

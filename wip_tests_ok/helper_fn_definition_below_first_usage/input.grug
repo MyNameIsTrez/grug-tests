@@ -1,0 +1,12 @@
+define() h {
+    return {
+        .x = 42,
+    }
+}
+
+on_a() {
+    foo()
+}
+
+foo() {
+}

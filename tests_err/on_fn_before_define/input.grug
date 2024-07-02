@@ -1,0 +1,8 @@
+on_a(self: i32) {
+}
+
+define() h {
+    return {
+        .x = 42,
+    }
+}

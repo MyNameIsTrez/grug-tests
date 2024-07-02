@@ -167,14 +167,14 @@
 		}
 	},
 	"game_functions": {
-		"a": {
+		"nothing": {
 			"description": "foo"
 		},
-		"b": {
+		"magic": {
 			"description": "foo",
 			"return_type": "i32"
 		},
-		"c": {
+		"initialize": {
 			"description": "foo",
 			"arguments": [
 				{
@@ -183,7 +183,7 @@
 				}
 			]
 		},
-		"d": {
+		"identity": {
 			"description": "foo",
 			"return_type": "i32",
 			"arguments": [
@@ -193,7 +193,7 @@
 				}
 			]
 		},
-		"e": {
+		"max": {
 			"description": "foo",
 			"return_type": "i32",
 			"arguments": [
