@@ -8,17 +8,17 @@ global on_fns
 
 section .data
 
-define_type: db "a", 0
+define_type: db "d", 0
 
 on_fns:
 	dq 0
 
 section .text
 
-extern define_a
+extern define_d
 
 define:
-	call define_a wrt ..plt
+	call define_d wrt ..plt
 	ret
 
 get_globals_size:

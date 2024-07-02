@@ -14,6 +14,10 @@ If you want to see the detailed logs, add `-DLOGGING` at the end of line 5 of `t
 
 Once you've ran `./tests.sh`, you can run `objdump -D results/expected.so` to display the assembler contents grug is expected to produce.
 
+## gdb
+
+`gdb --args a.out tests_ok/on_fn_entity_b_on_b/input.grug results/expected.so`
+
 ## gdbgui
 
 Use [gdbgui](https://www.gdbgui.com/) to step through the code:
