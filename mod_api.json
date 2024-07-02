@@ -132,6 +132,38 @@
 					]
 				}
 			}
+		},
+		"j": {
+			"description": "foo",
+			"on_functions": {
+				"on_a": {
+					"description": "foo",
+					"arguments": [
+						{
+							"name": "self",
+							"type": "i32"
+						}
+					]
+				},
+				"on_b": {
+					"description": "foo",
+					"arguments": [
+						{
+							"name": "self",
+							"type": "i32"
+						}
+					]
+				},
+				"on_c": {
+					"description": "foo",
+					"arguments": [
+						{
+							"name": "self",
+							"type": "i32"
+						}
+					]
+				}
+			}
 		}
 	},
 	"game_functions": {

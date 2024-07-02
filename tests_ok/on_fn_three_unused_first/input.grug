@@ -1,0 +1,10 @@
+define() j {
+    return {
+    }
+}
+
+on_b(self: i32) {
+}
+
+on_c(self: i32) {
+}
