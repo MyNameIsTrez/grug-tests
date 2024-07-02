@@ -1,15 +1,4 @@
-#!/bin/sh
-
-echo "Recompiling..."
-
-gcc run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wshadow -Wfatal-errors -g -Igrug -Wno-misleading-indentation -fsanitize=undefined
-if [ $? -ne 0 ]
-then
-	echo "Compilation failed"
-	exit 1
-fi
-
-mkdir -p results/
+#!/bin/bash
 
 expected_o_path="results/.intermediate.o"
 expected_dll_path="results/expected.so"
@@ -129,7 +118,44 @@ run_tests_ok() {
 	done
 }
 
-run_tests_err
-run_tests_ok
+init() {
+	echo "Recompiling..."
+
+	gcc run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wshadow -Wfatal-errors -g -Igrug -Wno-misleading-indentation -fsanitize=undefined
+	if [ $? -ne 0 ]
+	then
+		echo "Compilation failed"
+		exit 1
+	fi
+
+	mkdir -p results/
+}
+
+usage() {
+	printf "Usage: %s [test_path]\n" $0
+	exit 1
+}
+
+if [[ $# > 1 ]]
+then
+	usage
+elif [[ $1 == "" ]]
+then
+	init
+	run_tests_err
+	run_tests_ok
+elif [[ $1 == tests_err/* ]]
+then
+	init
+	rm -f results/*
+	run_test_err $1/
+elif [[ $1 == tests_ok/* ]]
+then
+	init
+	rm -f results/*
+	run_test_ok $1/
+else
+	usage
+fi
 
 echo "All tests passed!"

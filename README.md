@@ -12,6 +12,8 @@ Check the terminal or the generated `results` directory to inspect any errors.
 
 If you want to see the detailed logs, add `-DLOGGING` at the end of line 5 of `tests.sh`.
 
+You can do `./tests.sh [test_path]` to run a specific test, like `./tests.sh tests_ok/minimal`
+
 Once you've ran `./tests.sh`, you can run `objdump -D results/expected.so` to display the assembler contents grug is expected to produce.
 
 ## gdb
@@ -28,3 +30,5 @@ Use [gdbgui](https://www.gdbgui.com/) to step through the code:
 ## readelf
 
 `clear && ./tests.sh; readelf -a results/output.so > output_elf.hex && readelf -a results/expected.so > expected_elf.hex`
+
+`clear && ./tests.sh tests_ok/on_fn_nothing; readelf -a results/output.so > output_elf.hex && readelf -a results/expected.so > expected_elf.hex`
