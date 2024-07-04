@@ -1,13 +1,11 @@
+#include "grug.h"
+
 #include <assert.h>
 #include <dlfcn.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-typedef void (*define)(void);
-typedef size_t (*get_globals_size)(void);
-typedef void (*init_globals)(void *globals);
 
 struct h {
 	int32_t x;
@@ -48,16 +46,16 @@ int main(int argc, char *argv[]) {
 
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wpedantic"
-	define define = get(handle, "define");
+	grug_define_fn_t define = get(handle, "define");
 	define();
 	assert(h_definition.x == 42);
 
-	get_globals_size get_globals_size = get(handle, "get_globals_size");
-	size_t globals_size = get_globals_size();
+	grug_get_globals_size_fn_t get_globals_size_fn = get(handle, "get_globals_size");
+	size_t globals_size = get_globals_size_fn();
 	assert(globals_size == 8);
 
 	void *g = malloc(globals_size);
-	init_globals init_globals = get(handle, "init_globals");
+	grug_init_globals_fn_t init_globals = get(handle, "init_globals");
 	init_globals(g);
 	assert(((int32_t*)g)[0] == 420);
 	assert(((int32_t*)g)[1] == 1337);

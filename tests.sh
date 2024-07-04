@@ -66,7 +66,7 @@ run_test_ok() {
 	objcopy $expected_dll_path --redefine-sym $nasm_path=$grug_path
 
 	# -rdynamic allows the .so to call functions from test.c
-	gcc $dir"test.c" -Wall -Wextra -Werror -Wpedantic -Wfatal-errors -rdynamic -g -o $test_executable_path
+	gcc $dir"test.c" -Igrug -Wall -Wextra -Werror -Wpedantic -Wfatal-errors -rdynamic -g -o $test_executable_path
 
 	$test_executable_path $expected_dll_path
 	if [ $? -ne 0 ]
