@@ -1,0 +1,1 @@
+The helper function 'foo' was defined several times in the same file
