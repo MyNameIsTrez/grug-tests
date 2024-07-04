@@ -1,7 +1,8 @@
 global_resources() resources {
     return {
         .resource_face = "happy_face.png",
-        .resource_scream = "sounds/scream.mp4",
+        .resource_scream = "sounds/scream.mp3",
+        .resource_death = "sounds/scream.mp3",
         .resource_blood = "blood.gif",
     }
 }
