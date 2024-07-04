@@ -38,6 +38,8 @@ run_test_err() {
 }
 
 run_tests_err() {
+	echo ERR tests:
+
 	# Loop over all directories in tests_err/ (non-recursively)
 	for dir in tests_err/*/
 	do
@@ -107,6 +109,8 @@ run_test_ok() {
 }
 
 run_tests_ok() {
+	echo OK tests:
+
 	# Loop over all directories in tests_ok/ (non-recursively)
 	for dir in tests_ok/*/
 	do
@@ -142,20 +146,24 @@ then
 elif [[ $1 == "" ]]
 then
 	init
+	echo
 	run_tests_err
+	echo
 	run_tests_ok
 elif [[ $1 == tests_err/* ]]
 then
 	init
+	echo
 	rm -f results/*
 	run_test_err $1/
 elif [[ $1 == tests_ok/* ]]
 then
 	init
+	echo
 	rm -f results/*
 	run_test_ok $1/
 else
 	usage
 fi
 
-echo "All tests passed!"
+printf "\nAll tests passed!\n"
