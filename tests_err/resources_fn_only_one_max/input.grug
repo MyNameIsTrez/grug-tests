@@ -1,0 +1,15 @@
+global_resources() resources {
+    return {
+    }
+}
+
+global_resources() resources {
+    return {
+    }
+}
+
+define() h {
+    return {
+        .x = 42,
+    }
+}

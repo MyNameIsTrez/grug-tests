@@ -1,0 +1,15 @@
+define() e {
+    return {
+    }
+}
+
+on_a(self: i32) {
+    foo()
+}
+
+foo() {
+}
+
+on_b(self: i32) {
+    foo()
+}

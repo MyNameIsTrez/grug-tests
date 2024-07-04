@@ -13,7 +13,11 @@ int main(int argc, char *argv[]) {
 	char *dll_path = argv[2];
 
 	if (grug_test_regenerate_dll(grug_path, dll_path)) {
+		// For debugging
+		// fprintf(stderr, "%s:%d: %s\n", grug_error.filename, grug_error.line_number, grug_error.msg);
+
 		fprintf(stderr, "%s\n", grug_error.msg);
+
 		exit(EXIT_FAILURE);
 	}
 }

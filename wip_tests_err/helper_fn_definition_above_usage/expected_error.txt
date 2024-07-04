@@ -1,0 +1,1 @@
+Move the helper function 'foo' below 'on_b', since it is calling 'foo'

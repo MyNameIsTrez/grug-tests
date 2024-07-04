@@ -1,0 +1,13 @@
+global_resources() resources {
+    return {
+        .resource_face = "happy_face.png",
+        .resource_scream = "sounds/scream.mp4",
+        .resource_blood = "blood.gif",
+    }
+}
+
+define() h {
+    return {
+        .x = 42,
+    }
+}

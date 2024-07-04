@@ -1,0 +1,10 @@
+define() a {
+    return {
+        .x = 42,
+    }
+}
+
+global_resources() resources {
+    return {
+    }
+}
