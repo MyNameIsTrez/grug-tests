@@ -1,7 +1,7 @@
 global define_type
+global globals_size
 
 global define
-global get_globals_size
 global init_globals
 
 global on_fns
@@ -11,6 +11,8 @@ global on_a
 section .data
 
 define_type: db "h", 0
+
+globals_size: dq 0
 
 on_fns:
 	dq on_a
@@ -23,10 +25,6 @@ extern nothing
 define:
 	mov rdi, 42
 	call define_h wrt ..plt
-	ret
-
-get_globals_size:
-	mov eax, 0
 	ret
 
 init_globals:

@@ -50,8 +50,7 @@ int main(int argc, char *argv[]) {
 	define();
 	assert(h_definition.x == 42);
 
-	grug_get_globals_size_fn_t get_globals_size_fn = get(handle, "get_globals_size");
-	size_t globals_size = get_globals_size_fn();
+	size_t globals_size = *(size_t *)get(handle, "globals_size");
 	assert(globals_size == 8);
 
 	void *g = malloc(globals_size);
