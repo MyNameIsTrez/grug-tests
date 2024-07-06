@@ -4,15 +4,11 @@ global globals_size
 global define
 global init_globals
 
-global on_fns
-
 section .data
 
 define_type: db "a", 0
 
 globals_size: dq 0
-
-on_fns:
 
 section .text
 

@@ -5,8 +5,6 @@ global strings
 global define
 global init_globals
 
-global on_fns
-
 section .data
 
 define_type: db "k", 0
@@ -15,9 +13,6 @@ globals_size: dq 0
 
 strings:
 	db "foo", 0
-
-on_fns:
-	dq 0
 
 section .text
 
