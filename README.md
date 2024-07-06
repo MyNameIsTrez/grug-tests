@@ -18,17 +18,14 @@ Once you've ran `./tests.sh`, you can run `objdump -D results/expected.so` to di
 
 ## gdb
 
-`gdb --args a.out tests_ok/on_fn_two/input.grug results/expected.so`
+`gdb --args a.out tests_ok/define_containing_string/input.grug results/expected.so`
 
 ## gdbgui
 
 Use [gdbgui](https://www.gdbgui.com/) to step through the code:
 
-`gdbgui "a.out tests_err/define_fn_different_name/input.grug results/expected.so"`
 `gdbgui "a.out tests_ok/on_fn_entity_b_on_b/input.grug results/expected.so"`
 
 ## readelf
 
-`clear && ./tests.sh; readelf -a results/output.so > output_elf.hex && readelf -a results/expected.so > expected_elf.hex`
-
-`clear && ./tests.sh tests_ok/on_fn_nothing; readelf -a results/output.so > output_elf.hex && readelf -a results/expected.so > expected_elf.hex`
+`clear && ./tests.sh tests_ok/define_containing_string; readelf -a results/output.so > output_elf.hex && readelf -a results/expected.so > expected_elf.hex`
