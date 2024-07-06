@@ -1,0 +1,6 @@
+define() k {
+    return {
+        .age = 42,
+        .name = "foo",
+    }
+}

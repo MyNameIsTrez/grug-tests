@@ -164,6 +164,19 @@
 					]
 				}
 			}
+		},
+		"k": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "age",
+					"type": "i32"
+				},
+				{
+					"name": "name",
+					"type": "string"
+				}
+			]
 		}
 	},
 	"game_functions": {
