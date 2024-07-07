@@ -1,0 +1,6 @@
+define() l {
+    return {
+        .group = "military",
+        .name = "foo",
+    }
+}

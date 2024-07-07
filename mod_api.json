@@ -177,6 +177,106 @@
 					"type": "string"
 				}
 			]
+		},
+		"l": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "group",
+					"type": "string"
+				},
+				{
+					"name": "name",
+					"type": "string"
+				}
+			]
+		},
+		"m": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "w",
+					"type": "i32"
+				},
+				{
+					"name": "group",
+					"type": "string"
+				},
+				{
+					"name": "x",
+					"type": "i32"
+				},
+				{
+					"name": "name",
+					"type": "string"
+				},
+				{
+					"name": "y",
+					"type": "i32"
+				},
+				{
+					"name": "z",
+					"type": "i32"
+				}
+			]
+		},
+		"n": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "u",
+					"type": "i32"
+				},
+				{
+					"name": "v",
+					"type": "i32"
+				},
+				{
+					"name": "w",
+					"type": "i32"
+				},
+				{
+					"name": "x",
+					"type": "i32"
+				},
+				{
+					"name": "y",
+					"type": "i32"
+				},
+				{
+					"name": "z",
+					"type": "i32"
+				}
+			]
+		},
+		"o": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "u",
+					"type": "string"
+				},
+				{
+					"name": "v",
+					"type": "string"
+				},
+				{
+					"name": "w",
+					"type": "string"
+				},
+				{
+					"name": "x",
+					"type": "string"
+				},
+				{
+					"name": "y",
+					"type": "string"
+				},
+				{
+					"name": "z",
+					"type": "string"
+				}
+			]
 		}
 	},
 	"game_functions": {

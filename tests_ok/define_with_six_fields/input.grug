@@ -1,0 +1,10 @@
+define() m {
+    return {
+        .w = 42,
+        .group = "military",
+        .x = 69,
+        .name = "foo",
+        .y = 666,
+        .z = 1337,
+    }
+}
