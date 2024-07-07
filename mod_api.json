@@ -277,6 +277,20 @@
 					"type": "string"
 				}
 			]
+		},
+		"p": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "x",
+					"type": "string"
+				}
+			],
+			"on_functions": {
+				"on_a": {
+					"description": "foo"
+				}
+			}
 		}
 	},
 	"game_functions": {
