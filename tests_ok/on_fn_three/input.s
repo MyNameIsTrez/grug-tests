@@ -14,6 +14,7 @@ section .data
 
 define_type: db "j", 0
 
+align 8
 globals_size: dq 0
 
 on_fns:

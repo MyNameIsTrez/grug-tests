@@ -20,14 +20,14 @@ Note that if you're using a Debian-based distribution like Ubuntu 22.04, you mig
 
 ## gdb
 
-`gdb --args a.out tests_ok/define_containing_string/input.grug results/expected.so`
+`gdb --args a.out tests_ok/globals/input.grug results/expected.so`
 
 ## gdbgui
 
 Use [gdbgui](https://www.gdbgui.com/) to step through the code:
 
-`gdbgui "a.out tests_ok/on_fn_entity_b_on_b/input.grug results/expected.so"`
+`gdbgui "a.out tests_ok/globals/input.grug results/expected.so"`
 
 ## readelf
 
-`clear && ./tests.sh tests_ok/define_containing_string; readelf -a results/output.so > output_elf.hex && readelf -a results/expected.so > expected_elf.hex`
+`clear && ./tests.sh tests_ok/globals; readelf -a results/output.so > output_elf.hex && readelf -a results/expected.so > expected_elf.hex`

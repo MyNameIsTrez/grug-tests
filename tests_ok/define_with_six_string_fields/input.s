@@ -9,6 +9,7 @@ section .data
 
 define_type: db "o", 0
 
+align 8
 globals_size: dq 0
 
 strings:

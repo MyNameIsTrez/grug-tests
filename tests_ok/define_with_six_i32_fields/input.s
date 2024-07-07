@@ -8,6 +8,7 @@ section .data
 
 define_type: db "n", 0
 
+align 8
 globals_size: dq 0
 
 section .text

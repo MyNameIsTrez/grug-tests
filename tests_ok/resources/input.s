@@ -10,6 +10,7 @@ section .data
 
 define_type: db "h", 0
 
+align 8
 globals_size: dq 0
 
 on_fns:
