@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 
 	void *handle = dlopen(so_path, RTLD_NOW);
 	if (!handle) {
-		fprintf(stderr, "dlopen: %s", dlerror());
+		fprintf(stderr, "dlopen: %s\n", dlerror());
 		exit(EXIT_FAILURE);
 	}
 
