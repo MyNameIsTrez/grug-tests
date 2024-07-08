@@ -18,6 +18,13 @@ Once you've ran `./tests.sh`, you can run `objdump -D results/expected.so` to di
 
 Note that if you're using a Debian-based distribution like Ubuntu 22.04, you might need to run `sudo sysctl vm.mmap_rnd_bits=28` to fix address sanitizer, which `tests.sh` uses. See [this GitHub thread](https://github.com/actions/runner-images/issues/9524#issuecomment-2002475952) for context.
 
+## Inspecting the tokens and AST
+
+```bash
+gcc run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wshadow -Wfatal-errors -g -Igrug -fsanitize=address,undefined -DLOGGING && \
+./a.out tests_ok/globals/input.grug results/expected.so
+```
+
 ## gdb
 
 `gdb --args a.out tests_ok/globals/input.grug results/expected.so`
