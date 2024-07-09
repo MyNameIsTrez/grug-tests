@@ -125,7 +125,13 @@ run_tests_ok() {
 init() {
 	echo "Recompiling..."
 
-	gcc run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wshadow -Wfatal-errors -g -Igrug -fsanitize=address,undefined
+	local flags='-Wall -Wextra -Werror -Wpedantic -Wshadow -Wfatal-errors -g -Igrug -fsanitize=address,undefined'
+	if [[ -v LOGGING ]] # If the LOGGING environment variable was set
+	then
+		flags+=' -DLOGGING'
+	fi
+
+	gcc run.c grug/grug.c $flags
 	if [ $? -ne 0 ]
 	then
 		echo "Compilation failed"

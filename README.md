@@ -10,7 +10,7 @@ This is the test suite of [my programming language called grug](https://github.c
 
 Check the terminal or the generated `results` directory to inspect any errors.
 
-If you want to see the detailed logs, add `-DLOGGING` at the end of line 5 of `tests.sh`.
+If you want to see the detailed logs, run `LOGGING= ./tests.sh`.
 
 You can do `./tests.sh [test_path]` to run a specific test, like `./tests.sh tests_ok/minimal`
 
@@ -22,19 +22,25 @@ Note that if you're using a Debian-based distribution like Ubuntu 22.04, you mig
 
 ```bash
 gcc run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wshadow -Wfatal-errors -g -Igrug -fsanitize=address,undefined -DLOGGING && \
-./a.out tests_ok/globals/input.grug results/expected.so
+./a.out tests_ok/on_fn_calling_game_fn_nothing_twice/input.grug results/expected.so
 ```
 
 ## gdb
 
-`gdb --args a.out tests_ok/globals/input.grug results/expected.so`
+```bash
+gdb --args a.out tests_ok/on_fn_calling_game_fn_nothing_twice/input.grug results/expected.so
+```
 
 ## gdbgui
 
 Use [gdbgui](https://www.gdbgui.com/) to step through the code:
 
-`gdbgui "a.out tests_ok/globals/input.grug results/expected.so"`
+```bash
+gdbgui "a.out tests_ok/on_fn_calling_game_fn_nothing_twice/input.grug results/expected.so"
+```
 
 ## readelf
 
-`clear && ./tests.sh tests_ok/globals; readelf -a results/output.so > output_elf.hex && readelf -a results/expected.so > expected_elf.hex`
+```bash
+clear && LOGGING= ./tests.sh tests_ok/on_fn_calling_game_fn_nothing_twice; readelf -a results/output.so > output_elf.hex && readelf -a results/expected.so > expected_elf.hex
+```
