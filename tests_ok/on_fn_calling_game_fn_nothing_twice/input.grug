@@ -1,0 +1,10 @@
+define() h {
+    return {
+        .x = 42,
+    }
+}
+
+on_a(self: i32) {
+    nothing()
+    nothing()
+}
