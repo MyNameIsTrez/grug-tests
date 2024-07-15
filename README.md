@@ -22,13 +22,13 @@ Note that if you're using a Debian-based distribution like Ubuntu 22.04, you mig
 
 ```bash
 gcc run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wshadow -Wfatal-errors -g -Igrug -fsanitize=address,undefined -DLOGGING && \
-./a.out tests_ok/on_fn_calling_game_fn_nothing_twice/input.grug results/expected.so
+./a.out tests_ok/helper_fn/input.grug results/expected.so
 ```
 
 ## gdb
 
 ```bash
-gdb --args a.out tests_ok/on_fn_calling_game_fn_nothing_twice/input.grug results/expected.so
+gdb --args a.out tests_ok/helper_fn/input.grug results/expected.so
 ```
 
 ## gdbgui
@@ -36,11 +36,25 @@ gdb --args a.out tests_ok/on_fn_calling_game_fn_nothing_twice/input.grug results
 Use [gdbgui](https://www.gdbgui.com/) to step through the code:
 
 ```bash
-gdbgui "a.out tests_ok/on_fn_calling_game_fn_nothing_twice/input.grug results/expected.so"
+gdbgui "a.out tests_ok/helper_fn/input.grug results/expected.so"
 ```
 
 ## readelf
 
 ```bash
-clear && LOGGING= ./tests.sh tests_ok/on_fn_calling_game_fn_nothing_twice; readelf -a results/output.so > output_elf.hex && readelf -a results/expected.so > expected_elf.hex
+clear && ./tests.sh tests_ok/helper_fn
+```
+
+## Manually doing call address calculations
+
+Getting the address of a CALL instruction:
+
+```bash
+echo 'obase=16;ibase=16;FFFFFFFB-(call_insn_line-plt_fn_line)' | bc
+```
+
+so:
+
+```bash
+echo 'obase=16;ibase=16;FFFFFFFB-(1055-1020)' | bc
 ```

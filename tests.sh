@@ -98,6 +98,11 @@ run_test_ok() {
 		echo "Run this to see the diff:" >&2
 		echo "diff $grug_hex_path $expected_hex_path" >&2
 
+		readelf -a results/output.so > output_elf.hex
+		readelf -a results/expected.so > expected_elf.hex
+
+		objdump -D results/expected.so > objdump.log
+
 		exit 1
 	fi
 

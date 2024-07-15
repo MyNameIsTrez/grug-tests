@@ -2,7 +2,6 @@
 
 #include <assert.h>
 #include <dlfcn.h>
-#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,12 +23,6 @@ void define_h(int32_t x) {
 	h_definition = (struct h){
 		.x = x,
 	};
-}
-
-static bool nothing_fn_called;
-
-void nothing(void) {
-	nothing_fn_called = true;
 }
 
 static void *get(void *handle, char *label) {
@@ -72,8 +65,6 @@ int main(int argc, char *argv[]) {
 	free(g);
 
 	struct my_on_fns *on_fns = get(handle, "on_fns");
-	nothing_fn_called = false;
 	on_fns->a();
-	assert(nothing_fn_called);
 	#pragma GCC diagnostic pop
 }

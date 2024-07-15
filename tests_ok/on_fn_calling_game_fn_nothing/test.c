@@ -25,7 +25,7 @@ void define_h(int32_t x) {
 	};
 }
 
-bool fn_nothing_was_called = false;
+static bool fn_nothing_was_called = false;
 void nothing(void) {
 	fn_nothing_was_called = true;
 }
