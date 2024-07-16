@@ -15,6 +15,10 @@ section .text
 
 extern define_d
 extern nothing
+extern magic
+extern initialize
+extern identity
+extern max
 
 global define
 define:
@@ -27,10 +31,13 @@ init_globals:
 
 global on_a
 on_a:
-	call foo
-	ret
-
-global foo
-foo:
 	call nothing wrt ..plt
+	call magic wrt ..plt
+	mov rdi, 42
+	call initialize wrt ..plt
+	mov rdi, 69
+	call identity wrt ..plt
+	mov rdi, 1337
+	mov rsi, 8192
+	call max wrt ..plt
 	ret

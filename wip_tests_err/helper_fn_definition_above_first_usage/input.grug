@@ -3,13 +3,9 @@ define() e {
     }
 }
 
-on_a(self: i32) {
-    foo()
-}
-
 foo() {
 }
 
-on_b(self: i32) {
+on_a(self: i32) {
     foo()
 }
