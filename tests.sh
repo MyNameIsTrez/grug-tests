@@ -128,19 +128,25 @@ run_tests_ok() {
 }
 
 init() {
-	echo "Recompiling..."
-
-	local flags='-Wall -Wextra -Werror -Wpedantic -Wshadow -Wfatal-errors -g -Igrug -fsanitize=address,undefined'
-	if [[ -v LOGGING ]] # If the LOGGING environment variable was set
+	if [[ run.c -nt a.out ]] || [[ grug/grug.c -nt a.out ]] # If run.c or grug.c is newer than a.out
 	then
-		flags+=' -DLOGGING'
-	fi
+		echo "Recompiling..."
 
-	gcc run.c grug/grug.c $flags
-	if [ $? -ne 0 ]
-	then
-		echo "Compilation failed"
-		exit 1
+		local flags='-Wall -Wextra -Werror -Wpedantic -Wshadow -Wfatal-errors -g -Igrug -fsanitize=address,undefined'
+		if [[ -v LOGGING ]] # If the LOGGING environment variable was set
+		then
+			flags+=' -DLOGGING'
+		fi
+
+		gcc run.c grug/grug.c $flags
+
+		if [ $? -ne 0 ]
+		then
+			echo "Compilation failed"
+			exit 1
+		fi
+
+		echo
 	fi
 
 	mkdir -p results/
@@ -157,20 +163,17 @@ then
 elif [[ $1 == "" ]]
 then
 	init
-	echo
 	run_tests_err
 	echo
 	run_tests_ok
 elif [[ $1 == tests_err/* ]]
 then
 	init
-	echo
 	rm -f results/*
 	run_test_err $1/
 elif [[ $1 == tests_ok/* ]]
 then
 	init
-	echo
 	rm -f results/*
 	run_test_ok $1/
 else
