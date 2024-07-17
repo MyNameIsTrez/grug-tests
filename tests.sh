@@ -185,13 +185,15 @@ init() {
 	then
 		echo "Recompiling..."
 
-		local flags='-Wall -Wextra -Werror -Wpedantic -Wshadow -Wfatal-errors -g -Igrug -fsanitize=address,undefined'
+		# TODO: An issue here is that if LOGGING is set or unset, a.out isn't recompiled!
+		# TODO: This could also definitely be done inline with some sort of ternary
+		local logging_flag=''
 		if [[ -v LOGGING ]] # If the LOGGING environment variable was set
 		then
-			flags+=' -DLOGGING'
+			logging_flag=' -DLOGGING'
 		fi
 
-		gcc run.c grug/grug.c $flags
+		gcc run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wshadow -Wfatal-errors -g -Igrug -fsanitize=address,undefined $logging_flag
 
 		if [ $? -ne 0 ]
 		then
