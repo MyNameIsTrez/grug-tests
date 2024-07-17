@@ -30,7 +30,7 @@ run_test_err() {
 	fi
 
 	mkdir -p $dir"results"
-	rm $dir"results"/*
+	rm -f $dir"results"/*
 
 	local dll_path=$dir"results/output.so"
 
@@ -103,7 +103,7 @@ run_test_ok() {
 	fi
 
 	mkdir -p $dir"results"
-	rm $dir"results"/*
+	rm -f $dir"results"/*
 
 	if ! [[ $nasm_path -ot $expected_dll_path ]]
 	then
