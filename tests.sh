@@ -114,8 +114,8 @@ run_test_ok() {
 		printf "  Recreating the executable 'test'...\n"
 
 		# -rdynamic allows the .so to call functions from test.c
-		# -std=c2x is used to have typeof() in C
-		gcc $test_c_path -Igrug -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wfatal-errors -rdynamic -std=c2x -g -o $test_executable_path
+		# -std=gnu2x is used to have typeof() in C (-std=c2x for some reason prints "error: expected specifier-qualifier-list before ‘typeof’")
+		gcc $test_c_path -Igrug -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wfatal-errors -rdynamic -std=gnu2x -g -o $test_executable_path
 	fi
 
 	$test_executable_path $expected_dll_path
