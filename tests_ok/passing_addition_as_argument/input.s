@@ -31,8 +31,8 @@ on_a:
 	push rax
 	mov rax, 2
 	pop rbx
-	add rbx, rax ; 1 + 2
-	push rbx
+	add rax, rbx ; rax = 2 + 1
+	push rax
 
 	pop rdi
 	call initialize wrt ..plt
