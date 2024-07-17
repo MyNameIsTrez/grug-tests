@@ -1,5 +1,10 @@
 #!/bin/bash
 
+fail() {
+	touch $1/results/failed
+	exit 1
+}
+
 run_test_err() {
 	local dir=$1
 
@@ -9,12 +14,15 @@ run_test_err() {
 
 	if [[ $grug_output_path -nt $grug_path ]]\
 	&& [[ $grug_output_path -nt $expected_error_path ]]\
-	&& [[ $grug_output_path -nt a.out ]]
+	&& [[ $grug_output_path -nt a.out ]]\
+	&& ! [[ -f $dir"/results/failed" ]]
 	then
 		printf "Skipping $dir...\n"
 		return
 	else
 		printf "Running $dir...\n"
+
+		[[ -f $dir"/results/failed" ]] && echo "  /results/failed caused this test to be rerun"
 
 		printf "  Newer files:\n"
 		! [[ $grug_output_path -nt $grug_path ]] && echo "  - input.grug"
@@ -39,13 +47,13 @@ run_test_err() {
 	then
 		echo "Differing outputs:" >&2
 		cat $error_diff_path >&2
-		exit 1
+		fail $dir
 	fi
 
 	if [ $grug_exit_status -eq 0 ]
 	then
 		echo "run.c was expected to exit with status 1" >&2
-		exit 1
+		fail $dir
 	fi
 }
 
@@ -72,21 +80,20 @@ run_test_ok() {
 	local test_executable_path=$dir"results/test"
 	local dll_path=$dir"results/output.so"
 
-	local grug_output_path=$dir"results/grug_output.txt"
-
 	if [[ $dll_path -nt $nasm_path ]]\
 	&& [[ $dll_path -nt $grug_path ]]\
 	&& [[ $dll_path -nt $expected_dll_path ]]\
 	&& [[ $dll_path -nt $test_c_path ]]\
 	&& [[ $dll_path -nt $test_executable_path ]]\
 	&& [[ $dll_path -nt a.out ]]\
-	&& [[ -f $grug_output_path ]]\
-	&& ! [[ -s $grug_output_path ]]
+	&& ! [[ -f $dir"/results/failed" ]]
 	then
 		printf "Skipping $dir...\n"
 		return
 	else
 		printf "Running $dir...\n"
+
+		[[ -f $dir"/results/failed" ]] && echo "  /results/failed caused this test to be rerun"
 
 		printf "  Newer files:\n"
 		! [[ $dll_path -nt $nasm_path ]] && echo "  - input.s"
@@ -125,8 +132,10 @@ run_test_ok() {
 	if [ $? -ne 0 ]
 	then
 		echo "The shared object nasm produced didn't pass test.c" >&2
-		exit 1
+		fail $dir
 	fi
+
+	local grug_output_path=$dir"results/grug_output.txt"
 
 	printf "  Recreating output.so...\n"
 	./a.out $grug_path $dll_path >$grug_output_path 2>&1
@@ -138,7 +147,7 @@ run_test_ok() {
 		echo "----" >&2
 		cat $grug_output_path >&2
 		echo "----" >&2
-		exit 1
+		fail $dir
 	fi
 
 	diff $dll_path $expected_dll_path >/dev/null
@@ -160,13 +169,13 @@ run_test_ok() {
 
 		objdump -D $expected_dll_path > $dir"results/objdump.log"
 
-		exit 1
+		fail $dir
 	fi
 
 	if [ $grug_exit_status -ne 0 ]
 	then
 		echo "run.c was expected to exit with status 0" >&2
-		exit 1
+		fail $dir
 	fi
 }
 
