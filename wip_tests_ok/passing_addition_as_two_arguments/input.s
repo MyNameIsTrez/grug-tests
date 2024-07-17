@@ -27,7 +27,21 @@ init_globals:
 
 global on_a
 on_a:
-	mov rdi, 1 + 2
-	mov rsi, 4 + 5
+	mov rax, 1
+	push rax
+	mov rax, 2
+	pop rbx
+	add rbx, rax ; 1 + 2
+	push rbx
+
+	mov rax, 4
+	push rax
+	mov rax, 5
+	pop rbx
+	add rbx, rax ; 4 + 5
+	push rbx
+
+	pop rsi
+	pop rdi
 	call max wrt ..plt
 	ret
