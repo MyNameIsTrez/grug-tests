@@ -26,7 +26,7 @@ run_test_err() {
 		! [[ $grug_output_path -nt a.out ]] && echo "  - a.out"
 	fi
 
-	mkdir $dir"results"
+	mkdir -p $dir"results"
 
 	local dll_path=$dir"results/output.so"
 
@@ -95,7 +95,7 @@ run_test_ok() {
 		! [[ $dll_path -nt a.out ]] && echo "  - a.out"
 	fi
 
-	mkdir $dir"results"
+	mkdir -p $dir"results"
 
 	if ! [[ $nasm_path -ot $expected_dll_path ]]
 	then
