@@ -33,11 +33,23 @@ global on_a
 on_a:
 	call nothing wrt ..plt
 	call magic wrt ..plt
-	mov rdi, 42
+
+	mov rax, 42
+	push rax
+	pop rdi,
 	call initialize wrt ..plt
-	mov rdi, 69
+
+	mov rax, 69
+	push rax
+	pop rdi
 	call identity wrt ..plt
-	mov rdi, 1337
-	mov rsi, 8192
+
+	mov rax, 1337
+	push rax
+	mov rax, 8192
+	push rax
+	pop rsi
+	pop rdi
 	call max wrt ..plt
+
 	ret
