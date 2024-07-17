@@ -165,7 +165,8 @@ run_test_ok() {
 		readelf -a $dll_path > $dir"results/output_elf.hex"
 		readelf -a $expected_dll_path > $dir"results/expected_elf.hex"
 
-		objdump -D $expected_dll_path > $dir"results/objdump.log"
+		objdump -D $dll_path > $dir"results/output_objdump.log"
+		objdump -D $expected_dll_path > $dir"results/expected_objdump.log"
 
 		fail $dir
 	fi
