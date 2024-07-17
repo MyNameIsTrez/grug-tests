@@ -1,10 +1,5 @@
 #!/bin/bash
 
-expected_o_path="results/.intermediate.o"
-expected_dll_path="results/expected.so"
-dll_path="results/output.so"
-test_executable_path="results/test"
-grug_output_path="results/grug_output.txt"
 grug_hex_path="results/output.hex"
 expected_hex_path="results/expected.hex"
 error_diff_path="results/error_diff_path.txt"
@@ -12,14 +7,30 @@ error_diff_path="results/error_diff_path.txt"
 run_test_err() {
 	local dir=$1
 
-	printf "Running $dir...\n"
-
 	local grug_path=$dir"input.grug"
+	local expected_error_path=$dir"expected_error.txt"
+	local grug_output_path=$dir"results/grug_output.txt"
 
+	if [[ $grug_output_path -nt $grug_path ]]\
+	&& [[ $grug_output_path -nt $expected_error_path ]]\
+	&& [[ $grug_output_path -nt a.out ]]
+	then
+		printf "Skipping $dir...\n"
+		return
+	else
+		printf "Running $dir...\n"
+
+		printf "  Newer files:\n"
+		! [[ $grug_output_path -nt $grug_path ]] && echo "  - input.grug"
+		! [[ $grug_output_path -nt $expected_error_path ]] && echo "  - expected_error.txt"
+		! [[ $grug_output_path -nt a.out ]] && echo "  - a.out"
+	fi
+
+	local dll_path=$dir"results/output.so"
+
+	printf "  Running a.out...\n"
 	./a.out $grug_path $dll_path >$grug_output_path 2>&1
 	local grug_exit_status=$?
-
-	local expected_error_path=$dir"expected_error.txt"
 
 	diff $grug_output_path $expected_error_path >$error_diff_path
 
@@ -54,19 +65,53 @@ run_tests_err() {
 run_test_ok() {
 	local dir=$1
 
-	printf "Running $dir...\n"
-
 	local nasm_path=$dir"input.s"
-
 	local grug_path=$dir"input.grug"
+	local expected_dll_path=$dir"results/expected.so"
+	local test_c_path=$dir"test.c"
+	local test_executable_path=$dir"results/test"
+	local dll_path=$dir"results/output.so"
 
-	nasm $nasm_path -f elf64 -O0 -o $expected_o_path && ld -shared --hash-style=sysv $expected_o_path -o $expected_dll_path && rm $expected_o_path
+	if [[ $dll_path -nt $nasm_path ]]\
+	&& [[ $dll_path -nt $grug_path ]]\
+	&& [[ $dll_path -nt $expected_dll_path ]]\
+	&& [[ $dll_path -nt $test_c_path ]]\
+	&& [[ $dll_path -nt $test_executable_path ]]\
+	&& [[ $dll_path -nt a.out ]]
+	then
+		printf "Skipping $dir...\n"
+		return
+	else
+		printf "Running $dir...\n"
 
-	# Rename the $nasm_path symbol to $grug_path, so the diff doesn't crap itself
-	objcopy $expected_dll_path --redefine-sym $nasm_path=$grug_path
+		printf "  Newer files:\n"
+		! [[ $dll_path -nt $nasm_path ]] && echo "  - input.s"
+		! [[ $dll_path -nt $grug_path ]] && echo "  - input.grug"
+		! [[ $dll_path -nt $expected_dll_path ]] && echo "  - expected.so"
+		! [[ $dll_path -nt $test_c_path ]] && echo "  - test.c"
+		! [[ $dll_path -nt $test_executable_path ]] && echo "  - test"
+		! [[ $dll_path -nt a.out ]] && echo "  - a.out"
+	fi
 
-	# -rdynamic allows the .so to call functions from test.c
-	gcc $dir"test.c" -Igrug -Wall -Wextra -Werror -Wpedantic -Wfatal-errors -rdynamic -g -o $test_executable_path
+	if ! [[ $nasm_path -ot $expected_dll_path ]]
+	then
+		printf "  Recreating expected.so...\n"
+
+		local expected_o_path=$dir"results/intermediate.o"
+
+		nasm $nasm_path -f elf64 -O0 -o $expected_o_path && ld -shared --hash-style=sysv $expected_o_path -o $expected_dll_path && rm $expected_o_path
+
+		# Rename the $nasm_path symbol to $grug_path, so the diff doesn't crap itself
+		objcopy $expected_dll_path --redefine-sym $nasm_path=$grug_path
+	fi
+
+	if ! [[ $test_c_path -ot $test_executable_path ]]
+	then
+		printf "  Recreating the executable 'test'...\n"
+
+		# -rdynamic allows the .so to call functions from test.c
+		gcc $test_c_path -Igrug -Wall -Wextra -Werror -Wpedantic -Wfatal-errors -rdynamic -g -o $test_executable_path
+	fi
 
 	$test_executable_path $expected_dll_path
 	if [ $? -ne 0 ]
@@ -75,6 +120,9 @@ run_test_ok() {
 		exit 1
 	fi
 
+	local grug_output_path=$dir"results/grug_output.txt"
+
+	printf "  Recreating output.so...\n"
 	./a.out $grug_path $dll_path >$grug_output_path 2>&1
 	local grug_exit_status=$?
 
@@ -128,7 +176,7 @@ run_tests_ok() {
 }
 
 init() {
-	if [[ run.c -nt a.out ]] || [[ grug/grug.c -nt a.out ]] # If run.c or grug.c is newer than a.out
+	if (! [[ run.c -ot a.out ]]) || (! [[ grug/grug.c -ot a.out ]]) || (! [[ grug/grug.h -ot a.out ]])
 	then
 		echo "Recompiling..."
 
