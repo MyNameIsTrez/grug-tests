@@ -115,7 +115,7 @@ run_test_ok() {
 
 		# -rdynamic allows the .so to call functions from test.c
 		# -std=c2x is used to have typeof() in C
-		gcc $test_c_path -Igrug -Wall -Wextra -Werror -Wpedantic -Wfatal-errors -rdynamic -std=c2x -g -o $test_executable_path
+		gcc $test_c_path -Igrug -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wfatal-errors -rdynamic -std=c2x -g -o $test_executable_path
 	fi
 
 	$test_executable_path $expected_dll_path
@@ -193,7 +193,7 @@ init() {
 			logging_flag=' -DLOGGING'
 		fi
 
-		gcc run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wshadow -Wfatal-errors -g -Igrug -fsanitize=address,undefined $logging_flag
+		gcc run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wfatal-errors -g -Igrug -fsanitize=address,undefined $logging_flag
 
 		if [ $? -ne 0 ]
 		then
