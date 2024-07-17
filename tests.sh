@@ -23,6 +23,7 @@ run_test_err() {
 	fi
 
 	mkdir -p $dir"results"
+	rm $dir"results"/*
 
 	local dll_path=$dir"results/output.so"
 
@@ -30,7 +31,7 @@ run_test_err() {
 	./a.out $grug_path $dll_path >$grug_output_path 2>&1
 	local grug_exit_status=$?
 
-	local error_diff_path="results/error_diff_path.txt"
+	local error_diff_path=$dir"results/error_diff_path.txt"
 
 	diff $grug_output_path $expected_error_path >$error_diff_path
 
@@ -57,7 +58,6 @@ run_tests_err() {
 		# The wildcard doesn't expand if the directory is empty
 		[ -d "$dir" ] || continue
 
-		rm -f results/*
 		run_test_err $dir
 	done
 }
@@ -72,12 +72,16 @@ run_test_ok() {
 	local test_executable_path=$dir"results/test"
 	local dll_path=$dir"results/output.so"
 
+	local grug_output_path=$dir"results/grug_output.txt"
+
 	if [[ $dll_path -nt $nasm_path ]]\
 	&& [[ $dll_path -nt $grug_path ]]\
 	&& [[ $dll_path -nt $expected_dll_path ]]\
 	&& [[ $dll_path -nt $test_c_path ]]\
 	&& [[ $dll_path -nt $test_executable_path ]]\
-	&& [[ $dll_path -nt a.out ]]
+	&& [[ $dll_path -nt a.out ]]\
+	&& [[ -f $grug_output_path ]]\
+	&& ! [[ -s $grug_output_path ]]
 	then
 		printf "Skipping $dir...\n"
 		return
@@ -94,6 +98,7 @@ run_test_ok() {
 	fi
 
 	mkdir -p $dir"results"
+	rm $dir"results"/*
 
 	if ! [[ $nasm_path -ot $expected_dll_path ]]
 	then
@@ -123,8 +128,6 @@ run_test_ok() {
 		exit 1
 	fi
 
-	local grug_output_path=$dir"results/grug_output.txt"
-
 	printf "  Recreating output.so...\n"
 	./a.out $grug_path $dll_path >$grug_output_path 2>&1
 	local grug_exit_status=$?
@@ -142,8 +145,8 @@ run_test_ok() {
 
 	if [ $? -ne 0 ]
 	then
-		local grug_hex_path="results/output.hex"
-		local expected_hex_path="results/expected.hex"
+		local grug_hex_path=$dir"results/output.hex"
+		local expected_hex_path=$dir"results/expected.hex"
 
 		xxd $dll_path > $grug_hex_path
 		xxd $expected_dll_path > $expected_hex_path
@@ -152,10 +155,10 @@ run_test_ok() {
 		echo "Run this to see the diff:" >&2
 		echo "diff $grug_hex_path $expected_hex_path" >&2
 
-		readelf -a $dll_path > results/output_elf.hex
-		readelf -a $expected_dll_path > results/expected_elf.hex
+		readelf -a $dll_path > $dir"results/output_elf.hex"
+		readelf -a $expected_dll_path > $dir"results/expected_elf.hex"
 
-		objdump -D $expected_dll_path > results/objdump.log
+		objdump -D $expected_dll_path > $dir"results/objdump.log"
 
 		exit 1
 	fi
@@ -176,7 +179,6 @@ run_tests_ok() {
 		# The wildcard doesn't expand if the directory is empty
 		[ -d "$dir" ] || continue
 
-		rm -f results/*
 		run_test_ok $dir
 	done
 }
@@ -204,8 +206,6 @@ init() {
 
 		echo
 	fi
-
-	mkdir -p results/
 }
 
 usage() {
@@ -225,12 +225,10 @@ then
 elif [[ $1 == tests_err/* ]]
 then
 	init
-	rm -f results/*
 	run_test_err $1/
 elif [[ $1 == tests_ok/* ]]
 then
 	init
-	rm -f results/*
 	run_test_ok $1/
 else
 	usage
