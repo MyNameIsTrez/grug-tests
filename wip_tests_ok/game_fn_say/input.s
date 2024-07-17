@@ -7,6 +7,10 @@ align 8
 global globals_size
 globals_size: dq 0
 
+global strings
+strings:
+	db "foo", 0
+
 global on_fns
 on_fns:
 	dq on_a
@@ -14,7 +18,7 @@ on_fns:
 section .text
 
 extern define_d
-extern initialize
+extern say
 
 global define
 define:
@@ -27,13 +31,8 @@ init_globals:
 
 global on_a
 on_a:
-	mov rax, 1
+	lea rax, [rel strings+0]
 	push rax
-	mov rax, 2
-	pop rbx
-	add rbx, rax ; 1 + 2
-	push rbx
-
 	pop rdi
-	call initialize wrt ..plt
+	call say wrt ..plt
 	ret
