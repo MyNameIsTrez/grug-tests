@@ -1,9 +1,5 @@
 #!/bin/bash
 
-grug_hex_path="results/output.hex"
-expected_hex_path="results/expected.hex"
-error_diff_path="results/error_diff_path.txt"
-
 run_test_err() {
 	local dir=$1
 
@@ -33,6 +29,8 @@ run_test_err() {
 	printf "  Running a.out...\n"
 	./a.out $grug_path $dll_path >$grug_output_path 2>&1
 	local grug_exit_status=$?
+
+	local error_diff_path="results/error_diff_path.txt"
 
 	diff $grug_output_path $expected_error_path >$error_diff_path
 
@@ -144,6 +142,9 @@ run_test_ok() {
 
 	if [ $? -ne 0 ]
 	then
+		local grug_hex_path="results/output.hex"
+		local expected_hex_path="results/expected.hex"
+
 		xxd $dll_path > $grug_hex_path
 		xxd $expected_dll_path > $expected_hex_path
 
@@ -151,10 +152,10 @@ run_test_ok() {
 		echo "Run this to see the diff:" >&2
 		echo "diff $grug_hex_path $expected_hex_path" >&2
 
-		readelf -a results/output.so > output_elf.hex
-		readelf -a results/expected.so > expected_elf.hex
+		readelf -a $dll_path > results/output_elf.hex
+		readelf -a $expected_dll_path > results/expected_elf.hex
 
-		objdump -D results/expected.so > objdump.log
+		objdump -D $expected_dll_path > results/objdump.log
 
 		exit 1
 	fi

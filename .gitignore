@@ -3,6 +3,4 @@
 results
 a.out
 ast.json
-expected_elf.hex
-objdump.log
-output_elf.hex
+test.s
