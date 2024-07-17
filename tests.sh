@@ -24,10 +24,9 @@ run_test_err() {
 
 		[[ -f $dir"/results/failed" ]] && echo "  /results/failed caused this test to be rerun"
 
-		printf "  Newer files:\n"
-		! [[ $grug_output_path -nt $grug_path ]] && echo "  - input.grug"
-		! [[ $grug_output_path -nt $expected_error_path ]] && echo "  - expected_error.txt"
-		! [[ $grug_output_path -nt a.out ]] && echo "  - a.out"
+		! [[ $grug_output_path -nt $grug_path ]] && echo "  - input.grug was newer"
+		! [[ $grug_output_path -nt $expected_error_path ]] && echo "  - expected_error.txt was newer"
+		! [[ $grug_output_path -nt a.out ]] && echo "  - a.out was newer"
 	fi
 
 	mkdir -p $dir"results"
@@ -95,13 +94,12 @@ run_test_ok() {
 
 		[[ -f $dir"/results/failed" ]] && echo "  /results/failed caused this test to be rerun"
 
-		printf "  Newer files:\n"
-		! [[ $dll_path -nt $nasm_path ]] && echo "  - input.s"
-		! [[ $dll_path -nt $grug_path ]] && echo "  - input.grug"
-		! [[ $dll_path -nt $expected_dll_path ]] && echo "  - expected.so"
-		! [[ $dll_path -nt $test_c_path ]] && echo "  - test.c"
-		! [[ $dll_path -nt $test_executable_path ]] && echo "  - test"
-		! [[ $dll_path -nt a.out ]] && echo "  - a.out"
+		! [[ $dll_path -nt $nasm_path ]] && echo "  - input.s was newer"
+		! [[ $dll_path -nt $grug_path ]] && echo "  - input.grug was newer"
+		! [[ $dll_path -nt $expected_dll_path ]] && echo "  - expected.so was newer"
+		! [[ $dll_path -nt $test_c_path ]] && echo "  - test.c was newer"
+		! [[ $dll_path -nt $test_executable_path ]] && echo "  - test was newer"
+		! [[ $dll_path -nt a.out ]] && echo "  - a.out was newer"
 	fi
 
 	mkdir -p $dir"results"
