@@ -26,7 +26,7 @@ init_globals:
 	ret
 
 global on_a
-on_a: ; 2 + 3 * 4
+on_a:
 	mov rax, 2
 
 	push rax
