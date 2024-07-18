@@ -26,12 +26,21 @@ init_globals:
 	ret
 
 global on_a
-on_a:
-	mov rax, 1
-	push rax
+on_a: ; 2 * 3 + 4
+	; 2 * 3
 	mov rax, 2
+	push rax
+	mov rax, 3
+	pop rbx
+	imul rax, rbx
+
+	push rax
+
+	; + 4
+	mov rax, 4
 	pop rbx
 	add rax, rbx
+
 	push rax
 
 	pop rdi

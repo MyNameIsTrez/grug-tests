@@ -31,14 +31,14 @@ on_a:
 	push rax
 	mov rax, 2
 	pop rbx
-	add rax, rbx ; rax = 2 + 1
+	add rax, rbx
 	push rax
 
 	mov rax, 4
 	push rax
 	mov rax, 5
 	pop rbx
-	add rax, rbx ; rax = 5 + 4
+	add rax, rbx
 	push rax
 
 	pop rsi
