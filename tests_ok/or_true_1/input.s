@@ -27,7 +27,7 @@ init_globals:
 
 global on_a
 on_a:
-	xor eax, eax
+	mov eax, 1
 	test rax, rax
 	je strict $+0x10
 	mov eax, 1

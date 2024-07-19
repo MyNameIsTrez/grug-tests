@@ -27,12 +27,23 @@ init_globals:
 
 global on_a
 on_a:
-	xor eax, eax
+	mov eax, 1
 	test rax, rax
 	je strict $+0x10
 	mov eax, 1
-	jmp $+0x12
+	jmp $+0x2d
 	xor eax, eax
+	push rax
+	xor eax, eax
+	push rax
+	mov eax, 1
+	pop rbx
+	cqo
+	idiv rbx
+	pop rbx
+	cmp rax, rbx
+	mov eax, 0
+	sete al
 	test rax, rax
 	mov eax, 0
 	setne al
