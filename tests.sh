@@ -134,10 +134,19 @@ run_test_ok() {
 		gcc $test_c_path -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wfatal-errors -rdynamic -g -o $test_executable_path
 	fi
 
+	local expected_hex_path=$dir"results/expected.hex"
+	local expected_elf_path=$dir"results/expected_elf.hex"
+	local expected_objdump_path=$dir"results/expected_objdump.log"
+
 	$test_executable_path $expected_dll_path
 	if [ $? -ne 0 ]
 	then
 		echo "The shared object nasm produced didn't pass test.c" >&2
+
+		xxd $expected_dll_path > $expected_hex_path
+		readelf -a $expected_dll_path > $expected_elf_path
+		objdump -D $expected_dll_path > $expected_objdump_path
+
 		fail $dir
 	fi
 
@@ -161,7 +170,6 @@ run_test_ok() {
 	if [ $? -ne 0 ]
 	then
 		local grug_hex_path=$dir"results/output.hex"
-		local expected_hex_path=$dir"results/expected.hex"
 
 		xxd $dll_path > $grug_hex_path
 		xxd $expected_dll_path > $expected_hex_path
@@ -171,10 +179,10 @@ run_test_ok() {
 		echo "diff $grug_hex_path $expected_hex_path" >&2
 
 		readelf -a $dll_path > $dir"results/output_elf.hex"
-		readelf -a $expected_dll_path > $dir"results/expected_elf.hex"
+		readelf -a $expected_dll_path > $expected_elf_path
 
 		objdump -D $dll_path > $dir"results/output_objdump.log"
-		objdump -D $expected_dll_path > $dir"results/expected_objdump.log"
+		objdump -D $expected_dll_path > $expected_objdump_path
 
 		fail $dir
 	fi
