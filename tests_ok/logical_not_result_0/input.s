@@ -27,7 +27,8 @@ init_globals:
 
 global on_a
 on_a:
-	mov rax, -42
+	mov rax, 42
+	neg rax
 	test rax, rax
 	mov rax, 0
 	sete al

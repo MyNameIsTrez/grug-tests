@@ -29,7 +29,8 @@ global on_a
 on_a:
 	mov rax, 1
 	push rax
-	mov rax, -2147483647
+	mov rax, 2147483647
+	neg rax
 	pop rbx
 	sub rax, rbx
 	push rax
