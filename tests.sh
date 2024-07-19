@@ -157,7 +157,7 @@ run_test_err_runtime() {
 	local grug_hex_path=$dir"results/output.hex"
 
 	xxd $dll_path > $grug_hex_path
-	readelf -a $dll_path > $dir"results/output_elf.hex"
+	readelf -a $dll_path > $dir"results/output_elf.log"
 	objdump -D $dll_path -M intel > $dir"results/output_objdump.log"
 
 	fail $dir
@@ -243,7 +243,7 @@ run_test_ok() {
 	local test_exit_status=$?
 
 	xxd $expected_dll_path > $expected_hex_path
-	readelf -a $expected_dll_path > $dir"results/expected_elf.hex"
+	readelf -a $expected_dll_path > $dir"results/expected_elf.log"
 	objdump -D $expected_dll_path -M intel > $dir"results/expected_objdump.log"
 
 	if [ $test_exit_status -ne 0 ]
@@ -270,7 +270,7 @@ run_test_ok() {
 	local grug_hex_path=$dir"results/output.hex"
 
 	xxd $dll_path > $grug_hex_path
-	readelf -a $dll_path > $dir"results/output_elf.hex"
+	readelf -a $dll_path > $dir"results/output_elf.log"
 	objdump -D $dll_path -M intel > $dir"results/output_objdump.log"
 
 	diff $dll_path $expected_dll_path >/dev/null
