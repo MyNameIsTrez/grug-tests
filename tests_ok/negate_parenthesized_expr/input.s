@@ -32,7 +32,7 @@ on_a:
 	mov rax, 3
 	pop rbx
 	add rax, rbx
-	neg eax
+	neg rax
 	push rax
 
 	pop rdi
