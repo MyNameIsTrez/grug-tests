@@ -27,9 +27,23 @@ init_globals:
 
 global on_a
 on_a:
-	mov rax, 1
+	mov rax, 2
 	push rax
-	mov rax, 2147483647
+	mov rax, 2
+	pop rbx
+	cmp rax, rbx
+	mov rax, 0
+	setle al
+	push rax
+
+	mov rax, 2
+	push rax
+	mov rax, 1
+	pop rbx
+	cmp rax, rbx
+	mov rax, 0
+	setle al
+
 	pop rbx
 	add rax, rbx
 	push rax

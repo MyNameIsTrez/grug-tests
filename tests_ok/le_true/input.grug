@@ -1,0 +1,8 @@
+define() d {
+    return {
+    }
+}
+
+on_a() {
+    initialize((1 <= 2) + (2 <= 2))
+}
