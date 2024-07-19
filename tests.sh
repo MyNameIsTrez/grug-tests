@@ -52,12 +52,17 @@ run_test_err() {
 	then
 		echo "Differing outputs:" >&2
 		cat $error_diff_path >&2
-		fail $dir
+		failed=1
 	fi
 
 	if [ $grug_exit_status -eq 0 ]
 	then
 		echo "run.c was expected to exit with status 1" >&2
+		failed=1
+	fi
+
+	if [ -n "$failed" ]
+	then
 		fail $dir
 	fi
 }
@@ -137,19 +142,18 @@ run_test_ok() {
 	fi
 
 	local expected_hex_path=$dir"results/expected.hex"
-	local expected_elf_path=$dir"results/expected_elf.hex"
-	local expected_objdump_path=$dir"results/expected_objdump.log"
 
 	$test_executable_path $expected_dll_path
-	if [ $? -ne 0 ]
+	local test_exit_status=$?
+
+	xxd $expected_dll_path > $expected_hex_path
+	readelf -a $expected_dll_path > $dir"results/expected_elf.hex"
+	objdump -D $expected_dll_path -M intel > $dir"results/expected_objdump.log"
+
+	if [ $test_exit_status -ne 0 ]
 	then
 		echo "The shared object nasm produced didn't pass test.c" >&2
-
-		xxd $expected_dll_path > $expected_hex_path
-		readelf -a $expected_dll_path > $expected_elf_path
-		objdump -D $expected_dll_path -M intel > $expected_objdump_path
-
-		fail $dir
+		failed=1
 	fi
 
 	local grug_output_path=$dir"results/grug_output.txt"
@@ -164,34 +168,33 @@ run_test_ok() {
 		echo "----" >&2
 		cat $grug_output_path >&2
 		echo "----" >&2
-		fail $dir
+		failed=1
 	fi
 
 	diff $dll_path $expected_dll_path >/dev/null
 
+	local grug_hex_path=$dir"results/output.hex"
+
+	xxd $dll_path > $grug_hex_path
+	readelf -a $dll_path > $dir"results/output_elf.hex"
+	objdump -D $dll_path -M intel > $dir"results/output_objdump.log"
+
 	if [ $? -ne 0 ]
 	then
-		local grug_hex_path=$dir"results/output.hex"
-
-		xxd $dll_path > $grug_hex_path
-		xxd $expected_dll_path > $expected_hex_path
-
 		echo "The output differs from the expected output." >&2
 		echo "Run this to see the diff:" >&2
 		echo "diff $grug_hex_path $expected_hex_path" >&2
-
-		readelf -a $dll_path > $dir"results/output_elf.hex"
-		readelf -a $expected_dll_path > $expected_elf_path
-
-		objdump -D $dll_path -M intel > $dir"results/output_objdump.log"
-		objdump -D $expected_dll_path -M intel > $expected_objdump_path
-
-		fail $dir
+		failed=1
 	fi
 
 	if [ $grug_exit_status -ne 0 ]
 	then
 		echo "run.c was expected to exit with status 0" >&2
+		failed=1
+	fi
+
+	if [ -n "$failed" ]
+	then
 		fail $dir
 	fi
 }
