@@ -1,6 +1,6 @@
 #!/bin/bash
 
-passed_test_count=0
+ran_test_count=0
 
 fail() {
 	touch $1/results/failed
@@ -9,6 +9,8 @@ fail() {
 
 run_test_err() {
 	local dir=$1
+
+	ran_test_count=$((ran_test_count + 1))
 
 	local grug_path=$dir"input.grug"
 	local expected_error_path=$dir"expected_error.txt"
@@ -58,8 +60,6 @@ run_test_err() {
 		echo "run.c was expected to exit with status 1" >&2
 		fail $dir
 	fi
-
-	passed_test_count=$((passed_test_count + 1))
 }
 
 run_tests_err() {
@@ -77,6 +77,8 @@ run_tests_err() {
 
 run_test_ok() {
 	local dir=$1
+
+	ran_test_count=$((ran_test_count + 1))
 
 	local nasm_path=$dir"input.s"
 	local grug_path=$dir"input.grug"
@@ -192,8 +194,6 @@ run_test_ok() {
 		echo "run.c was expected to exit with status 0" >&2
 		fail $dir
 	fi
-
-	passed_test_count=$((passed_test_count + 1))
 }
 
 run_tests_ok() {
@@ -260,4 +260,4 @@ else
 	usage
 fi
 
-printf "\nAll $passed_test_count tests passed!\n"
+printf "\nAll $ran_test_count tests passed!\n"
