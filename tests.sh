@@ -1,6 +1,6 @@
 #!/bin/bash
 
-local passed_test_count=0
+passed_test_count=0
 
 fail() {
 	touch $1/results/failed
