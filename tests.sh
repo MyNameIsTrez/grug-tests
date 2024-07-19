@@ -1,5 +1,7 @@
 #!/bin/bash
 
+local passed_test_count=0
+
 fail() {
 	touch $1/results/failed
 	exit 1
@@ -56,6 +58,8 @@ run_test_err() {
 		echo "run.c was expected to exit with status 1" >&2
 		fail $dir
 	fi
+
+	passed_test_count=$((passed_test_count + 1))
 }
 
 run_tests_err() {
@@ -180,6 +184,8 @@ run_test_ok() {
 		echo "run.c was expected to exit with status 0" >&2
 		fail $dir
 	fi
+
+	passed_test_count=$((passed_test_count + 1))
 }
 
 run_tests_ok() {
@@ -246,4 +252,4 @@ else
 	usage
 fi
 
-printf "\nAll tests passed!\n"
+printf "\nAll $passed_test_count tests passed!\n"
