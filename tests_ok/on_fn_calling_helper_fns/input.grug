@@ -1,0 +1,17 @@
+define() d {
+    return {
+    }
+}
+
+on_a() {
+    foo()
+    bar()
+}
+
+foo() {
+    nothing()
+}
+
+bar() {
+    initialize(42)
+}
