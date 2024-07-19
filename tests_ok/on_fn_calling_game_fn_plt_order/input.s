@@ -34,19 +34,19 @@ on_a:
 	call nothing wrt ..plt
 	call magic wrt ..plt
 
-	mov rax, 42
+	mov eax, 42
 	push rax
 	pop rdi,
 	call initialize wrt ..plt
 
-	mov rax, 69
+	mov eax, 69
 	push rax
 	pop rdi
 	call identity wrt ..plt
 
-	mov rax, 1337
+	mov eax, 1337
 	push rax
-	mov rax, 8192
+	mov eax, 8192
 	push rax
 	pop rsi
 	pop rdi

@@ -27,16 +27,16 @@ init_globals:
 
 global on_a
 on_a:
-	mov rax, 2
+	mov eax, 2
 	push rax
-	mov rax, 1
+	mov eax, 1
 	pop rbx
 	add rax, rbx
 	push rax
 
-	mov rax, 5
+	mov eax, 5
 	push rax
-	mov rax, 4
+	mov eax, 4
 	pop rbx
 	add rax, rbx
 	push rax

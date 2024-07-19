@@ -27,7 +27,7 @@ init_globals:
 
 global on_a
 on_a:
-	mov rax, 2147483647
+	mov eax, 2147483647
 	push rax
 
 	pop rdi
