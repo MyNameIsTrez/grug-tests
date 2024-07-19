@@ -31,7 +31,7 @@ on_a:
 	push rax
 	mov rax, 3
 	pop rbx
-	imul rax, rbx
+	imul rbx
 
 	push rax
 

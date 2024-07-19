@@ -14,7 +14,7 @@ on_fns:
 section .text
 
 extern define_d
-extern max
+extern initialize
 
 global define
 define:
@@ -29,19 +29,11 @@ global on_a
 on_a:
 	mov rax, 2
 	push rax
-	mov rax, 3
-	pop rbx
-	imul rbx
-	push rax
-
-	mov rax, 4
-	push rax
 	mov rax, 5
 	pop rbx
-	imul rbx
+	sub rax, rbx
 	push rax
 
-	pop rsi
 	pop rdi
-	call max wrt ..plt
+	call initialize wrt ..plt
 	ret
