@@ -147,7 +147,7 @@ run_test_ok() {
 
 		xxd $expected_dll_path > $expected_hex_path
 		readelf -a $expected_dll_path > $expected_elf_path
-		objdump -D $expected_dll_path > $expected_objdump_path
+		objdump -D $expected_dll_path -M intel > $expected_objdump_path
 
 		fail $dir
 	fi
@@ -183,8 +183,8 @@ run_test_ok() {
 		readelf -a $dll_path > $dir"results/output_elf.hex"
 		readelf -a $expected_dll_path > $expected_elf_path
 
-		objdump -D $dll_path > $dir"results/output_objdump.log"
-		objdump -D $expected_dll_path > $expected_objdump_path
+		objdump -D $dll_path -M intel > $dir"results/output_objdump.log"
+		objdump -D $expected_dll_path -M intel > $expected_objdump_path
 
 		fail $dir
 	fi

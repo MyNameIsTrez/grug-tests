@@ -14,7 +14,7 @@ If you want to see the detailed logs, run `LOGGING= ./tests.sh`.
 
 You can do `./tests.sh [test_path]` to run a specific test, like `./tests.sh tests_ok/minimal`
 
-Once you've ran `./tests.sh`, you can run `objdump -D results/expected.so` to display the assembler contents grug is expected to produce.
+Once you've ran `./tests.sh`, you can run `objdump -D results/expected.so -M intel` to display the assembler contents grug is expected to produce.
 
 Note that if you're using a Debian-based distribution like Ubuntu 22.04, you might need to run `sudo sysctl vm.mmap_rnd_bits=28` to fix address sanitizer, which `tests.sh` uses. See [this GitHub thread](https://github.com/actions/runner-images/issues/9524#issuecomment-2002475952) for context.
 
