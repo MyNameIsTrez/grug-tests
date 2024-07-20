@@ -113,6 +113,15 @@ run_test_err_runtime() {
 	mkdir -p $dir"results"
 	rm -f $dir"results"/*
 
+	if ! [[ $test_c_path -ot $test_executable_path ]]
+	then
+		printf "  Recreating the executable 'test'...\n"
+
+		# -std=gnu2x is used to have typeof() in C (-std=c2x for some reason prints "error: expected specifier-qualifier-list before ‘typeof’")
+		# -rdynamic allows the .so to call functions from test.c
+		gcc $test_c_path -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wfatal-errors -rdynamic -g -o $test_executable_path
+	fi
+
 	local grug_output_path=$dir"results/grug_output.txt"
 
 	printf "  Recreating output.so...\n"
@@ -123,15 +132,6 @@ run_test_err_runtime() {
 	then
 		echo "run.c was expected to exit with status 0" >&2
 		fail $dir
-	fi
-
-	if ! [[ $test_c_path -ot $test_executable_path ]]
-	then
-		printf "  Recreating the executable 'test'...\n"
-
-		# -std=gnu2x is used to have typeof() in C (-std=c2x for some reason prints "error: expected specifier-qualifier-list before ‘typeof’")
-		# -rdynamic allows the .so to call functions from test.c
-		gcc $test_c_path -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wfatal-errors -rdynamic -g -o $test_executable_path
 	fi
 
 	# The trap here prevents the SIGFPE from tests_err_runtime/division_by_0 being printed
