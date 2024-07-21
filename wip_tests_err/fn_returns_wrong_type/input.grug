@@ -1,0 +1,12 @@
+define() d {
+    return {
+    }
+}
+
+on_a() {
+    bar()
+}
+
+bar(): string {
+    return 2 + 3
+}

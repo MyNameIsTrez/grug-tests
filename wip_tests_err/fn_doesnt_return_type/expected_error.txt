@@ -1,0 +1,1 @@
+Helper function 'bar' doesn't return the expected type 'string'

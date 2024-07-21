@@ -1,0 +1,1 @@
+Can't declare variable in function call

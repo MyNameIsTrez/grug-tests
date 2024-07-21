@@ -1,0 +1,1 @@
+Helper function 'bar' is supposed to return the type 'string', but is returning the type 'i32'
