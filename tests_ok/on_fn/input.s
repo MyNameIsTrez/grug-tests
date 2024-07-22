@@ -27,4 +27,12 @@ init_globals:
 
 global on_a
 on_a:
+	push rbp
+	mov rbp, rsp
+	sub rsp, 0x4
+
+	mov rbp[-0x4], edi
+
+	mov rsp, rbp
+	pop rbp
 	ret

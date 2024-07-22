@@ -1,7 +1,7 @@
 section .data
 
 global define_type
-define_type: db "h", 0
+define_type: db "d", 0
 
 align 8
 global globals_size
@@ -13,13 +13,12 @@ on_fns:
 
 section .text
 
-extern define_h
+extern define_d
 extern nothing
 
 global define
 define:
-	mov rdi, 42
-	call define_h wrt ..plt
+	call define_d wrt ..plt
 	ret
 
 global init_globals

@@ -137,31 +137,13 @@
 			"description": "foo",
 			"on_functions": {
 				"on_a": {
-					"description": "foo",
-					"arguments": [
-						{
-							"name": "self",
-							"type": "i32"
-						}
-					]
+					"description": "foo"
 				},
 				"on_b": {
-					"description": "foo",
-					"arguments": [
-						{
-							"name": "self",
-							"type": "i32"
-						}
-					]
+					"description": "foo"
 				},
 				"on_c": {
-					"description": "foo",
-					"arguments": [
-						{
-							"name": "self",
-							"type": "i32"
-						}
-					]
+					"description": "foo"
 				}
 			}
 		},

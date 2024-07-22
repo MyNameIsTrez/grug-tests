@@ -31,7 +31,7 @@ on_a:
 	test rax, rax
 	je strict $+0x10
 	mov eax, 1
-	jmp $+0x2d
+	jmp strict $+0x2d
 	xor eax, eax
 	push rax
 	xor eax, eax

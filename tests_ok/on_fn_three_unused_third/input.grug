@@ -3,8 +3,8 @@ define() j {
     }
 }
 
-on_a(self: i32) {
+on_a() {
 }
 
-on_b(self: i32) {
+on_b() {
 }

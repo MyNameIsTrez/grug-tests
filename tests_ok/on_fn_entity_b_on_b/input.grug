@@ -1,9 +1,0 @@
-define() i {
-    return {
-        .x = 42,
-        .y = 69,
-    }
-}
-
-on_b(self: i32) {
-}

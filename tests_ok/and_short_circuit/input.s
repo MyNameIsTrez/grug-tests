@@ -30,7 +30,7 @@ on_a:
 	xor eax, eax
 	test rax, rax
 	jne strict $+0xb
-	jmp $+0x2d
+	jmp strict $+0x2d
 	xor eax, eax
 	push rax
 	xor eax, eax

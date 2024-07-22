@@ -9,20 +9,11 @@
 
 void on_a(void);
 
-struct h {
-	int32_t x;
-};
-
 struct my_on_fns {
 	typeof(on_a) *a;
 };
 
-static struct h h_definition;
-
-void define_h(int32_t x) {
-	h_definition = (struct h){
-		.x = x,
-	};
+void define_d(void) {
 }
 
 static size_t fn_nothing_call_count = 0;
@@ -53,13 +44,12 @@ int main(int argc, char *argv[]) {
 		exit(EXIT_FAILURE);
 	}
 
-	assert(strcmp(get(handle, "define_type"), "h") == 0);
+	assert(strcmp(get(handle, "define_type"), "d") == 0);
 
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wpedantic"
 	grug_define_fn_t define = get(handle, "define");
 	define();
-	assert(h_definition.x == 42);
 
 	size_t globals_size = *(size_t *)get(handle, "globals_size");
 	assert(globals_size == 0);
