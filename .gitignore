@@ -3,5 +3,4 @@
 results
 a.out
 ast.json
-test.o
-test.s
+experiments.o
