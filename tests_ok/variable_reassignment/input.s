@@ -29,10 +29,18 @@ global on_a
 on_a:
 	push rbp
 	mov rbp, rsp
+	sub rsp, 0x4
 
 	mov eax, 42
+	mov rbp[-0x4], eax
+
+	mov eax, 69
+	mov rbp[-0x4], eax
+
+	mov eax, rbp[-0x4]
 	push rax
-	pop rdi,
+
+	pop rdi
 	call initialize wrt ..plt
 
 	mov rsp, rbp

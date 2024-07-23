@@ -7,6 +7,5 @@ on_a() {
     foo: i32 = -42
 	; This requires sign instruction with something like cdqe
     bar: i64 = foo
-
-    ; initialize_i64(bar)
+    initialize_i64(bar)
 }
