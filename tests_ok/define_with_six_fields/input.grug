@@ -1,9 +1,9 @@
 define() m {
     return {
         .w = 42,
-        .group = "military",
+        .group = "bar",
         .x = 69,
-        .name = "foo",
+        .name = "foobar",
         .y = 666,
         .z = 1337,
     }

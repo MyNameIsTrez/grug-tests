@@ -59,9 +59,9 @@ int main(int argc, char *argv[]) {
 	grug_define_fn_t define = get(handle, "define");
 	define();
 	assert(m_definition.w == 42);
-	assert(strcmp(m_definition.group, "military") == 0);
+	assert(strcmp(m_definition.group, "bar") == 0);
 	assert(m_definition.x == 69);
-	assert(strcmp(m_definition.name, "foo") == 0);
+	assert(strcmp(m_definition.name, "foobar") == 0);
 	assert(m_definition.y == 666);
 	assert(m_definition.z == 1337);
 

@@ -9,8 +9,8 @@ globals_size: dq 0
 
 global strings
 strings:
-	db "military", 0
-	db "foo", 0
+	db "bar", 0
+	db "foobar", 0
 
 section .text
 
@@ -21,7 +21,7 @@ define:
 	mov rdi, 42
 	lea rsi, [rel strings+0]
 	mov rdx, 69
-	lea rcx, [rel strings+9]
+	lea rcx, [rel strings+4]
 	mov r8, 666
 	mov r9, 1337
 	call define_m wrt ..plt
