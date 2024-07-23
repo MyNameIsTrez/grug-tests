@@ -1,0 +1,7 @@
+define() q {
+    return {
+        .a = "a",
+        .b = "b",
+        .c = "b",
+    }
+}

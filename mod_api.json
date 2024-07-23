@@ -273,6 +273,23 @@
 					"description": "foo"
 				}
 			}
+		},
+		"q": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "a",
+					"type": "string"
+				},
+				{
+					"name": "b",
+					"type": "string"
+				},
+				{
+					"name": "c",
+					"type": "string"
+				}
+			]
 		}
 	},
 	"game_functions": {
