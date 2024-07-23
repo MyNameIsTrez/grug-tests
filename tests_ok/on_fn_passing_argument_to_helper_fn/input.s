@@ -29,7 +29,7 @@ global on_a
 on_a:
 	mov eax, 42
 	push rax
-	pop rdi,
+	pop rdi
 	call foo
 	ret
 
@@ -42,7 +42,7 @@ foo:
 	mov rbp[-0x4], edi
 	mov eax, rbp[-0x4]
 	push rax
-	pop rdi,
+	pop rdi
 	call initialize wrt ..plt
 
 	mov rsp, rbp
