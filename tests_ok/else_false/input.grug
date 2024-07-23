@@ -1,0 +1,13 @@
+define() d {
+    return {
+    }
+}
+
+on_a() {
+    nothing()
+    if true {
+    } else {
+        nothing()
+    }
+    nothing()
+}
