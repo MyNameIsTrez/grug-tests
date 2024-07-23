@@ -1,6 +1,6 @@
 # Benchmark these before sticking with them
 
-- If the jump's destination is less than 256 bytes away, use the shorter `je` instruction
+- If the jump's destination is less than 256 bytes away, use the shorter `je` instruction. This is easier said than done, because right now the code bytes are pushed straight into an array, so the `je` variant that takes 8 bits instead of 32 bits will take less bytes and shift any future jump goal to a lower address.
 - If an i64 number is below the i32 max, use `mov eax, n`, instead of `mov rax, n` (where `xor eax, eax` is still used if `n == 0`)
 - Can `push rax` sometimes be replaced with `push eax`?
 - Can `pop rdi` sometimes be replaced with `pop edi`?
