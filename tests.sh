@@ -119,7 +119,7 @@ run_test_err_runtime() {
 
 		# -std=gnu2x is used to have typeof() in C (-std=c2x for some reason prints "error: expected specifier-qualifier-list before ‘typeof’")
 		# -rdynamic allows the .so to call functions from test.c
-		gcc $test_c_path -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -g -Og -Wfatal-errors -rdynamic -o $test_executable_path
+		gcc $test_c_path -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -Wfatal-errors -g -Og -rdynamic -o $test_executable_path
 	fi
 
 	local grug_output_path=$dir"results/grug_output.txt"
@@ -234,7 +234,7 @@ run_test_ok() {
 
 		# -std=gnu2x is used to have typeof() in C (-std=c2x for some reason prints "error: expected specifier-qualifier-list before ‘typeof’")
 		# -rdynamic allows the .so to call functions from test.c
-		gcc $test_c_path -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -g -Og -Wfatal-errors -rdynamic -o $test_executable_path
+		gcc $test_c_path -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -Wfatal-errors -g -Og -rdynamic -o $test_executable_path
 	fi
 
 	local expected_hex_path=$dir"results/expected.hex"
@@ -312,15 +312,35 @@ init() {
 	then
 		echo "Recompiling..."
 
+		local extra_flags=''
+
 		# TODO: An issue here is that if LOGGING is set or unset, a.out isn't recompiled!
 		# TODO: This could also definitely be done inline with some sort of ternary
-		local logging_flag=''
 		if [[ -v LOGGING ]] # If the LOGGING environment variable was set
 		then
-			logging_flag=' -DLOGGING'
+		    echo "- LOGGING was turned on"
+			extra_flags+=' -DLOGGING'
 		fi
 
-		gcc run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -g -Og -Wfatal-errors -Igrug -fsanitize=address,undefined $logging_flag
+		# TODO: An issue here is that if OPTIMIZED is set or unset, a.out isn't recompiled!
+		# TODO: This could also definitely be done inline with some sort of ternary
+		if [[ -v OPTIMIZED ]] # If the OPTIMIZED environment variable was set
+		then
+		    echo "- OPTIMIZED was turned on"
+			extra_flags+=' -Ofast -march=native'
+        else
+			extra_flags+=' -fsanitize=address,undefined -Og'
+		fi
+
+		# TODO: An issue here is that if CRASH_ON_UNREACHABLE is set or unset, a.out isn't recompiled!
+		# TODO: This could also definitely be done inline with some sort of ternary
+		if [[ -v CRASH_ON_UNREACHABLE ]] # If the CRASH_ON_UNREACHABLE environment variable was set
+		then
+		    echo "- CRASH_ON_UNREACHABLE was turned on"
+			extra_flags+=' -DCRASH_ON_UNREACHABLE'
+		fi
+
+		gcc run.c grug/grug.c -Igrug -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -g $extra_flags
 
 		if [ $? -ne 0 ]
 		then
