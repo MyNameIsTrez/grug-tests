@@ -1,0 +1,13 @@
+define() d {
+    return {
+    }
+}
+
+on_a() {
+    foo()
+    nothing()
+}
+
+foo() {
+    return
+}
