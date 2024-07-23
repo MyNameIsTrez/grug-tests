@@ -14,7 +14,7 @@ on_fns:
 section .text
 
 extern define_d
-extern initialize
+extern nothing
 
 global define
 define:
@@ -27,17 +27,13 @@ init_globals:
 
 global on_a
 on_a:
-	xor eax, eax
-	test rax, rax
-	jne $+0x7
-	jmp strict $+0x15
+	call nothing wrt ..plt
+
 	mov eax, 1
 	test rax, rax
-	mov eax, 0
-	setne al
+	je strict $+0xb
+	call nothing wrt ..plt
 
-	push rax
+	call nothing wrt ..plt
 
-	pop rdi
-	call initialize wrt ..plt
 	ret

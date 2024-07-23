@@ -29,7 +29,7 @@ global on_a
 on_a:
 	mov eax, 1
 	test rax, rax
-	je strict $+0x10
+	je $+0xc
 	mov eax, 1
 	jmp strict $+0x2d
 	xor eax, eax

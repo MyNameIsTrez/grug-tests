@@ -29,7 +29,7 @@ global on_a
 on_a:
 	xor eax, eax
 	test rax, rax
-	jne strict $+0xb
+	jne $+0x7
 	jmp strict $+0x12
 	xor eax, eax
 	test rax, rax
