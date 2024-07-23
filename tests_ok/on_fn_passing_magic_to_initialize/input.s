@@ -29,6 +29,7 @@ init_globals:
 global on_a
 on_a:
 	call magic wrt ..plt
-	mov rdi, rax
+    push rax
+    pop rdi
 	call initialize wrt ..plt
 	ret
