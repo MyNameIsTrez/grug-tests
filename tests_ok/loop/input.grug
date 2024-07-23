@@ -1,0 +1,12 @@
+define() d {
+    return {
+    }
+}
+
+on_a() {
+    nothing()
+    loop {
+        nothing()
+    }
+    nothing()
+}
