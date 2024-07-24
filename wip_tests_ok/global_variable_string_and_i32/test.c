@@ -22,6 +22,12 @@ void initialize(int32_t x) {
 	assert(x == 42);
 }
 
+static bool fn_say_was_called = false;
+void say(char *str) {
+	fn_say_was_called = true;
+	assert(strcmp(str, "foo") == 0);
+}
+
 static void *get(void *handle, char *label) {
 	void *p = dlsym(handle, label);
 	if (!p) {
@@ -61,8 +67,10 @@ int main(int argc, char *argv[]) {
 
 	struct my_on_fns *on_fns = get(handle, "on_fns");
 	assert(!fn_initialize_was_called);
+	assert(!fn_say_was_called);
 	on_fns->a(g);
 	assert(fn_initialize_was_called);
+	assert(fn_say_was_called);
 
 	free(g);
 	#pragma GCC diagnostic pop

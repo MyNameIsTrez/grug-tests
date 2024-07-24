@@ -1,0 +1,12 @@
+define() d {
+    return {
+    }
+}
+
+age: i32 = 42
+name: string = "foo"
+
+on_a() {
+    initialize(age)
+    say(name)
+}

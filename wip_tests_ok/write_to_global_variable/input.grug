@@ -1,0 +1,12 @@
+define() d {
+    return {
+    }
+}
+
+foo: i32 = 42
+
+on_a() {
+    foo = foo + 1
+
+    initialize(foo)
+}

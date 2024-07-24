@@ -1,0 +1,21 @@
+define() e {
+    return {
+    }
+}
+
+on_a() {
+    foo: i32 = 42
+    initialize(foo)
+
+    bar()
+}
+
+bar() {
+    foo: i32 = 42
+    initialize(foo)
+}
+
+on_b() {
+    foo: i32 = 42
+    initialize(foo)
+}
