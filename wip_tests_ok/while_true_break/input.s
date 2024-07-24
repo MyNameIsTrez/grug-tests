@@ -31,10 +31,11 @@ on_a:
 
 	mov eax, 1
 	test rax, rax
-	je strict $+0x10
+	je strict $+0x1a
 	call nothing wrt ..plt
-	jmp strict $+0xa
-	jmp strict $-0x18
+	jmp strict $+0xf
+	call nothing wrt ..plt
+	jmp strict $-0x1d
 
 	call nothing wrt ..plt
 
