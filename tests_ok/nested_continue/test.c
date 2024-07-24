@@ -16,10 +16,9 @@ struct my_on_fns {
 void define_d(void) {
 }
 
-static bool fn_initialize_was_called = false;
-void initialize(int32_t x) {
-	fn_initialize_was_called = true;
-	assert(x == 0);
+static size_t fn_nothing_call_count = 0;
+void nothing(void) {
+	fn_nothing_call_count++;
 }
 
 static void *get(void *handle, char *label) {
@@ -61,8 +60,8 @@ int main(int argc, char *argv[]) {
 	free(g);
 
 	struct my_on_fns *on_fns = get(handle, "on_fns");
-	assert(!fn_initialize_was_called);
+	assert(fn_nothing_call_count == 0);
 	on_fns->a();
-	assert(fn_initialize_was_called);
+	assert(fn_nothing_call_count == 2);
 	#pragma GCC diagnostic pop
 }

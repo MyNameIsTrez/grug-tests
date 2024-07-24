@@ -14,7 +14,7 @@ on_fns:
 section .text
 
 extern define_d
-extern initialize
+extern nothing
 
 global define
 define:
@@ -27,18 +27,20 @@ init_globals:
 
 global on_a
 on_a:
-	; TODO: Somehow add loads of instructions that will cause the jump to be over 256 bytes long
-	xor eax, eax
-	test rax, rax
-	je $+12
-	mov eax, 1
-	jmp $+18
-	xor eax, eax
-	test rax, rax
-	mov eax, 0
-	setne al
-	push rax
+	call nothing wrt ..plt
 
-	pop rdi
-	call initialize wrt ..plt
+	; while (condition)
+	mov eax, 1
+	test rax, rax
+	je strict $+0x1a
+
+	; loop body
+	call nothing wrt ..plt
+	jmp strict $+0xf
+	call nothing wrt ..plt
+	jmp strict $-0x1d
+
+	; after loop
+	call nothing wrt ..plt
+
 	ret

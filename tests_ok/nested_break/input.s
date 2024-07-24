@@ -28,15 +28,16 @@ init_globals:
 global on_a
 on_a:
 	call nothing wrt ..plt
-
-	mov eax, 1
-	test rax, rax
-	je strict $+0x1a
+	mov eax,0x1
+	test rax,rax
+	je strict $+0x2d
+	mov eax,0x1
+	test rax,rax
+	je strict $+0x10
+	jmp strict $+0xa
+	jmp strict $-0x13
 	call nothing wrt ..plt
-	jmp strict $+0xf
+	jmp strict $+0xa
+	jmp strict $-0x30
 	call nothing wrt ..plt
-	jmp strict $-0x1d
-
-	call nothing wrt ..plt
-
 	ret
