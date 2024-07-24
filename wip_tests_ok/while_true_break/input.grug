@@ -5,8 +5,9 @@ define() d {
 
 on_a() {
     nothing()
-    loop {
+    while true {
         nothing()
+        break
     }
     nothing()
 }
