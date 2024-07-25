@@ -19,9 +19,9 @@ extern define_m
 global define
 define:
 	mov rdi, 42
-	lea rsi, [rel strings+0]
+	lea rsi, strings[rel 0]
 	mov rdx, 69
-	lea rcx, [rel strings+4]
+	lea rcx, strings[rel 4]
 	mov r8, 666
 	mov r9, 1337
 	call define_m wrt ..plt

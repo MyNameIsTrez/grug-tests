@@ -22,12 +22,12 @@ extern define_o
 
 global define
 define:
-	lea rdi, [rel strings+0]
-	lea rsi, [rel strings+2]
-	lea rdx, [rel strings+4]
-	lea rcx, [rel strings+6]
-	lea r8, [rel strings+8]
-	lea r9, [rel strings+10]
+	lea rdi, strings[rel 0]
+	lea rsi, strings[rel 2]
+	lea rdx, strings[rel 4]
+	lea rcx, strings[rel 6]
+	lea r8, strings[rel 8]
+	lea r9, strings[rel 10]
 	call define_o wrt ..plt
 	ret
 

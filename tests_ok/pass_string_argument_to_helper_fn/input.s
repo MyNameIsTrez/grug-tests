@@ -39,7 +39,7 @@ on_a:
 	mov rax, rbp[-0x8]
 	push rax
 
-	lea rax, [rel strings+0]
+	lea rax, strings[rel 0]
 	push rax
 
 	pop rsi

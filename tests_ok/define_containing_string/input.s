@@ -18,7 +18,7 @@ extern define_k
 global define
 define:
 	mov strict rdi, 42
-	lea rsi, [rel strings+0]
+	lea rsi, strings[rel 0]
 	call define_k wrt ..plt
 	ret
 

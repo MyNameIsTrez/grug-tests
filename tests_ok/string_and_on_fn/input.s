@@ -21,7 +21,7 @@ extern define_p
 
 global define
 define:
-	lea rdi, [rel strings+0]
+	lea rdi, strings[rel 0]
 	call define_p wrt ..plt
 	ret
 

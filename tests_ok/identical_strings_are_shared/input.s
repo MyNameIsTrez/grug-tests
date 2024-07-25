@@ -18,9 +18,9 @@ extern define_q
 
 global define
 define:
-	lea rdi, [rel strings+0]
-	lea rsi, [rel strings+2]
-	lea rdx, [rel strings+2]
+	lea rdi, strings[rel 0]
+	lea rsi, strings[rel 2]
+	lea rdx, strings[rel 2]
 	call define_q wrt ..plt
 	ret
 

@@ -36,7 +36,7 @@ on_a:
 	sub rsp, 0x8
     mov rbp[-0x8], rdi
 
-	lea rax, [rel strings+0]
+	lea rax, strings[rel 0]
 	push rax
 
 	pop rdi

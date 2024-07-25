@@ -37,17 +37,17 @@ on_a:
 	mov eax, 1
 	push rax
 	mov rax, rbp[-0x8]
-	mov eax, [rax+0x0]
+	mov eax, rax[byte 0x0]
 	pop r11
 	add rax, r11
 
 	; foo = foo + 1
 	mov r11, rbp[-0x8]
-	mov [r11+0x0], eax
+	mov r11[byte 0x0], eax
 
 	; initialize(foo)
 	mov rax, rbp[-0x8]
-	mov eax, [rax+0x0]
+	mov eax, rax[byte 0x0]
 	push rax
 
 	pop rdi

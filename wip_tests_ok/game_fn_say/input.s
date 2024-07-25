@@ -31,7 +31,7 @@ init_globals:
 
 global on_a
 on_a:
-	lea rax, [rel strings+0]
+	lea rax, strings[rel 0]
 	push rax
 	pop rdi
 	call say wrt ..plt
