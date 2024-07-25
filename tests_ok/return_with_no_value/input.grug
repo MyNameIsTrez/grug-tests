@@ -4,10 +4,10 @@ define() d {
 }
 
 on_a() {
-    foo()
+    helper_foo()
     nothing()
 }
 
-foo() {
+helper_foo() {
     return
 }

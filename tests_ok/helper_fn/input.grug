@@ -4,9 +4,9 @@ define() d {
 }
 
 on_a() {
-    foo()
+    helper_foo()
 }
 
-foo() {
+helper_foo() {
     nothing()
 }

@@ -44,14 +44,14 @@ on_a:
 
 	pop rsi
 	pop rdi
-    call shout
+    call helper_shout
 
     mov rsp, rbp
     pop rbp
 	ret
 
-global shout
-shout:
+global helper_shout
+helper_shout:
     push rbp
     mov rbp, rsp
     sub rsp, 0x10

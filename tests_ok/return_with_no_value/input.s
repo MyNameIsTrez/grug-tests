@@ -36,7 +36,7 @@ on_a:
 	push rax
 
 	pop rdi
-	call foo
+	call helper_foo
 
 	call nothing wrt ..plt
 
@@ -44,8 +44,8 @@ on_a:
     pop rbp
 	ret
 
-global foo
-foo:
+global helper_foo
+helper_foo:
     push rbp
     mov rbp, rsp
 	sub rsp, 0x10

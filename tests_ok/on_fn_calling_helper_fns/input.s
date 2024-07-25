@@ -37,20 +37,20 @@ on_a:
 	push rax
 
 	pop rdi
-	call foo
+	call helper_foo
 
 	mov rax, rbp[-0x8]
 	push rax
 
 	pop rdi
-	call bar
+	call helper_bar
 
     mov rsp, rbp
     pop rbp
 	ret
 
-global foo
-foo:
+global helper_foo
+helper_foo:
     push rbp
     mov rbp, rsp
 	sub rsp, 0x10
@@ -62,8 +62,8 @@ foo:
     pop rbp
 	ret
 
-global bar
-bar:
+global helper_bar
+helper_bar:
     push rbp
     mov rbp, rsp
 	sub rsp, 0x10

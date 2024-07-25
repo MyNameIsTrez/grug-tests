@@ -4,14 +4,14 @@ define() d {
 }
 
 on_a() {
-    foo()
-    bar()
+    helper_foo()
+    helper_bar()
 }
 
-foo() {
+helper_foo() {
     nothing()
 }
 
-bar() {
+helper_bar() {
     initialize(42)
 }

@@ -4,9 +4,9 @@ define() d {
 }
 
 on_a() {
-    shout("foo")
+    helper_shout("foo")
 }
 
-shout(message: string) {
+helper_shout(message: string) {
     say(message)
 }

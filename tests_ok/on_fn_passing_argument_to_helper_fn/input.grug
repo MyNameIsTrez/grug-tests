@@ -4,9 +4,9 @@ define() d {
 }
 
 on_a() {
-    foo(42)
+    helper_foo(42)
 }
 
-foo(n: i32) {
+helper_foo(n: i32) {
     initialize(n)
 }
