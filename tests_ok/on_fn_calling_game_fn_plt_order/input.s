@@ -31,6 +31,11 @@ init_globals:
 
 global on_a
 on_a:
+    push rbp
+    mov rbp, rsp
+	sub rsp, 0x8
+    mov rbp[-0x8], rdi
+
 	call nothing wrt ..plt
 	call magic wrt ..plt
 
@@ -52,4 +57,6 @@ on_a:
 	pop rdi
 	call max wrt ..plt
 
+    mov rsp, rbp
+    pop rbp
 	ret

@@ -29,9 +29,10 @@ global on_a
 on_a:
 	push rbp
 	mov rbp, rsp
-	sub rsp, 0x4
+	sub rsp, 0xc
+    mov rbp[-0x8], rdi
 
-	mov rbp[-0x4], edi
+	mov rbp[-0xc], esi
 
 	mov rsp, rbp
 	pop rbp

@@ -28,8 +28,22 @@ init_globals:
 
 global on_b
 on_b:
+    push rbp
+    mov rbp, rsp
+	sub rsp, 0x8
+    mov rbp[-0x8], rdi
+
+    mov rsp, rbp
+    pop rbp
 	ret
 
 global on_c
 on_c:
+    push rbp
+    mov rbp, rsp
+	sub rsp, 0x8
+    mov rbp[-0x8], rdi
+
+    mov rsp, rbp
+    pop rbp
 	ret

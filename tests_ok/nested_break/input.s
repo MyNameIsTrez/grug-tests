@@ -27,6 +27,11 @@ init_globals:
 
 global on_a
 on_a:
+    push rbp
+    mov rbp, rsp
+	sub rsp, 0x8
+    mov rbp[-0x8], rdi
+
 	call nothing wrt ..plt
 	mov eax,0x1
 	test rax,rax
@@ -40,4 +45,7 @@ on_a:
 	jmp strict $+0xa
 	jmp strict $-0x30
 	call nothing wrt ..plt
+
+    mov rsp, rbp
+    pop rbp
 	ret

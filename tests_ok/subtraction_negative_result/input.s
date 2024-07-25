@@ -27,6 +27,11 @@ init_globals:
 
 global on_a
 on_a:
+    push rbp
+    mov rbp, rsp
+	sub rsp, 0x8
+    mov rbp[-0x8], rdi
+
 	mov eax, 5
 	push rax
 	mov eax, 2
@@ -36,4 +41,7 @@ on_a:
 
 	pop rdi
 	call initialize wrt ..plt
+
+    mov rsp, rbp
+    pop rbp
 	ret

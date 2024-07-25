@@ -23,6 +23,6 @@ define:
 
 global init_globals
 init_globals:
-	mov dword [byte rdi+0], 420
-	mov dword [rdi+4], 1337
+	mov dword rdi[byte 0x0], 420
+	mov dword rdi[0x4], 1337
 	ret

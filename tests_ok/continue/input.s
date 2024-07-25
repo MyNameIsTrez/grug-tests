@@ -29,15 +29,16 @@ global on_a
 on_a:
 	push rbp
 	mov rbp, rsp
-	sub rsp, 0x4
+	sub rsp, 0xc
+    mov rbp[-0x8], rdi
 
 	xor eax, eax
-	mov rbp[-0x4], eax
+	mov rbp[-0xc], eax
 
 	mov eax, 0x2
 	push rax
 
-	mov eax, rbp[-0x4]
+	mov eax, rbp[-0xc]
 	pop rbx
 	cmp rax, rbx
 
@@ -52,10 +53,10 @@ on_a:
 	; i++
 	mov eax, 0x1
 	push rax
-	mov eax, rbp[-0x4]
+	mov eax, rbp[-0xc]
 	pop rbx
 	add rax, rbx
-	mov rbp[-0x4], eax
+	mov rbp[-0xc], eax
 
 	jmp strict $-0x33 ; continue
 
@@ -65,5 +66,4 @@ on_a:
 
 	mov rsp, rbp
 	pop rbp
-
 	ret

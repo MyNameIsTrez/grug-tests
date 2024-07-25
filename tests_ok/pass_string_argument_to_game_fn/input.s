@@ -31,9 +31,17 @@ init_globals:
 
 global on_a
 on_a:
+    push rbp
+    mov rbp, rsp
+	sub rsp, 0x8
+    mov rbp[-0x8], rdi
+
 	lea rax, [rel strings+0]
 	push rax
 
 	pop rdi
 	call say wrt ..plt
+
+    mov rsp, rbp
+    pop rbp
 	ret
