@@ -40,6 +40,16 @@ gcc run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wshadow -Wfatal-errors -
 gdb --args a.out tests_ok/helper_fn/input.grug tests_ok/helper_fn/results/expected.so
 ```
 
+## gdb on a test
+
+```bash
+nasm tests_ok/write_to_global_variable/input.s -f elf64 -o tests_ok/write_to_global_variable/results/expected.o &&\
+ld -shared --hash-style=sysv tests_ok/write_to_global_variable/results/expected.o -o tests_ok/write_to_global_variable/results/expected.so &&\
+rm tests_ok/write_to_global_variable/results/expected.o &&\
+gcc tests_ok/write_to_global_variable/test.c -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -Wfatal-errors -g -Og -rdynamic -o tests_ok/write_to_global_variable/results/test &&\
+gdb --args tests_ok/write_to_global_variable/results/test tests_ok/write_to_global_variable/results/expected.so
+```
+
 ## gdbgui
 
 Use [gdbgui](https://www.gdbgui.com/) to step through the code:
