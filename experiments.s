@@ -1,6 +1,6 @@
-; clear && nasm experiments.s -f elf64 -O0 && objdump -D experiments.o -M intel
+; clear && nasm experiments.s -f elf64 -O0 && objdump -D experiments.o -M intel && gcc experiments.o && ./a.out
 
-global foo
-foo:
+global main
+main:
 	mov rax, 42
 	ret
