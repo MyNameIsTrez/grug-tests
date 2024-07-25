@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
 	define();
 
 	size_t globals_size = *(size_t *)get(handle, "globals_size");
-	assert(globals_size == 0);
+	assert(globals_size == 4);
 
 	void *g = malloc(globals_size);
 	grug_init_globals_fn_t init_globals = get(handle, "init_globals");

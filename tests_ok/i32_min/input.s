@@ -36,8 +36,8 @@ on_a:
 	push rax
 	mov eax, 2147483647
 	neg rax
-	pop rbx
-	sub rax, rbx
+	pop r11
+	sub rax, r11
 	push rax
 
 	pop rdi

@@ -35,8 +35,8 @@ on_a:
 	mov eax, 3
 	push rax
 	mov eax, 2
-	pop rbx
-	add rax, rbx
+	pop r11
+	add rax, r11
 	neg rax
 	push rax
 

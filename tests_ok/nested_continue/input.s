@@ -37,37 +37,37 @@ on_a:
 
 	mov eax, 0x1
 	test rax, rax
-	je strict $+0x70
+	je strict $+0x73
 	call nothing wrt ..plt
 	mov eax, 0x2
 	push rax
 	mov eax, rbp[-0xc]
-	pop rbx
-	cmp rax, rbx
+	pop r11
+	cmp rax, r11
 	mov eax, 0x0
 	setne al
 	test rax, rax
-	je strict $+0x43
+	je strict $+0x45
 	mov eax, 0x1
 	push rax
 	mov eax, rbp[-0xc]
-	pop rbx
-	add rax, rbx
+	pop r11
+	add rax, r11
 	mov rbp[-0xc], eax
 	mov eax, 0x1
 	push rax
 	mov eax, rbp[-0xc]
-	pop rbx
-	cmp rax, rbx
+	pop r11
+	cmp rax, r11
 	mov eax, 0x0
 	sete al
 	test rax, rax
 	je strict $+0xb
-	jmp strict $-0x4c
+	jmp strict $-0x4f
 	call nothing wrt ..plt
-	jmp strict $-0x56
+	jmp strict $-0x59
 	jmp strict $+0xa
-	jmp strict $-0x73
+	jmp strict $-0x76
 
 	mov rsp, rbp
 	pop rbp

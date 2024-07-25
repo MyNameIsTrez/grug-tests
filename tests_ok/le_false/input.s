@@ -35,8 +35,8 @@ on_a:
 	mov eax, 2
 	push rax
 	mov eax, 3
-	pop rbx
-	cmp rax, rbx
+	pop r11
+	cmp rax, r11
 	mov eax, 0
 	setle al
 	push rax

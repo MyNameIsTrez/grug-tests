@@ -30,8 +30,8 @@ on_a:
 	mov rax, 9223372036854775807
 	push rax
 	mov rax, 1
-	pop rbx
-	add rax, rbx
+	pop r11
+	add rax, r11
 	push rax
 
 	pop rdi

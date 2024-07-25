@@ -35,9 +35,9 @@ on_a:
 	mov eax, 2
 	push rax
 	mov eax, 5
-	pop rbx
+	pop r11
 	cqo
-	idiv rbx
+	idiv r11
 	push rax
 
 	pop rdi

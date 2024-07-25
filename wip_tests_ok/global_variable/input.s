@@ -32,7 +32,7 @@ on_a:
 
 	mov eax, 42
 	push rax
-	pop rdi,
+	pop rdi
 	call initialize wrt ..plt
 
 	mov rsp, rbp

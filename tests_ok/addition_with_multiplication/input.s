@@ -35,15 +35,15 @@ on_a:
 	mov eax, 4
 	push rax
 	mov eax, 3
-	pop rbx
-	imul rbx
+	pop r11
+	imul r11
 
 	push rax
 
 	mov eax, 2
 
-	pop rbx
-	add rax, rbx
+	pop r11
+	add rax, r11
 
 	push rax
 

@@ -36,17 +36,17 @@ on_a:
 	test rax, rax
 	je $+0xc
 	mov eax, 1
-	jmp strict $+0x2d
+	jmp strict $+0x2f
 	xor eax, eax
 	push rax
 	xor eax, eax
 	push rax
 	mov eax, 1
-	pop rbx
+	pop r11
 	cqo
-	idiv rbx
-	pop rbx
-	cmp rax, rbx
+	idiv r11
+	pop r11
+	cmp rax, r11
 	mov eax, 0
 	sete al
 	test rax, rax
