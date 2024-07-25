@@ -59,6 +59,7 @@ int main(int argc, char *argv[]) {
 	void *g = malloc(globals_size);
 	grug_init_globals_fn_t init_globals = get(handle, "init_globals");
 	init_globals(g);
+
 	free(g);
 	#pragma GCC diagnostic pop
 }

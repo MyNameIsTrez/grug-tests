@@ -58,6 +58,7 @@ int main(int argc, char *argv[]) {
 	init_globals(g);
 	assert(((int32_t*)g)[0] == 420);
 	assert(((int32_t*)g)[1] == 1337);
+
 	free(g);
 	#pragma GCC diagnostic pop
 }

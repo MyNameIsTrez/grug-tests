@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void on_a(void);
+void on_a(void *globals);
 
 struct my_on_fns {
 	typeof(on_a) *a;
@@ -57,11 +57,12 @@ int main(int argc, char *argv[]) {
 	void *g = malloc(globals_size);
 	grug_init_globals_fn_t init_globals = get(handle, "init_globals");
 	init_globals(g);
-	free(g);
 
 	struct my_on_fns *on_fns = get(handle, "on_fns");
 	assert(fn_nothing_call_count == 0);
-	on_fns->a();
+	on_fns->a(g);
 	assert(fn_nothing_call_count == 2);
+
+	free(g);
 	#pragma GCC diagnostic pop
 }

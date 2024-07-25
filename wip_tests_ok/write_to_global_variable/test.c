@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void on_a(void);
+void on_a(void *globals);
 
 struct my_on_fns {
 	typeof(on_a) *a;
