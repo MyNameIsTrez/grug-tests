@@ -16,17 +16,18 @@ struct my_on_fns {
 void define_d(void) {
 }
 
-static bool fn_nothing_was_called = false;
-void nothing(void) {
-	fn_nothing_was_called = true;
+static bool fn_magic_was_called = false;
+int32_t magic(void) {
+	fn_magic_was_called = true;
 	printf("  %d\n", 42); // This call is able to trigger an unaligned access error
+	return 42;
 }
 
 static bool fn_initialize_was_called = false;
 void initialize(int32_t x) {
 	fn_initialize_was_called = true;
 	printf("  %d\n", 42); // This call is able to trigger an unaligned access error
-	assert(x == 42);
+	assert(x == 42 + 42);
 }
 
 static void *get(void *handle, char *label) {
@@ -67,10 +68,10 @@ int main(int argc, char *argv[]) {
 	init_globals(g);
 
 	struct my_on_fns *on_fns = get(handle, "on_fns");
-	assert(!fn_nothing_was_called);
+	assert(!fn_magic_was_called);
 	assert(!fn_initialize_was_called);
 	on_fns->a(g);
-	assert(fn_nothing_was_called);
+	assert(fn_magic_was_called);
 	assert(fn_initialize_was_called);
 
 	free(g);
