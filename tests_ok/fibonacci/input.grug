@@ -1,0 +1,15 @@
+define() d {
+    return {
+    }
+}
+
+on_a(n: i32) {
+    initialize(helper_fib(n))
+}
+
+helper_fib(n: i32) {
+    if n == 0 or n == 1 {
+        return n
+    }
+    return helper_fib(n - 1) + helper_fib(n - 2)
+}

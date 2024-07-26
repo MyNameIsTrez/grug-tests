@@ -1,0 +1,1 @@
+The helper function 'helper_foo' does not exist
