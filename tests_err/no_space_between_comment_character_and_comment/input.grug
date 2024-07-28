@@ -1,2 +1,2 @@
-define() a { ;foo
+define() a { #foo
 }
