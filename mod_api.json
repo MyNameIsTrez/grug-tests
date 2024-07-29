@@ -341,6 +341,16 @@
 					"type": "string"
 				}
 			]
+		},
+		"sin": {
+			"description": "foo",
+			"return_type": "f32",
+			"arguments": [
+				{
+					"name": "x",
+					"type": "f32"
+				}
+			]
 		}
 	}
 }

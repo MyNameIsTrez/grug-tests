@@ -2,5 +2,7 @@
 
 global main
 main:
-	mov rax, 42
+	; mov rax, 42
+	mov eax, 0x3f99999a
+	movd xmm0, eax
 	ret
