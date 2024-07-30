@@ -17,9 +17,10 @@ void define_d(void) {
 }
 
 static bool fn_sin_was_called = false;
-void sin(float x) {
+float grug_sin(float x) {
 	fn_sin_was_called = true;
-	assert(x == 1.0f);
+	assert(x == 4.0f);
+	return sinf(x);
 }
 
 static void *get(void *handle, char *label) {

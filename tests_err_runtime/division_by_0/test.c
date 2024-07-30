@@ -16,7 +16,7 @@ struct my_on_fns {
 void define_d(void) {
 }
 
-void initialize(int32_t x) {
+void game_fn_initialize(int32_t x) {
 	(void)x;
 }
 
