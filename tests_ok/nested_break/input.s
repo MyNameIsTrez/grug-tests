@@ -13,12 +13,12 @@ on_fns:
 
 section .text
 
-extern define_d
-extern nothing
+extern game_fn_define_d
+extern game_fn_nothing
 
 global define
 define:
-	call define_d wrt ..plt
+	call game_fn_define_d wrt ..plt
 	ret
 
 global init_globals
@@ -32,7 +32,7 @@ on_a:
 	sub rsp, 0x10
     mov rbp[-0x8], rdi
 
-	call nothing wrt ..plt
+	call game_fn_nothing wrt ..plt
 	mov eax,0x1
 	test rax,rax
 	je strict $+0x2d
@@ -41,10 +41,10 @@ on_a:
 	je strict $+0x10
 	jmp strict $+0xa
 	jmp strict $-0x13
-	call nothing wrt ..plt
+	call game_fn_nothing wrt ..plt
 	jmp strict $+0xa
 	jmp strict $-0x30
-	call nothing wrt ..plt
+	call game_fn_nothing wrt ..plt
 
     mov rsp, rbp
     pop rbp

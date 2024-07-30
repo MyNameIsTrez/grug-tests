@@ -17,7 +17,7 @@ struct my_on_fns {
 	typeof(on_c) *c;
 };
 
-void define_j(void) {
+void game_fn_define_j(void) {
 }
 
 static void *get(void *handle, char *label) {

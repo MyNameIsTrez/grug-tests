@@ -17,12 +17,12 @@ strings:
 
 section .text
 
-extern define_d
-extern say
+extern game_fn_define_d
+extern game_fn_say
 
 global define
 define:
-	call define_d wrt ..plt
+	call game_fn_define_d wrt ..plt
 	ret
 
 global init_globals
@@ -62,7 +62,7 @@ helper_shout:
     push rax
 
 	pop rdi
-	call say wrt ..plt
+	call game_fn_say wrt ..plt
 
     mov rsp, rbp
     pop rbp

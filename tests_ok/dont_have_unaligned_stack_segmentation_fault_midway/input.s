@@ -13,13 +13,13 @@ on_fns:
 
 section .text
 
-extern define_d
-extern magic
-extern initialize
+extern game_fn_define_d
+extern game_fn_magic
+extern game_fn_initialize
 
 global define
 define:
-	call define_d wrt ..plt
+	call game_fn_define_d wrt ..plt
 	ret
 
 global init_globals
@@ -37,7 +37,7 @@ on_a:
 	mov eax, 42
 	push rax
 	sub rsp, 0x8 ; Comment this out along with the `add rsp, 0x8` below the call to see the unaligned access crash
-	call magic wrt ..plt
+	call game_fn_magic wrt ..plt
 	add rsp, 0x8
 	pop r11
 	add rax, r11
@@ -45,7 +45,7 @@ on_a:
 
 	; initialize(magic() + 42)
 	pop rdi
-	call initialize wrt ..plt
+	call game_fn_initialize wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

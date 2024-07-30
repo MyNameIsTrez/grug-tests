@@ -13,35 +13,35 @@ struct my_on_fns {
 	typeof(on_a) *a;
 };
 
-void define_d(void) {
+void game_fn_define_d(void) {
 }
 
 static bool fn_nothing_was_called = false;
-void nothing(void) {
+void game_fn_nothing(void) {
 	fn_nothing_was_called = true;
 }
 
 static bool fn_magic_was_called = false;
-int32_t magic(void) {
+int32_t game_fn_magic(void) {
 	fn_magic_was_called = true;
 	return 42;
 }
 
 static bool fn_initialize_was_called = false;
-void initialize(int32_t x) {
+void game_fn_initialize(int32_t x) {
 	fn_initialize_was_called = true;
 	assert(x == 42);
 }
 
 static bool fn_identity_was_called = false;
-int32_t identity(int32_t x) {
+int32_t game_fn_identity(int32_t x) {
 	fn_identity_was_called = true;
 	assert(x == 69);
 	return x;
 }
 
 static bool fn_max_was_called = false;
-int32_t max(int32_t x, int32_t y) {
+int32_t game_fn_max(int32_t x, int32_t y) {
 	fn_max_was_called = true;
 	assert(x == 1337);
 	assert(y == 8192);

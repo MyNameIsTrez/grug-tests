@@ -14,14 +14,14 @@ strings:
 
 section .text
 
-extern define_q
+extern game_fn_define_q
 
 global define
 define:
 	lea rdi, strings[rel 0]
 	lea rsi, strings[rel 2]
 	lea rdx, strings[rel 2]
-	call define_q wrt ..plt
+	call game_fn_define_q wrt ..plt
 	ret
 
 global init_globals

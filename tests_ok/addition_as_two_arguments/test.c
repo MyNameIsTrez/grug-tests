@@ -13,11 +13,11 @@ struct my_on_fns {
 	typeof(on_a) *a;
 };
 
-void define_d(void) {
+void game_fn_define_d(void) {
 }
 
 static bool fn_max_was_called = false;
-int32_t max(int32_t x, int32_t y) {
+int32_t game_fn_max(int32_t x, int32_t y) {
 	fn_max_was_called = true;
 	assert(x == 3);
 	assert(y == 9);

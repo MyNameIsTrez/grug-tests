@@ -14,7 +14,7 @@ struct k {
 
 static struct k k_definition;
 
-void define_k(int32_t age, char *name) {
+void game_fn_define_k(int32_t age, char *name) {
 	k_definition = (struct k){
 		.age = age,
 		.name = name,

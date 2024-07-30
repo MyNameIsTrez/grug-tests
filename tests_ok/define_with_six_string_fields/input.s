@@ -18,7 +18,7 @@ strings:
 
 section .text
 
-extern define_o
+extern game_fn_define_o
 
 global define
 define:
@@ -28,7 +28,7 @@ define:
 	lea rcx, strings[rel 6]
 	lea r8, strings[rel 8]
 	lea r9, strings[rel 10]
-	call define_o wrt ..plt
+	call game_fn_define_o wrt ..plt
 	ret
 
 global init_globals

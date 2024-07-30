@@ -13,13 +13,13 @@ on_fns:
 
 section .text
 
-extern define_d
-extern nothing
-extern initialize
+extern game_fn_define_d
+extern game_fn_nothing
+extern game_fn_initialize
 
 global define
 define:
-	call define_d wrt ..plt
+	call game_fn_define_d wrt ..plt
 	ret
 
 global init_globals
@@ -33,7 +33,7 @@ on_a:
 	sub rsp, 0x10 ; Change 0x10 to 0x8 to see the unaligned access crash
     mov rbp[-0x8], rdi
 
-	call nothing wrt ..plt
+	call game_fn_nothing wrt ..plt
 
 	; add rsp, 0x8 ; Uncomment to see the unaligned access crash
 
@@ -42,7 +42,7 @@ on_a:
 	mov rax, 42
 	push rax
 	pop rdi
-	call initialize wrt ..plt
+	call game_fn_initialize wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

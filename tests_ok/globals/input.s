@@ -13,12 +13,12 @@ on_fns:
 
 section .text
 
-extern define_h
+extern game_fn_define_h
 
 global define
 define:
 	mov rdi, 42
-	call define_h wrt ..plt
+	call game_fn_define_h wrt ..plt
 	ret
 
 global init_globals

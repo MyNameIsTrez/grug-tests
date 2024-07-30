@@ -9,11 +9,11 @@ globals_size: dq 0
 
 section .text
 
-extern define_a
+extern game_fn_define_a
 
 global define
 define:
-	call define_a wrt ..plt
+	call game_fn_define_a wrt ..plt
 	ret
 
 global init_globals

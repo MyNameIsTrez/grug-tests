@@ -9,7 +9,7 @@ globals_size: dq 0
 
 section .text
 
-extern define_n
+extern game_fn_define_n
 
 global define
 define:
@@ -19,7 +19,7 @@ define:
 	mov rcx, 4
 	mov r8, 5
 	mov r9, 6
-	call define_n wrt ..plt
+	call game_fn_define_n wrt ..plt
 	ret
 
 global init_globals

@@ -13,18 +13,18 @@ struct my_on_fns {
 	typeof(on_a) *a;
 };
 
-void define_d(void) {
+void game_fn_define_d(void) {
 }
 
 static bool fn_magic_was_called = false;
-int32_t magic(void) {
+int32_t game_fn_magic(void) {
 	fn_magic_was_called = true;
 	printf("  %d\n", 42); // This call is able to trigger an unaligned access error
 	return 42;
 }
 
 static bool fn_initialize_was_called = false;
-void initialize(int32_t x) {
+void game_fn_initialize(int32_t x) {
 	fn_initialize_was_called = true;
 	printf("  %d\n", 42); // This call is able to trigger an unaligned access error
 	assert(x == 42 + 42);

@@ -13,12 +13,12 @@ on_fns:
 
 section .text
 
-extern define_d
-extern max
+extern game_fn_define_d
+extern game_fn_max
 
 global define
 define:
-	call define_d wrt ..plt
+	call game_fn_define_d wrt ..plt
 	ret
 
 global init_globals
@@ -48,7 +48,7 @@ on_a:
 
 	pop rsi
 	pop rdi
-	call max wrt ..plt
+	call game_fn_max wrt ..plt
 
     mov rsp, rbp
     pop rbp

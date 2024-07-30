@@ -15,11 +15,11 @@ on_fns:
 
 section .text
 
-extern define_j
+extern game_fn_define_j
 
 global define
 define:
-	call define_j wrt ..plt
+	call game_fn_define_j wrt ..plt
 	ret
 
 global init_globals

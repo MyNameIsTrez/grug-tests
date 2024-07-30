@@ -19,7 +19,7 @@ struct my_on_fns {
 
 static struct h h_definition;
 
-void define_h(int32_t x) {
+void game_fn_define_h(int32_t x) {
 	h_definition = (struct h){
 		.x = x,
 	};

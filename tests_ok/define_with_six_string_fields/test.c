@@ -18,7 +18,7 @@ struct o {
 
 static struct o o_definition;
 
-void define_o(char *u, char *v, char *w, char *x, char *y, char *z) {
+void game_fn_define_o(char *u, char *v, char *w, char *x, char *y, char *z) {
 	o_definition = (struct o){
 		.u = u,
 		.v = v,

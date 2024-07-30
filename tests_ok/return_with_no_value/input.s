@@ -13,12 +13,12 @@ on_fns:
 
 section .text
 
-extern define_d
-extern nothing
+extern game_fn_define_d
+extern game_fn_nothing
 
 global define
 define:
-	call define_d wrt ..plt
+	call game_fn_define_d wrt ..plt
 	ret
 
 global init_globals
@@ -38,7 +38,7 @@ on_a:
 	pop rdi
 	call helper_foo
 
-	call nothing wrt ..plt
+	call game_fn_nothing wrt ..plt
 
     mov rsp, rbp
     pop rbp

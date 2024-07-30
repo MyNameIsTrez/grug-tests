@@ -13,13 +13,13 @@ on_fns:
 
 section .text
 
-extern define_d
-extern magic
-extern initialize
+extern game_fn_define_d
+extern game_fn_magic
+extern game_fn_initialize
 
 global define
 define:
-	call define_d wrt ..plt
+	call game_fn_define_d wrt ..plt
 	ret
 
 global init_globals
@@ -33,10 +33,10 @@ on_a:
 	sub rsp, 0x10
     mov rbp[-0x8], rdi
 
-	call magic wrt ..plt
+	call game_fn_magic wrt ..plt
     push rax
     pop rdi
-	call initialize wrt ..plt
+	call game_fn_initialize wrt ..plt
 
     mov rsp, rbp
     pop rbp

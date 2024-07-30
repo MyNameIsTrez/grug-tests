@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void define_a(void) {
+void game_fn_define_a(void) {
 }
 
 static void *get(void *handle, char *label) {

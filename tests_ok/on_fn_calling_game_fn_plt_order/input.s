@@ -13,16 +13,16 @@ on_fns:
 
 section .text
 
-extern define_d
-extern nothing
-extern magic
-extern initialize
-extern identity
-extern max
+extern game_fn_define_d
+extern game_fn_nothing
+extern game_fn_magic
+extern game_fn_initialize
+extern game_fn_identity
+extern game_fn_max
 
 global define
 define:
-	call define_d wrt ..plt
+	call game_fn_define_d wrt ..plt
 	ret
 
 global init_globals
@@ -36,18 +36,18 @@ on_a:
 	sub rsp, 0x10
     mov rbp[-0x8], rdi
 
-	call nothing wrt ..plt
-	call magic wrt ..plt
+	call game_fn_nothing wrt ..plt
+	call game_fn_magic wrt ..plt
 
 	mov eax, 42
 	push rax
 	pop rdi
-	call initialize wrt ..plt
+	call game_fn_initialize wrt ..plt
 
 	mov eax, 69
 	push rax
 	pop rdi
-	call identity wrt ..plt
+	call game_fn_identity wrt ..plt
 
 	mov eax, 1337
 	push rax
@@ -55,7 +55,7 @@ on_a:
 	push rax
 	pop rsi
 	pop rdi
-	call max wrt ..plt
+	call game_fn_max wrt ..plt
 
     mov rsp, rbp
     pop rbp

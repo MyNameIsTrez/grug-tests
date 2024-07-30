@@ -19,7 +19,7 @@ struct my_on_fns {
 
 static struct p p_definition;
 
-void define_p(char *x) {
+void game_fn_define_p(char *x) {
 	p_definition = (struct p){
 		.x = x,
 	};

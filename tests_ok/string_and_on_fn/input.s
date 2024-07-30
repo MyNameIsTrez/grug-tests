@@ -17,12 +17,12 @@ strings:
 
 section .text
 
-extern define_p
+extern game_fn_define_p
 
 global define
 define:
 	lea rdi, strings[rel 0]
-	call define_p wrt ..plt
+	call game_fn_define_p wrt ..plt
 	ret
 
 global init_globals

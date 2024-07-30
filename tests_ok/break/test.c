@@ -13,11 +13,11 @@ struct my_on_fns {
 	typeof(on_a) *a;
 };
 
-void define_d(void) {
+void game_fn_define_d(void) {
 }
 
 static size_t fn_nothing_call_count = 0;
-void nothing(void) {
+void game_fn_nothing(void) {
 	fn_nothing_call_count++;
 }
 

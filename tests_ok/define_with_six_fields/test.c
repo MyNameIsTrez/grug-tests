@@ -18,7 +18,7 @@ struct m {
 
 static struct m m_definition;
 
-void define_m(int32_t w, char *group, int32_t x, char *name, int32_t y, int32_t z) {
+void game_fn_define_m(int32_t w, char *group, int32_t x, char *name, int32_t y, int32_t z) {
 	m_definition = (struct m){
 		.w = w,
 		.group = group,

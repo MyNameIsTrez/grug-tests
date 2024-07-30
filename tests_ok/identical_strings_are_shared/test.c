@@ -15,7 +15,7 @@ struct q {
 
 static struct q q_definition;
 
-void define_q(char *a, char *b, char *c) {
+void game_fn_define_q(char *a, char *b, char *c) {
 	q_definition = (struct q){
 		.a = a,
 		.b = b,

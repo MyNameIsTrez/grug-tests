@@ -14,7 +14,7 @@ strings:
 
 section .text
 
-extern define_m
+extern game_fn_define_m
 
 global define
 define:
@@ -24,7 +24,7 @@ define:
 	lea rcx, strings[rel 4]
 	mov r8, 666
 	mov r9, 1337
-	call define_m wrt ..plt
+	call game_fn_define_m wrt ..plt
 	ret
 
 global init_globals

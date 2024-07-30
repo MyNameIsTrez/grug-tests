@@ -13,13 +13,13 @@ strings:
 
 section .text
 
-extern define_k
+extern game_fn_define_k
 
 global define
 define:
 	mov strict rdi, 42
 	lea rsi, strings[rel 0]
-	call define_k wrt ..plt
+	call game_fn_define_k wrt ..plt
 	ret
 
 global init_globals
