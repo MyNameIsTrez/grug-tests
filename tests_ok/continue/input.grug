@@ -5,10 +5,14 @@ define() d {
 
 on_a() {
     i: i32 = 0
+
     while i < 2 {
         nothing()
+
         i = i + 1
+
         continue
+
         nothing()
     }
 }
