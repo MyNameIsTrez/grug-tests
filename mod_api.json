@@ -422,6 +422,19 @@
 					"type": "string"
 				}
 			]
+		},
+		"is_friday": {
+			"description": "foo",
+			"return_type": "bool"
+		},
+		"set_is_happy": {
+			"description": "foo",
+			"arguments": [
+				{
+					"name": "is_happy",
+					"type": "bool"
+				}
+			]
 		}
 	}
 }
