@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
 
 	if (grug_test_regenerate_dll(grug_path, dll_path)) {
 		// For debugging
-		// fprintf(stderr, "%s:%d: %s (detected in grug.c:%d)\n", grug_error.filename, grug_error.line_number, grug_error.msg, grug_error.grug_c_line_number);
+		// fprintf(stderr, "%s:%d: %s (detected in grug.c:%d)\n", grug_error.path, grug_error.line_number, grug_error.msg, grug_error.grug_c_line_number);
 
 		fprintf(stderr, "%s\n", grug_error.msg);
 

@@ -5,7 +5,7 @@ define_type: db "d", 0
 
 align 8
 global globals_size
-globals_size: dq 4
+globals_size: dq 0
 
 global on_fns
 on_fns:
@@ -15,6 +15,7 @@ section .text
 
 extern game_fn_define_d
 extern game_fn_sin
+extern game_fn_cos
 
 global define
 define:
@@ -23,7 +24,6 @@ define:
 
 global init_globals
 init_globals:
-	mov dword rdi[byte 0x0], __?float32?__(0.0)
 	ret
 
 global on_a
@@ -34,16 +34,20 @@ on_a:
     mov rbp[-0x8], rdi
 
 	mov eax, __?float32?__(4.0)
-	mov r11, rbp[-0x8]
-	mov r11[byte 0x0], eax
-
-	mov rax, rbp[-0x8]
-	mov eax, rax[byte 0x0]
 	push rax
 
 	pop rax
 	movd xmm0, eax
 	call game_fn_sin wrt ..plt
+	movd eax, xmm0
+	mov rbp[-0xc], eax
+
+	mov eax, rbp[-0xc]
+	push rax
+
+	pop rax
+	movd xmm0, eax
+	call game_fn_cos wrt ..plt
 	movd eax, xmm0
 
     mov rsp, rbp

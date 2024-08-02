@@ -41,6 +41,7 @@ on_a:
 	pop rax
 	movd xmm0, eax
 	call game_fn_sin wrt ..plt
+	movd eax, xmm0
 
     mov rsp, rbp
     pop rbp

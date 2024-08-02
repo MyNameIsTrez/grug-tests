@@ -26,4 +26,6 @@ main:
 
 	pop rax
 
+	movd eax, xmm0
+
 	ret
