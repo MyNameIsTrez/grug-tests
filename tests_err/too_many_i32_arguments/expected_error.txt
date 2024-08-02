@@ -1,0 +1,1 @@
+Currently grug only supports up to six bool/i32/string arguments

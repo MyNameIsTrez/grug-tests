@@ -361,6 +361,67 @@
 					"type": "f32"
 				}
 			]
+		},
+		"mega": {
+			"description": "foo",
+			"arguments": [
+				{
+					"name": "f1",
+					"type": "f32"
+				},
+				{
+					"name": "i1",
+					"type": "i32"
+				},
+				{
+					"name": "b1",
+					"type": "bool"
+				},
+				{
+					"name": "f2",
+					"type": "f32"
+				},
+				{
+					"name": "f3",
+					"type": "f32"
+				},
+				{
+					"name": "f4",
+					"type": "f32"
+				},
+				{
+					"name": "b2",
+					"type": "bool"
+				},
+				{
+					"name": "i2",
+					"type": "i32"
+				},
+				{
+					"name": "f5",
+					"type": "f32"
+				},
+				{
+					"name": "f6",
+					"type": "f32"
+				},
+				{
+					"name": "f7",
+					"type": "f32"
+				},
+				{
+					"name": "f8",
+					"type": "f32"
+				},
+				{
+					"name": "i3",
+					"type": "i32"
+				},
+				{
+					"name": "str",
+					"type": "string"
+				}
+			]
 		}
 	}
 }
