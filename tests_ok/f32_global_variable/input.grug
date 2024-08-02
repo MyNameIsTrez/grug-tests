@@ -1,0 +1,11 @@
+define() d {
+    return {
+    }
+}
+
+x: f32 = 0
+
+on_a() {
+    x = 4.0
+    sin(x)
+}
