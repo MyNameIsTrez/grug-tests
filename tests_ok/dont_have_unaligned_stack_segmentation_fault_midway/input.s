@@ -30,15 +30,15 @@ global on_a
 on_a:
 	push rbp
 	mov rbp, rsp
-	sub rsp, 0x10
+	sub rsp, byte 0x10
     mov rbp[-0x8], rdi
 
 	; magic() + 42
 	mov eax, 42
 	push rax
-	sub rsp, 0x8 ; Comment this out along with the `add rsp, 0x8` below the call to see the unaligned access crash
+	sub rsp, byte 0x8 ; Comment this out along with the `add rsp, 0x8` below the call to see the unaligned access crash
 	call game_fn_magic wrt ..plt
-	add rsp, 0x8
+	add rsp, byte 0x8
 	pop r11
 	add rax, r11
 	push rax

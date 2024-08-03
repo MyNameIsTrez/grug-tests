@@ -17,7 +17,7 @@ extern game_fn_define_h
 
 global define
 define:
-	mov rdi, 42
+	mov edi, 42
 	call game_fn_define_h wrt ..plt
 	ret
 
@@ -29,7 +29,7 @@ global on_a
 on_a:
 	push rbp
 	mov rbp, rsp
-	sub rsp, 0x10
+	sub rsp, byte 0x10
     mov rbp[-0x8], rdi
 
 	mov rbp[-0xc], esi

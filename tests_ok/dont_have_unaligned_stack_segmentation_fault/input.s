@@ -30,7 +30,7 @@ global on_a
 on_a:
 	push rbp
 	mov rbp, rsp
-	sub rsp, 0x10 ; Change 0x10 to 0x8 to see the unaligned access crash
+	sub rsp, byte 0x10 ; Change 0x10 to 0x8 to see the unaligned access crash
     mov rbp[-0x8], rdi
 
 	call game_fn_nothing wrt ..plt
@@ -39,7 +39,7 @@ on_a:
 
 	; This shows that no matter how many arguments there are,
 	; we just need to make sure to have decremented rsp by multiples of 16
-	mov rax, 42
+	mov eax, 42
 	push rax
 	pop rdi
 	call game_fn_initialize wrt ..plt

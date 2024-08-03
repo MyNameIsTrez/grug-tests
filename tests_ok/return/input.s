@@ -29,7 +29,7 @@ global on_a
 on_a:
     push rbp
     mov rbp, rsp
-	sub rsp, 0x10
+	sub rsp, byte 0x10
     mov rbp[-0x8], rdi
 
 	mov rax, rbp[-0x8]
@@ -51,7 +51,7 @@ global helper_foo
 helper_foo:
     push rbp
     mov rbp, rsp
-	sub rsp, 0x10
+	sub rsp, byte 0x10
     mov rbp[-0x8], rdi
 
 	mov eax, 42

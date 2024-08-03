@@ -222,7 +222,8 @@ run_test_ok() {
 
 		local expected_o_path=$dir"results/intermediate.o"
 
-		nasm $nasm_path -f elf64 -o $expected_o_path && ld -shared --hash-style=sysv $expected_o_path -o $expected_dll_path && rm $expected_o_path
+		# -O0 turns optimizations off, which makes it easier to compare nasm's output against grug's
+		nasm $nasm_path -f elf64 -O0 -o $expected_o_path && ld -shared --hash-style=sysv $expected_o_path -o $expected_dll_path && rm $expected_o_path
 
 		# Rename the $nasm_path symbol to $grug_path, so the diff doesn't crap itself
 		objcopy $expected_dll_path --redefine-sym $nasm_path=$grug_path

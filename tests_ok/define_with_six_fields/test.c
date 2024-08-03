@@ -7,26 +7,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct m {
-	int32_t w;
-	char *group;
-	int32_t x;
-	char *name;
-	int32_t y;
-	int32_t z;
-};
-
-static struct m m_definition;
-
-void game_fn_define_m(int32_t w, char *group, int32_t x, char *name, int32_t y, int32_t z) {
-	m_definition = (struct m){
-		.w = w,
-		.group = group,
-		.x = x,
-		.name = name,
-		.y = y,
-		.z = z,
-	};
+void game_fn_define_m(int32_t w, char *group, bool b1, char *name, bool b2, int32_t z) {
+	assert(w == 42);
+	assert(strcmp(group, "bar") == 0);
+	assert(b1 == true);
+	assert(strcmp(name, "foobar") == 0);
+	assert(b2 == false);
+	assert(z == 1337);
 }
 
 static void *get(void *handle, char *label) {
@@ -58,12 +45,6 @@ int main(int argc, char *argv[]) {
 	#pragma GCC diagnostic ignored "-Wpedantic"
 	grug_define_fn_t define = get(handle, "define");
 	define();
-	assert(m_definition.w == 42);
-	assert(strcmp(m_definition.group, "bar") == 0);
-	assert(m_definition.x == 69);
-	assert(strcmp(m_definition.name, "foobar") == 0);
-	assert(m_definition.y == 666);
-	assert(m_definition.z == 1337);
 
 	size_t globals_size = *(size_t *)get(handle, "globals_size");
 	assert(globals_size == 0);

@@ -29,7 +29,7 @@ global on_a:
 on_a:
     push rbp
     mov rbp, rsp
-    sub rsp, 0x10
+    sub rsp, byte 0x10
     mov rbp[-0x8], rdi
     mov rbp[-0xc], esi
     mov rax, rbp[-0x8]
@@ -51,7 +51,7 @@ helper_fib:
 	; Function prologue
     push rbp
     mov rbp, rsp
-    sub rsp, 0x10
+    sub rsp, byte 0x10
     mov rbp[-0x8], rdi
     mov rbp[-0xc], esi
 
@@ -113,9 +113,9 @@ helper_fib:
     push rax
     pop rsi
     pop rdi
-    sub rsp, 0x8
+    sub rsp, byte 0x8
     call helper_fib
-    add rsp, 0x8
+    add rsp, byte 0x8
     pop r11
 
 	; helper_fib(n - 1) + helper_fib(n - 2)

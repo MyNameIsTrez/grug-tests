@@ -17,7 +17,7 @@ extern game_fn_define_h
 
 global define
 define:
-	mov rdi, 42
+	mov edi, 42
 	call game_fn_define_h wrt ..plt
 	ret
 

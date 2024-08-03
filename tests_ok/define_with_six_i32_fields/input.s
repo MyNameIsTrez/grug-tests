@@ -13,12 +13,12 @@ extern game_fn_define_n
 
 global define
 define:
-	mov rdi, 1
-	mov rsi, 2
-	mov rdx, 3
-	mov rcx, 4
-	mov r8, 5
-	mov r9, 6
+	mov edi, 1
+	mov esi, 2
+	mov edx, 3
+	mov ecx, 4
+	mov r8d, 5
+	mov r9d, 6
 	call game_fn_define_n wrt ..plt
 	ret
 

@@ -185,16 +185,16 @@
 					"type": "string"
 				},
 				{
-					"name": "x",
-					"type": "i32"
+					"name": "b1",
+					"type": "bool"
 				},
 				{
 					"name": "name",
 					"type": "string"
 				},
 				{
-					"name": "y",
-					"type": "i32"
+					"name": "b2",
+					"type": "bool"
 				},
 				{
 					"name": "z",

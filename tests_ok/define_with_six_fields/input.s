@@ -18,12 +18,12 @@ extern game_fn_define_m
 
 global define
 define:
-	mov rdi, 42
+	mov edi, 42
 	lea rsi, strings[rel 0]
-	mov rdx, 69
+	mov edx, 1
 	lea rcx, strings[rel 4]
-	mov r8, 666
-	mov r9, 1337
+	xor r8d, r8d
+	mov r9d, 1337
 	call game_fn_define_m wrt ..plt
 	ret
 

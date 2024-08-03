@@ -2,9 +2,9 @@ define() m {
     return {
         .w = 42,
         .group = "bar",
-        .x = 69,
+        .b1 = true,
         .name = "foobar",
-        .y = 666,
+        .b2 = false,
         .z = 1337,
     }
 }
