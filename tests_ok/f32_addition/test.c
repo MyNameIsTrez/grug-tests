@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <dlfcn.h>
+#include <math.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,10 +17,11 @@ struct my_on_fns {
 void game_fn_define_d(void) {
 }
 
-static bool fn_initialize_was_called = false;
-void game_fn_initialize(int32_t x) {
-	fn_initialize_was_called = true;
-	assert(x == 55);
+static bool fn_sin_was_called = false;
+float game_fn_sin(float x) {
+	fn_sin_was_called = true;
+	assert(x == 6.0f);
+	return sinf(x);
 }
 
 static void *get(void *handle, char *label) {
@@ -60,9 +62,9 @@ int main(int argc, char *argv[]) {
 	init_globals(g);
 
 	struct my_on_fns *on_fns = get(handle, "on_fns");
-	assert(!fn_initialize_was_called);
+	assert(!fn_sin_was_called);
 	on_fns->a(g);
-	assert(fn_initialize_was_called);
+	assert(fn_sin_was_called);
 
 	free(g);
 	#pragma GCC diagnostic pop

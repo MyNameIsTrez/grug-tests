@@ -1,0 +1,14 @@
+define() d {
+    return {
+    }
+}
+
+on_a() {
+    helper_fib()
+}
+
+helper_fib() {
+	nothing()
+	return
+	nothing()
+}

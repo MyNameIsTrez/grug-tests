@@ -1,0 +1,7 @@
+define() d {
+    return {
+    }
+}
+
+on_a(n: i32) {
+}

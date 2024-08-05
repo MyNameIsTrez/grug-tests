@@ -16,10 +16,9 @@ struct my_on_fns {
 void game_fn_define_d(void) {
 }
 
-static bool fn_initialize_was_called = false;
-void game_fn_initialize(int32_t x) {
-	fn_initialize_was_called = true;
-	assert(x == 55);
+static size_t fn_nothing_call_count = 0;
+void game_fn_nothing(void) {
+	fn_nothing_call_count++;
 }
 
 static void *get(void *handle, char *label) {
@@ -60,9 +59,9 @@ int main(int argc, char *argv[]) {
 	init_globals(g);
 
 	struct my_on_fns *on_fns = get(handle, "on_fns");
-	assert(!fn_initialize_was_called);
+	assert(fn_nothing_call_count == 0);
 	on_fns->a(g);
-	assert(fn_initialize_was_called);
+	assert(fn_nothing_call_count == 1);
 
 	free(g);
 	#pragma GCC diagnostic pop

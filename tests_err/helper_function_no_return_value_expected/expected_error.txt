@@ -1,0 +1,1 @@
+Helper function wasn't supposed to return any value

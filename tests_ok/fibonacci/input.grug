@@ -3,11 +3,11 @@ define() d {
     }
 }
 
-on_a(n: i32) {
-    initialize(helper_fib(n))
+on_a() {
+    initialize(helper_fib(10))
 }
 
-helper_fib(n: i32) {
+helper_fib(n: i32): i32 {
     if n == 0 or n == 1 {
         return n
     }
