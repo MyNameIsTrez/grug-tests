@@ -19,6 +19,7 @@ void game_fn_define_d(void) {
 static bool fn_initialize_was_called = false;
 void game_fn_initialize(int32_t x) {
 	fn_initialize_was_called = true;
+    fprintf(stderr, "x: %d\n", x);
 	assert(x == 55);
 }
 

@@ -1,0 +1,1 @@
+Function 'on_a' its 'self' parameter was supposed to have the type i32, but was string

@@ -4,5 +4,5 @@ define() d {
 }
 
 on_a() {
-    initialize((2 >= 2) + (3 >= 2))
+    initialize_bool(2 <= 2)
 }

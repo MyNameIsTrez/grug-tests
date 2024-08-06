@@ -14,7 +14,7 @@ on_fns:
 section .text
 
 extern game_fn_define_d
-extern game_fn_initialize
+extern game_fn_initialize_bool
 
 global define
 define:
@@ -45,7 +45,7 @@ on_a:
 	push rax
 
 	pop rdi
-	call game_fn_initialize wrt ..plt
+	call game_fn_initialize_bool wrt ..plt
 
     mov rsp, rbp
     pop rbp

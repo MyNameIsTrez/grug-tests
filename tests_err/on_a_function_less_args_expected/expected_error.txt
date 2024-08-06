@@ -1,1 +1,0 @@
-On function 'on_a' got an unexpected extra argument 'foo' with type i32

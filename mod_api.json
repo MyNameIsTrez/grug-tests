@@ -309,6 +309,15 @@
 				}
 			]
 		},
+		"initialize_bool": {
+			"description": "foo",
+			"arguments": [
+				{
+					"name": "b",
+					"type": "bool"
+				}
+			]
+		},
 		"identity": {
 			"description": "foo",
 			"return_type": "i32",
@@ -433,6 +442,80 @@
 				{
 					"name": "is_happy",
 					"type": "bool"
+				}
+			]
+		},
+		"omega_f32": {
+			"description": "foo",
+			"arguments": [
+				{
+					"name": "f1",
+					"type": "f32"
+				},
+				{
+					"name": "f2",
+					"type": "f32"
+				},
+				{
+					"name": "f3",
+					"type": "f32"
+				},
+				{
+					"name": "f4",
+					"type": "f32"
+				},
+				{
+					"name": "f5",
+					"type": "f32"
+				},
+				{
+					"name": "f6",
+					"type": "f32"
+				},
+				{
+					"name": "f7",
+					"type": "f32"
+				},
+				{
+					"name": "f8",
+					"type": "f32"
+				},
+				{
+					"name": "f9",
+					"type": "f32"
+				}
+			]
+		},
+		"omega_i32": {
+			"description": "foo",
+			"arguments": [
+				{
+					"name": "i1",
+					"type": "i32"
+				},
+				{
+					"name": "i2",
+					"type": "i32"
+				},
+				{
+					"name": "i3",
+					"type": "i32"
+				},
+				{
+					"name": "i4",
+					"type": "i32"
+				},
+				{
+					"name": "i5",
+					"type": "i32"
+				},
+				{
+					"name": "i6",
+					"type": "i32"
+				},
+				{
+					"name": "i7",
+					"type": "i32"
 				}
 			]
 		}

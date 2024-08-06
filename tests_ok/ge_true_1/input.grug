@@ -3,5 +3,6 @@ define() d {
     }
 }
 
-on_a(n: i32) {
+on_a() {
+    initialize_bool(2 >= 2)
 }

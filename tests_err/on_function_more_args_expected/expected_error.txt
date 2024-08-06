@@ -1,0 +1,1 @@
+Function 'on_a' expected the parameter 'x' with type i32

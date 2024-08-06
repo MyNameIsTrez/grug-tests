@@ -31,10 +31,9 @@ on_a:
     mov rbp, rsp
     sub rsp, byte 0x10
     mov rbp[-0x8], rdi
-    mov rbp[-0xc], esi
     mov rax, rbp[-0x8]
     push rax
-    mov eax, rbp[-0xc]
+    mov eax, 10
     push rax
     pop rsi
     pop rdi

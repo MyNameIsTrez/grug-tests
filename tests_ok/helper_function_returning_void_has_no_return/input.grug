@@ -4,10 +4,10 @@ define() d {
 }
 
 on_a() {
-    helper_fib()
-	nothing()
+    helper_foo()
+    nothing()
 }
 
-helper_fib() {
-	nothing()
+helper_foo() {
+    nothing()
 }

@@ -4,5 +4,5 @@ define() d {
 }
 
 on_a() {
-    initialize(false and false)
+    initialize_bool(false and false)
 }

@@ -14,7 +14,7 @@ on_fns:
 section .text
 
 extern game_fn_define_d
-extern game_fn_initialize
+extern game_fn_nothing
 
 global define
 define:
@@ -29,33 +29,27 @@ global on_a
 on_a:
     push rbp
     mov rbp, rsp
-	sub rsp, byte 0x10
+    sub rsp, byte 0x10
     mov rbp[-0x8], rdi
-
-	mov eax, 2
-	push rax
-	mov eax, 2
-	pop r11
-	cmp rax, r11
-	mov eax, 0
-	setle al
-	push rax
-
-	mov eax, 2
-	push rax
-	mov eax, 1
-	pop r11
-	cmp rax, r11
-	mov eax, 0
-	setle al
-
-	pop r11
-	add rax, r11
-	push rax
-
-	pop rdi
-	call game_fn_initialize wrt ..plt
-
+    mov rax, rbp[-0x8]
+    push rax
+    pop rdi
+    call helper_foo
+    call game_fn_nothing wrt ..plt
     mov rsp, rbp
     pop rbp
-	ret
+    ret
+
+global helper_foo
+helper_foo:
+    push rbp
+    mov rbp, rsp
+    sub rsp, byte 0x10
+    mov rbp[-0x8], rdi
+    call game_fn_nothing wrt ..plt
+    mov rsp, rbp
+    pop rbp
+    ret
+    mov rsp, rbp
+    pop rbp
+    ret
