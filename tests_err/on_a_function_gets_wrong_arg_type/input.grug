@@ -1,0 +1,7 @@
+define() f {
+    return {
+    }
+}
+
+on_a(self: string) {
+}

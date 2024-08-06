@@ -1,1 +1,1 @@
-Helper function wasn't supposed to return any value
+Helper function 'helper_fib' wasn't supposed to return any value

@@ -1,0 +1,1 @@
+Helper function 'helper_foo' was supposed to return i32

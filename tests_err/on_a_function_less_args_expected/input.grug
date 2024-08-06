@@ -1,0 +1,7 @@
+define() f {
+    return {
+    }
+}
+
+on_a(self: i32, foo: i32) {
+}

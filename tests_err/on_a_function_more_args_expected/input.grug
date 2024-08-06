@@ -1,0 +1,7 @@
+define() g {
+    return {
+    }
+}
+
+on_a(self: i32) {
+}
