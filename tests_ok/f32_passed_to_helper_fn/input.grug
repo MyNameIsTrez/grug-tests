@@ -1,0 +1,12 @@
+define() d {
+    return {
+    }
+}
+
+on_a() {
+    helper_foo(42.0)
+}
+
+helper_foo(f: f32) {
+    sin(f)
+}

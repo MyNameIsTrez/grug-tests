@@ -290,6 +290,20 @@
 					"type": "string"
 				}
 			]
+		},
+		"r": {
+			"description": "foo",
+			"on_functions": {
+				"on_a": {
+					"description": "foo",
+					"arguments": [
+						{
+							"name": "f",
+							"type": "f32"
+						}
+					]
+				}
+			}
 		}
 	},
 	"game_functions": {

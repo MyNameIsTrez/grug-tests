@@ -1,0 +1,8 @@
+define() r {
+    return {
+    }
+}
+
+on_a(f: f32) {
+    sin(f)
+}
