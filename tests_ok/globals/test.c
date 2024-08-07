@@ -1,15 +1,13 @@
 #include "grug.h"
 
+#include "mod_api.h"
+
 #include <assert.h>
 #include <dlfcn.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-struct h {
-	int32_t x;
-};
 
 static struct h h_definition;
 

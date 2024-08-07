@@ -1,20 +1,13 @@
 #include "grug.h"
 
+#include "mod_api.h"
+
 #include <assert.h>
 #include <dlfcn.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-struct o {
-	char *u;
-	char *v;
-	char *w;
-	char *x;
-	char *y;
-	char *z;
-};
 
 static struct o o_definition;
 

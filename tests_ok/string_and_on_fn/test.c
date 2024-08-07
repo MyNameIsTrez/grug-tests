@@ -1,6 +1,6 @@
 #include "grug.h"
 
-#include "entity_on_fns.h"
+#include "mod_api.h"
 
 #include <assert.h>
 #include <dlfcn.h>
@@ -8,10 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-struct p {
-	char *x;
-};
 
 static struct p p_definition;
 

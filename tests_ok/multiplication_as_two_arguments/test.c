@@ -1,6 +1,6 @@
 #include "grug.h"
 
-#include "entity_on_fns.h"
+#include "mod_api.h"
 
 #include <assert.h>
 #include <dlfcn.h>

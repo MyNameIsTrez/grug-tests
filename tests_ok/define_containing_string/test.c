@@ -1,16 +1,13 @@
 #include "grug.h"
 
+#include "mod_api.h"
+
 #include <assert.h>
 #include <dlfcn.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-struct k {
-	int32_t age;
-	char *name;
-};
 
 static struct k k_definition;
 

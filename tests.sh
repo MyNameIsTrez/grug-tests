@@ -92,6 +92,7 @@ run_test_err_runtime() {
 	if [[ $dll_path -nt $grug_path ]]\
 	&& [[ $dll_path -nt $test_c_path ]]\
 	&& [[ $dll_path -nt $test_executable_path ]]\
+	&& [[ $dll_path -nt mod_api.h ]]\
 	&& [[ $dll_path -nt mod_api.json ]]\
 	&& [[ $dll_path -nt tests.sh ]]\
 	&& [[ $dll_path -nt a.out ]]\
@@ -193,6 +194,7 @@ run_test_ok() {
 	&& [[ $dll_path -nt $expected_dll_path ]]\
 	&& [[ $dll_path -nt $test_c_path ]]\
 	&& [[ $dll_path -nt $test_executable_path ]]\
+	&& [[ $dll_path -nt mod_api.h ]]\
 	&& [[ $dll_path -nt mod_api.json ]]\
 	&& [[ $dll_path -nt tests.sh ]]\
 	&& [[ $dll_path -nt a.out ]]\

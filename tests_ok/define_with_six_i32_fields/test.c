@@ -1,20 +1,13 @@
 #include "grug.h"
 
+#include "mod_api.h"
+
 #include <assert.h>
 #include <dlfcn.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-struct n {
-	int32_t u;
-	int32_t v;
-	int32_t w;
-	int32_t x;
-	int32_t y;
-	int32_t z;
-};
 
 static struct n n_definition;
 
