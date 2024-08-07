@@ -1,0 +1,12 @@
+define() s {
+    return {
+    }
+}
+
+on_a(i: i32, f: f32) {
+    i = 20
+    initialize(i)
+
+    f = 30.0
+    sin(f)
+}
