@@ -1,7 +1,7 @@
 section .data
 
 global define_type
-define_type: db "h", 0
+define_type: db "d", 0
 
 align 8
 global globals_size
@@ -13,12 +13,11 @@ on_fns:
 
 section .text
 
-extern game_fn_define_h
+extern game_fn_define_d
 
 global define
 define:
-	mov edi, 42
-	call game_fn_define_h wrt ..plt
+	call game_fn_define_d wrt ..plt
 	ret
 
 global init_globals
@@ -31,8 +30,6 @@ on_a:
 	mov rbp, rsp
 	sub rsp, byte 0x10
     mov rbp[-0x8], rdi
-
-	mov rbp[-0xc], esi
 
 	mov rsp, rbp
 	pop rbp

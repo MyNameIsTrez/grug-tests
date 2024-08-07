@@ -1,5 +1,7 @@
 #include "grug.h"
 
+#include "entity_on_fns.h"
+
 #include <assert.h>
 #include <dlfcn.h>
 #include <stdint.h>
@@ -7,22 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void on_a(void *globals);
-
-struct h {
-	int32_t x;
-};
-
-struct my_on_fns {
-	typeof(on_a) *a;
-};
-
-static struct h h_definition;
-
-void game_fn_define_h(int32_t x) {
-	h_definition = (struct h){
-		.x = x,
-	};
+void game_fn_define_d(void) {
 }
 
 static void *get(void *handle, char *label) {
@@ -48,13 +35,12 @@ int main(int argc, char *argv[]) {
 		exit(EXIT_FAILURE);
 	}
 
-	assert(strcmp(get(handle, "define_type"), "h") == 0);
+	assert(strcmp(get(handle, "define_type"), "d") == 0);
 
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wpedantic"
 	grug_define_fn_t define = get(handle, "define");
 	define();
-	assert(h_definition.x == 42);
 
 	size_t globals_size = *(size_t *)get(handle, "globals_size");
 	assert(globals_size == 0);
@@ -63,7 +49,7 @@ int main(int argc, char *argv[]) {
 	grug_init_globals_fn_t init_globals = get(handle, "init_globals");
 	init_globals(g);
 
-	struct my_on_fns *on_fns = get(handle, "on_fns");
+	struct d_on_fns *on_fns = get(handle, "on_fns");
 	on_fns->a(g);
 
 	free(g);

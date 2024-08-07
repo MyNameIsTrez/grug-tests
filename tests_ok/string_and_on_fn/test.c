@@ -1,5 +1,7 @@
 #include "grug.h"
 
+#include "entity_on_fns.h"
+
 #include <assert.h>
 #include <dlfcn.h>
 #include <stdint.h>
@@ -7,14 +9,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-void on_a(void *globals);
-
 struct p {
 	char *x;
-};
-
-struct my_on_fns {
-	typeof(on_a) *a;
 };
 
 static struct p p_definition;
@@ -63,7 +59,7 @@ int main(int argc, char *argv[]) {
 	grug_init_globals_fn_t init_globals = get(handle, "init_globals");
 	init_globals(g);
 
-	struct my_on_fns *on_fns = get(handle, "on_fns");
+	struct p_on_fns *on_fns = get(handle, "on_fns");
 	on_fns->a(g);
 
 	free(g);

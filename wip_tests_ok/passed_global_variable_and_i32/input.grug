@@ -1,4 +1,4 @@
-define() d {
+define() f {
     return {
     }
 }

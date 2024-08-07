@@ -1,5 +1,7 @@
 #include "grug.h"
 
+#include "entity_on_fns.h"
+
 #include <assert.h>
 #include <dlfcn.h>
 #include <math.h>
@@ -7,12 +9,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-void on_a(void *globals, int32_t i, float f);
-
-struct my_on_fns {
-	typeof(on_a) *a;
-};
 
 void game_fn_define_s(void) {
 }
@@ -67,7 +63,7 @@ int main(int argc, char *argv[]) {
 	grug_init_globals_fn_t init_globals = get(handle, "init_globals");
 	init_globals(g);
 
-	struct my_on_fns *on_fns = get(handle, "on_fns");
+	struct s_on_fns *on_fns = get(handle, "on_fns");
 	assert(!fn_initialize_was_called);
 	assert(!fn_sin_was_called);
 	on_fns->a(g, 2, 3.0f);

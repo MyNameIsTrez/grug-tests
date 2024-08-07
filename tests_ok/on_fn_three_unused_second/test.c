@@ -1,21 +1,13 @@
 #include "grug.h"
 
+#include "entity_on_fns.h"
+
 #include <assert.h>
 #include <dlfcn.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-void on_a(void *globals);
-void on_b(void *globals);
-void on_c(void *globals);
-
-struct my_on_fns {
-	typeof(on_a) *a;
-	typeof(on_b) *b;
-	typeof(on_c) *c;
-};
 
 void game_fn_define_j(void) {
 }
@@ -57,7 +49,7 @@ int main(int argc, char *argv[]) {
 	grug_init_globals_fn_t init_globals = get(handle, "init_globals");
 	init_globals(g);
 
-	struct my_on_fns *on_fns = get(handle, "on_fns");
+	struct j_on_fns *on_fns = get(handle, "on_fns");
 	on_fns->a(g);
 	assert(on_fns->b == NULL);
 	on_fns->c(g);
