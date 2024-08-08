@@ -3,9 +3,7 @@ define() d {
     }
 }
 
-x: f32 = 0.0
-
 on_a() {
-    x = 4.0
-    sin(x)
+    define: i32 = 42
+    initialize(define)
 }

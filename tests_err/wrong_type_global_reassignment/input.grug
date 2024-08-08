@@ -3,9 +3,8 @@ define() d {
     }
 }
 
-x: f32 = 0.0
+a: f32 = 0.0
 
 on_a() {
-    x = 4.0
-    sin(x)
+    a = true
 }

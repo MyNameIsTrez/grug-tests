@@ -1,0 +1,9 @@
+define() j {
+    return {
+    }
+}
+
+on_a() {
+    on_b: i32 = 42
+    initialize(on_b)
+}

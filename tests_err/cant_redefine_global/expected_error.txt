@@ -1,0 +1,1 @@
+The global variable 'a' shadows an earlier global variable with the same name, so change the name of either of them
