@@ -14,7 +14,7 @@ on_fns:
 section .text
 
 extern game_fn_define_d
-extern game_fn_nothing
+extern game_fn_initialize_bool
 
 global define
 define:
@@ -32,19 +32,17 @@ on_a:
 	sub rsp, byte 0x10
     mov rbp[-0x8], rdi
 
-	call game_fn_nothing wrt ..plt
+	; true
 	mov eax, 1
+
+	; !eax
 	test rax, rax
-	je strict $+0x2d
-	mov eax, 1
-	test rax, rax
-	je strict $+0x10
-	jmp strict $+0xa
-	jmp strict $-0x13
-	call game_fn_nothing wrt ..plt
-	jmp strict $+0xa
-	jmp strict $-0x30
-	call game_fn_nothing wrt ..plt
+	mov eax, 0x0
+    sete al
+	push rax
+
+	pop rdi
+	call game_fn_initialize_bool wrt ..plt
 
     mov rsp, rbp
     pop rbp

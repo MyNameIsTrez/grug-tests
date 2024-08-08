@@ -35,11 +35,11 @@ on_a:
 	xor eax, eax
 	mov rbp[-0xc], eax
 
-	mov eax, 0x1
+	mov eax, 1
 	test rax, rax
 	je strict $+0x73
 	call game_fn_nothing wrt ..plt
-	mov eax, 0x2
+	mov eax, 2
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11
@@ -48,13 +48,13 @@ on_a:
 	setne al
 	test rax, rax
 	je strict $+0x45
-	mov eax, 0x1
+	mov eax, 1
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11
 	add rax, r11
 	mov rbp[-0xc], eax
-	mov eax, 0x1
+	mov eax, 1
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11

@@ -13,9 +13,9 @@ void game_fn_define_d(void) {
 }
 
 static bool fn_initialize_bool_was_called = false;
-void game_fn_initialize_bool(int32_t x) {
+void game_fn_initialize_bool(bool b) {
 	fn_initialize_bool_was_called = true;
-	assert(x == 1);
+	assert(b == true);
 }
 
 static void *get(void *handle, char *label) {

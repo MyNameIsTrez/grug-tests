@@ -32,10 +32,8 @@ on_a:
 	sub rsp, byte 0x10
     mov rbp[-0x8], rdi
 
-	xor eax, eax
-	test rax, rax
-	mov eax, 0
-	sete al
+	mov eax, 42
+	neg rax
 	push rax
 
 	pop rdi

@@ -66,9 +66,9 @@ helper_fib:
     je $+0xc
 
 	; or n == 1
-    mov eax, 0x1
+    mov eax, 1
     jmp strict $+0x26
-    mov eax, 0x1
+    mov eax, 1
     push rax
     mov eax, rbp[-0xc]
     pop r11
@@ -90,7 +90,7 @@ helper_fib:
 	; helper_fib(n - 2)
     mov rax, rbp[-0x8]
     push rax
-    mov eax, 0x2
+    mov eax, 2
     push rax
     mov eax, rbp[-0xc]
     pop r11
@@ -104,7 +104,7 @@ helper_fib:
 	; helper_fib(n - 1)
     mov rax, rbp[-0x8]
     push rax
-    mov eax, 0x1
+    mov eax, 1
     push rax
     mov eax, rbp[-0xc]
     pop r11
