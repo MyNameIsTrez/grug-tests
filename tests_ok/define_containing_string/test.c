@@ -9,13 +9,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-static struct k k_definition;
-
 void game_fn_define_k(int32_t age, char *name) {
-	k_definition = (struct k){
-		.age = age,
-		.name = name,
-	};
+	assert(age == 42);
+	assert(strcmp(name, "foo") == 0);
 }
 
 static void *get(void *handle, char *label) {
@@ -47,8 +43,6 @@ int main(int argc, char *argv[]) {
 	#pragma GCC diagnostic ignored "-Wpedantic"
 	grug_define_fn_t define = get(handle, "define");
 	define();
-	assert(k_definition.age == 42);
-	assert(strcmp(k_definition.name, "foo") == 0);
 
 	size_t globals_size = *(size_t *)get(handle, "globals_size");
 	assert(globals_size == 0);

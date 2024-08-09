@@ -2,61 +2,6 @@
 
 #include <stdint.h>
 
-struct b {
-    int32_t x;
-};
-struct c {
-    int32_t x;
-    int32_t y;
-};
-struct h {
-    int32_t x;
-};
-struct i {
-    int32_t x;
-    int32_t y;
-};
-struct k {
-    int32_t age;
-    char *name;
-};
-struct l {
-    char *group;
-    char *name;
-};
-struct m {
-    int32_t w;
-    char *group;
-    bool b1;
-    char *name;
-    bool b2;
-    int32_t z;
-};
-struct n {
-    int32_t u;
-    int32_t v;
-    int32_t w;
-    int32_t x;
-    int32_t y;
-    int32_t z;
-};
-struct o {
-    char *u;
-    char *v;
-    char *w;
-    char *x;
-    char *y;
-    char *z;
-};
-struct p {
-    char *x;
-};
-struct q {
-    char *a;
-    char *b;
-    char *c;
-};
-
 void game_fn_define_a(void);
 void game_fn_define_b(int32_t x);
 void game_fn_define_c(int32_t x, int32_t y);

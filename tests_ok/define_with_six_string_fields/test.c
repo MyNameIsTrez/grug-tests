@@ -9,17 +9,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-static struct o o_definition;
-
 void game_fn_define_o(char *u, char *v, char *w, char *x, char *y, char *z) {
-	o_definition = (struct o){
-		.u = u,
-		.v = v,
-		.w = w,
-		.x = x,
-		.y = y,
-		.z = z,
-	};
+	assert(strcmp(u, "u") == 0);
+	assert(strcmp(v, "v") == 0);
+	assert(strcmp(w, "w") == 0);
+	assert(strcmp(x, "x") == 0);
+	assert(strcmp(y, "y") == 0);
+	assert(strcmp(z, "z") == 0);
 }
 
 static void *get(void *handle, char *label) {
@@ -51,12 +47,6 @@ int main(int argc, char *argv[]) {
 	#pragma GCC diagnostic ignored "-Wpedantic"
 	grug_define_fn_t define = get(handle, "define");
 	define();
-	assert(strcmp(o_definition.u, "u") == 0);
-	assert(strcmp(o_definition.v, "v") == 0);
-	assert(strcmp(o_definition.w, "w") == 0);
-	assert(strcmp(o_definition.x, "x") == 0);
-	assert(strcmp(o_definition.y, "y") == 0);
-	assert(strcmp(o_definition.z, "z") == 0);
 
 	size_t globals_size = *(size_t *)get(handle, "globals_size");
 	assert(globals_size == 0);

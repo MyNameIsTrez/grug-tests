@@ -9,12 +9,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-static struct p p_definition;
-
 void game_fn_define_p(char *x) {
-	p_definition = (struct p){
-		.x = x,
-	};
+	assert(strcmp(x, "foo") == 0);
 }
 
 static void *get(void *handle, char *label) {
@@ -46,7 +42,6 @@ int main(int argc, char *argv[]) {
 	#pragma GCC diagnostic ignored "-Wpedantic"
 	grug_define_fn_t define = get(handle, "define");
 	define();
-	assert(strcmp(p_definition.x, "foo") == 0);
 
 	size_t globals_size = *(size_t *)get(handle, "globals_size");
 	assert(globals_size == 0);

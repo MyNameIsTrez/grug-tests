@@ -9,17 +9,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-static struct n n_definition;
-
 void game_fn_define_n(int32_t u, int32_t v, int32_t w, int32_t x, int32_t y, int32_t z) {
-	n_definition = (struct n){
-		.u = u,
-		.v = v,
-		.w = w,
-		.x = x,
-		.y = y,
-		.z = z,
-	};
+	assert(u == 1);
+	assert(v == 2);
+	assert(w == 3);
+	assert(x == 4);
+	assert(y == 5);
+	assert(z == 6);
 }
 
 static void *get(void *handle, char *label) {
@@ -51,12 +47,6 @@ int main(int argc, char *argv[]) {
 	#pragma GCC diagnostic ignored "-Wpedantic"
 	grug_define_fn_t define = get(handle, "define");
 	define();
-	assert(n_definition.u == 1);
-	assert(n_definition.v == 2);
-	assert(n_definition.w == 3);
-	assert(n_definition.x == 4);
-	assert(n_definition.y == 5);
-	assert(n_definition.z == 6);
 
 	size_t globals_size = *(size_t *)get(handle, "globals_size");
 	assert(globals_size == 0);
