@@ -1,27 +1,25 @@
 section .data
 
 global define_type
-define_type: db "k", 0
+define_type: db "b", 0
 
 align 8
 global globals_size
 globals_size: dq 0
 
-global strings
-strings:
-	db "foo", 0
-
 section .text
 
-extern game_fn_define_k
+extern game_fn_define_b
 
 global define
 define:
-	lea rax, strings[rel 0]
-	mov rsi, rax
-	mov eax, 42
+	mov eax, 2
+	push rax
+	mov eax, 1
+	pop r11
+	add rax, r11
 	mov rdi, rax
-	call game_fn_define_k wrt ..plt
+	call game_fn_define_b wrt ..plt
 	ret
 
 global init_globals

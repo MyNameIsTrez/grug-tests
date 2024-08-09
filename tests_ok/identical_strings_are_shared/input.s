@@ -18,9 +18,12 @@ extern game_fn_define_q
 
 global define
 define:
-	lea rdi, strings[rel 0]
-	lea rsi, strings[rel 2]
-	lea rdx, strings[rel 2]
+	lea rax, strings[rel 2]
+	mov rdx, rax
+	lea rax, strings[rel 2]
+	mov rsi, rax
+	lea rax, strings[rel 0]
+	mov rdi, rax
 	call game_fn_define_q wrt ..plt
 	ret
 

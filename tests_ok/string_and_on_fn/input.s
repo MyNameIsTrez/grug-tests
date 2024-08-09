@@ -21,7 +21,8 @@ extern game_fn_define_p
 
 global define
 define:
-	lea rdi, strings[rel 0]
+	lea rax, strings[rel 0]
+	mov rdi, rax
 	call game_fn_define_p wrt ..plt
 	ret
 

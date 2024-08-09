@@ -322,6 +322,43 @@
 					]
 				}
 			}
+		},
+		"t": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "f1",
+					"type": "f32"
+				},
+				{
+					"name": "f2",
+					"type": "f32"
+				},
+				{
+					"name": "f3",
+					"type": "f32"
+				},
+				{
+					"name": "f4",
+					"type": "f32"
+				},
+				{
+					"name": "f5",
+					"type": "f32"
+				},
+				{
+					"name": "f6",
+					"type": "f32"
+				},
+				{
+					"name": "f7",
+					"type": "f32"
+				},
+				{
+					"name": "f8",
+					"type": "f32"
+				}
+			]
 		}
 	},
 	"game_functions": {

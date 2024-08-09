@@ -76,6 +76,7 @@ void game_fn_define_p(char *x);
 void game_fn_define_q(char *a, char *b, char *c);
 void game_fn_define_r(void);
 void game_fn_define_s(void);
+void game_fn_define_t(float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8);
 
 void d_on_a(void *globals);
 void e_on_a(void *globals);

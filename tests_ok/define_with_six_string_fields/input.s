@@ -22,12 +22,18 @@ extern game_fn_define_o
 
 global define
 define:
-	lea rdi, strings[rel 0]
-	lea rsi, strings[rel 2]
-	lea rdx, strings[rel 4]
-	lea rcx, strings[rel 6]
-	lea r8, strings[rel 8]
-	lea r9, strings[rel 10]
+	lea rax, strings[rel 10]
+	mov r9, rax
+	lea rax, strings[rel 8]
+	mov r8, rax
+	lea rax, strings[rel 6]
+	mov rcx, rax
+	lea rax, strings[rel 4]
+	mov rdx, rax
+	lea rax, strings[rel 2]
+	mov rsi, rax
+	lea rax, strings[rel 0]
+	mov rdi, rax
 	call game_fn_define_o wrt ..plt
 	ret
 
