@@ -1,0 +1,8 @@
+define() d {
+    return {
+    }
+}
+
+on_a() {
+    initialize_bool(3.0 >= 2.0)
+}
