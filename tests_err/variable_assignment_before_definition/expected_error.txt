@@ -1,1 +1,1 @@
-The variable 'foo' does not exist
+Can't assign to the variable 'foo', since it does not exist

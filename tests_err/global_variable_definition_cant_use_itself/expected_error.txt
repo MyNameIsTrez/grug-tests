@@ -1,1 +1,1 @@
-global variable 'foo' defition can't use itself
+The variable 'foo' does not exist
