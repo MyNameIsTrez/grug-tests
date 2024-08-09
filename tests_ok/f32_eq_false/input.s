@@ -32,13 +32,15 @@ on_a:
 	sub rsp, byte 0x10
     mov rbp[-0x8], rdi
 
-	; false
+	mov eax, __?float32?__(2.0)
+	push rax
+	mov eax, __?float32?__(1.0)
+	pop r11
+	movd xmm0, eax
+	movd xmm1, r11d
 	xor eax, eax
-
-	; !eax
-	test rax, rax
-	mov eax, 0
-    sete al
+	comiss xmm0, xmm1
+	sete al
 	push rax
 
 	pop rdi

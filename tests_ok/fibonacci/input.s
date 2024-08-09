@@ -60,7 +60,7 @@ helper_fib:
     mov eax, rbp[-0xc]
     pop r11
     cmp rax, r11
-    mov eax, 0x0
+    mov eax, 0
     sete al
     test rax, rax
     je $+0xc
@@ -73,10 +73,10 @@ helper_fib:
     mov eax, rbp[-0xc]
     pop r11
     cmp rax, r11
-    mov eax, 0x0
+    mov eax, 0
     sete al
     test rax, rax
-    mov eax, 0x0
+    mov eax, 0
     setne al
     test rax, rax
     je strict $+0xe

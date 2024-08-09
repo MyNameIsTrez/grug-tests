@@ -37,7 +37,7 @@ on_a:
 
 	; !eax
 	test rax, rax
-	mov eax, 0x0
+	mov eax, 0
     sete al
 	push rax
 
