@@ -1,0 +1,15 @@
+used_entities() {
+    return {
+        .entity_bullet = "vanilla/PG-7VL",
+    }
+}
+
+define() d {
+    return {
+    }
+}
+
+on_a() {
+    entity_bullet: bool = true
+    spawn_entity(entity_bullet)
+}

@@ -1,0 +1,15 @@
+used_resources() {
+    return {
+        .resource_foo = "foo.png",
+    }
+}
+
+define() d {
+    return {
+    }
+}
+
+on_a() {
+    resource_foo: bool = true
+    play_sound(resource_foo)
+}
