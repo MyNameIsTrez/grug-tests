@@ -26,7 +26,7 @@ Note that if you're using a Debian-based distribution like Ubuntu 22.04, you mig
 
 `tests.sh` requires nasm and ld, and has been tested with the below versions, though later versions of nasm and ld should work too:
 
-- NASM version 2.15.05
+- [NASM version 2.15.05](https://launchpad.net/ubuntu/+source/nasm) (`nasm_2.15.05-1_amd64.deb` in my case)
 - GNU ld (GNU Binutils for Ubuntu) 2.38
 
 ## Run tests.sh on save
