@@ -335,6 +335,14 @@ init() {
 			extra_flags+=' -fsanitize=address,undefined -Og'
 		fi
 
+		# TODO: An issue here is that if OLD_LD is set or unset, a.out isn't recompiled!
+		# TODO: This could also definitely be done inline with some sort of ternary
+		if [[ -v OLD_LD ]] # If the OLD_LD environment variable was set
+		then
+		    echo "- OLD_LD was turned on"
+			extra_flags+=' -DOLD_LD'
+		fi
+
 		# TODO: An issue here is that if CRASH_ON_UNREACHABLE is set or unset, a.out isn't recompiled!
 		# TODO: This could also definitely be done inline with some sort of ternary
 		if [[ -v CRASH_ON_UNREACHABLE ]] # If the CRASH_ON_UNREACHABLE environment variable was set

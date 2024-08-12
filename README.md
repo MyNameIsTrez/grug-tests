@@ -12,6 +12,8 @@ Check the terminal or the generated `results` directory in tests to inspect any 
 
 If you want to see the detailed logs, run `LOGGING= ./tests.sh`.
 
+If the tests don't pass, try running `OLD_LD= ./tests.sh`.
+
 If you want to allow your compiler to optimize `grug.c` hard, run `OPTIMIZED= ./tests.sh`.
 If you want to allow your compiler to optimize `grug.c` extra hard, run `OPTIMIZED= CRASH_ON_UNREACHABLE= ./tests.sh`.
 Use `objdump --section=.text -d optimized.out > optimized.s` with `diff optimized.s optimized_crash_on_unreachable.s > diff.s` if you want to compare the generated sections.
