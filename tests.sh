@@ -222,7 +222,7 @@ run_test_ok() {
 	then
 		printf "  Recreating expected.so...\n"
 
-		local expected_o_path=$dir"results/intermediate.o"
+		local expected_o_path=$dir"results/expected.o"
 
 		# -O0 turns optimizations off, which makes it easier to compare nasm's output against grug's
 		nasm $nasm_path -f elf64 -O0 -o $expected_o_path && ld -shared --hash-style=sysv $expected_o_path -o $expected_dll_path && rm $expected_o_path
