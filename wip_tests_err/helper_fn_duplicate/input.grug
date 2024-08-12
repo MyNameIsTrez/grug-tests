@@ -3,8 +3,8 @@ define() a {
     }
 }
 
-foo() {
+helper_foo() {
 }
 
-foo() {
+helper_foo() {
 }

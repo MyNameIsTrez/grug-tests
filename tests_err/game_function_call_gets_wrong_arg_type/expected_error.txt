@@ -1,1 +1,1 @@
-Function call 'initialize' expected the type i32 for argument 'x', but got string
+Function call 'initialize' expected the type i32 for argument 'x', but got bool

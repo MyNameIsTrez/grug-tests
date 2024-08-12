@@ -1,1 +1,0 @@
-The variable 'foo' has the type i32, but was assigned the string 'bar'

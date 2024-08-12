@@ -1,8 +1,0 @@
-define() d {
-    return {
-    }
-}
-
-on_a() {
-    sin(2.0f + 2.0f)
-}
