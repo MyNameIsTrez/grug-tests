@@ -1,0 +1,6 @@
+define() a {
+    return {
+    }
+}
+
+bar: resource = "bar.mp3"

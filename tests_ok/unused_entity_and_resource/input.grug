@@ -1,0 +1,8 @@
+foo: entity = "mymod:foo"
+
+bar: resource = "bar.mp3"
+
+define() a {
+    return {
+    }
+}
