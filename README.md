@@ -24,7 +24,7 @@ Once you've ran `./tests.sh`, you can run `objdump -D tests_ok/helper_fn/results
 
 Note that if you're using a Debian-based distribution like Ubuntu 22.04, you might need to run `sudo sysctl vm.mmap_rnd_bits=28` to fix address sanitizer, which `tests.sh` uses. See [this GitHub thread](https://github.com/actions/runner-images/issues/9524#issuecomment-2002475952) for context.
 
-## Running the tests, and generating coverage
+## Generating coverage
 
 > [!IMPORTANT]
 > Make sure you have [gcovr](https://gcovr.com/en/stable/installation.html) installed.
