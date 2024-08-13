@@ -1,4 +1,4 @@
-foo: i32
+foo: i32 = 0
 
 define() h {
     return {
