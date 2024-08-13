@@ -23,7 +23,8 @@ define:
 
 global init_globals
 init_globals:
-	mov dword rdi[byte 0x0], 42
+	mov eax, 42
+	mov rdi[byte 0x0], rax
 	ret
 
 global on_a

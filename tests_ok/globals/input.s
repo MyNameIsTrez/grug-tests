@@ -24,6 +24,8 @@ define:
 
 global init_globals
 init_globals:
-	mov dword rdi[byte 0x0], 420
-	mov dword rdi[0x4], 1337
+	mov eax, 420
+	mov rdi[byte 0x0], rax
+	mov eax, 1337
+	mov rdi[0x4], rax
 	ret
