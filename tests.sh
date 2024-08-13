@@ -365,6 +365,11 @@ init() {
 			extra_flags+=' --coverage'
 		fi
 
+		rm -f grug.gcda
+		rm -f grug.gcno
+		rm -f run.gcda
+		rm -f run.gcno
+
 		gcc run.c grug/grug.c -Igrug -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -g $extra_flags
 
 		if [ $? -ne 0 ]

@@ -1,0 +1,7 @@
+define() b {
+    return {
+        .x = g,
+    }
+}
+
+g: i32 = 0
