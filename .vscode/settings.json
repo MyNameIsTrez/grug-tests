@@ -4,8 +4,8 @@
 		"commands": [
 			{
 				"match": ".*",
-				// "cmd": "./tests.sh tests_ok/addition_as_argument"
-				"cmd": "./tests.sh"
+				// "cmd": "OLD_LD= COVERAGE= ./tests.sh tests_ok/addition_as_argument"
+				"cmd": "OLD_LD= COVERAGE= ./tests.sh"
 			}
 		]
 	}

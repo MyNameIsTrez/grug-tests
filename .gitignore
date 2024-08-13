@@ -3,4 +3,13 @@
 results
 a.out
 ast.json
+coverage.css
+coverage.functions.html
+coverage.grug.c.*.html
+coverage.html
+coverage.run.c.*.html
+grug.gcda
+grug.gcno
+run.gcda
+run.gcno
 experiments.o

@@ -357,6 +357,14 @@ init() {
 			extra_flags+=' -DCRASH_ON_UNREACHABLE'
 		fi
 
+		# TODO: An issue here is that if COVERAGE is set or unset, a.out isn't recompiled!
+		# TODO: This could also definitely be done inline with some sort of ternary
+		if [[ -v COVERAGE ]] # If the COVERAGE environment variable was set
+		then
+		    echo "- COVERAGE was turned on"
+			extra_flags+=' --coverage'
+		fi
+
 		gcc run.c grug/grug.c -Igrug -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -g $extra_flags
 
 		if [ $? -ne 0 ]
@@ -402,3 +410,8 @@ else
 fi
 
 printf "\nAll $ran_test_count tests passed!\n"
+
+if [[ -v COVERAGE ]]
+then
+	gcovr --html-details coverage.html
+fi
