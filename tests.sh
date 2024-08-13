@@ -245,10 +245,6 @@ run_test_ok() {
 	$test_executable_path $expected_dll_path
 	local test_exit_status=$?
 
-	xxd $expected_dll_path > $expected_hex_path
-	readelf -a $expected_dll_path > $dir"results/expected_elf.log"
-	objdump -D $expected_dll_path -M intel > $dir"results/expected_objdump.log"
-
 	if [ $test_exit_status -ne 0 ]
 	then
 		echo "The shared object nasm produced didn't pass test.c" >&2
@@ -272,10 +268,6 @@ run_test_ok() {
 
 	local grug_hex_path=$dir"results/output.hex"
 
-	xxd $dll_path > $grug_hex_path
-	readelf -a $dll_path > $dir"results/output_elf.log"
-	objdump -D $dll_path -M intel > $dir"results/output_objdump.log"
-
 	diff $dll_path $expected_dll_path >/dev/null
 	if [ $? -ne 0 ]
 	then
@@ -293,6 +285,20 @@ run_test_ok() {
 
 	if [ -n "$failed" ]
 	then
+		if [ -s $expected_dll_path ]
+		then
+			xxd $expected_dll_path > $expected_hex_path
+			readelf -a $expected_dll_path > $dir"results/expected_elf.log"
+			objdump -D $expected_dll_path -M intel > $dir"results/expected_objdump.log"
+		fi
+
+		if [ -s $dll_path ]
+		then
+			xxd $dll_path > $grug_hex_path
+			readelf -a $dll_path > $dir"results/output_elf.log"
+			objdump -D $dll_path -M intel > $dir"results/output_objdump.log"
+		fi
+
 		fail $dir
 	fi
 }

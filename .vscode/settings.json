@@ -4,6 +4,7 @@
 		"commands": [
 			{
 				"match": ".*",
+				// "cmd": "./tests.sh tests_ok/addition_as_argument"
 				"cmd": "./tests.sh"
 			}
 		]
