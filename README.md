@@ -27,9 +27,11 @@ Note that if you're using a Debian-based distribution like Ubuntu 22.04, you mig
 ## Running the tests, and generating coverage
 
 > [!IMPORTANT]
-> Make sure to install [gcovr](https://gcovr.com/en/stable/installation.html) first.
+> Make sure you have [gcovr](https://gcovr.com/en/stable/installation.html) installed.
 
-Then run `COVERAGE= ./tests.sh`, and view the generated `coverage.html` in your browser. You should see that the program has nearly 100% line coverage.
+Run `COVERAGE= ./tests.sh`, and view the generated `coverage.html` with your browser.
+
+You should see that the program has nearly 100% line coverage.
 
 ## Dependencies
 
