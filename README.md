@@ -33,6 +33,24 @@ Run `COVERAGE= ./tests.sh`, and view the generated `coverage.html` with your bro
 
 You should see that the program has nearly 100% line coverage.
 
+## Fuzzing
+
+This uses [libFuzzer](https://llvm.org/docs/LibFuzzer.html), which requires [Clang](https://en.wikipedia.org/wiki/Clang) to be installed.
+
+TODO: Try replacing `-fsanitize=address,undefined -Og` with `-Ofast -march=native -DNDEBUG` here
+
+TODO: Should it also use `tests_err_runtime/*` for its corpus?
+
+```bash
+clear && \
+clang grug/grug.c fuzz.c -Igrug -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -g -fsanitize=address,undefined,fuzzer -Og && \
+mkdir -p test_corpus && \
+for d in tests_err/* tests_err_runtime/* tests_ok/*; do name=${d##*/}; cp $d/input.grug test_corpus/$name.grug; done && \
+mkdir -p corpus && \
+./a.out -merge=1 corpus test_corpus && \
+./a.out corpus
+```
+
 ## Dependencies
 
 `tests.sh` requires nasm and ld, and has been tested with the below versions, though later versions of nasm and ld should work too:
@@ -48,7 +66,7 @@ You should see that the program has nearly 100% line coverage.
 ## Inspecting the tokens and AST
 
 ```bash
-gcc run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wshadow -Wfatal-errors -g -Igrug -fsanitize=address,undefined -DLOGGING && \
+clang run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wshadow -Wfatal-errors -g -Igrug -fsanitize=address,undefined -DLOGGING && \
 ./a.out tests_ok/helper_fn/input.grug tests_ok/helper_fn/results/expected.so
 ```
 
@@ -64,7 +82,7 @@ gdb --args a.out tests_ok/helper_fn/input.grug tests_ok/helper_fn/results/expect
 nasm tests_ok/write_to_global_variable/input.s -f elf64 -o tests_ok/write_to_global_variable/results/expected.o &&\
 ld -shared --hash-style=sysv tests_ok/write_to_global_variable/results/expected.o -o tests_ok/write_to_global_variable/results/expected.so &&\
 rm tests_ok/write_to_global_variable/results/expected.o &&\
-gcc tests_ok/write_to_global_variable/test.c -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -Wfatal-errors -g -Og -rdynamic -o tests_ok/write_to_global_variable/results/test &&\
+clang tests_ok/write_to_global_variable/test.c -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -Wfatal-errors -g -Og -rdynamic -o tests_ok/write_to_global_variable/results/test &&\
 gdb --args tests_ok/write_to_global_variable/results/test tests_ok/write_to_global_variable/results/expected.so
 ```
 
