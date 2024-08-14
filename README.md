@@ -28,7 +28,8 @@ Note that if you're using a Debian-based distribution like Ubuntu 22.04, you mig
 
 > [!IMPORTANT]
 > Make sure you have [gcovr](https://gcovr.com/en/stable/installation.html) installed.
-> You'll also need [llvm-cov], which can be installed with `sudo apt install llvm`.
+>
+> You'll also need [llvm-cov](https://llvm.org/docs/CommandGuide/llvm-cov.html), which can be installed with `sudo apt install llvm`.
 
 Run `COVERAGE= ./tests.sh`, and view the generated `coverage.html` with your browser.
 
