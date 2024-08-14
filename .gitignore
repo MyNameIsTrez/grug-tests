@@ -1,6 +1,10 @@
 .vscode/*
 !.vscode/settings.json
 results
+a-grug.gcda
+a-grug.gcno
+a-run.gcda
+a-run.gcno
 a.out
 ast.json
 coverage.css

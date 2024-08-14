@@ -1,1 +1,0 @@
-Move the entity 'foo' above the define function
