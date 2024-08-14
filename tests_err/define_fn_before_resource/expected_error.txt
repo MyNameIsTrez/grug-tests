@@ -1,1 +1,0 @@
-Move the resource 'bar' above the define function
