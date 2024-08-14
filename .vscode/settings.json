@@ -4,8 +4,8 @@
 		"commands": [
 			{
 				"match": ".*",
-				// "cmd": "COVERAGE= ./tests.sh tests_ok/addition_as_argument"
-				"cmd": "COVERAGE= ./tests.sh"
+				"cmd": "COVERAGE= ./tests.sh tests_err/max_expr_recursion_depth_exceeded"
+				// "cmd": "COVERAGE= ./tests.sh"
 			}
 		]
 	}
