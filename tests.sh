@@ -343,6 +343,8 @@ init() {
 		    echo "- OPTIMIZED was turned on"
 			extra_flags+=' -Ofast -march=native -DNDEBUG'
         else
+			# Leave out fsanitize if you want accurate coverage branch counts,
+			# or replace all usage of clang with gcc
 			extra_flags+=' -fsanitize=address,undefined -Og'
 		fi
 
@@ -418,5 +420,5 @@ printf "\nAll $ran_test_count tests passed!\n"
 
 if [[ -v COVERAGE ]]
 then
-	gcovr --html-details coverage.html
+	gcovr --gcov-executable "llvm-cov gcov" --html-details coverage.html
 fi
