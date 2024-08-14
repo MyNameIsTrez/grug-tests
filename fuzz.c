@@ -5,8 +5,11 @@
 #include <fcntl.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 // Source: https://github.com/google/security-research-pocs/blob/d10780c3ddb8070dff6c5e5862c93c01392d1727/autofuzz/fuzz_utils.cc#L10
@@ -85,14 +88,14 @@ err:
 // Source: https://github.com/google/security-research-pocs/blob/649b6ed74c842f533d15410f13d94aada96375ef/autofuzz/alembic_fuzzer.cc#L293
 int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
 	static bool initialized = false;
-	static char dll_path[] = "/dev/shm/fuzz-dll-XXXXXX";
+	static char dll_path[] = "/fuzz-dll";
 
 	if (!initialized) {
     	ignore_stdout();
 
-		int fd = mkstemp(dll_path);
+		int fd = shm_open(dll_path, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
 		if (fd == -1) {
-			warn("mkstemp(\"%s\")", dll_path);
+			perror("shm_open");
 			return EXIT_FAILURE;
 		}
 

@@ -1,5 +1,7 @@
 .vscode/*
 !.vscode/settings.json
+corpus
+test_corpus
 results
 *.gcda
 *.gcno
@@ -10,4 +12,5 @@ coverage.functions.html
 coverage.grug.c.*.html
 coverage.html
 coverage.run.c.*.html
+crash-*
 experiments.o
