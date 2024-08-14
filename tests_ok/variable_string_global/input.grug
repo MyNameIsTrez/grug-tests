@@ -1,0 +1,11 @@
+define() d {
+    return {
+    }
+}
+
+message: string = "temp"
+
+on_a() {
+    message = "foo"
+    say(message)
+}
