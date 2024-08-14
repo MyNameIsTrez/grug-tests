@@ -317,6 +317,11 @@ run_tests_ok() {
 }
 
 init() {
+	# We remove all .gcda files here, because if you place say a newline in a function of grug.c
+	# the generated .gcda will have a different checksum, causing a gcovr error
+	# The .gcno is only generated during compilation, so we don't remove it
+	rm -f *.gcda
+
 	if (! [[ run.c -ot a.out ]]) || (! [[ grug/grug.c -ot a.out ]]) || (! [[ grug/grug.h -ot a.out ]])
 	then
 		echo "Recompiling..."
@@ -364,11 +369,6 @@ init() {
 		    echo "- COVERAGE was turned on"
 			extra_flags+=' --coverage'
 		fi
-
-		rm -f grug.gcda
-		rm -f grug.gcno
-		rm -f run.gcda
-		rm -f run.gcno
 
 		gcc run.c grug/grug.c -Igrug -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -g $extra_flags
 

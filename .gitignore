@@ -1,10 +1,8 @@
 .vscode/*
 !.vscode/settings.json
 results
-a-grug.gcda
-a-grug.gcno
-a-run.gcda
-a-run.gcno
+*.gcda
+*.gcno
 a.out
 ast.json
 coverage.css
@@ -12,8 +10,4 @@ coverage.functions.html
 coverage.grug.c.*.html
 coverage.html
 coverage.run.c.*.html
-grug.gcda
-grug.gcno
-run.gcda
-run.gcno
 experiments.o
