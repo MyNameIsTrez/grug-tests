@@ -39,13 +39,11 @@ This uses [libFuzzer](https://llvm.org/docs/LibFuzzer.html), which requires [Cla
 
 TODO: Try replacing `-fsanitize=address,undefined -Og` with `-Ofast -march=native -DNDEBUG` here
 
-TODO: Should it also use `tests_err_runtime/*` for its corpus?
-
 ```bash
 clear && \
 clang grug/grug.c fuzz.c -Igrug -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -g -fsanitize=address,undefined,fuzzer -Og && \
 mkdir -p test_corpus && \
-for d in tests_err/* tests_err_runtime/* tests_ok/*; do name=${d##*/}; cp $d/input.grug test_corpus/$name.grug; done && \
+for d in tests_err/* tests_ok/*; do name=${d##*/}; cp $d/input.grug test_corpus/$name.grug; done && \
 mkdir -p corpus && \
 ./a.out -merge=1 corpus test_corpus && \
 ./a.out corpus
