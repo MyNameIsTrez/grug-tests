@@ -1,0 +1,6 @@
+define() a {
+    return {
+    }
+}
+
+foo: resource = "mymod:foo"
