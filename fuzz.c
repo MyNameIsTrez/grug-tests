@@ -88,14 +88,14 @@ err:
 // Source: https://github.com/google/security-research-pocs/blob/649b6ed74c842f533d15410f13d94aada96375ef/autofuzz/alembic_fuzzer.cc#L293
 int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
 	static bool initialized = false;
-	static char dll_path[] = "/fuzz-dll";
+	static char dll_path[] = "./fuzz.dll";
 
 	if (!initialized) {
     	ignore_stdout();
 
-		int fd = shm_open(dll_path, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
+		int fd = open(dll_path, O_CREAT | O_TRUNC | O_RDWR, 0644);
 		if (fd == -1) {
-			perror("shm_open");
+			perror("open");
 			return EXIT_FAILURE;
 		}
 
@@ -107,7 +107,9 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
 		exit(EXIT_FAILURE);
 	}
 
-	grug_test_regenerate_dll(grug_path, dll_path);
+	// If there wasn't an error generating the dll
+	if (!grug_test_regenerate_dll(grug_path, dll_path)) {
+	}
 
 	if (delete_file(grug_path) != 0) {
 		exit(EXIT_FAILURE);

@@ -14,3 +14,4 @@ coverage.html
 coverage.run.c.*.html
 crash-*
 experiments.o
+fuzz.dll
