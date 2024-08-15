@@ -79,6 +79,103 @@ run_tests_err() {
 	done
 }
 
+run_test_err_runtime() {
+	local dir=$1
+
+	ran_test_count=$((ran_test_count + 1))
+
+	local grug_path=$dir"input.grug"
+	local test_c_path=$dir"test.c"
+	local test_executable_path=$dir"results/test"
+	local dll_path=$dir"results/output.so"
+
+	if [[ $dll_path -nt $grug_path ]]\
+	&& [[ $dll_path -nt $test_c_path ]]\
+	&& [[ $dll_path -nt $test_executable_path ]]\
+	&& [[ $dll_path -nt mod_api.h ]]\
+	&& [[ $dll_path -nt mod_api.json ]]\
+	&& [[ $dll_path -nt tests.sh ]]\
+	&& [[ $dll_path -nt a.out ]]\
+	&& ! [[ -f $dir"/results/failed" ]]
+	then
+		printf "Skipping $dir...\n"
+		return
+	else
+		printf "Running $dir...\n"
+
+		[[ -f $dir"/results/failed" ]] && echo "  /results/failed caused this test to be rerun"
+
+		! [[ $dll_path -nt $grug_path ]] && echo "  - input.grug was newer"
+		! [[ $dll_path -nt $test_c_path ]] && echo "  - test.c was newer"
+		! [[ $dll_path -nt $test_executable_path ]] && echo "  - test was newer"
+		! [[ $dll_path -nt a.out ]] && echo "  - a.out was newer"
+	fi
+
+	mkdir -p $dir"results"
+	rm -f $dir"results"/*
+
+	if ! [[ $test_c_path -ot $test_executable_path ]]
+	then
+		printf "  Recreating the executable 'test'...\n"
+
+		# -std=gnu2x is used to have typeof() in C (-std=c2x for some reason prints "error: expected specifier-qualifier-list before ‘typeof’")
+		# -rdynamic allows the .so to call functions from test.c
+		clang $test_c_path -Igrug -I. -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -Wfatal-errors -Wno-language-extension-token -g -Og -rdynamic -o $test_executable_path
+	fi
+
+	local grug_output_path=$dir"results/grug_output.txt"
+
+	printf "  Recreating output.so...\n"
+	./a.out $grug_path $dll_path >$grug_output_path 2>&1
+	local grug_exit_status=$?
+
+	if [ $grug_exit_status -ne 0 ]
+	then
+		echo "run.c was expected to exit with status 0" >&2
+		fail $dir
+	fi
+
+	$test_executable_path $dll_path
+	local test_exit_status=$?
+
+	if [ $test_exit_status -ne 0 ]
+	then
+		echo "The shared object nasm produced didn't pass test.c" >&2
+		fail $dir
+	fi
+
+	echo "run.c was expected to exit with status 1" >&2
+
+	if [ -s $grug_output_path ]
+	then
+		echo "The test wasn't supposed to print anything, but did:" >&2
+		echo "----" >&2
+		cat $grug_output_path >&2
+		echo "----" >&2
+	fi
+
+	local grug_hex_path=$dir"results/output.hex"
+
+	xxd $dll_path > $grug_hex_path
+	readelf -a $dll_path > $dir"results/output_elf.log"
+	objdump -D $dll_path -M intel > $dir"results/output_objdump.log"
+
+	fail $dir
+}
+
+run_tests_err_runtime() {
+	echo ERR runtime tests:
+
+	# Loop over all directories in tests_err_runtime/ (non-recursively)
+	for dir in tests_err_runtime/*/
+	do
+		# The wildcard doesn't expand if the directory is empty
+		[ -d "$dir" ] || continue
+
+		run_test_err_runtime $dir
+	done
+}
+
 run_test_ok() {
 	local dir=$1
 
@@ -299,11 +396,17 @@ then
 	init
 	run_tests_err
 	echo
+	run_tests_err_runtime
+	echo
 	run_tests_ok
 elif [[ $1 == tests_err/* ]]
 then
 	init
 	run_test_err $1/
+elif [[ $1 == tests_err_runtime/* ]]
+then
+	init
+	run_test_err_runtime $1/
 elif [[ $1 == tests_ok/* ]]
 then
 	init

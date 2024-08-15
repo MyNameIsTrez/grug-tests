@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void define_d(void) {
+void game_fn_define_d(void) {
 }
 
 void game_fn_initialize(int32_t x) {

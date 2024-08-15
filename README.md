@@ -37,13 +37,13 @@ You should see that the program has nearly 100% line coverage.
 
 This uses [libFuzzer](https://llvm.org/docs/LibFuzzer.html), which requires [Clang](https://en.wikipedia.org/wiki/Clang) to be installed.
 
-TODO: Try replacing `-fsanitize=address,undefined -Og` with `-Ofast -march=native -DNDEBUG` here
+If you replace `-fsanitize=address,undefined,fuzzer -Og` with `-fsanitize=fuzzer -Ofast -march=native -DNDEBUG` here, the numbers of executions per second goes up from 5000 to 15000 on my computer:
 
 ```bash
 clear && \
 clang grug/grug.c fuzz.c -Igrug -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -g -fsanitize=address,undefined,fuzzer -Og && \
 mkdir -p test_corpus && \
-for d in tests_err/* tests_ok/*; do name=${d##*/}; cp $d/input.grug test_corpus/$name.grug; done && \
+for d in tests_err/* tests_err_runtime/* tests_ok/*; do name=${d##*/}; cp $d/input.grug test_corpus/$name.grug; done && \
 mkdir -p corpus && \
 ./a.out -merge=1 corpus test_corpus && \
 ./a.out corpus
