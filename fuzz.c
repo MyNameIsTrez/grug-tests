@@ -155,6 +155,8 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
 		exit(EXIT_FAILURE);
 	}
 
+	bool had_runtime_error = false;
+
 	// If there wasn't an error generating the dll
 	if (!grug_test_regenerate_dll(grug_path, dll_path)) {
 		void *handle = dlopen(dll_path, RTLD_NOW);
@@ -165,6 +167,7 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
 
 		#pragma GCC diagnostic push
 		#pragma GCC diagnostic ignored "-Wpedantic"
+
 		grug_define_fn_t define = get(handle, "define");
 		define();
 
@@ -176,9 +179,17 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
 
 		struct d_on_fns *on_fns = dlsym(handle, "on_fns");
 		if (on_fns && on_fns->a) {
-			on_fns->a(g);
+			if (grug_mod_had_runtime_error()) {
+				had_runtime_error = true;
+			}
+
+			if (!had_runtime_error) {
+				on_fns->a(g);
+			}
 		}
+
 		free(g);
+
 		#pragma GCC diagnostic pop
 
 		if (dlclose(handle)) {
