@@ -46,7 +46,7 @@ mkdir -p test_corpus && \
 for d in tests_err/* tests_err_runtime/* tests_ok/*; do name=${d##*/}; cp $d/input.grug test_corpus/$name.grug; done && \
 mkdir -p corpus && \
 ./a.out -merge=1 corpus test_corpus && \
-./a.out corpus
+./a.out corpus -timeout=1
 ```
 
 ## Dependencies
