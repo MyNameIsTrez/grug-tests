@@ -50,11 +50,7 @@ int main(int argc, char *argv[]) {
 	init_globals(g);
 
 	if (grug_mod_had_runtime_error()) {
-		if (grug_runtime_error == GRUG_ON_FN_TIME_LIMIT_EXCEEDED) {
-			fprintf(stderr, "An on_ function took longer than %d second%s to run\n", GRUG_ON_FN_TIME_LIMIT_SECONDS, GRUG_ON_FN_TIME_LIMIT_SECONDS > 1 ? "s" : "");
-		} else if (grug_runtime_error == GRUG_ON_FN_STACK_OVERFLOW) {
-			fprintf(stderr, "An on_ function caused a stack overflow, which is usually caused by accidental infinite recursion\n");
-		}
+		fprintf(stderr, "%s\n", grug_get_runtime_error_reason());
 		exit(EXIT_FAILURE);
 	}
 

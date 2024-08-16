@@ -53,6 +53,11 @@ int main(int argc, char *argv[]) {
 	grug_init_globals_fn_t init_globals = get(handle, "init_globals");
 	init_globals(g);
 
+	if (grug_mod_had_runtime_error()) {
+		fprintf(stderr, "%s\n", grug_get_runtime_error_reason());
+		exit(EXIT_FAILURE);
+	}
+
 	struct d_on_fns *on_fns = get(handle, "on_fns");
 	on_fns->a(g);
 
