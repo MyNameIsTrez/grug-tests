@@ -25,7 +25,7 @@ define:
 global init_globals
 init_globals:
 	mov eax, __?float32?__(0.0)
-	mov rdi[byte 0x0], rax
+	mov rdi[byte 0x0], eax
 	ret
 
 global on_a

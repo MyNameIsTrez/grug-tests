@@ -23,5 +23,5 @@ init_globals:
 	mov eax, 2
 	pop r11
 	add rax, r11
-	mov rdi[byte 0x0], rax
+	mov rdi[byte 0x0], eax
 	ret

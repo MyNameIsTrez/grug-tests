@@ -12,12 +12,8 @@
 void game_fn_define_d(void) {
 }
 
-static bool fn_max_was_called = false;
-int32_t game_fn_max(int32_t x, int32_t y) {
-	fn_max_was_called = true;
-	assert(x == 43);
-	assert(y == 69);
-	return x > y ? x : y;
+void game_fn_initialize(int32_t x) {
+	(void)x;
 }
 
 static void *get(void *handle, char *label) {
@@ -51,16 +47,19 @@ int main(int argc, char *argv[]) {
 	define();
 
 	size_t globals_size = *(size_t *)get(handle, "globals_size");
-	assert(globals_size == 8);
+	assert(globals_size == 0);
 
 	void *g = malloc(globals_size);
 	grug_init_globals_fn_t init_globals = get(handle, "init_globals");
 	init_globals(g);
 
+	if (grug_mod_had_runtime_error()) {
+		fprintf(stderr, "%s\n", grug_get_runtime_error_reason());
+		exit(EXIT_FAILURE);
+	}
+
 	struct d_on_fns *on_fns = get(handle, "on_fns");
-	assert(!fn_max_was_called);
 	on_fns->a(g);
-	assert(fn_max_was_called);
 
 	free(g);
 	#pragma GCC diagnostic pop

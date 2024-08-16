@@ -4,8 +4,8 @@
 		"commands": [
 			{
 				"match": ".*",
-				"cmd": "./tests.sh tests_err_runtime/time_limit_exceeded"
-				// "cmd": "./tests.sh"
+				// "cmd": "./tests.sh tests_ok/void_function_early_return"
+				"cmd": "./tests.sh"
 			}
 		]
 	}

@@ -4,9 +4,10 @@ define() d {
 }
 
 foo: i32 = 42
+bar: i32 = 69
 
 on_a() {
     foo = foo + 1
 
-    initialize(foo)
+    max(foo, bar)
 }
