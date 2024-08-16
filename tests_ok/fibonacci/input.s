@@ -14,6 +14,7 @@ on_fns:
 section .text
 
 extern game_fn_define_d
+extern alarm
 extern game_fn_initialize
 
 global define
@@ -31,6 +32,8 @@ on_a:
     mov rbp, rsp
     sub rsp, byte 0x10
     mov rbp[-0x8], rdi
+	mov edi, 1
+	call alarm wrt ..plt
     mov rax, rbp[-0x8]
     push rax
     mov eax, 10
@@ -41,7 +44,9 @@ on_a:
     push rax
     pop rdi
     call game_fn_initialize wrt ..plt
-    mov rsp, rbp
+	xor edi, edi
+	call alarm wrt ..plt
+	mov rsp, rbp
     pop rbp
     ret
 
@@ -83,7 +88,7 @@ helper_fib:
 
 	; return n
     mov eax, rbp[-0xc]
-    mov rsp, rbp
+	mov rsp, rbp
     pop rbp
     ret
 
@@ -121,11 +126,11 @@ helper_fib:
     add rax, r11
 
 	; return helper_fib(n - 1) + helper_fib(n - 2)
-    mov rsp, rbp
+	mov rsp, rbp
     pop rbp
     ret
 
 	; Function epilogue
-    mov rsp, rbp
+	mov rsp, rbp
     pop rbp
     ret

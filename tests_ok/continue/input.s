@@ -14,6 +14,7 @@ on_fns:
 section .text
 
 extern game_fn_define_d
+extern alarm
 extern game_fn_nothing
 
 global define
@@ -31,6 +32,8 @@ on_a:
 	mov rbp, rsp
 	sub rsp, byte 0x10
     mov rbp[-0x8], rdi
+	mov edi, 1
+	call alarm wrt ..plt
 
 	xor eax, eax
 	mov rbp[-0xc], eax
@@ -64,6 +67,8 @@ on_a:
 
 	jmp strict $-0x3f ; jump to start of loop
 
+	xor edi, edi
+	call alarm wrt ..plt
 	mov rsp, rbp
 	pop rbp
 	ret

@@ -15,7 +15,7 @@ section .text
 
 extern game_fn_define_d
 extern alarm
-extern game_fn_initialize_bool
+extern game_fn_nothing
 
 global define
 define:
@@ -35,17 +35,15 @@ on_a:
 	mov edi, 1
 	call alarm wrt ..plt
 
-	mov eax, 2
-	push rax
-	mov eax, 1
-	pop r11
-	cmp rax, r11
-	mov eax, 0
-	setne al
-	push rax
+	call game_fn_nothing wrt ..plt
 
-	pop rdi
-	call game_fn_initialize_bool wrt ..plt
+	xor edi, edi
+	call alarm wrt ..plt
+	mov rsp, rbp
+    pop rbp
+	ret
+
+	call game_fn_nothing wrt ..plt
 
 	xor edi, edi
 	call alarm wrt ..plt

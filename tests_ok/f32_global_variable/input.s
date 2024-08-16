@@ -14,6 +14,7 @@ on_fns:
 section .text
 
 extern game_fn_define_d
+extern alarm
 extern game_fn_sin
 
 global define
@@ -33,6 +34,8 @@ on_a:
     mov rbp, rsp
 	sub rsp, byte 0x10
     mov rbp[-0x8], rdi
+	mov edi, 1
+	call alarm wrt ..plt
 
 	mov eax, __?float32?__(4.0)
 	mov r11, rbp[-0x8]
@@ -47,6 +50,8 @@ on_a:
 	call game_fn_sin wrt ..plt
 	movd eax, xmm0
 
-    mov rsp, rbp
+	xor edi, edi
+	call alarm wrt ..plt
+	mov rsp, rbp
     pop rbp
 	ret

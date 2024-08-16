@@ -14,6 +14,7 @@ on_fns:
 section .text
 
 extern game_fn_define_d
+extern alarm
 
 global define
 define:

@@ -19,6 +19,7 @@ strings:
 section .text
 
 extern game_fn_define_d
+extern alarm
 extern game_fn_say
 
 global define
@@ -38,6 +39,8 @@ on_a:
 	mov rbp, rsp
 	sub rsp, byte 0x10
     mov rbp[-0x8], rdi
+	mov edi, 1
+	call alarm wrt ..plt
 
 	lea rax, strings[rel 5]
 	mov r11, rbp[-0x8]
@@ -50,6 +53,8 @@ on_a:
 	pop rdi
 	call game_fn_say wrt ..plt
 
+	xor edi, edi
+	call alarm wrt ..plt
 	mov rsp, rbp
 	pop rbp
 	ret

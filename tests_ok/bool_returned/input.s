@@ -14,6 +14,7 @@ on_fns:
 section .text
 
 extern game_fn_define_d
+extern alarm
 extern game_fn_is_friday
 extern game_fn_set_is_happy
 
@@ -32,6 +33,8 @@ on_a:
     mov rbp, rsp
 	sub rsp, byte 0x10
     mov rbp[-0x8], rdi
+	mov edi, 1
+	call alarm wrt ..plt
 
 	call game_fn_is_friday wrt ..plt
 	mov rbp[-0x9], eax
@@ -42,6 +45,8 @@ on_a:
 	pop rdi
 	call game_fn_set_is_happy wrt ..plt
 
+	xor edi, edi
+	call alarm wrt ..plt
     mov rsp, rbp
     pop rbp
 	ret

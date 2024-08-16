@@ -14,6 +14,7 @@ on_fns:
 section .text
 
 extern game_fn_define_d
+extern alarm
 extern game_fn_initialize
 
 global define
@@ -31,6 +32,8 @@ on_a:
     mov rbp, rsp
 	sub rsp, byte 0x10
     mov rbp[-0x8], rdi
+	mov edi, 1
+	call alarm wrt ..plt
 
 	mov rax, rbp[-0x8]
 	push rax
@@ -43,7 +46,9 @@ on_a:
 	pop rdi
 	call game_fn_initialize wrt ..plt
 
-    mov rsp, rbp
+	xor edi, edi
+	call alarm wrt ..plt
+	mov rsp, rbp
     pop rbp
 	ret
 
@@ -55,10 +60,10 @@ helper_foo:
     mov rbp[-0x8], rdi
 
 	mov eax, 42
-    mov rsp, rbp
+	mov rsp, rbp
     pop rbp
 	ret
 
-    mov rsp, rbp
+	mov rsp, rbp
     pop rbp
 	ret
