@@ -85,11 +85,13 @@ run_test_err_runtime() {
 	ran_test_count=$((ran_test_count + 1))
 
 	local grug_path=$dir"input.grug"
+	local expected_error_path=$dir"expected_error.txt"
 	local test_c_path=$dir"test.c"
 	local test_executable_path=$dir"results/test"
 	local dll_path=$dir"results/output.so"
 
 	if [[ $dll_path -nt $grug_path ]]\
+	&& [[ $dll_path -nt $expected_error_path ]]\
 	&& [[ $dll_path -nt $test_c_path ]]\
 	&& [[ $dll_path -nt $test_executable_path ]]\
 	&& [[ $dll_path -nt mod_api.h ]]\
@@ -106,6 +108,7 @@ run_test_err_runtime() {
 		[[ -f $dir"/results/failed" ]] && echo "  /results/failed caused this test to be rerun"
 
 		! [[ $dll_path -nt $grug_path ]] && echo "  - input.grug was newer"
+		! [[ $dll_path -nt $expected_error_path ]] && echo "  - expected_error.txt was newer"
 		! [[ $dll_path -nt $test_c_path ]] && echo "  - test.c was newer"
 		! [[ $dll_path -nt $test_executable_path ]] && echo "  - test was newer"
 		! [[ $dll_path -nt a.out ]] && echo "  - a.out was newer"
@@ -120,7 +123,7 @@ run_test_err_runtime() {
 
 		# -std=gnu2x is used to have typeof() in C (-std=c2x for some reason prints "error: expected specifier-qualifier-list before ‘typeof’")
 		# -rdynamic allows the .so to call functions from test.c
-		clang $test_c_path -Igrug -I. -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -Wfatal-errors -Wno-language-extension-token -g -Og -rdynamic -o $test_executable_path
+		clang $test_c_path grug/grug.c -Igrug -I. -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -Wfatal-errors -Wno-language-extension-token -g -Og -rdynamic -o $test_executable_path
 	fi
 
 	local grug_output_path=$dir"results/grug_output.txt"
@@ -132,35 +135,58 @@ run_test_err_runtime() {
 	if [ $grug_exit_status -ne 0 ]
 	then
 		echo "run.c was expected to exit with status 0" >&2
-		fail $dir
+		failed=1
 	fi
-
-	$test_executable_path $dll_path
-	local test_exit_status=$?
-
-	if [ $test_exit_status -ne 0 ]
-	then
-		echo "The shared object nasm produced didn't pass test.c" >&2
-		fail $dir
-	fi
-
-	echo "run.c was expected to exit with status 1" >&2
 
 	if [ -s $grug_output_path ]
 	then
-		echo "The test wasn't supposed to print anything, but did:" >&2
+		echo "The test wasn't supposed to print anything during generation of the dll, but did:" >&2
 		echo "----" >&2
 		cat $grug_output_path >&2
 		echo "----" >&2
+		failed=1
 	fi
 
-	local grug_hex_path=$dir"results/output.hex"
+	local test_output_path=$dir"results/test_output_path.txt"
 
-	xxd $dll_path > $grug_hex_path
-	readelf -a $dll_path > $dir"results/output_elf.log"
-	objdump -D $dll_path -M intel > $dir"results/output_objdump.log"
+	printf "  Running test.c...\n"
+	$test_executable_path $dll_path >$test_output_path 2>&1
+	local test_exit_status=$?
 
-	fail $dir
+	if [ $test_exit_status -eq 0 ]
+	then
+		echo "The shared object nasm produced wasn't supposed to pass test.c" >&2
+		failed=1
+	fi
+
+	local error_diff_path=$dir"results/error_diff_path.txt"
+
+	diff $test_output_path $expected_error_path >$error_diff_path
+	if [ $? -ne 0 ]
+	then
+		echo "The output differs from the expected output:" >&2
+		cat $error_diff_path >&2
+		failed=1
+	fi
+
+	if [ -n "$failed" ]
+	then
+		if [ -s $expected_dll_path ]
+		then
+			xxd $expected_dll_path > $dir"results/expected.hex"
+			readelf -a $expected_dll_path > $dir"results/expected_elf.log"
+			objdump -D $expected_dll_path -M intel > $dir"results/expected_objdump.log"
+		fi
+
+		if [ -s $dll_path ]
+		then
+			xxd $dll_path > $dir"results/output.hex"
+			readelf -a $dll_path > $dir"results/output_elf.log"
+			objdump -D $dll_path -M intel > $dir"results/output_objdump.log"
+		fi
+
+		fail $dir
+	fi
 }
 
 run_tests_err_runtime() {
@@ -239,8 +265,6 @@ run_test_ok() {
 		clang $test_c_path -Igrug -I. -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -Wfatal-errors -Wno-language-extension-token -g -Og -rdynamic -lm -o $test_executable_path
 	fi
 
-	local expected_hex_path=$dir"results/expected.hex"
-
 	$test_executable_path $expected_dll_path
 	local test_exit_status=$?
 
@@ -265,14 +289,13 @@ run_test_ok() {
 		failed=1
 	fi
 
-	local grug_hex_path=$dir"results/output.hex"
+	local error_diff_path=$dir"results/error_diff_path.txt"
 
-	diff $dll_path $expected_dll_path >/dev/null
+	diff $dll_path $expected_dll_path >$error_diff_path
 	if [ $? -ne 0 ]
 	then
 		echo "The output differs from the expected output." >&2
-		echo "Run this to see the diff:" >&2
-		echo "diff $grug_hex_path $expected_hex_path" >&2
+		cat $error_diff_path >&2
 		failed=1
 	fi
 
@@ -286,14 +309,14 @@ run_test_ok() {
 	then
 		if [ -s $expected_dll_path ]
 		then
-			xxd $expected_dll_path > $expected_hex_path
+			xxd $expected_dll_path > $dir"results/expected.hex"
 			readelf -a $expected_dll_path > $dir"results/expected_elf.log"
 			objdump -D $expected_dll_path -M intel > $dir"results/expected_objdump.log"
 		fi
 
 		if [ -s $dll_path ]
 		then
-			xxd $dll_path > $grug_hex_path
+			xxd $dll_path > $dir"results/output.hex"
 			readelf -a $dll_path > $dir"results/output_elf.log"
 			objdump -D $dll_path -M intel > $dir"results/output_objdump.log"
 		fi

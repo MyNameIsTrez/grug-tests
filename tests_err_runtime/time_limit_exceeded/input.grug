@@ -5,6 +5,5 @@ define() d {
 
 on_a() {
     while true {
-        nothing()
     }
 }

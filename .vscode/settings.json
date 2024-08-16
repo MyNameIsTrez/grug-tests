@@ -4,8 +4,8 @@
 		"commands": [
 			{
 				"match": ".*",
-				// "cmd": "COVERAGE= ./tests.sh tests_err/max_expr_recursion_depth_exceeded"
-				"cmd": "COVERAGE= ./tests.sh"
+				"cmd": "./tests.sh tests_err_runtime/time_limit_exceeded"
+				// "cmd": "./tests.sh"
 			}
 		]
 	}
