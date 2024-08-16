@@ -85,12 +85,14 @@ run_test_err_runtime() {
 	ran_test_count=$((ran_test_count + 1))
 
 	local grug_path=$dir"input.grug"
+	local expected_dll_path=$dir"results/expected.so"
 	local expected_error_path=$dir"expected_error.txt"
 	local test_c_path=$dir"test.c"
 	local test_executable_path=$dir"results/test"
 	local dll_path=$dir"results/output.so"
 
 	if [[ $dll_path -nt $grug_path ]]\
+	&& [[ $dll_path -nt $expected_dll_path ]]\
 	&& [[ $dll_path -nt $expected_error_path ]]\
 	&& [[ $dll_path -nt $test_c_path ]]\
 	&& [[ $dll_path -nt $test_executable_path ]]\
@@ -108,6 +110,7 @@ run_test_err_runtime() {
 		[[ -f $dir"/results/failed" ]] && echo "  /results/failed caused this test to be rerun"
 
 		! [[ $dll_path -nt $grug_path ]] && echo "  - input.grug was newer"
+		! [[ $dll_path -nt $expected_dll_path ]] && echo "  - expected.so was newer"
 		! [[ $dll_path -nt $expected_error_path ]] && echo "  - expected_error.txt was newer"
 		! [[ $dll_path -nt $test_c_path ]] && echo "  - test.c was newer"
 		! [[ $dll_path -nt $test_executable_path ]] && echo "  - test was newer"
@@ -150,12 +153,28 @@ run_test_err_runtime() {
 	local test_output_path=$dir"results/test_output_path.txt"
 
 	printf "  Running test.c...\n"
-	$test_executable_path $dll_path >$test_output_path 2>&1
+	valgrind --quiet $test_executable_path $dll_path >$test_output_path 2>&1
 	local test_exit_status=$?
 
 	if [ $test_exit_status -eq 0 ]
 	then
 		echo "The shared object nasm produced wasn't supposed to pass test.c" >&2
+		failed=1
+	fi
+
+	# Remove "can't grow stack" lines, since tests_err_runtime/stack_overflow tests that
+	sed -i "/can't grow stack/d" "$test_output_path"
+
+	# If the output still contains a valgrind line
+	if grep -q "== " "$test_output_path"
+	then
+		echo "There was a valgrind error" >&2
+		failed=1
+	fi
+
+	if [ $test_exit_status -eq 42 ]
+	then
+		echo "There was a valgrind error" >&2
 		failed=1
 	fi
 
@@ -265,7 +284,7 @@ run_test_ok() {
 		clang $test_c_path -Igrug -I. -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -Wfatal-errors -Wno-language-extension-token -g -Og -rdynamic -lm -o $test_executable_path
 	fi
 
-	$test_executable_path $expected_dll_path
+	valgrind --error-exitcode=1 --quiet $test_executable_path $expected_dll_path
 	local test_exit_status=$?
 
 	if [ $test_exit_status -ne 0 ]
