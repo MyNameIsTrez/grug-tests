@@ -1,1 +1,1 @@
-An on_ function had an arithmetic error, which is usually caused by a number being divided by 0
+An on_ function divided an i32 by 0

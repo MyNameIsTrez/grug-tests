@@ -1,1 +1,1 @@
-An on_ function caused a stack overflow, which is usually caused by accidental infinite recursion
+An on_ function caused a stack overflow, so check for accidental infinite recursion
