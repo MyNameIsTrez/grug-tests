@@ -36,12 +36,12 @@ on_a:
 	call alarm wrt ..plt
 
 	mov eax, 1
-	test rax, rax
+	test eax, eax
 	je $+0xc
 	mov eax, 1
-	jmp strict $+0x15
+	jmp strict $+0x14
 	mov eax, 1
-	test rax, rax
+	test eax, eax
 	mov eax, 0
 	setne al
 

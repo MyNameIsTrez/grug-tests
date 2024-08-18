@@ -37,16 +37,16 @@ on_a:
 
 	call game_fn_nothing wrt ..plt
 	mov eax, 1
-	test rax, rax
-	je strict $+0x2d
+	test eax, eax
+	je strict $+0x2c
 	mov eax, 1
-	test rax, rax
+	test eax, eax
 	je strict $+0x10
 	jmp strict $+0xa
-	jmp strict $-0x13
+	jmp strict $-0x12
 	call game_fn_nothing wrt ..plt
 	jmp strict $+0xa
-	jmp strict $-0x30
+	jmp strict $-0x2e
 	call game_fn_nothing wrt ..plt
 
 	xor edi, edi

@@ -39,7 +39,7 @@ on_a:
 	mov eax, 1
 
 	; !eax
-	test rax, rax
+	test eax, eax
 	mov eax, 0
     sete al
 	push rax

@@ -36,11 +36,11 @@ on_a:
 	call alarm wrt ..plt
 
 	xor eax, eax
-	test rax, rax
+	test eax, eax
 	jne $+0x7
-	jmp strict $+0x15
+	jmp strict $+0x14
 	mov eax, 1
-	test rax, rax
+	test eax, eax
 	mov eax, 0
 	setne al
 

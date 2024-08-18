@@ -67,12 +67,12 @@ helper_fib:
     cmp rax, r11
     mov eax, 0
     sete al
-    test rax, rax
+    test eax, eax
     je $+0xc
 
 	; or n == 1
     mov eax, 1
-    jmp strict $+0x26
+    jmp strict $+0x25
     mov eax, 1
     push rax
     mov eax, rbp[-0xc]
@@ -80,10 +80,10 @@ helper_fib:
     cmp rax, r11
     mov eax, 0
     sete al
-    test rax, rax
+    test eax, eax
     mov eax, 0
     setne al
-    test rax, rax
+    test eax, eax
     je strict $+0xe
 
 	; return n

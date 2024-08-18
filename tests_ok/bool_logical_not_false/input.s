@@ -39,7 +39,7 @@ on_a:
 	xor eax, eax
 
 	; !eax
-	test rax, rax
+	test eax, eax
 	mov eax, 0
     sete al
 	push rax

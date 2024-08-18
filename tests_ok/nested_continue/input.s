@@ -39,8 +39,8 @@ on_a:
 	mov rbp[-0xc], eax
 
 	mov eax, 1
-	test rax, rax
-	je strict $+0x73
+	test eax, eax
+	je strict $+0x71
 	call game_fn_nothing wrt ..plt
 	mov eax, 2
 	push rax
@@ -49,8 +49,8 @@ on_a:
 	cmp rax, r11
 	mov eax, 0
 	setne al
-	test rax, rax
-	je strict $+0x45
+	test eax, eax
+	je strict $+0x44
 	mov eax, 1
 	push rax
 	mov eax, rbp[-0xc]
@@ -64,13 +64,13 @@ on_a:
 	cmp rax, r11
 	mov eax, 0
 	sete al
-	test rax, rax
+	test eax, eax
 	je strict $+0xb
-	jmp strict $-0x4f
+	jmp strict $-0x4d
 	call game_fn_nothing wrt ..plt
-	jmp strict $-0x59
+	jmp strict $-0x57
 	jmp strict $+0xa
-	jmp strict $-0x76
+	jmp strict $-0x73
 
 	xor edi, edi
 	call alarm wrt ..plt

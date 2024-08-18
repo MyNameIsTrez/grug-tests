@@ -11,11 +11,16 @@ global on_fns
 on_fns:
 	dq on_a
 
+global strings
+strings:
+	db "", 0
+
 section .text
 
 extern game_fn_define_d
 extern alarm
-extern game_fn_nothing
+extern strcmp
+extern game_fn_initialize_bool
 
 global define
 define:
@@ -35,24 +40,25 @@ on_a:
 	mov edi, 1
 	call alarm wrt ..plt
 
-	call game_fn_nothing wrt ..plt
+	lea rax, strings[rel 0]
+	push rax
 
-	; while (condition)
-	mov eax, 1
+	lea rax, strings[rel 0]
+	pop r11
+
+	mov rsi, r11
+	mov rdi, rax
+	call strcmp wrt ..plt
+
 	test eax, eax
-	je strict $+0x1a
+	setne al
+	push rax
 
-	; loop body
-	call game_fn_nothing wrt ..plt
-	jmp strict $+0xf
-	call game_fn_nothing wrt ..plt
-	jmp strict $-0x1c
-
-	; after loop
-	call game_fn_nothing wrt ..plt
+	pop rdi
+	call game_fn_initialize_bool wrt ..plt
 
 	xor edi, edi
 	call alarm wrt ..plt
-    mov rsp, rbp
+	mov rsp, rbp
     pop rbp
 	ret

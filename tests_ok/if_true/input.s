@@ -38,7 +38,7 @@ on_a:
 	call game_fn_nothing wrt ..plt
 
 	mov eax, 1
-	test rax, rax
+	test eax, eax
 	je strict $+0xb
 	call game_fn_nothing wrt ..plt
 

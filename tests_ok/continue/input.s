@@ -48,7 +48,7 @@ on_a:
 	mov eax, 0x0
 	setl al
 
-	test rax, rax
+	test eax, eax
 	je strict $+0x2b
 
 	call game_fn_nothing wrt ..plt
@@ -61,11 +61,11 @@ on_a:
 	add rax, r11
 	mov rbp[-0xc], eax
 
-	jmp strict $-0x35 ; continue
+	jmp strict $-0x34 ; continue
 
 	call game_fn_nothing wrt ..plt
 
-	jmp strict $-0x3f ; jump to start of loop
+	jmp strict $-0x3e ; jump to start of loop
 
 	xor edi, edi
 	call alarm wrt ..plt
