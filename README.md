@@ -113,3 +113,13 @@ so:
 ```bash
 echo 'obase=16;ibase=16;FFFFFFFB-(1055-1020)' | bc
 ```
+
+## Static code analysis with PVS-Studio
+
+See [my blog post about PVS-Studio](https://mynameistrez.github.io/2024/08/19/static-c-analysis-with-pvs-studio.html) for the what, why, and how.
+
+```bash
+pvs-studio-analyzer trace -- clang run.c grug/grug.c -Igrug -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -g -fsanitize=address,undefined -Og &&\
+pvs-studio-analyzer analyze -o pvs.log &&\
+plog-converter -a GA:1,2 -t json -o pvs.json pvs.log
+```

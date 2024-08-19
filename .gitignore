@@ -15,3 +15,6 @@ coverage.run.c.*.html
 crash-*
 experiments.o
 fuzz.dll
+pvs.json
+pvs.log
+strace_out
