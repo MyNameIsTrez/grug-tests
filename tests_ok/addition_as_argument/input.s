@@ -29,10 +29,10 @@ init_globals:
 
 global on_a
 on_a:
-    push rbp
-    mov rbp, rsp
+	push rbp
+	mov rbp, rsp
 	sub rsp, byte 0x10
-    mov rbp[-0x8], rdi
+	mov rbp[-0x8], rdi
 	call grug_on_fn_enable_runtime_error_handling wrt ..plt
 
 	mov eax, 2
@@ -46,6 +46,6 @@ on_a:
 	call game_fn_initialize wrt ..plt
 
 	call grug_on_fn_disable_runtime_error_handling wrt ..plt
-    mov rsp, rbp
-    pop rbp
+	mov rsp, rbp
+	pop rbp
 	ret

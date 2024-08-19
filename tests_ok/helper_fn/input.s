@@ -28,10 +28,10 @@ init_globals:
 
 global on_a
 on_a:
-    push rbp
-    mov rbp, rsp
+	push rbp
+	mov rbp, rsp
 	sub rsp, byte 0x10
-    mov rbp[-0x8], rdi
+	mov rbp[-0x8], rdi
 	mov edi, 1
 	call alarm wrt ..plt
 
@@ -44,18 +44,18 @@ on_a:
 	xor edi, edi
 	call alarm wrt ..plt
 	mov rsp, rbp
-    pop rbp
+	pop rbp
 	ret
 
 global helper_foo
 helper_foo:
-    push rbp
-    mov rbp, rsp
+	push rbp
+	mov rbp, rsp
 	sub rsp, byte 0x10
-    mov rbp[-0x8], rdi
+	mov rbp[-0x8], rdi
 
 	call game_fn_nothing wrt ..plt
 
 	mov rsp, rbp
-    pop rbp
+	pop rbp
 	ret

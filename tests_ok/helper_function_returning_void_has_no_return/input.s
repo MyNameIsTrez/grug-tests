@@ -28,30 +28,30 @@ init_globals:
 
 global on_a
 on_a:
-    push rbp
-    mov rbp, rsp
-    sub rsp, byte 0x10
-    mov rbp[-0x8], rdi
+	push rbp
+	mov rbp, rsp
+	sub rsp, byte 0x10
+	mov rbp[-0x8], rdi
 	mov edi, 1
 	call alarm wrt ..plt
-    mov rax, rbp[-0x8]
-    push rax
-    pop rdi
-    call helper_foo
-    call game_fn_nothing wrt ..plt
+	mov rax, rbp[-0x8]
+	push rax
+	pop rdi
+	call helper_foo
+	call game_fn_nothing wrt ..plt
 	xor edi, edi
 	call alarm wrt ..plt
 	mov rsp, rbp
-    pop rbp
-    ret
+	pop rbp
+	ret
 
 global helper_foo
 helper_foo:
-    push rbp
-    mov rbp, rsp
-    sub rsp, byte 0x10
-    mov rbp[-0x8], rdi
-    call game_fn_nothing wrt ..plt
+	push rbp
+	mov rbp, rsp
+	sub rsp, byte 0x10
+	mov rbp[-0x8], rdi
+	call game_fn_nothing wrt ..plt
 	mov rsp, rbp
-    pop rbp
-    ret
+	pop rbp
+	ret

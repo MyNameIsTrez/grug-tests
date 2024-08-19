@@ -29,30 +29,30 @@ init_globals:
 
 global on_b
 on_b:
-    push rbp
-    mov rbp, rsp
+	push rbp
+	mov rbp, rsp
 	sub rsp, byte 0x10
-    mov rbp[-0x8], rdi
+	mov rbp[-0x8], rdi
 	mov edi, 1
 	call alarm wrt ..plt
 
 	xor edi, edi
 	call alarm wrt ..plt
 	mov rsp, rbp
-    pop rbp
+	pop rbp
 	ret
 
 global on_c
 on_c:
-    push rbp
-    mov rbp, rsp
+	push rbp
+	mov rbp, rsp
 	sub rsp, byte 0x10
-    mov rbp[-0x8], rdi
+	mov rbp[-0x8], rdi
 	mov edi, 1
 	call alarm wrt ..plt
 
 	xor edi, edi
 	call alarm wrt ..plt
 	mov rsp, rbp
-    pop rbp
+	pop rbp
 	ret

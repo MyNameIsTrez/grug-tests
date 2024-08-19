@@ -35,7 +35,7 @@ on_a:
 	push rbp
 	mov rbp, rsp
 	sub rsp, byte 0x10
-    mov rbp[-0x8], rdi
+	mov rbp[-0x8], rdi
 	mov edi, 1
 	call alarm wrt ..plt
 
