@@ -126,7 +126,7 @@ run_test_err_runtime() {
 
 		# -std=gnu2x is used to have typeof() in C (-std=c2x for some reason prints "error: expected specifier-qualifier-list before ‘typeof’")
 		# -rdynamic allows the .so to call functions from test.c
-		clang $test_c_path grug.o -Igrug -I. -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -Wfatal-errors -Wno-language-extension-token -g -fsanitize=address,undefined -Og -rdynamic -o $test_executable_path
+		clang $test_c_path grug.o -Igrug -I. -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -Wfatal-errors -Wno-language-extension-token -g -Og -rdynamic -o $test_executable_path
 	fi
 
 	local grug_output_path=$dir"results/grug_output.txt"
@@ -281,7 +281,7 @@ run_test_ok() {
 
 		# -std=gnu2x is used to have typeof() in C (-std=c2x for some reason prints "error: expected specifier-qualifier-list before ‘typeof’")
 		# -rdynamic allows the .so to call functions from test.c
-		clang $test_c_path grug.o -Igrug -I. -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -Wfatal-errors -Wno-language-extension-token -g -fsanitize=address,undefined -Og -rdynamic -lm -o $test_executable_path
+		clang $test_c_path grug.o -Igrug -I. -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -Wfatal-errors -Wno-language-extension-token -g -Og -rdynamic -lm -o $test_executable_path
 	fi
 
 	valgrind --error-exitcode=1 --quiet $test_executable_path $expected_dll_path
@@ -383,11 +383,6 @@ init() {
 		if [[ -v OPTIMIZED ]] # If the OPTIMIZED environment variable was set
 		then
 		    echo "- OPTIMIZED was turned on"
-			compiler_flags+=' -Ofast -march=native -DNDEBUG'
-        else
-			# Leave out fsanitize if you want accurate coverage branch counts,
-			# or replace all usage of clang with gcc
-			compiler_flags+=' -fsanitize=address,undefined -Og'
 		fi
 
 		# TODO: An issue here is that if OLD_LD is set or unset, a.out isn't recompiled!
@@ -424,7 +419,16 @@ init() {
 
 		clang grug/grug.c -c -o grug.o $compiler_flags
 
-		clang run.c grug.o $compiler_flags $linker_flags
+		# TODO: An issue here is that if OPTIMIZED is set or unset, a.out isn't recompiled!
+		# TODO: This could also definitely be done inline with some sort of ternary
+		if [[ -v OPTIMIZED ]] # If the OPTIMIZED environment variable was set
+		then
+			compiler_flags+=' -Ofast -march=native -DNDEBUG'
+        else
+			compiler_flags+=' -fsanitize=address,undefined -Og'
+		fi
+
+		clang run.c grug/grug.c $compiler_flags $linker_flags
 
 		if [ $? -ne 0 ]
 		then
