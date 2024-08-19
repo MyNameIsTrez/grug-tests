@@ -14,12 +14,13 @@ on_fns:
 section .text
 
 extern game_fn_define_d
-extern alarm
+extern grug_enable_on_fn_runtime_error_handling
 extern game_fn_nothing
 extern game_fn_magic
 extern game_fn_initialize
 extern game_fn_identity
 extern game_fn_max
+extern grug_disable_on_fn_runtime_error_handling
 
 global define
 define:
@@ -36,8 +37,7 @@ on_a:
 	mov rbp, rsp
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rdi
-	mov edi, 1
-	call alarm wrt ..plt
+	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	call game_fn_nothing wrt ..plt
 	call game_fn_magic wrt ..plt
@@ -60,8 +60,7 @@ on_a:
 	pop rdi
 	call game_fn_max wrt ..plt
 
-	xor edi, edi
-	call alarm wrt ..plt
+	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 	mov rsp, rbp
 	pop rbp
 	ret

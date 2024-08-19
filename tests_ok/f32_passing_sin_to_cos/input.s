@@ -14,9 +14,10 @@ on_fns:
 section .text
 
 extern game_fn_define_d
-extern alarm
+extern grug_enable_on_fn_runtime_error_handling
 extern game_fn_sin
 extern game_fn_cos
+extern grug_disable_on_fn_runtime_error_handling
 
 global define
 define:
@@ -33,8 +34,7 @@ on_a:
 	mov rbp, rsp
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rdi
-	mov edi, 1
-	call alarm wrt ..plt
+	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	mov eax, __?float32?__(4.0)
 	push rax
@@ -53,8 +53,7 @@ on_a:
 	call game_fn_cos wrt ..plt
 	movd eax, xmm0
 
-	xor edi, edi
-	call alarm wrt ..plt
+	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 	mov rsp, rbp
 	pop rbp
 	ret

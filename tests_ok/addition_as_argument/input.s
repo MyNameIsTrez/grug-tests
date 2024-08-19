@@ -14,9 +14,9 @@ on_fns:
 section .text
 
 extern game_fn_define_d
-extern grug_on_fn_enable_runtime_error_handling
+extern grug_enable_on_fn_runtime_error_handling
 extern game_fn_initialize
-extern grug_on_fn_disable_runtime_error_handling
+extern grug_disable_on_fn_runtime_error_handling
 
 global define
 define:
@@ -33,7 +33,7 @@ on_a:
 	mov rbp, rsp
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rdi
-	call grug_on_fn_enable_runtime_error_handling wrt ..plt
+	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	mov eax, 2
 	push rax
@@ -45,7 +45,7 @@ on_a:
 	pop rdi
 	call game_fn_initialize wrt ..plt
 
-	call grug_on_fn_disable_runtime_error_handling wrt ..plt
+	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 	mov rsp, rbp
 	pop rbp
 	ret

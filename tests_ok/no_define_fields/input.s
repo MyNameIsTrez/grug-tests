@@ -14,7 +14,8 @@ on_fns:
 section .text
 
 extern game_fn_define_d
-extern alarm
+extern grug_enable_on_fn_runtime_error_handling
+extern grug_disable_on_fn_runtime_error_handling
 
 global define
 define:

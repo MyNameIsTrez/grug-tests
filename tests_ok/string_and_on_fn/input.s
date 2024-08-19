@@ -18,7 +18,8 @@ strings:
 section .text
 
 extern game_fn_define_p
-extern alarm
+extern grug_enable_on_fn_runtime_error_handling
+extern grug_disable_on_fn_runtime_error_handling
 
 global define
 define:
@@ -37,11 +38,9 @@ on_a:
 	mov rbp, rsp
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rdi
-	mov edi, 1
-	call alarm wrt ..plt
+	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
-	xor edi, edi
-	call alarm wrt ..plt
+	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 	mov rsp, rbp
 	pop rbp
 	ret
