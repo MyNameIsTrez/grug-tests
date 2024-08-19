@@ -1,1 +1,1 @@
-An on_ function took longer than 1 second to run
+An on_ function took longer than 100 milliseconds to run
