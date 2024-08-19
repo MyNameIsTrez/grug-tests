@@ -123,3 +123,13 @@ pvs-studio-analyzer trace -- clang run.c grug/grug.c -Igrug -Wall -Wextra -Werro
 pvs-studio-analyzer analyze -o pvs.log &&\
 plog-converter -a GA:1,2 -t json -o pvs.json pvs.log
 ```
+
+## Linker map
+
+In order to visualize what grug.c contains when linked, follow these steps:
+
+1. Download [amap](https://www.sikorskiy.net/info/prj/amap/index.html)
+2. Run `LINKER_MAP= tests.sh`
+3. Run `./amap` in the cloned/unzipped directory of amap.
+4. Click the `File` button in the top-left corner, and then `Open file`
+5. Select the generated `output.map` using the file explorer popup
