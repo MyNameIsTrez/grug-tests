@@ -57,8 +57,6 @@ int main(int argc, char *argv[]) {
 	struct d_on_fns *on_fns = get(handle, "on_fns");
 	on_fns->a(g);
 
-	// TODO: How can grug.c help the user deal with the SIGALRM?
-
 	free(g);
 	#pragma GCC diagnostic pop
 }
