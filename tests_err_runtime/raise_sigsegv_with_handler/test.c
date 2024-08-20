@@ -10,14 +10,14 @@
 #include <string.h>
 #include <unistd.h>
 
-void game_fn_define_d(void) {
-}
-
 static void handler(int sig) {
 	(void)sig;
 	char msg[] = "In handler\n";
 	write(STDERR_FILENO, msg, sizeof(msg) - 1);
 	_exit(EXIT_FAILURE);
+}
+
+void game_fn_define_d(void) {
 }
 
 static void *get(void *handle, char *label) {

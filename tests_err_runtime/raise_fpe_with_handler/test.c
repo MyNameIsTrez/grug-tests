@@ -10,18 +10,18 @@
 #include <string.h>
 #include <unistd.h>
 
-void game_fn_define_d(void) {
-}
-
-void game_fn_initialize(int32_t x) {
-	(void)x;
-}
-
 static void handler(int sig) {
 	(void)sig;
 	char msg[] = "In handler\n";
 	write(STDERR_FILENO, msg, sizeof(msg) - 1);
 	_exit(EXIT_FAILURE);
+}
+
+void game_fn_define_d(void) {
+}
+
+void game_fn_initialize(int32_t x) {
+	(void)x;
 }
 
 static void *get(void *handle, char *label) {
