@@ -152,7 +152,7 @@ run_test_err_runtime() {
 
 	local test_output_path=$dir"results/test_output_path.txt"
 
-	printf "  Running test.c...\n"
+	printf "  Running the executable 'test'...\n"
 	valgrind --quiet $test_executable_path $dll_path >$test_output_path 2>&1
 	local test_exit_status=$?
 
@@ -284,6 +284,7 @@ run_test_ok() {
 		clang $test_c_path grug.o -Igrug -I. -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -Wfatal-errors -Wno-language-extension-token -g -Og -rdynamic -lm -o $test_executable_path
 	fi
 
+	printf "  Running the executable 'test'...\n"
 	valgrind --error-exitcode=1 --quiet $test_executable_path $expected_dll_path
 	local test_exit_status=$?
 
@@ -460,14 +461,26 @@ elif [[ $1 == tests_err/* ]]
 then
 	init
 	run_test_err $1/
+elif [[ $1 == tests_err ]]
+then
+	init
+	run_tests_err
 elif [[ $1 == tests_err_runtime/* ]]
 then
 	init
 	run_test_err_runtime $1/
+elif [[ $1 == tests_err_runtime ]]
+then
+	init
+	run_tests_err_runtime
 elif [[ $1 == tests_ok/* ]]
 then
 	init
 	run_test_ok $1/
+elif [[ $1 == tests_ok ]]
+then
+	init
+	run_tests_ok
 else
 	usage
 fi
