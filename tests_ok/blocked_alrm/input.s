@@ -21,15 +21,6 @@ extern sigprocmask
 extern grug_block_alrm_mask
 extern _GLOBAL_OFFSET_TABLE_
 
-; TODO: Use?
-; From https://www.nasm.us/xdoc/2.15/html/nasmdo10.html
-; %macro get_GOT 0
-; 	call %%getgot
-; %%getgot:
-; 	pop rbx
-; 	add rbx, _GLOBAL_OFFSET_TABLE_ + $$ - %%getgot wrt ..gotpc
-; %endmacro
-
 global define
 define:
 	call game_fn_define_d wrt ..plt
@@ -48,10 +39,8 @@ on_a:
 
 	; From https://www.nasm.us/xdoc/2.15/html/nasmdo10.html
 	push rbx
-	; get_GOT
-	call .get_GOT ; TODO: Try doing smth like `call $+42` instead, so that the output doesn't have the `on_a.get_GOT` label
+	lea rbx, [rel .get_GOT]
 .get_GOT:
-	pop rbx
 	add rbx, _GLOBAL_OFFSET_TABLE_ + $$ - .get_GOT wrt ..gotpc
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
