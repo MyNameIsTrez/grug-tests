@@ -20,7 +20,7 @@ run_test_err() {
 	&& [[ $grug_output_path -nt $expected_error_path ]]\
 	&& [[ $grug_output_path -nt mod_api.json ]]\
 	&& [[ $grug_output_path -nt tests.sh ]]\
-	&& [[ $grug_output_path -nt a.out ]]\
+	&& [[ $grug_output_path -nt tests.out ]]\
 	&& ! [[ -f $dir"/results/failed" ]]
 	then
 		printf "Skipping $dir...\n"
@@ -32,7 +32,7 @@ run_test_err() {
 
 		! [[ $grug_output_path -nt $grug_path ]] && echo "  - input.grug was newer"
 		! [[ $grug_output_path -nt $expected_error_path ]] && echo "  - expected_error.txt was newer"
-		! [[ $grug_output_path -nt a.out ]] && echo "  - a.out was newer"
+		! [[ $grug_output_path -nt tests.out ]] && echo "  - tests.out was newer"
 	fi
 
 	mkdir -p $dir"results"
@@ -40,8 +40,8 @@ run_test_err() {
 
 	local dll_path=$dir"results/output.so"
 
-	printf "  Running a.out...\n"
-	./a.out $grug_path $dll_path >$grug_output_path 2>&1
+	printf "  Running tests.out...\n"
+	./tests.out $grug_path $dll_path >$grug_output_path 2>&1
 	local grug_exit_status=$?
 
 	local error_diff_path=$dir"results/error_diff_path.txt"
@@ -99,7 +99,7 @@ run_test_err_runtime() {
 	&& [[ $dll_path -nt mod_api.h ]]\
 	&& [[ $dll_path -nt mod_api.json ]]\
 	&& [[ $dll_path -nt tests.sh ]]\
-	&& [[ $dll_path -nt a.out ]]\
+	&& [[ $dll_path -nt tests.out ]]\
 	&& ! [[ -f $dir"/results/failed" ]]
 	then
 		printf "Skipping $dir...\n"
@@ -114,7 +114,7 @@ run_test_err_runtime() {
 		! [[ $dll_path -nt $expected_error_path ]] && echo "  - expected_error.txt was newer"
 		! [[ $dll_path -nt $test_c_path ]] && echo "  - test.c was newer"
 		! [[ $dll_path -nt $test_executable_path ]] && echo "  - test was newer"
-		! [[ $dll_path -nt a.out ]] && echo "  - a.out was newer"
+		! [[ $dll_path -nt tests.out ]] && echo "  - tests.out was newer"
 	fi
 
 	mkdir -p $dir"results"
@@ -132,7 +132,7 @@ run_test_err_runtime() {
 	local grug_output_path=$dir"results/grug_output.txt"
 
 	printf "  Recreating output.so...\n"
-	./a.out $grug_path $dll_path >$grug_output_path 2>&1
+	./tests.out $grug_path $dll_path >$grug_output_path 2>&1
 	local grug_exit_status=$?
 
 	if [ $grug_exit_status -ne 0 ]
@@ -241,7 +241,7 @@ run_test_ok() {
 	&& [[ $dll_path -nt mod_api.h ]]\
 	&& [[ $dll_path -nt mod_api.json ]]\
 	&& [[ $dll_path -nt tests.sh ]]\
-	&& [[ $dll_path -nt a.out ]]\
+	&& [[ $dll_path -nt tests.out ]]\
 	&& ! [[ -f $dir"/results/failed" ]]
 	then
 		printf "Skipping $dir...\n"
@@ -256,7 +256,7 @@ run_test_ok() {
 		! [[ $dll_path -nt $expected_dll_path ]] && echo "  - expected.so was newer"
 		! [[ $dll_path -nt $test_c_path ]] && echo "  - test.c was newer"
 		! [[ $dll_path -nt $test_executable_path ]] && echo "  - test was newer"
-		! [[ $dll_path -nt a.out ]] && echo "  - a.out was newer"
+		! [[ $dll_path -nt tests.out ]] && echo "  - tests.out was newer"
 	fi
 
 	mkdir -p $dir"results"
@@ -297,7 +297,7 @@ run_test_ok() {
 	local grug_output_path=$dir"results/grug_output.txt"
 
 	printf "  Recreating output.so...\n"
-	./a.out $grug_path $dll_path >$grug_output_path 2>&1
+	./tests.out $grug_path $dll_path >$grug_output_path 2>&1
 	local grug_exit_status=$?
 
 	if [ -s $grug_output_path ]
@@ -364,14 +364,14 @@ init() {
 	# The .gcno is only generated during compilation, so we don't remove it
 	rm -f *.gcda
 
-	if (! [[ run.c -ot a.out ]]) || (! [[ grug/grug.c -ot a.out ]]) || (! [[ grug/grug.h -ot a.out ]])
+	if (! [[ run.c -ot tests.out ]]) || (! [[ grug/grug.c -ot tests.out ]]) || (! [[ grug/grug.h -ot tests.out ]])
 	then
 		echo "Recompiling..."
 
 		local compiler_flags='-Igrug -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -g'
 		local linker_flags=''
 
-		# TODO: An issue here is that if LOGGING is set or unset, a.out isn't recompiled!
+		# TODO: An issue here is that if LOGGING is set or unset, tests.out isn't recompiled!
 		# TODO: This could also definitely be done inline with some sort of ternary
 		if [[ -v LOGGING ]] # If the LOGGING environment variable was set
 		then
@@ -379,14 +379,14 @@ init() {
 			compiler_flags+=' -DLOGGING'
 		fi
 
-		# TODO: An issue here is that if OPTIMIZED is set or unset, a.out isn't recompiled!
+		# TODO: An issue here is that if OPTIMIZED is set or unset, tests.out isn't recompiled!
 		# TODO: This could also definitely be done inline with some sort of ternary
 		if [[ -v OPTIMIZED ]] # If the OPTIMIZED environment variable was set
 		then
 		    echo "- OPTIMIZED was turned on"
 		fi
 
-		# TODO: An issue here is that if OLD_LD is set or unset, a.out isn't recompiled!
+		# TODO: An issue here is that if OLD_LD is set or unset, tests.out isn't recompiled!
 		# TODO: This could also definitely be done inline with some sort of ternary
 		if [[ -v OLD_LD ]] # If the OLD_LD environment variable was set
 		then
@@ -394,7 +394,7 @@ init() {
 			compiler_flags+=' -DOLD_LD'
 		fi
 
-		# TODO: An issue here is that if CRASH_ON_UNREACHABLE is set or unset, a.out isn't recompiled!
+		# TODO: An issue here is that if CRASH_ON_UNREACHABLE is set or unset, tests.out isn't recompiled!
 		# TODO: This could also definitely be done inline with some sort of ternary
 		if [[ -v CRASH_ON_UNREACHABLE ]] # If the CRASH_ON_UNREACHABLE environment variable was set
 		then
@@ -402,7 +402,7 @@ init() {
 			compiler_flags+=' -DCRASH_ON_UNREACHABLE'
 		fi
 
-		# TODO: An issue here is that if COVERAGE is set or unset, a.out isn't recompiled!
+		# TODO: An issue here is that if COVERAGE is set or unset, tests.out isn't recompiled!
 		# TODO: This could also definitely be done inline with some sort of ternary
 		if [[ -v COVERAGE ]] # If the COVERAGE environment variable was set
 		then
@@ -410,7 +410,7 @@ init() {
 			compiler_flags+=' --coverage'
 		fi
 
-		# TODO: An issue here is that if LINKER_MAP is set or unset, a.out isn't recompiled!
+		# TODO: An issue here is that if LINKER_MAP is set or unset, tests.out isn't recompiled!
 		# TODO: This could also definitely be done inline with some sort of ternary
 		if [[ -v LINKER_MAP ]] # If the LINKER_MAP environment variable was set
 		then
@@ -420,7 +420,7 @@ init() {
 
 		clang grug/grug.c -c -o grug.o $compiler_flags
 
-		# TODO: An issue here is that if OPTIMIZED is set or unset, a.out isn't recompiled!
+		# TODO: An issue here is that if OPTIMIZED is set or unset, tests.out isn't recompiled!
 		# TODO: This could also definitely be done inline with some sort of ternary
 		if [[ -v OPTIMIZED ]] # If the OPTIMIZED environment variable was set
 		then
@@ -429,7 +429,7 @@ init() {
 			compiler_flags+=' -fsanitize=address,undefined -Og'
 		fi
 
-		clang run.c grug/grug.c $compiler_flags $linker_flags
+		clang run.c grug/grug.c -o tests.out $compiler_flags $linker_flags
 
 		if [ $? -ne 0 ]
 		then

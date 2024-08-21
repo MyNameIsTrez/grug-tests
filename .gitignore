@@ -20,3 +20,4 @@ output.map
 pvs.json
 pvs.log
 strace_out
+tests.out
