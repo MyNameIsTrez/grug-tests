@@ -55,10 +55,14 @@ on_a:
 
 	call game_fn_nothing wrt ..plt
 
+	push rax
+
 	xor edx, edx
 	mov rsi, rbx[grug_block_mask wrt ..got]
 	mov edi, 1
 	call sigprocmask wrt ..plt
+
+	pop rax
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
