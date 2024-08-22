@@ -85,14 +85,12 @@ run_test_err_runtime() {
 	ran_test_count=$((ran_test_count + 1))
 
 	local grug_path=$dir"input.grug"
-	local expected_dll_path=$dir"results/expected.so"
 	local expected_error_path=$dir"expected_error.txt"
 	local test_c_path=$dir"test.c"
 	local test_executable_path=$dir"results/test"
 	local dll_path=$dir"results/output.so"
 
 	if [[ $dll_path -nt $grug_path ]]\
-	&& [[ $dll_path -nt $expected_dll_path ]]\
 	&& [[ $dll_path -nt $expected_error_path ]]\
 	&& [[ $dll_path -nt $test_c_path ]]\
 	&& [[ $dll_path -nt $test_executable_path ]]\
@@ -110,7 +108,6 @@ run_test_err_runtime() {
 		[[ -f $dir"/results/failed" ]] && echo "  /results/failed caused this test to be rerun"
 
 		! [[ $dll_path -nt $grug_path ]] && echo "  - input.grug was newer"
-		! [[ $dll_path -nt $expected_dll_path ]] && echo "  - expected.so was newer"
 		! [[ $dll_path -nt $expected_error_path ]] && echo "  - expected_error.txt was newer"
 		! [[ $dll_path -nt $test_c_path ]] && echo "  - test.c was newer"
 		! [[ $dll_path -nt $test_executable_path ]] && echo "  - test was newer"
@@ -190,13 +187,6 @@ run_test_err_runtime() {
 
 	if [ -n "$failed" ]
 	then
-		if [ -s $expected_dll_path ]
-		then
-			xxd $expected_dll_path > $dir"results/expected.hex"
-			readelf -a $expected_dll_path > $dir"results/expected_elf.log"
-			objdump -D $expected_dll_path -M intel > $dir"results/expected_objdump.log"
-		fi
-
 		if [ -s $dll_path ]
 		then
 			xxd $dll_path > $dir"results/output.hex"
