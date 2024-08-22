@@ -39,6 +39,9 @@ on_a:
 	mov rbp[-0x8], rdi
 
 	; From https://www.nasm.us/xdoc/2.15/html/nasmdo10.html
+	; We want rbx since it's a callee-saved register,
+	; meaning game fn calls can't overwrite it, meaning we don't have to
+	; reload the global offset table every time we want to access a global
 	push rbx
 	lea rbx, [rel $$]
 	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
