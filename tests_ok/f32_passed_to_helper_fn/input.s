@@ -17,8 +17,8 @@ extern grug_block_mask
 
 extern game_fn_define_d
 extern grug_enable_on_fn_runtime_error_handling
-extern sigprocmask
 extern grug_disable_on_fn_runtime_error_handling
+extern sigprocmask
 extern _GLOBAL_OFFSET_TABLE_
 extern game_fn_sin
 
@@ -60,7 +60,6 @@ on_a:
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
-	block
 	mov rax, rbp[-0x8]
 	push rax
 
@@ -71,7 +70,6 @@ on_a:
 	movd xmm0, eax
 	pop rdi
 	call helper_foo
-	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
@@ -84,19 +82,25 @@ global helper_foo
 helper_foo:
 	push rbp
 	mov rbp, rsp
-	sub rsp, byte 0x10
+	sub rsp, byte 0x20
 	mov rbp[-0x8], rbx
 	mov rbp[-0x10], rdi
-	movss rbp[-0xc], xmm0
+	movss rbp[-0x14], xmm0
 
-	mov eax, rbp[-0xc]
+	lea rbx, [rel $$]
+	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
+
+	block
+	mov eax, rbp[-0x14]
 	push rax
 
 	pop rax
 	movd xmm0, eax
 	call game_fn_sin wrt ..plt
 	movd eax, xmm0
+	unblock
 
+	mov rbx, rbp[-0x8]
 	mov rsp, rbp
 	pop rbp
 	ret

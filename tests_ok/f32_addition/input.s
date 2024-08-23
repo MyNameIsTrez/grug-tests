@@ -51,7 +51,7 @@ global on_a
 on_a:
 	push rbp
 	mov rbp, rsp
-	sub rsp, byte 0x10
+	sub rsp, byte 0x20
 	mov rbp[-0x8], rbx
 	mov rbp[-0x10], rdi
 
@@ -60,7 +60,6 @@ on_a:
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
-	block
 	mov eax, __?float32?__(4.0)
 	push rax
 	mov eax, __?float32?__(2.0)
@@ -69,9 +68,10 @@ on_a:
 	movd xmm1, r11d
 	addss xmm0, xmm1
 	movd eax, xmm0
-	mov rbp[-0xc], eax
+	mov rbp[-0x14], eax
+	block
 
-	mov eax, rbp[-0xc]
+	mov eax, rbp[-0x14]
 	push rax
 
 	pop rax

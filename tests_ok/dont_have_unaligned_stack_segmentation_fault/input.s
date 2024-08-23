@@ -52,8 +52,9 @@ global on_a
 on_a:
 	push rbp
 	mov rbp, rsp
-	sub rsp, byte 0x10 ; Change 0x10 to 0x8 to see the unaligned access crash
-	mov rbp[-0x8], rdi
+	sub rsp, byte 0x10 ; Change 0x10 to 0x8 to see the unaligned access crash (TODO: This doesn't trigger the crash anymore :( )
+	mov rbp[-0x8], rbx
+	mov rbp[-0x10], rdi
 
 	lea rbx, [rel $$]
 	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
@@ -62,11 +63,13 @@ on_a:
 
 	block
 	call game_fn_nothing wrt ..plt
+	unblock
 
-	; add rsp, 0x8 ; Uncomment to see the unaligned access crash
+	; add rsp, 0x8 ; Uncomment to see the unaligned access crash (TODO: This doesn't trigger the crash anymore :( )
 
 	; This shows that no matter how many arguments there are,
 	; we just need to make sure to have decremented rsp by multiples of 16
+	block
 	mov eax, 42
 	push rax
 	pop rdi

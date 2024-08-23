@@ -61,13 +61,17 @@ on_a:
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
-	block
 	; magic() + 42
+	block
 	mov eax, 42
 	push rax
+
+	block
 	sub rsp, byte 0x8 ; Comment this out along with the `add rsp, 0x8` below the call to see the unaligned access crash
 	call game_fn_magic wrt ..plt
 	add rsp, byte 0x8
+	unblock
+
 	pop r11
 	add rax, r11
 	push rax
