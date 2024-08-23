@@ -60,11 +60,11 @@ on_a:
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
-	block
-	mov rax, rbp[-0x8]
+	mov rax, rbp[-0x10]
 	push rax
 	pop rdi
 	call helper_foo
+	block
 	call game_fn_nothing wrt ..plt
 	unblock
 
@@ -82,7 +82,15 @@ helper_foo:
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rbx
 	mov rbp[-0x10], rdi
+
+	lea rbx, [rel $$]
+	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
+
+	block
 	call game_fn_nothing wrt ..plt
+	unblock
+
+	mov rbx, rbp[-0x8]
 	mov rsp, rbp
 	pop rbp
 	ret

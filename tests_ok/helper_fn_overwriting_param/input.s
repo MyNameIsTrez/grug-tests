@@ -17,8 +17,8 @@ extern grug_block_mask
 
 extern game_fn_define_d
 extern grug_enable_on_fn_runtime_error_handling
-extern sigprocmask
 extern grug_disable_on_fn_runtime_error_handling
+extern sigprocmask
 extern _GLOBAL_OFFSET_TABLE_
 extern game_fn_initialize
 extern game_fn_sin
@@ -61,9 +61,8 @@ on_a:
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
-	block
 	; helper_foo(2, 3.0)
-	mov rax, rbp[-0x8]
+	mov rax, rbp[-0x10]
 	push rax
 	mov eax, 2
 	push rax
@@ -74,7 +73,6 @@ on_a:
 	pop rsi
 	pop rdi
 	call helper_foo
-	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
@@ -87,34 +85,42 @@ global helper_foo
 helper_foo:
 	push rbp
 	mov rbp, rsp
-	sub rsp, byte 0x10
+	sub rsp, byte 0x20
 	mov rbp[-0x8], rbx
 	mov rbp[-0x10], rdi
-	mov rbp[-0xc], esi
-	movss rbp[-0x10], xmm0
+	mov rbp[-0x14], esi
+	movss rbp[-0x18], xmm0
+
+	lea rbx, [rel $$]
+	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
 
 	; i = 20
 	mov eax, 20
-	mov rbp[-0xc], eax
+	mov rbp[-0x14], eax
 
 	; initialize(i)
-	mov eax, rbp[-0xc]
+	block
+	mov eax, rbp[-0x14]
 	push rax
 	pop rdi
 	call game_fn_initialize wrt ..plt
+	unblock
 
 	; f = 30.0
 	mov eax, __?float32?__(30.0)
-	mov rbp[-0x10], eax
+	mov rbp[-0x18], eax
 
 	; sin(f)
-	mov eax, rbp[-0x10]
+	block
+	mov eax, rbp[-0x18]
 	push rax
 	pop rax
 	movd xmm0, eax
 	call game_fn_sin wrt ..plt
 	movd eax, xmm0
+	unblock
 
+	mov rbx, rbp[-0x8]
 	mov rsp, rbp
 	pop rbp
 	ret

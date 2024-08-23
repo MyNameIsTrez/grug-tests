@@ -51,7 +51,7 @@ global on_a
 on_a:
 	push rbp
 	mov rbp, rsp
-	sub rsp, byte 0x10
+	sub rsp, byte 0x20
 	mov rbp[-0x8], rbx
 	mov rbp[-0x10], rdi
 
@@ -60,32 +60,33 @@ on_a:
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
-	block
 	xor eax, eax
-	mov rbp[-0xc], eax
+	mov rbp[-0x14], eax
 
 	mov eax, 1
 	test eax, eax
-	je strict $+0x71
+	je strict $+0xbb
+	block
 	call game_fn_nothing wrt ..plt
+	unblock
 	mov eax, 2
 	push rax
-	mov eax, rbp[-0xc]
+	mov eax, rbp[-0x14]
 	pop r11
 	cmp rax, r11
 	mov eax, 0
 	setne al
 	test eax, eax
-	je strict $+0x44
+	je strict $+0x69
 	mov eax, 1
 	push rax
-	mov eax, rbp[-0xc]
+	mov eax, rbp[-0x14]
 	pop r11
 	add rax, r11
-	mov rbp[-0xc], eax
+	mov rbp[-0x14], eax
 	mov eax, 1
 	push rax
-	mov eax, rbp[-0xc]
+	mov eax, rbp[-0x14]
 	pop r11
 	cmp rax, r11
 	mov eax, 0
@@ -93,11 +94,12 @@ on_a:
 	test eax, eax
 	je strict $+0xb
 	jmp strict $-0x4d
+	block
 	call game_fn_nothing wrt ..plt
-	jmp strict $-0x57
-	jmp strict $+0xa
-	jmp strict $-0x73
 	unblock
+	jmp strict $-0x7c
+	jmp strict $+0xa
+	jmp strict $-0xbd
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 

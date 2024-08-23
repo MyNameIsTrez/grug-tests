@@ -59,9 +59,6 @@ on_a:
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
-	block
-	unblock
-
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
 	mov rbx, rbp[-0x8]
