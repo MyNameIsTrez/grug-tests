@@ -13,6 +13,8 @@ on_fns:
 
 section .text
 
+extern grug_block_mask
+
 extern define_d
 extern initialize
 
@@ -24,6 +26,22 @@ define:
 global init_globals
 init_globals:
 	ret
+
+%macro block 0
+	xor edx, edx
+	mov rsi, rbx[grug_block_mask wrt ..got]
+	xor edi, edi
+	call sigprocmask wrt ..plt
+%endmacro
+
+%macro unblock 0
+	push rax
+	xor edx, edx
+	mov rsi, rbx[grug_block_mask wrt ..got]
+	mov edi, 1
+	call sigprocmask wrt ..plt
+	pop rax
+%endmacro
 
 global on_a
 on_a:

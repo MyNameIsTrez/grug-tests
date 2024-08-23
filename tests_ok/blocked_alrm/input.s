@@ -31,6 +31,22 @@ global init_globals
 init_globals:
 	ret
 
+%macro block 0
+	xor edx, edx
+	mov rsi, rbx[grug_block_mask wrt ..got]
+	xor edi, edi
+	call sigprocmask wrt ..plt
+%endmacro
+
+%macro unblock 0
+	push rax
+	xor edx, edx
+	mov rsi, rbx[grug_block_mask wrt ..got]
+	mov edi, 1
+	call sigprocmask wrt ..plt
+	pop rax
+%endmacro
+
 global on_a
 on_a:
 	push rbp
@@ -48,21 +64,9 @@ on_a:
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
-	xor edx, edx
-	mov rsi, rbx[grug_block_mask wrt ..got]
-	xor edi, edi
-	call sigprocmask wrt ..plt
-
+	block
 	call game_fn_nothing wrt ..plt
-
-	push rax
-
-	xor edx, edx
-	mov rsi, rbx[grug_block_mask wrt ..got]
-	mov edi, 1
-	call sigprocmask wrt ..plt
-
-	pop rax
+	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 

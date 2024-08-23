@@ -13,9 +13,13 @@ on_fns:
 
 section .text
 
+extern grug_block_mask
+
 extern game_fn_define_d
 extern grug_enable_on_fn_runtime_error_handling
+extern sigprocmask
 extern grug_disable_on_fn_runtime_error_handling
+extern _GLOBAL_OFFSET_TABLE_
 
 global define
 define:

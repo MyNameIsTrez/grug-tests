@@ -9,6 +9,8 @@ globals_size: dq 128
 
 section .text
 
+extern grug_block_mask
+
 extern game_fn_define_a
 
 global define

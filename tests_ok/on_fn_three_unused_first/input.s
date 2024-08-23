@@ -15,9 +15,13 @@ on_fns:
 
 section .text
 
+extern grug_block_mask
+
 extern game_fn_define_j
 extern grug_enable_on_fn_runtime_error_handling
+extern sigprocmask
 extern grug_disable_on_fn_runtime_error_handling
+extern _GLOBAL_OFFSET_TABLE_
 
 global define
 define:
@@ -33,10 +37,20 @@ on_b:
 	push rbp
 	mov rbp, rsp
 	sub rsp, byte 0x10
-	mov rbp[-0x8], rdi
+	mov rbp[-0x8], rbx
+	mov rbp[-0x10], rdi
+
+	lea rbx, [rel $$]
+	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
+
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
+	block
+	unblock
+
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
+
+	mov rbx, rbp[-0x8]
 	mov rsp, rbp
 	pop rbp
 	ret
@@ -46,10 +60,20 @@ on_c:
 	push rbp
 	mov rbp, rsp
 	sub rsp, byte 0x10
-	mov rbp[-0x8], rdi
+	mov rbp[-0x8], rbx
+	mov rbp[-0x10], rdi
+
+	lea rbx, [rel $$]
+	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
+
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
+	block
+	unblock
+
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
+
+	mov rbx, rbp[-0x8]
 	mov rsp, rbp
 	pop rbp
 	ret
