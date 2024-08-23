@@ -62,7 +62,6 @@ on_a:
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	block
-
 	mov rax, rbp[-0x8]
 	push rax
 

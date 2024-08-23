@@ -61,7 +61,6 @@ on_a:
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	block
-
 	call game_fn_nothing wrt ..plt
 
 	; add rsp, 0x8 ; Uncomment to see the unaligned access crash

@@ -61,7 +61,6 @@ on_a:
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	block
-
 	mov eax, __?float32?__(4.0)
 	xor eax, 0x80000000
 	push rax

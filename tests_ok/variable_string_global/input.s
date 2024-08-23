@@ -68,7 +68,6 @@ on_a:
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	block
-
 	lea rax, strings[rel 5]
 	mov r11, rbp[-0x8]
 	mov r11[byte 0], rax

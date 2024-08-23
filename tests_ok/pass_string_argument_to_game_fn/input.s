@@ -65,7 +65,6 @@ on_a:
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	block
-
 	lea rax, strings[rel 0]
 	push rax
 
