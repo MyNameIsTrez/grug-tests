@@ -65,7 +65,8 @@ on_a:
 	push rax
 	pop rdi
 	call helper_foo
-	call game_fn_nothing wrt ..plt	unblock
+	call game_fn_nothing wrt ..plt
+	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 

@@ -52,7 +52,7 @@ global on_a
 on_a:
 	push rbp
 	mov rbp, rsp
-	sub rsp, byte 0x10
+	sub rsp, byte 0x20
 	mov rbp[-0x8], rbx
 	mov rbp[-0x10], rdi
 
@@ -69,9 +69,11 @@ on_a:
 	movd xmm0, eax
 	call game_fn_sin wrt ..plt
 	movd eax, xmm0
-	mov rbp[-0xc], eax
+	unblock
+	mov rbp[-0x14], eax
 
-	mov eax, rbp[-0xc]
+	block
+	mov eax, rbp[-0x14]
 	push rax
 
 	pop rax

@@ -61,7 +61,7 @@ on_a:
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	block
-	mov rax, rbp[-0x8]
+	mov rax, rbp[-0x10]
 	push rax
 	mov eax, 10
 	push rax
@@ -70,7 +70,8 @@ on_a:
 	call helper_fib
 	push rax
 	pop rdi
-	call game_fn_initialize wrt ..plt	unblock
+	call game_fn_initialize wrt ..plt
+	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
@@ -84,15 +85,18 @@ helper_fib:
 	; Function prologue
 	push rbp
 	mov rbp, rsp
-	sub rsp, byte 0x10
+	sub rsp, byte 0x20
 	mov rbp[-0x8], rbx
 	mov rbp[-0x10], rdi
-	mov rbp[-0xc], esi
+	mov rbp[-0x14], esi
+
+	lea rbx, [rel $$]
+	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
 
 	; if n == 0
 	xor eax, eax
 	push rax
-	mov eax, rbp[-0xc]
+	mov eax, rbp[-0x14]
 	pop r11
 	cmp rax, r11
 	mov eax, 0
@@ -105,7 +109,7 @@ helper_fib:
 	jmp strict $+0x25
 	mov eax, 1
 	push rax
-	mov eax, rbp[-0xc]
+	mov eax, rbp[-0x14]
 	pop r11
 	cmp rax, r11
 	mov eax, 0
@@ -114,20 +118,21 @@ helper_fib:
 	mov eax, 0
 	setne al
 	test eax, eax
-	je strict $+0xe
+	je strict $+0x12
 
 	; return n
-	mov eax, rbp[-0xc]
+	mov eax, rbp[-0x14]
+	mov rbx, rbp[-0x8]
 	mov rsp, rbp
 	pop rbp
 	ret
 
 	; helper_fib(n - 2)
-	mov rax, rbp[-0x8]
+	mov rax, rbp[-0x10]
 	push rax
 	mov eax, 2
 	push rax
-	mov eax, rbp[-0xc]
+	mov eax, rbp[-0x14]
 	pop r11
 	sub rax, r11
 	push rax
@@ -137,11 +142,11 @@ helper_fib:
 	push rax
 
 	; helper_fib(n - 1)
-	mov rax, rbp[-0x8]
+	mov rax, rbp[-0x10]
 	push rax
 	mov eax, 1
 	push rax
-	mov eax, rbp[-0xc]
+	mov eax, rbp[-0x14]
 	pop r11
 	sub rax, r11
 	push rax
@@ -156,11 +161,13 @@ helper_fib:
 	add rax, r11
 
 	; return helper_fib(n - 1) + helper_fib(n - 2)
+	mov rbx, rbp[-0x8]
 	mov rsp, rbp
 	pop rbp
 	ret
 
 	; Function epilogue
+	mov rbx, rbp[-0x8]
 	mov rsp, rbp
 	pop rbp
 	ret

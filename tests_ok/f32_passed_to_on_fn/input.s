@@ -51,10 +51,10 @@ global on_a
 on_a:
 	push rbp
 	mov rbp, rsp
-	sub rsp, byte 0x10
+	sub rsp, byte 0x20
 	mov rbp[-0x8], rbx
 	mov rbp[-0x10], rdi
-	movss rbp[-0xc], xmm0
+	movss rbp[-0x14], xmm0
 
 	lea rbx, [rel $$]
 	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
@@ -62,7 +62,7 @@ on_a:
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	block
-	mov eax, rbp[-0xc]
+	mov eax, rbp[-0x14]
 	push rax
 
 	pop rax
