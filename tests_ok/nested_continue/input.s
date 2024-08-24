@@ -67,7 +67,7 @@ on_a:
 
 	mov eax, 1
 	test eax, eax
-	je strict $+0xbb
+	je strict $+0xcb
 	block
 	call game_fn_nothing wrt ..plt
 	unblock
@@ -79,7 +79,7 @@ on_a:
 	mov eax, 0
 	setne al
 	test eax, eax
-	je strict $+0x69
+	je strict $+0x71
 	mov eax, 1
 	push rax
 	mov eax, rbp[-0x14]
@@ -99,9 +99,9 @@ on_a:
 	block
 	call game_fn_nothing wrt ..plt
 	unblock
-	jmp strict $-0x7c
+	jmp strict $-0x84
 	jmp strict $+0xa
-	jmp strict $-0xbd
+	jmp strict $-0xcd
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 

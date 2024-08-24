@@ -76,7 +76,7 @@ on_a:
 	setl al
 
 	test eax, eax
-	je strict $+0x75
+	je strict $+0x85
 
 	block
 	call game_fn_nothing wrt ..plt
@@ -90,13 +90,13 @@ on_a:
 	add rax, r11
 	mov rbp[-0x14], eax
 
-	jmp strict $-0x59 ; continue
+	jmp strict $-0x61 ; continue
 
 	block
 	call game_fn_nothing wrt ..plt
 	unblock
 
-	jmp strict $-0x88 ; jump to start of loop
+	jmp strict $-0x98 ; jump to start of loop
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 

@@ -67,7 +67,7 @@ on_a:
 	unblock
 	mov eax, 1
 	test eax, eax
-	je strict $+0x51
+	je strict $+0x59
 	mov eax, 1
 	test eax, eax
 	je strict $+0x10
@@ -77,7 +77,7 @@ on_a:
 	call game_fn_nothing wrt ..plt
 	unblock
 	jmp strict $+0xa
-	jmp strict $-0x53
+	jmp strict $-0x5b
 	block
 	call game_fn_nothing wrt ..plt
 	unblock

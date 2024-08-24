@@ -68,7 +68,7 @@ on_a:
 
 	xor eax, eax
 	test eax, eax
-	je strict $+0x30
+	je strict $+0x38
 	block
 	call game_fn_nothing wrt ..plt
 	unblock
