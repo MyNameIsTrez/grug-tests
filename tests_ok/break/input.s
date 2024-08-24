@@ -64,64 +64,28 @@ on_a:
 
 	block
 	call game_fn_nothing wrt ..plt
-
-	push rax
-	xor edx, edx
-	mov rsi, rbx[grug_block_mask wrt ..got]
-	mov edi, 1
-	sub rsp, byte 0x8
-	call sigprocmask wrt ..plt
-	add rsp, byte 0x8
-	pop rax
+	unblock
 
 	; while (condition)
 	mov eax, 1
 	test eax, eax
-	je strict $+0x64
-
-	xor edx, edx
-	mov rsi, rbx[grug_block_mask wrt ..got]
-	xor edi, edi
-	call sigprocmask wrt ..plt
+	je strict $+0x74
 
 	; loop body
+	block
 	call game_fn_nothing wrt ..plt
+	unblock
 
-	push rax
-	xor edx, edx
-	mov rsi, rbx[grug_block_mask wrt ..got]
-	mov edi, 1
-	sub rsp, byte 0x8
-	call sigprocmask wrt ..plt
-	add rsp, byte 0x8
-	pop rax
+	jmp strict $+0x3c
 
-	jmp strict $+0x34
-
-	xor edx, edx
-	mov rsi, rbx[grug_block_mask wrt ..got]
-	xor edi, edi
-	call sigprocmask wrt ..plt
-
+	block
 	call game_fn_nothing wrt ..plt
+	unblock
 
-	push rax
-	xor edx, edx
-	mov rsi, rbx[grug_block_mask wrt ..got]
-	mov edi, 1
-	sub rsp, byte 0x8
-	call sigprocmask wrt ..plt
-	add rsp, byte 0x8
-	pop rax
-
-	jmp strict $-0x66
-
-	xor edx, edx
-	mov rsi, rbx[grug_block_mask wrt ..got]
-	xor edi, edi
-	call sigprocmask wrt ..plt
+	jmp strict $-0x76
 
 	; after loop
+	block
 	call game_fn_nothing wrt ..plt
 	unblock
 
