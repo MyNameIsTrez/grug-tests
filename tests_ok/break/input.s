@@ -43,7 +43,9 @@ init_globals:
 	xor edx, edx
 	mov rsi, rbx[grug_block_mask wrt ..got]
 	mov edi, 1
+	sub rsp, byte 0x8
 	call sigprocmask wrt ..plt
+	add rsp, byte 0x8
 	pop rax
 %endmacro
 
@@ -67,7 +69,9 @@ on_a:
 	xor edx, edx
 	mov rsi, rbx[grug_block_mask wrt ..got]
 	mov edi, 1
+	sub rsp, byte 0x8
 	call sigprocmask wrt ..plt
+	add rsp, byte 0x8
 	pop rax
 
 	; while (condition)
@@ -87,7 +91,9 @@ on_a:
 	xor edx, edx
 	mov rsi, rbx[grug_block_mask wrt ..got]
 	mov edi, 1
+	sub rsp, byte 0x8
 	call sigprocmask wrt ..plt
+	add rsp, byte 0x8
 	pop rax
 
 	jmp strict $+0x34
@@ -103,7 +109,9 @@ on_a:
 	xor edx, edx
 	mov rsi, rbx[grug_block_mask wrt ..got]
 	mov edi, 1
+	sub rsp, byte 0x8
 	call sigprocmask wrt ..plt
+	add rsp, byte 0x8
 	pop rax
 
 	jmp strict $-0x66

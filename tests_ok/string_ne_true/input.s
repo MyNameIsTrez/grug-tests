@@ -49,7 +49,9 @@ init_globals:
 	xor edx, edx
 	mov rsi, rbx[grug_block_mask wrt ..got]
 	mov edi, 1
+	sub rsp, byte 0x8
 	call sigprocmask wrt ..plt
+	add rsp, byte 0x8
 	pop rax
 %endmacro
 
