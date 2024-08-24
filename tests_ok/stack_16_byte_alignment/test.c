@@ -14,9 +14,9 @@
 void game_fn_define_d(void) {
 }
 
-static bool fn_magic_was_called = false;
-int32_t game_fn_magic(void) {
-	fn_magic_was_called = true;
+static bool fn_nothing_was_called = false;
+void game_fn_nothing(void) {
+	fn_nothing_was_called = true;
 
 	// From https://stackoverflow.com/a/2114249/13279557
 	int64_t rsp;
@@ -24,15 +24,9 @@ int32_t game_fn_magic(void) {
 
 	// We need this in order to ensure that the C compiler will 16-byte align
 	// this function with a function prologue, cause we assert that the rsp is divisible by 16 after the function prologue
-	char msg[] = ":)\n";
-	ssize_t status;
-	do {
-		status = write(STDERR_FILENO, msg, sizeof(msg) - 1);
-	} while (status == -1 && errno == EINTR);
+	printf(":)\n");
 
 	assert((rsp & 0xf) == 0);
-
-	return 42;
 }
 
 static bool fn_initialize_was_called = false;
@@ -45,15 +39,11 @@ void game_fn_initialize(int32_t x) {
 
 	// We need this in order to ensure that the C compiler will 16-byte align
 	// this function with a function prologue, cause we assert that the rsp is divisible by 16 after the function prologue
-	char msg[] = ":)\n";
-	ssize_t status;
-	do {
-		status = write(STDERR_FILENO, msg, sizeof(msg) - 1);
-	} while (status == -1 && errno == EINTR);
+	printf(":)\n");
 
 	assert((rsp & 0xf) == 0);
 
-	assert(x == 42 + 42);
+	assert(x == 42);
 }
 
 static void *get(void *handle, char *label) {
@@ -94,10 +84,10 @@ int main(int argc, char *argv[]) {
 	init_globals(g);
 
 	struct d_on_fns *on_fns = get(handle, "on_fns");
-	assert(!fn_magic_was_called);
+	assert(!fn_nothing_was_called);
 	assert(!fn_initialize_was_called);
 	on_fns->a(g);
-	assert(fn_magic_was_called);
+	assert(fn_nothing_was_called);
 	assert(fn_initialize_was_called);
 
 	free(g);
