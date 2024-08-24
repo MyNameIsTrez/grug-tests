@@ -44,7 +44,9 @@ init_globals:
 	xor edx, edx
 	mov rsi, rbx[grug_block_mask wrt ..got]
 	mov edi, 1
+	sub rsp, byte 0x8
 	call sigprocmask wrt ..plt
+	add rsp, byte 0x8
 	pop rax
 %endmacro
 
@@ -52,7 +54,7 @@ global on_a
 on_a:
 	push rbp
 	mov rbp, rsp
-	sub rsp, byte 0x10 ; Change 0x10 to 0x8 to see the unaligned access crash (TODO: This doesn't trigger the crash anymore :( )
+	sub rsp, byte 0x10 ; Change 0x10 to 0x18 to see the unaligned access crash, making sure to compile with gcc, instead of clang
 	mov rbp[-0x8], rbx
 	mov rbp[-0x10], rdi
 
@@ -65,7 +67,7 @@ on_a:
 	call game_fn_nothing wrt ..plt
 	unblock
 
-	; add rsp, 0x8 ; Uncomment to see the unaligned access crash (TODO: This doesn't trigger the crash anymore :( )
+	; add rsp, 0x18 ; Uncomment to see the unaligned access crash, making sure to compile with gcc, instead of clang
 
 	; This shows that no matter how many arguments there are,
 	; we just need to make sure to have decremented rsp by multiples of 16
