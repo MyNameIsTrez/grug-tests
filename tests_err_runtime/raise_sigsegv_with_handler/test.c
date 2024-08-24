@@ -4,6 +4,7 @@
 
 #include <assert.h>
 #include <dlfcn.h>
+#include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,7 +14,10 @@
 static void handler(int sig) {
 	(void)sig;
 	char msg[] = "In handler\n";
-	write(STDERR_FILENO, msg, sizeof(msg) - 1);
+	ssize_t status;
+	do {
+		status = write(STDERR_FILENO, msg, sizeof(msg) - 1);
+	} while (status == -1 && errno == EINTR);
 	_exit(EXIT_FAILURE);
 }
 
