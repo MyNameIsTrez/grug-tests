@@ -4,10 +4,12 @@
 
 #include <assert.h>
 #include <dlfcn.h>
+#include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 void game_fn_define_d(void) {
 }
@@ -15,14 +17,42 @@ void game_fn_define_d(void) {
 static bool fn_magic_was_called = false;
 int32_t game_fn_magic(void) {
 	fn_magic_was_called = true;
-	printf("  %d\n", 42); // This call is able to trigger an unaligned access error
+
+	// From https://stackoverflow.com/a/2114249/13279557
+	int64_t rsp;
+	asm ("mov %%rsp, %0" : "=r" (rsp) );
+
+	// We need this in order to ensure that the C compiler will 16-byte align
+	// this function with a function prologue, cause we assert that the rsp is divisible by 16 after the function prologue
+	char msg[] = ":)\n";
+	ssize_t status;
+	do {
+		status = write(STDERR_FILENO, msg, sizeof(msg) - 1);
+	} while (status == -1 && errno == EINTR);
+
+	assert((rsp & 0xf) == 0);
+
 	return 42;
 }
 
 static bool fn_initialize_was_called = false;
 void game_fn_initialize(int32_t x) {
 	fn_initialize_was_called = true;
-	printf("  %d\n", 42); // This call is able to trigger an unaligned access error
+
+	// From https://stackoverflow.com/a/2114249/13279557
+	int64_t rsp;
+	asm ("mov %%rsp, %0" : "=r" (rsp) );
+
+	// We need this in order to ensure that the C compiler will 16-byte align
+	// this function with a function prologue, cause we assert that the rsp is divisible by 16 after the function prologue
+	char msg[] = ":)\n";
+	ssize_t status;
+	do {
+		status = write(STDERR_FILENO, msg, sizeof(msg) - 1);
+	} while (status == -1 && errno == EINTR);
+
+	assert((rsp & 0xf) == 0);
+
 	assert(x == 42 + 42);
 }
 

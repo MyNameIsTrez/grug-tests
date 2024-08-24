@@ -54,7 +54,7 @@ global on_a
 on_a:
 	push rbp
 	mov rbp, rsp
-	sub rsp, byte 0x10 ; Change 0x10 to 0x18 to see the unaligned access crash, making sure to compile with gcc, instead of clang
+	sub rsp, byte 0x10 ; Change 0x10 to 0x18 to see the unaligned access crash
 	mov rbp[-0x8], rbx
 	mov rbp[-0x10], rdi
 
@@ -67,7 +67,7 @@ on_a:
 	call game_fn_nothing wrt ..plt
 	unblock
 
-	; add rsp, 0x18 ; Uncomment to see the unaligned access crash, making sure to compile with gcc, instead of clang
+	; add rsp, 0x8 ; Uncomment to see the unaligned access crash
 
 	; This shows that no matter how many arguments there are,
 	; we just need to make sure to have decremented rsp by multiples of 16

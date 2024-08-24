@@ -69,9 +69,9 @@ on_a:
 	push rax
 
 	block
-	sub rsp, byte 0x8 ; Comment this out along with the `add rsp, 0x8` below the call to see the unaligned access crash
+	; sub rsp, byte 0x8 ; Comment this out along with the `add rsp, 0x8` below the call to see the unaligned access crash
 	call game_fn_magic wrt ..plt
-	add rsp, byte 0x8
+	; add rsp, byte 0x8
 	unblock
 
 	pop r11
