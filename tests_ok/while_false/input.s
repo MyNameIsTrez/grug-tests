@@ -13,7 +13,7 @@ on_fns:
 
 global strings
 strings:
-	db "tests_ok//input.grug", 0
+	db "tests_ok/while_false/input.grug", 0
 	db "on_a", 0
 
 section .text
@@ -71,7 +71,7 @@ on_a:
 	mov r11, rbx[grug_on_fn_path wrt ..got]
 	mov [r11], rax
 
-	lea rax, strings[rel ]
+	lea rax, strings[rel 32]
 	mov r11, rbx[grug_on_fn_name wrt ..got]
 	mov [r11], rax
 
@@ -79,13 +79,19 @@ on_a:
 
 	block
 	call game_fn_nothing wrt ..plt
+	unblock
 
 	xor eax, eax
 	test eax, eax
-	je strict $+0x10
-	call game_fn_nothing wrt ..plt
-	jmp strict $-0xf
+	je strict $+0x3d
 
+	block
+	call game_fn_nothing wrt ..plt
+	unblock
+
+	jmp strict $-0x3c
+
+	block
 	call game_fn_nothing wrt ..plt
 	unblock
 

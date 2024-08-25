@@ -13,7 +13,7 @@ on_fns:
 
 global strings
 strings:
-	db "tests_ok//input.grug", 0
+	db "tests_ok/void_function_early_return/input.grug", 0
 	db "on_a", 0
 
 section .text
@@ -24,8 +24,8 @@ extern grug_block_mask
 
 extern game_fn_define_d
 extern grug_enable_on_fn_runtime_error_handling
-extern sigprocmask
 extern grug_disable_on_fn_runtime_error_handling
+extern sigprocmask
 extern _GLOBAL_OFFSET_TABLE_
 extern game_fn_nothing
 
@@ -71,17 +71,16 @@ on_a:
 	mov r11, rbx[grug_on_fn_path wrt ..got]
 	mov [r11], rax
 
-	lea rax, strings[rel ]
+	lea rax, strings[rel 47]
 	mov r11, rbx[grug_on_fn_name wrt ..got]
 	mov [r11], rax
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
-	block
-	mov rax, rbp[-0x8]
+	mov rax, rbp[-0x10]
 	push rax
 	pop rdi
-	call helper_foo	unblock
+	call helper_foo
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
@@ -97,11 +96,24 @@ helper_foo:
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rbx
 	mov rbp[-0x10], rdi
+
+	lea rbx, [rel $$]
+	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
+
+	block
 	call game_fn_nothing wrt ..plt
+	unblock
+
+	mov rbx, rbp[-0x8]
 	mov rsp, rbp
 	pop rbp
 	ret
+
+	block
 	call game_fn_nothing wrt ..plt
+	unblock
+
+	mov rbx, rbp[-0x8]
 	mov rsp, rbp
 	pop rbp
 	ret

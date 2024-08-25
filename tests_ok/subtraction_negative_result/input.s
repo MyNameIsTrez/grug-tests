@@ -13,7 +13,7 @@ on_fns:
 
 global strings
 strings:
-	db "tests_ok//input.grug", 0
+	db "tests_ok/subtraction_negative_result/input.grug", 0
 	db "on_a", 0
 
 section .text
@@ -71,7 +71,7 @@ on_a:
 	mov r11, rbx[grug_on_fn_path wrt ..got]
 	mov [r11], rax
 
-	lea rax, strings[rel ]
+	lea rax, strings[rel 48]
 	mov r11, rbx[grug_on_fn_name wrt ..got]
 	mov [r11], rax
 

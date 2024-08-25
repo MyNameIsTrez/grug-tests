@@ -13,9 +13,9 @@ on_fns:
 
 global strings
 strings:
-	db "tests_ok//input.grug", 0
-	db "on_a", 0
 	db "foo", 0
+	db "tests_ok/string_and_on_fn/input.grug", 0
+	db "on_a", 0
 
 section .text
 
@@ -69,18 +69,15 @@ on_a:
 	lea rbx, [rel $$]
 	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
 
-	lea rax, strings[rel 0]
+	lea rax, strings[rel 4]
 	mov r11, rbx[grug_on_fn_path wrt ..got]
 	mov [r11], rax
 
-	lea rax, strings[rel ]
+	lea rax, strings[rel 41]
 	mov r11, rbx[grug_on_fn_name wrt ..got]
 	mov [r11], rax
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
-
-	block
-	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 

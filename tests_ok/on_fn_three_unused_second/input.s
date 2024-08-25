@@ -13,6 +13,12 @@ on_fns:
 	dq 0
 	dq on_c
 
+global strings
+strings:
+	db "tests_ok/on_fn_three_unused_second/input.grug", 0
+	db "on_a", 0
+	db "on_c", 0
+
 section .text
 
 extern grug_on_fn_name
@@ -67,14 +73,11 @@ on_a:
 	mov r11, rbx[grug_on_fn_path wrt ..got]
 	mov [r11], rax
 
-	lea rax, strings[rel ]
+	lea rax, strings[rel 46]
 	mov r11, rbx[grug_on_fn_name wrt ..got]
 	mov [r11], rax
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
-
-	block
-	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
@@ -98,14 +101,11 @@ on_c:
 	mov r11, rbx[grug_on_fn_path wrt ..got]
 	mov [r11], rax
 
-	lea rax, strings[rel ]
+	lea rax, strings[rel 51]
 	mov r11, rbx[grug_on_fn_name wrt ..got]
 	mov [r11], rax
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
-
-	block
-	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 

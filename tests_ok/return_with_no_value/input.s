@@ -13,7 +13,7 @@ on_fns:
 
 global strings
 strings:
-	db "tests_ok//input.grug", 0
+	db "tests_ok/return_with_no_value/input.grug", 0
 	db "on_a", 0
 
 section .text
@@ -71,19 +71,19 @@ on_a:
 	mov r11, rbx[grug_on_fn_path wrt ..got]
 	mov [r11], rax
 
-	lea rax, strings[rel ]
+	lea rax, strings[rel 41]
 	mov r11, rbx[grug_on_fn_name wrt ..got]
 	mov [r11], rax
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
-	block
-	mov rax, rbp[-0x8]
+	mov rax, rbp[-0x10]
 	push rax
 
 	pop rdi
 	call helper_foo
 
+	block
 	call game_fn_nothing wrt ..plt
 	unblock
 
@@ -102,10 +102,15 @@ helper_foo:
 	mov rbp[-0x8], rbx
 	mov rbp[-0x10], rdi
 
+	lea rbx, [rel $$]
+	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
+
+	mov rbx, rbp[-0x8]
 	mov rsp, rbp
 	pop rbp
 	ret
 
+	mov rbx, rbp[-0x8]
 	mov rsp, rbp
 	pop rbp
 	ret

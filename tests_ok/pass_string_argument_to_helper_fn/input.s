@@ -13,7 +13,7 @@ on_fns:
 
 global strings
 strings:
-	db "tests_ok//input.grug", 0
+	db "tests_ok/pass_string_argument_to_helper_fn/input.grug", 0
 	db "on_a", 0
 	db "foo", 0
 
@@ -25,8 +25,8 @@ extern grug_block_mask
 
 extern game_fn_define_d
 extern grug_enable_on_fn_runtime_error_handling
-extern sigprocmask
 extern grug_disable_on_fn_runtime_error_handling
+extern sigprocmask
 extern _GLOBAL_OFFSET_TABLE_
 extern game_fn_say
 
@@ -72,23 +72,21 @@ on_a:
 	mov r11, rbx[grug_on_fn_path wrt ..got]
 	mov [r11], rax
 
-	lea rax, strings[rel ]
+	lea rax, strings[rel 54]
 	mov r11, rbx[grug_on_fn_name wrt ..got]
 	mov [r11], rax
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
-	block
-	mov rax, rbp[-0x8]
+	mov rax, rbp[-0x10]
 	push rax
 
-	lea rax, strings[rel 0]
+	lea rax, strings[rel 59]
 	push rax
 
 	pop rsi
 	pop rdi
 	call helper_shout
-	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
@@ -101,17 +99,23 @@ global helper_shout
 helper_shout:
 	push rbp
 	mov rbp, rsp
-	sub rsp, byte 0x10
+	sub rsp, byte 0x20
 	mov rbp[-0x8], rbx
 	mov rbp[-0x10], rdi
+	mov rbp[-0x18], rsi
 
-	mov rbp[-0x10], rsi
-	mov rax, rbp[-0x10]
+	lea rbx, [rel $$]
+	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
+
+	block
+	mov rax, rbp[-0x18]
 	push rax
 
 	pop rdi
 	call game_fn_say wrt ..plt
+	unblock
 
+	mov rbx, rbp[-0x8]
 	mov rsp, rbp
 	pop rbp
 	ret
