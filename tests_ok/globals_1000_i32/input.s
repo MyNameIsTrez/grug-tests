@@ -7,8 +7,13 @@ align 8
 global globals_size
 globals_size: dq 4000
 
+global strings
+strings:
+
 section .text
 
+extern grug_on_fn_name
+extern grug_on_fn_path
 extern grug_block_mask
 
 extern game_fn_define_a

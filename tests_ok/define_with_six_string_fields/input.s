@@ -18,8 +18,6 @@ strings:
 
 section .text
 
-extern grug_block_mask
-
 extern game_fn_define_o
 
 global define

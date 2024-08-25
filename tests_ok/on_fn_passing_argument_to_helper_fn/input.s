@@ -11,14 +11,21 @@ global on_fns
 on_fns:
 	dq on_a
 
+global strings
+strings:
+	db "tests_ok/on_fn_passing_argument_to_helper_fn/input.grug", 0
+	db "on_a", 0
+
 section .text
 
+extern grug_on_fn_name
+extern grug_on_fn_path
 extern grug_block_mask
 
 extern game_fn_define_d
 extern grug_enable_on_fn_runtime_error_handling
-extern sigprocmask
 extern grug_disable_on_fn_runtime_error_handling
+extern sigprocmask
 extern _GLOBAL_OFFSET_TABLE_
 extern game_fn_initialize
 
@@ -60,10 +67,17 @@ on_a:
 	lea rbx, [rel $$]
 	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
 
+	lea rax, strings[rel 0]
+	mov r11, rbx[grug_on_fn_path wrt ..got]
+	mov [r11], rax
+
+	lea rax, strings[rel 56]
+	mov r11, rbx[grug_on_fn_name wrt ..got]
+	mov [r11], rax
+
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
-	block
-	mov rax, rbp[-0x8]
+	mov rax, rbp[-0x10]
 	push rax
 
 	mov eax, 42
@@ -72,7 +86,6 @@ on_a:
 	pop rsi
 	pop rdi
 	call helper_foo
-	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
@@ -85,16 +98,22 @@ global helper_foo
 helper_foo:
 	push rbp
 	mov rbp, rsp
-	sub rsp, byte 0x10
+	sub rsp, byte 0x20
 	mov rbp[-0x8], rbx
 	mov rbp[-0x10], rdi
+	mov rbp[-0x14], esi
 
-	mov rbp[-0xc], esi
-	mov eax, rbp[-0xc]
+	lea rbx, [rel $$]
+	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
+
+	block
+	mov eax, rbp[-0x14]
 	push rax
 	pop rdi
 	call game_fn_initialize wrt ..plt
+	unblock
 
+	mov rbx, rbp[-0x8]
 	mov rsp, rbp
 	pop rbp
 	ret

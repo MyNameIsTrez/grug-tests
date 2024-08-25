@@ -9,6 +9,8 @@ globals_size: dq 11000
 
 global strings
 strings:
+	db "tests_ok//input.grug", 0
+	db "on_a", 0
 	db "global0001", 0
 	db "global0002", 0
 	db "global0003", 0
@@ -1012,6 +1014,8 @@ strings:
 
 section .text
 
+extern grug_on_fn_name
+extern grug_on_fn_path
 extern grug_block_mask
 
 extern game_fn_define_a

@@ -11,8 +11,15 @@ global on_fns
 on_fns:
 	dq on_a
 
+global strings
+strings:
+	db "tests_ok//input.grug", 0
+	db "on_a", 0
+
 section .text
 
+extern grug_on_fn_name
+extern grug_on_fn_path
 extern grug_block_mask
 
 extern define_d

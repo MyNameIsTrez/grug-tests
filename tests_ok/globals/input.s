@@ -11,8 +11,13 @@ global on_fns
 on_fns:
 	dq 0
 
+global strings
+strings:
+
 section .text
 
+extern grug_on_fn_name
+extern grug_on_fn_path
 extern grug_block_mask
 
 extern game_fn_define_h

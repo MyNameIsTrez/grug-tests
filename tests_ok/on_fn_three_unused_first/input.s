@@ -15,6 +15,8 @@ on_fns:
 
 section .text
 
+extern grug_on_fn_name
+extern grug_on_fn_path
 extern grug_block_mask
 
 extern game_fn_define_j
@@ -43,6 +45,14 @@ on_b:
 	lea rbx, [rel $$]
 	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
 
+	lea rax, strings[rel 0]
+	mov r11, rbx[grug_on_fn_path wrt ..got]
+	mov [r11], rax
+
+	lea rax, strings[rel ]
+	mov r11, rbx[grug_on_fn_name wrt ..got]
+	mov [r11], rax
+
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	block
@@ -65,6 +75,14 @@ on_c:
 
 	lea rbx, [rel $$]
 	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
+
+	lea rax, strings[rel 0]
+	mov r11, rbx[grug_on_fn_path wrt ..got]
+	mov [r11], rax
+
+	lea rax, strings[rel ]
+	mov r11, rbx[grug_on_fn_name wrt ..got]
+	mov [r11], rax
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 

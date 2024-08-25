@@ -13,9 +13,17 @@ on_fns:
 	dq on_b
 	dq on_c
 
+global strings
+strings:
+	db "tests_ok/on_fn_three/input.grug", 0
+	db "on_a", 0
+	db "on_b", 0
+	db "on_c", 0
+
 section .text
 
-extern grug_block_mask
+extern grug_on_fn_name
+extern grug_on_fn_path
 
 extern game_fn_define_j
 extern grug_enable_on_fn_runtime_error_handling
@@ -32,24 +40,6 @@ global init_globals
 init_globals:
 	ret
 
-%macro block 0
-	xor edx, edx
-	mov rsi, rbx[grug_block_mask wrt ..got]
-	xor edi, edi
-	call sigprocmask wrt ..plt
-%endmacro
-
-%macro unblock 0
-	push rax
-	xor edx, edx
-	mov rsi, rbx[grug_block_mask wrt ..got]
-	mov edi, 1
-	sub rsp, byte 0x8
-	call sigprocmask wrt ..plt
-	add rsp, byte 0x8
-	pop rax
-%endmacro
-
 global on_a
 on_a:
 	push rbp
@@ -61,10 +51,15 @@ on_a:
 	lea rbx, [rel $$]
 	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
 
-	call grug_enable_on_fn_runtime_error_handling wrt ..plt
+	lea rax, strings[rel 0]
+	mov r11, rbx[grug_on_fn_path wrt ..got]
+	mov [r11], rax
 
-	block
-	unblock
+	lea rax, strings[rel 32]
+	mov r11, rbx[grug_on_fn_name wrt ..got]
+	mov [r11], rax
+
+	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
@@ -84,10 +79,15 @@ on_b:
 	lea rbx, [rel $$]
 	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
 
-	call grug_enable_on_fn_runtime_error_handling wrt ..plt
+	lea rax, strings[rel 0]
+	mov r11, rbx[grug_on_fn_path wrt ..got]
+	mov [r11], rax
 
-	block
-	unblock
+	lea rax, strings[rel 37]
+	mov r11, rbx[grug_on_fn_name wrt ..got]
+	mov [r11], rax
+
+	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
@@ -107,10 +107,15 @@ on_c:
 	lea rbx, [rel $$]
 	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
 
-	call grug_enable_on_fn_runtime_error_handling wrt ..plt
+	lea rax, strings[rel 0]
+	mov r11, rbx[grug_on_fn_path wrt ..got]
+	mov [r11], rax
 
-	block
-	unblock
+	lea rax, strings[rel 42]
+	mov r11, rbx[grug_on_fn_name wrt ..got]
+	mov [r11], rax
+
+	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 

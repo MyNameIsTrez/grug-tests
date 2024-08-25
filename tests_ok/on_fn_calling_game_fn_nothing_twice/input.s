@@ -11,8 +11,15 @@ global on_fns
 on_fns:
 	dq on_a
 
+global strings
+strings:
+	db "tests_ok/on_fn_calling_game_fn_nothing_twice/input.grug", 0
+	db "on_a", 0
+
 section .text
 
+extern grug_on_fn_name
+extern grug_on_fn_path
 extern grug_block_mask
 
 extern game_fn_define_d
@@ -60,10 +67,20 @@ on_a:
 	lea rbx, [rel $$]
 	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
 
+	lea rax, strings[rel 0]
+	mov r11, rbx[grug_on_fn_path wrt ..got]
+	mov [r11], rax
+
+	lea rax, strings[rel 56]
+	mov r11, rbx[grug_on_fn_name wrt ..got]
+	mov [r11], rax
+
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	block
 	call game_fn_nothing wrt ..plt
+	unblock
+	block
 	call game_fn_nothing wrt ..plt
 	unblock
 

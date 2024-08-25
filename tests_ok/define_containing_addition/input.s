@@ -7,9 +7,10 @@ align 8
 global globals_size
 globals_size: dq 0
 
-section .text
+global strings
+strings:
 
-extern grug_block_mask
+section .text
 
 extern game_fn_define_b
 
