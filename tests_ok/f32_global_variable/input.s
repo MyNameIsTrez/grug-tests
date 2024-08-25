@@ -80,11 +80,11 @@ on_a:
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	mov eax, __?float32?__(4.0)
-	mov r11, rbp[-0x8]
+	mov r11, rbp[-0x10]
 	mov r11[byte 0x0], eax
 
 	block
-	mov rax, rbp[-0x8]
+	mov rax, rbp[-0x10]
 	mov eax, rax[byte 0x0]
 	push rax
 

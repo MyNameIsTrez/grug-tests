@@ -13,7 +13,7 @@ on_fns:
 
 global strings
 strings:
-	db "tests_ok//input.grug", 0
+	db "tests_ok/write_to_global_variable/input.grug", 0
 	db "on_a", 0
 
 section .text
@@ -75,32 +75,32 @@ on_a:
 	mov r11, rbx[grug_on_fn_path wrt ..got]
 	mov [r11], rax
 
-	lea rax, strings[rel ]
+	lea rax, strings[rel 45]
 	mov r11, rbx[grug_on_fn_name wrt ..got]
 	mov [r11], rax
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
-	block
 	; foo + 1
 	mov eax, 1
 	push rax
-	mov rax, rbp[-0x8]
+	mov rax, rbp[-0x10]
 	mov eax, rax[byte 0x0]
 	pop r11
 	add rax, r11
 
 	; foo = foo + 1
-	mov r11, rbp[-0x8]
+	mov r11, rbp[-0x10]
 	mov r11[byte 0x0], eax
 
 	; push foo
-	mov rax, rbp[-0x8]
+	block
+	mov rax, rbp[-0x10]
 	mov eax, rax[byte 0x0]
 	push rax
 
 	; push bar
-	mov rax, rbp[-0x8]
+	mov rax, rbp[-0x10]
 	mov eax, rax[0x4]
 	push rax
 
