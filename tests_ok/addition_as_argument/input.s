@@ -13,8 +13,8 @@ on_fns:
 
 global strings
 strings:
-	db "on_a", 0
 	db "tests_ok/addition_as_argument/input.grug", 0
+	db "on_a", 0
 
 section .text
 
@@ -68,11 +68,11 @@ on_a:
 	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
 
 	lea rax, strings[rel 0]
-	mov r11, rbx[grug_on_fn_name wrt ..got]
+	mov r11, rbx[grug_on_fn_path wrt ..got]
 	mov [r11], rax
 
-	lea rax, strings[rel 5]
-	mov r11, rbx[grug_on_fn_path wrt ..got]
+	lea rax, strings[rel 41]
+	mov r11, rbx[grug_on_fn_name wrt ..got]
 	mov [r11], rax
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt

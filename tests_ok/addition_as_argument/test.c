@@ -60,6 +60,9 @@ int main(int argc, char *argv[]) {
 	on_fns->a(g);
 	assert(fn_initialize_was_called);
 
+	assert(strcmp(grug_on_fn_name, "on_a") == 0);
+	assert(strcmp(grug_on_fn_path, "tests_ok/addition_as_argument/input.grug") == 0);
+
 	free(g);
 	#pragma GCC diagnostic pop
 }
