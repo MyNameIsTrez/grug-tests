@@ -34,7 +34,7 @@ If you replace `-fsanitize=address,undefined,fuzzer -Og` with `-fsanitize=fuzzer
 
 ```bash
 clear && \
-clang grug/grug.c fuzz.c -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -Wno-unused-parameter -g -rdynamic -fsanitize=address,undefined,fuzzer -Og && \
+clang grug/grug.c fuzz.c -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -Wno-language-extension-token -Wno-unused-parameter -g -rdynamic -fsanitize=address,undefined,fuzzer -Og && \
 mkdir -p test_corpus && \
 for d in tests_err/* tests_err_runtime/* tests_ok/*; do name=${d##*/}; cp $d/input.grug test_corpus/$name.grug; done && \
 mkdir -p corpus && \
