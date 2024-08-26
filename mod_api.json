@@ -596,6 +596,15 @@
 					"type": "i32"
 				}
 			]
+		},
+		"draw": {
+			"description": "foo",
+			"arguments": [
+				{
+					"name": "sprite_path",
+					"type": "resource"
+				}
+			]
 		}
 	}
 }
