@@ -359,6 +359,15 @@
 					"type": "f32"
 				}
 			]
+		},
+		"u": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "sprite_path",
+					"type": "resource"
+				}
+			]
 		}
 	},
 	"game_functions": {
