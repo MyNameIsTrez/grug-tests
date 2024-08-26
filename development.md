@@ -42,6 +42,14 @@ mkdir -p corpus && \
 ./a.out corpus -timeout=1
 ```
 
+## Static code analysis with cppchecker
+
+See its [Wikipedia article](https://en.wikipedia.org/wiki/Cppcheck) for more information.
+
+```bash
+time cppcheck --check-level=exhaustive --enable=all --suppress=missingIncludeSystem --suppress=constParameterPointer --suppress=constVariablePointer --suppress=constStatement grug/grug.c >cppcheck_2.log 2>&1
+```
+
 ## Static code analysis with PVS-Studio
 
 See [my blog post about PVS-Studio](https://mynameistrez.github.io/2024/08/19/static-c-analysis-with-pvs-studio.html) for the what, why, and how.
