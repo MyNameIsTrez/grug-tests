@@ -1,6 +1,9 @@
 #!/bin/bash
 
-compiler_flags='-Igrug -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -g -Og'
+compiler_flags='-Igrug -g -Og -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors'
+
+# -rdynamic allows the .so to call functions from test.c
+linker_flags='-rdynamic'
 
 # TODO: Consider always outputting and running grug_asan.o and grug_valgrind.o
 # compiler_flags+=' -fsanitize=address,undefined'
@@ -19,7 +22,8 @@ fi
 
 # TODO: Try using the mold linker here, and add README instructions back if it's faster
 echo "Linking tests.out..."
-clang tests.o grug.o -o tests.out $compiler_flags
+# TODO: Try removing $compiler_flags here
+clang tests.o grug.o -o tests.out $compiler_flags $linker_flags
 
 echo "Running tests.out..."
 valgrind --quiet ./tests.out

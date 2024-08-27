@@ -2,11 +2,16 @@
 
 #include "grug/grug.h"
 
+#include "mod_api.h"
+
 #include <assert.h>
+#include <dlfcn.h>
+#include <errno.h>
 #include <ftw.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 static void check(int status, char *fn_name) {
@@ -21,6 +26,12 @@ static void check_null(void *ptr, char *fn_name) {
 		perror(fn_name);
 		exit(EXIT_FAILURE);
 	}
+}
+
+void game_fn_define_d(void) {}
+
+void game_fn_initialize(int32_t x) {
+	(void)x;
 }
 
 // #define OK_PARSE(path, node) {\
@@ -51,63 +62,19 @@ static void check_null(void *ptr, char *fn_name) {
 // 	ERROR_PARSE("./tests_err/expected_array_close.json", JSON_ERROR_EXPECTED_ARRAY_CLOSE);
 // }
 
-// TODO: Do this for every test:
-// if (grug_test_regenerate_dll(grug_path, dll_path)) {
-// 	// For debugging
-// 	// fprintf(stderr, "%s:%d: %s (detected by grug.c:%d)\n", grug_error.path, grug_error.line_number, grug_error.msg, grug_error.grug_c_line_number);
-
-// 	fprintf(stderr, "%s\n", grug_error.msg);
-
-// 	exit(EXIT_FAILURE);
-// }
-
-static int remove_callback(const char *entry_path, const struct stat *entry_info, int entry_type, struct FTW *ftw) {
-	(void)entry_info;
-	(void)entry_type;
-	(void)ftw;
-
-	int rv = remove(entry_path);
-
-	check(rv, "remove");
-
-	return rv;
-}
-
-static int rm_rf(char *path) {
-	return nftw(path, remove_callback, 42, FTW_DEPTH | FTW_PHYS);
-}
-
-static void error_assignment_isnt_expression(void) {
-	char *grug_path = "tests_err/assign_to_unknown_variable/input.grug";
-	char *expected_error_path = "tests_err/assign_to_unknown_variable/expected_error.txt";
-	char *results_path = "tests_err/assign_to_unknown_variable/results";
-	char *grug_output_path = "tests_err/assign_to_unknown_variable/results/output.txt";
-	char *output_dll_path = "tests_err/assign_to_unknown_variable/results/output.so";
-
-	rm_rf(results_path);
-
-	check(mkdir(results_path, 0755), "mkdir");
-
-	assert(grug_test_regenerate_dll(grug_path, output_dll_path));
-
-	FILE *f = fopen(grug_output_path, "w");
-
-	size_t grug_error_msg_len = strlen(grug_error.msg);
-
-	if (fwrite(grug_error.msg, grug_error_msg_len, 1, f) == 0) {
-		fprintf(stderr, "%s\n", "fwrite had an error\n");
+static void *get(void *handle, char *label) {
+	void *p = dlsym(handle, label);
+	if (!p) {
+		printf("dlsym: %s\n", dlerror());
 		exit(EXIT_FAILURE);
 	}
+	return p;
+}
 
-    if (fclose(f) == EOF) {
-		perror("fclose");
-		exit(EXIT_FAILURE);
-	}
-
+static char *get_expected_error(char *expected_error_path) {
 	// TODO: Check if using mmap() makes this faster:
 	// https://stackoverflow.com/a/174808/13279557
-
-	f = fopen(expected_error_path, "r");
+	FILE *f = fopen(expected_error_path, "r");
 	check_null(f, "fopen");
 
 	check(fseek(f, 0, SEEK_END), "fseek");
@@ -122,10 +89,10 @@ static void error_assignment_isnt_expression(void) {
 
 	if (fread(expected_error, expected_error_len, 1, f) == 0) {
 		if (feof(f)) {
-			fprintf(stderr, "fread EOF\n");
+			printf("fread EOF\n");
 		}
 		if (ferror(f)) {
-			fprintf(stderr, "fread error\n");
+			printf("fread error\n");
 		}
 		exit(EXIT_FAILURE);
 	}
@@ -144,105 +111,183 @@ static void error_assignment_isnt_expression(void) {
 		exit(EXIT_FAILURE);
 	}
 
-	if (expected_error_len != grug_error_msg_len || memcmp(grug_error.msg, expected_error, expected_error_len) != 0) {
-		fprintf(stderr, "The output differs from the expected output:\n");
+	return expected_error;
+}
 
-		fflush(NULL);
+static void compare_against_expected_error(char *msg, char *expected_error_path) {
+	size_t grug_error_msg_len = strlen(msg);
 
-		check(execvp("diff", (char *[]){"diff", grug_output_path, expected_error_path, NULL}), "execvp");
+	char *expected_error = get_expected_error(expected_error_path);
+	size_t expected_error_len = strlen(expected_error);
+
+	if (expected_error_len != grug_error_msg_len || memcmp(msg, expected_error, expected_error_len) != 0) {
+		printf("The output differs from the expected output.\n");
+		printf("Output:\n");
+		printf("%s\n", msg);
+
+		printf("Expected:\n");
+		printf("%s\n", expected_error);
+
+		exit(EXIT_FAILURE);
 	}
 }
 
-static void runtime_error_division_by_0(void) {
-	// char *grug_path = "tests_err_runtime/division_by_0/input.grug";
-	// char *expected_error_path = "tests_err_runtime/division_by_0/expected_error.txt";
-	// char *results_path = "tests_err_runtime/division_by_0/results";
-	// char *grug_output_path = "tests_err_runtime/division_by_0/results/output.txt";
-	// char *output_dll_path = "tests_err_runtime/division_by_0/results/output.so";
+static void error_assignment_isnt_expression(void) {
+	printf("Running error_assignment_isnt_expression...\n");
 
-	// rm_rf(results_path);
+	char *grug_path = "tests_err/assign_to_unknown_variable/input.grug";
+	char *expected_error_path = "tests_err/assign_to_unknown_variable/expected_error.txt";
+	char *results_path = "tests_err/assign_to_unknown_variable/results";
+	char *output_dll_path = "tests_err/assign_to_unknown_variable/results/output.so";
 
-	// check(mkdir(results_path, 0755), "mkdir");
+	if (mkdir(results_path, 0755) == -1 && errno != EEXIST) {
+		perror("mkdir");
+		exit(EXIT_FAILURE);
+	}
 
-	// if (grug_test_regenerate_dll(grug_path, output_dll_path)) {
-	// 	fprintf(stderr, "The test wasn't supposed to print anything during generation of the dll, but did:\n");
-	// 	fprintf(stderr, "----\n");
-	// 	fprintf(stderr, "%s\n", grug_error.msg);
-	// 	fprintf(stderr, "----\n");
+	assert(grug_test_regenerate_dll(grug_path, output_dll_path));
 
-	// 	exit(EXIT_FAILURE);
-	// }
-
-	// FILE *f = fopen(grug_output_path, "w");
-
-	// size_t grug_error_msg_len = strlen(grug_error.msg);
-
-	// if (fwrite(grug_error.msg, grug_error_msg_len, 1, f) == 0) {
-	// 	fprintf(stderr, "%s\n", "fwrite had an error\n");
-	// 	exit(EXIT_FAILURE);
-	// }
-
-    // if (fclose(f) == EOF) {
-	// 	perror("fclose");
-	// 	exit(EXIT_FAILURE);
-	// }
-
-	// // TODO: Check if using mmap() makes this faster:
-	// // https://stackoverflow.com/a/174808/13279557
-
-	// f = fopen(expected_error_path, "r");
-	// check_null(f, "fopen");
-
-	// check(fseek(f, 0, SEEK_END), "fseek");
-
-	// long ftell_result = ftell(f);
-	// check(ftell_result, "ftell");
-	// size_t expected_error_len = ftell_result;
-
-	// static char expected_error[420];
-
-	// check(fseek(f, 0, SEEK_SET), "fseek");
-
-	// if (fread(expected_error, expected_error_len, 1, f) == 0) {
-	// 	if (feof(f)) {
-	// 		fprintf(stderr, "fread EOF\n");
-	// 	}
-	// 	if (ferror(f)) {
-	// 		fprintf(stderr, "fread error\n");
-	// 	}
-	// 	exit(EXIT_FAILURE);
-	// }
-
-	// if (expected_error[expected_error_len - 1] == '\n') {
-	// 	expected_error_len--;
-	// 	if (expected_error[expected_error_len - 1] == '\r') {
-	// 		expected_error_len--;
-	// 	}
-	// }
-
-	// expected_error[expected_error_len] = '\0';
-
-    // if (fclose(f) == EOF) {
-	// 	perror("fclose");
-	// 	exit(EXIT_FAILURE);
-	// }
-
-	// if (expected_error_len != grug_error_msg_len || memcmp(grug_error.msg, expected_error, expected_error_len) != 0) {
-	// 	fprintf(stderr, "The output differs from the expected output:\n");
-
-	// 	fflush(NULL);
-
-	// 	check(execvp("diff", (char *[]){"diff", grug_output_path, expected_error_path, NULL}), "execvp");
-	// }
-
-
-
-
+	compare_against_expected_error(grug_error.msg, expected_error_path);
 }
 
-// static void ok_addition_as_argument(void) {
+static void runtime_error_division_by_0(void) {
+	printf("Running runtime_error_division_by_0...\n");
 
-// }
+	char *grug_path = "tests_err_runtime/division_by_0/input.grug";
+	char *expected_error_path = "tests_err_runtime/division_by_0/expected_error.txt";
+	char *results_path = "tests_err_runtime/division_by_0/results";
+	char *output_dll_path = "tests_err_runtime/division_by_0/results/output.so";
+
+	if (mkdir(results_path, 0755) == -1 && errno != EEXIST) {
+		perror("mkdir");
+		exit(EXIT_FAILURE);
+	}
+
+	if (grug_test_regenerate_dll(grug_path, output_dll_path)) {
+		printf("The test wasn't supposed to print anything during generation of the dll, but did:\n");
+		printf("----\n");
+		printf("%s\n", grug_error.msg);
+		printf("----\n");
+
+		exit(EXIT_FAILURE);
+	}
+
+	void *handle = dlopen(output_dll_path, RTLD_NOW);
+	if (!handle) {
+		printf("dlopen: %s\n", dlerror());
+		exit(EXIT_FAILURE);
+	}
+
+	assert(strcmp(get(handle, "define_type"), "d") == 0);
+
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wpedantic"
+	grug_define_fn_t define = get(handle, "define");
+	define();
+
+	size_t globals_size = *(size_t *)get(handle, "globals_size");
+	assert(globals_size == 0);
+
+	void *g = malloc(globals_size);
+	grug_init_globals_fn_t init_globals = get(handle, "init_globals");
+	init_globals(g);
+
+	struct d_on_fns *on_fns = get(handle, "on_fns");
+	#pragma GCC diagnostic pop
+
+	bool had_runtime_error = false;
+
+	if (grug_mod_had_runtime_error()) {
+		had_runtime_error = true;
+	}
+
+	if (!had_runtime_error) {
+		on_fns->a(g);
+	}
+
+	free(g);
+
+	assert(had_runtime_error);
+
+	char *grug_error_msg = grug_get_runtime_error_reason();
+
+	compare_against_expected_error(grug_error_msg, expected_error_path);
+}
+
+static void ok_addition_as_argument(void) {
+	printf("Running ok_addition_as_argument...\n");
+
+	char *grug_path = "tests_ok/addition_as_argument/input.grug";
+	char *nasm_path = "tests_ok/addition_as_argument/input.s";
+	char *results_path = "tests_ok/addition_as_argument/results";
+	// char *output_dll_path = "tests_ok/addition_as_argument/results/output.so";
+	char *expected_dll_path = "tests_ok/addition_as_argument/results/expected.so";
+	char *nasm_o_path = "tests_ok/addition_as_argument/results/expected.o";
+
+	if (mkdir(results_path, 0755) == -1 && errno != EEXIST) {
+		perror("mkdir");
+		exit(EXIT_FAILURE);
+	}
+
+	struct stat nasm_stat;
+	check(stat(nasm_path, &nasm_stat), "stat");
+
+	bool needs_regeneration = false;
+	struct stat expected_dll_stat;
+	if (stat(expected_dll_path, &expected_dll_stat) == -1) {
+		if (errno != ENOENT) {
+			perror("stat");
+			exit(EXIT_FAILURE);
+		}
+		needs_regeneration = true;
+	} else if (nasm_stat.st_mtime > expected_dll_stat.st_mtime) {
+		needs_regeneration = true;
+	}
+
+	if (needs_regeneration) {
+		printf("  Recreating expected.so...\n");
+
+		pid_t pid = fork();
+		check(pid, "fork");
+
+		if (pid == 0) {
+			check(execvp("nasm", (char *[]){"nasm", nasm_path, "-felf64", "-O0", "-o", nasm_o_path, NULL}), "execvp");
+		}
+
+		// Wait on the nasm child to finish
+		check(wait(NULL), "wait");
+
+		pid = fork();
+		check(pid, "fork");
+
+		if (pid == 0) {
+			check(execvp("ld", (char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-shared", "--hash-style=sysv", NULL}), "execvp");
+		}
+
+		// Wait on the ld child to finish
+		check(wait(NULL), "wait");
+
+		remove(nasm_o_path);
+
+		pid = fork();
+		check(pid, "fork");
+
+		if (pid == 0) {
+			static char redefine_sym[420];
+
+			size_t nasm_path_len = strlen(nasm_path);
+
+			strcpy(redefine_sym, nasm_path);
+			redefine_sym[nasm_path_len] = '=';
+			strcpy(redefine_sym + nasm_path_len + 1, grug_path);
+
+			check(execvp("objcopy", (char *[]){"objcopy", expected_dll_path, "--redefine-sym", redefine_sym, NULL}), "execvp");
+		}
+
+		// Wait on the objcopy child to finish
+		check(wait(NULL), "wait");
+	}
+}
 
 static void error_tests(void) {
 	error_assignment_isnt_expression();
@@ -330,7 +375,7 @@ static void runtime_error_tests(void) {
 }
 
 static void ok_tests(void) {
-	// ok_addition_as_argument();
+	ok_addition_as_argument();
 	// ok_addition_as_two_arguments();
 	// ok_addition_i32_wraparound();
 	// ok_addition_with_multiplication();
