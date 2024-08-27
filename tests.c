@@ -145,13 +145,7 @@ static void error_assignment_isnt_expression(void) {
 	}
 
 	if (expected_error_len != grug_error_msg_len || memcmp(grug_error.msg, expected_error, expected_error_len) != 0) {
-		printf("The output differs from the expected output:");
-
-		printf("expected_error_len: %zu\n", expected_error_len);
-		printf("grug_error_msg_len: %zu\n", grug_error_msg_len);
-
-		printf("grug_error.msg: %s\n", grug_error.msg);
-		printf("expected_error: %s\n", expected_error);
+		printf("The output differs from the expected output:\n");
 
 		fflush(NULL);
 
