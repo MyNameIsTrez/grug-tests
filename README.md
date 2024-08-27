@@ -23,3 +23,7 @@ If the tests don't pass, try running `OLD_LD= ./tests.sh`.
 - [NASM version 2.15.05](https://launchpad.net/ubuntu/+source/nasm) (`nasm_2.15.05-1_amd64.deb` in my case)
 - GNU ld (GNU Binutils for Ubuntu) 2.38
 - [valgrind](https://valgrind.org/) (valgrind-3.18.1)
+
+## More information
+
+See the file `development.md` in this repository.
