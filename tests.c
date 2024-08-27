@@ -8,11 +8,117 @@
 #include <dlfcn.h>
 #include <errno.h>
 #include <ftw.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
+
+static size_t game_fn_nothing_call_count;
+static size_t game_fn_magic_call_count;
+static size_t game_fn_initialize_call_count;
+static size_t game_fn_initialize_bool_call_count;
+static size_t game_fn_identity_call_count;
+static size_t game_fn_max_call_count;
+static size_t game_fn_say_call_count;
+static size_t game_fn_sin_call_count;
+static size_t game_fn_cos_call_count;
+static size_t game_fn_mega_call_count;
+static size_t game_fn_is_friday_call_count;
+static size_t game_fn_set_is_happy_call_count;
+static size_t game_fn_mega_f32_call_count;
+static size_t game_fn_mega_i32_call_count;
+
+static int32_t game_fn_initialize_x;
+
+// void game_fn_nothing() {
+// 	game_fn_nothing_call_count++;
+// }
+// int32_t game_fn_magic() {
+// 	game_fn_magic_call_count++;
+// }
+void game_fn_initialize(int32_t x) {
+	game_fn_initialize_call_count++;
+
+	game_fn_initialize_x = x;
+}
+// void game_fn_initialize_bool() {
+// 	game_fn_initialize_bool_call_count++;
+// }
+// int32_t game_fn_identity() {
+// 	game_fn_identity_call_count++;
+// }
+// int32_t game_fn_max() {
+// 	game_fn_max_call_count++;
+// }
+// void game_fn_say() {
+// 	game_fn_say_call_count++;
+// }
+// float game_fn_sin() {
+// 	game_fn_sin_call_count++;
+// }
+// float game_fn_cos() {
+// 	game_fn_cos_call_count++;
+// }
+// void game_fn_mega() {
+// 	game_fn_mega_call_count++;
+// }
+// bool game_fn_is_friday() {
+// 	game_fn_is_friday_call_count++;
+// }
+// void game_fn_set_is_happy() {
+// 	game_fn_set_is_happy_call_count++;
+// }
+// void game_fn_mega_f32() {
+// 	game_fn_mega_f32_call_count++;
+// }
+// void game_fn_mega_i32() {
+// 	game_fn_mega_i32_call_count++;
+// }
+
+// void game_fn_define_a(void) {}
+// void game_fn_define_b(int32_t x) {}
+// void game_fn_define_c(int32_t x, int32_t y) {}
+void game_fn_define_d(void) {}
+// void game_fn_define_e(void) {}
+// void game_fn_define_f(void) {}
+// void game_fn_define_g(void) {}
+// void game_fn_define_h(int32_t x) {}
+// void game_fn_define_i(int32_t x, int32_t y) {}
+// void game_fn_define_j(void) {}
+// void game_fn_define_k(int32_t age, char *name) {}
+// void game_fn_define_l(char *group, char *name) {}
+// void game_fn_define_m(int32_t w, char *group, bool b1, char *name, bool b2, int32_t z) {}
+// void game_fn_define_n(int32_t u, int32_t v, int32_t w, int32_t x, int32_t y, int32_t z) {}
+// void game_fn_define_o(char *u, char *v, char *w, char *x, char *y, char *z) {}
+// void game_fn_define_p(char *x) {}
+// void game_fn_define_q(char *a, char *b, char *c) {}
+// void game_fn_define_r(void) {}
+// void game_fn_define_s(void) {}
+// void game_fn_define_t(float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8) {}
+
+// void game_fn_define_k(int32_t age, char *name) {
+// 	game_fn_define_k_age = age;
+// 	game_fn_define_k_name = name;
+// }
+
+static void reset_call_counts(void) {
+	game_fn_nothing_call_count = 0;
+	game_fn_magic_call_count = 0;
+	game_fn_initialize_call_count = 0;
+	game_fn_initialize_bool_call_count = 0;
+	game_fn_identity_call_count = 0;
+	game_fn_max_call_count = 0;
+	game_fn_say_call_count = 0;
+	game_fn_sin_call_count = 0;
+	game_fn_cos_call_count = 0;
+	game_fn_mega_call_count = 0;
+	game_fn_is_friday_call_count = 0;
+	game_fn_set_is_happy_call_count = 0;
+	game_fn_mega_f32_call_count = 0;
+	game_fn_mega_i32_call_count = 0;
+}
 
 static void check(int status, char *fn_name) {
 	if (status < 0) {
@@ -26,12 +132,6 @@ static void check_null(void *ptr, char *fn_name) {
 		perror(fn_name);
 		exit(EXIT_FAILURE);
 	}
-}
-
-void game_fn_define_d(void) {}
-
-void game_fn_initialize(int32_t x) {
-	(void)x;
 }
 
 // #define OK_PARSE(path, node) {\
@@ -132,6 +232,13 @@ static void compare_against_expected_error(char *msg, char *expected_error_path)
 	}
 }
 
+static void make_results_dir(char *results_path) {
+	if (mkdir(results_path, 0755) == -1 && errno != EEXIST) {
+		perror("mkdir");
+		exit(EXIT_FAILURE);
+	}
+}
+
 static void error_assignment_isnt_expression(void) {
 	printf("Running error_assignment_isnt_expression...\n");
 
@@ -140,12 +247,13 @@ static void error_assignment_isnt_expression(void) {
 	char *results_path = "tests_err/assign_to_unknown_variable/results";
 	char *output_dll_path = "tests_err/assign_to_unknown_variable/results/output.so";
 
-	if (mkdir(results_path, 0755) == -1 && errno != EEXIST) {
-		perror("mkdir");
-		exit(EXIT_FAILURE);
-	}
+	make_results_dir(results_path);
+
+	printf("  Regenerating output.so...\n");
 
 	assert(grug_test_regenerate_dll(grug_path, output_dll_path));
+
+	printf("  Comparing against the expected error...\n");
 
 	compare_against_expected_error(grug_error.msg, expected_error_path);
 }
@@ -158,10 +266,9 @@ static void runtime_error_division_by_0(void) {
 	char *results_path = "tests_err_runtime/division_by_0/results";
 	char *output_dll_path = "tests_err_runtime/division_by_0/results/output.so";
 
-	if (mkdir(results_path, 0755) == -1 && errno != EEXIST) {
-		perror("mkdir");
-		exit(EXIT_FAILURE);
-	}
+	make_results_dir(results_path);
+
+	printf("  Regenerating output.so...\n");
 
 	if (grug_test_regenerate_dll(grug_path, output_dll_path)) {
 		printf("The test wasn't supposed to print anything during generation of the dll, but did:\n");
@@ -171,6 +278,8 @@ static void runtime_error_division_by_0(void) {
 
 		exit(EXIT_FAILURE);
 	}
+
+	printf("  Running the test...\n");
 
 	void *handle = dlopen(output_dll_path, RTLD_NOW);
 	if (!handle) {
@@ -209,6 +318,8 @@ static void runtime_error_division_by_0(void) {
 
 	assert(had_runtime_error);
 
+	printf("  Comparing against the expected error...\n");
+
 	char *grug_error_msg = grug_get_runtime_error_reason();
 
 	compare_against_expected_error(grug_error_msg, expected_error_path);
@@ -224,28 +335,27 @@ static void ok_addition_as_argument(void) {
 	char *expected_dll_path = "tests_ok/addition_as_argument/results/expected.so";
 	char *nasm_o_path = "tests_ok/addition_as_argument/results/expected.o";
 
-	if (mkdir(results_path, 0755) == -1 && errno != EEXIST) {
-		perror("mkdir");
-		exit(EXIT_FAILURE);
-	}
+	reset_call_counts();
+
+	make_results_dir(results_path);
 
 	struct stat nasm_stat;
 	check(stat(nasm_path, &nasm_stat), "stat");
 
-	bool needs_regeneration = false;
+	bool regenerate_expected_dll = false;
 	struct stat expected_dll_stat;
 	if (stat(expected_dll_path, &expected_dll_stat) == -1) {
 		if (errno != ENOENT) {
 			perror("stat");
 			exit(EXIT_FAILURE);
 		}
-		needs_regeneration = true;
+		regenerate_expected_dll = true;
 	} else if (nasm_stat.st_mtime > expected_dll_stat.st_mtime) {
-		needs_regeneration = true;
+		regenerate_expected_dll = true;
 	}
 
-	if (needs_regeneration) {
-		printf("  Recreating expected.so...\n");
+	if (regenerate_expected_dll) {
+		printf("  Regenerating expected.so...\n");
 
 		pid_t pid = fork();
 		check(pid, "fork");
@@ -287,6 +397,42 @@ static void ok_addition_as_argument(void) {
 		// Wait on the objcopy child to finish
 		check(wait(NULL), "wait");
 	}
+
+	printf("  Running the test...\n");
+
+	void *handle = dlopen(expected_dll_path, RTLD_NOW);
+	if (!handle) {
+		fprintf(stderr, "dlopen: %s\n", dlerror());
+		exit(EXIT_FAILURE);
+	}
+
+	assert(strcmp(get(handle, "define_type"), "d") == 0);
+
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wpedantic"
+	grug_define_fn_t define = get(handle, "define");
+	define();
+
+	size_t globals_size = *(size_t *)get(handle, "globals_size");
+	assert(globals_size == 0);
+
+	void *g = malloc(globals_size);
+	grug_init_globals_fn_t init_globals = get(handle, "init_globals");
+	init_globals(g);
+
+	struct d_on_fns *on_fns = get(handle, "on_fns");
+	#pragma GCC diagnostic pop
+
+	assert(game_fn_initialize_call_count == 0);
+	on_fns->a(g);
+	assert(game_fn_initialize_call_count == 1);
+
+	assert(game_fn_initialize_x == 3);
+
+	assert(strcmp(grug_on_fn_name, "on_a") == 0);
+	assert(strcmp(grug_on_fn_path, "tests_ok/addition_as_argument/input.grug") == 0);
+
+	free(g);
 }
 
 static void error_tests(void) {
@@ -522,4 +668,6 @@ int main(void) {
 	error_tests();
 	runtime_error_tests();
 	ok_tests();
+
+	printf("\nAll tests passed!\n");
 }

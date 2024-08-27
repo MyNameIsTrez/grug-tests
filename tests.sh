@@ -26,5 +26,5 @@ echo "Linking tests.out..."
 clang tests.o grug.o -o tests.out $compiler_flags $linker_flags
 
 echo "Running tests.out..."
-valgrind --quiet ./tests.out
-# ./tests.out
+# valgrind --quiet ./tests.out
+./tests.out
