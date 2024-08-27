@@ -145,7 +145,7 @@ static void error_assignment_isnt_expression(void) {
 	}
 
 	if (expected_error_len != grug_error_msg_len || memcmp(grug_error.msg, expected_error, expected_error_len) != 0) {
-		printf("The output differs from the expected output:\n");
+		fprintf(stderr, "The output differs from the expected output:\n");
 
 		fflush(NULL);
 
@@ -153,9 +153,92 @@ static void error_assignment_isnt_expression(void) {
 	}
 }
 
-// static void runtime_error_division_by_0(void) {
+static void runtime_error_division_by_0(void) {
+	// char *grug_path = "tests_err_runtime/division_by_0/input.grug";
+	// char *expected_error_path = "tests_err_runtime/division_by_0/expected_error.txt";
+	// char *results_path = "tests_err_runtime/division_by_0/results";
+	// char *grug_output_path = "tests_err_runtime/division_by_0/results/output.txt";
+	// char *output_dll_path = "tests_err_runtime/division_by_0/results/output.so";
 
-// }
+	// rm_rf(results_path);
+
+	// check(mkdir(results_path, 0755), "mkdir");
+
+	// if (grug_test_regenerate_dll(grug_path, output_dll_path)) {
+	// 	fprintf(stderr, "The test wasn't supposed to print anything during generation of the dll, but did:\n");
+	// 	fprintf(stderr, "----\n");
+	// 	fprintf(stderr, "%s\n", grug_error.msg);
+	// 	fprintf(stderr, "----\n");
+
+	// 	exit(EXIT_FAILURE);
+	// }
+
+	// FILE *f = fopen(grug_output_path, "w");
+
+	// size_t grug_error_msg_len = strlen(grug_error.msg);
+
+	// if (fwrite(grug_error.msg, grug_error_msg_len, 1, f) == 0) {
+	// 	fprintf(stderr, "%s\n", "fwrite had an error\n");
+	// 	exit(EXIT_FAILURE);
+	// }
+
+    // if (fclose(f) == EOF) {
+	// 	perror("fclose");
+	// 	exit(EXIT_FAILURE);
+	// }
+
+	// // TODO: Check if using mmap() makes this faster:
+	// // https://stackoverflow.com/a/174808/13279557
+
+	// f = fopen(expected_error_path, "r");
+	// check_null(f, "fopen");
+
+	// check(fseek(f, 0, SEEK_END), "fseek");
+
+	// long ftell_result = ftell(f);
+	// check(ftell_result, "ftell");
+	// size_t expected_error_len = ftell_result;
+
+	// static char expected_error[420];
+
+	// check(fseek(f, 0, SEEK_SET), "fseek");
+
+	// if (fread(expected_error, expected_error_len, 1, f) == 0) {
+	// 	if (feof(f)) {
+	// 		fprintf(stderr, "fread EOF\n");
+	// 	}
+	// 	if (ferror(f)) {
+	// 		fprintf(stderr, "fread error\n");
+	// 	}
+	// 	exit(EXIT_FAILURE);
+	// }
+
+	// if (expected_error[expected_error_len - 1] == '\n') {
+	// 	expected_error_len--;
+	// 	if (expected_error[expected_error_len - 1] == '\r') {
+	// 		expected_error_len--;
+	// 	}
+	// }
+
+	// expected_error[expected_error_len] = '\0';
+
+    // if (fclose(f) == EOF) {
+	// 	perror("fclose");
+	// 	exit(EXIT_FAILURE);
+	// }
+
+	// if (expected_error_len != grug_error_msg_len || memcmp(grug_error.msg, expected_error, expected_error_len) != 0) {
+	// 	fprintf(stderr, "The output differs from the expected output:\n");
+
+	// 	fflush(NULL);
+
+	// 	check(execvp("diff", (char *[]){"diff", grug_output_path, expected_error_path, NULL}), "execvp");
+	// }
+
+
+
+
+}
 
 // static void ok_addition_as_argument(void) {
 
@@ -238,7 +321,7 @@ static void error_tests(void) {
 }
 
 static void runtime_error_tests(void) {
-	// runtime_error_division_by_0();
+	runtime_error_division_by_0();
 	// runtime_error_raise_alrm_with_handler();
 	// runtime_error_raise_fpe_with_handler();
 	// runtime_error_raise_sigsegv_with_handler();
