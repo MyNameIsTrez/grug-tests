@@ -162,6 +162,38 @@ static void check_null(void *ptr, char *fn_name) {
 // 	ERROR_PARSE("./tests_err/expected_array_close.json", JSON_ERROR_EXPECTED_ARRAY_CLOSE);
 // }
 
+static size_t read_dll(char *dll_path, uint8_t *dll_bytes) {
+	// TODO: Check if using mmap() makes this faster:
+	// https://stackoverflow.com/a/174808/13279557
+	FILE *f = fopen(dll_path, "r");
+	check_null(f, "fopen");
+
+	check(fseek(f, 0, SEEK_END), "fseek");
+
+	long ftell_result = ftell(f);
+	check(ftell_result, "ftell");
+	size_t dll_bytes_len = ftell_result;
+
+	check(fseek(f, 0, SEEK_SET), "fseek");
+
+	if (fread(dll_bytes, dll_bytes_len, 1, f) == 0) {
+		if (feof(f)) {
+			printf("fread EOF\n");
+		}
+		if (ferror(f)) {
+			printf("fread error\n");
+		}
+		exit(EXIT_FAILURE);
+	}
+
+    if (fclose(f) == EOF) {
+		perror("fclose");
+		exit(EXIT_FAILURE);
+	}
+
+	return dll_bytes_len;
+}
+
 static void *get(void *handle, char *label) {
 	void *p = dlsym(handle, label);
 	if (!p) {
@@ -169,6 +201,17 @@ static void *get(void *handle, char *label) {
 		exit(EXIT_FAILURE);
 	}
 	return p;
+}
+
+static void output_dll_info(char *output_dll_path, char *xxd_path, char *readelf_path, char *objdump_path) {
+	(void)output_dll_path;
+	(void)xxd_path;
+	(void)readelf_path;
+	(void)objdump_path;
+	// TODO:
+	// xxd $dll_path > $dir"results/output.hex"
+	// readelf -a $dll_path > $dir"results/output_elf.log"
+	// objdump -D $dll_path -M intel > $dir"results/output_objdump.log"
 }
 
 static char *get_expected_error(char *expected_error_path) {
@@ -214,24 +257,6 @@ static char *get_expected_error(char *expected_error_path) {
 	return expected_error;
 }
 
-static void compare_against_expected_error(char *msg, char *expected_error_path) {
-	size_t grug_error_msg_len = strlen(msg);
-
-	char *expected_error = get_expected_error(expected_error_path);
-	size_t expected_error_len = strlen(expected_error);
-
-	if (expected_error_len != grug_error_msg_len || memcmp(msg, expected_error, expected_error_len) != 0) {
-		printf("The output differs from the expected output.\n");
-		printf("Output:\n");
-		printf("%s\n", msg);
-
-		printf("Expected:\n");
-		printf("%s\n", expected_error);
-
-		exit(EXIT_FAILURE);
-	}
-}
-
 static void make_results_dir(char *results_path) {
 	if (mkdir(results_path, 0755) == -1 && errno != EEXIST) {
 		perror("mkdir");
@@ -255,7 +280,22 @@ static void error_assignment_isnt_expression(void) {
 
 	printf("  Comparing against the expected error...\n");
 
-	compare_against_expected_error(grug_error.msg, expected_error_path);
+	size_t grug_error_msg_len = strlen(grug_error.msg);
+
+	char *expected_error = get_expected_error(expected_error_path);
+	size_t expected_error_len = strlen(expected_error);
+
+	if (expected_error_len != grug_error_msg_len || memcmp(grug_error.msg, expected_error, expected_error_len) != 0) {
+		printf("\nThe output differs from the expected output.\n");
+		printf("Output:\n");
+		printf("%s\n", grug_error.msg);
+
+		printf("Expected:\n");
+		printf("%s\n", expected_error);
+
+
+		exit(EXIT_FAILURE);
+	}
 }
 
 static void runtime_error_division_by_0(void) {
@@ -265,6 +305,9 @@ static void runtime_error_division_by_0(void) {
 	char *expected_error_path = "tests_err_runtime/division_by_0/expected_error.txt";
 	char *results_path = "tests_err_runtime/division_by_0/results";
 	char *output_dll_path = "tests_err_runtime/division_by_0/results/output.so";
+	char *output_xxd_path = "tests_err_runtime/division_by_0/results/output.hex";
+	char *output_readelf_path = "tests_err_runtime/division_by_0/results/output_elf.log";
+	char *output_objdump_path = "tests_err_runtime/division_by_0/results/output_objdump.log";
 
 	make_results_dir(results_path);
 
@@ -278,6 +321,10 @@ static void runtime_error_division_by_0(void) {
 
 		exit(EXIT_FAILURE);
 	}
+
+	printf("  Outputting output.so info...\n");
+
+	output_dll_info(output_dll_path, output_xxd_path, output_readelf_path, output_objdump_path);
 
 	printf("  Running the test...\n");
 
@@ -322,7 +369,21 @@ static void runtime_error_division_by_0(void) {
 
 	char *grug_error_msg = grug_get_runtime_error_reason();
 
-	compare_against_expected_error(grug_error_msg, expected_error_path);
+	size_t grug_error_msg_len = strlen(grug_error_msg);
+
+	char *expected_error = get_expected_error(expected_error_path);
+	size_t expected_error_len = strlen(expected_error);
+
+	if (expected_error_len != grug_error_msg_len || memcmp(grug_error_msg, expected_error, expected_error_len) != 0) {
+		printf("\nThe output differs from the expected output.\n");
+		printf("Output:\n");
+		printf("%s\n", grug_error_msg);
+
+		printf("Expected:\n");
+		printf("%s\n", expected_error);
+
+		exit(EXIT_FAILURE);
+	}
 }
 
 static void ok_addition_as_argument(void) {
@@ -331,9 +392,15 @@ static void ok_addition_as_argument(void) {
 	char *grug_path = "tests_ok/addition_as_argument/input.grug";
 	char *nasm_path = "tests_ok/addition_as_argument/input.s";
 	char *results_path = "tests_ok/addition_as_argument/results";
-	// char *output_dll_path = "tests_ok/addition_as_argument/results/output.so";
+	char *output_dll_path = "tests_ok/addition_as_argument/results/output.so";
 	char *expected_dll_path = "tests_ok/addition_as_argument/results/expected.so";
 	char *nasm_o_path = "tests_ok/addition_as_argument/results/expected.o";
+	char *output_xxd_path = "tests_ok/addition_as_argument/results/output.hex";
+	char *output_readelf_path = "tests_ok/addition_as_argument/results/output_elf.log";
+	char *output_objdump_path = "tests_ok/addition_as_argument/results/output_objdump.log";
+	char *expected_xxd_path = "tests_ok/addition_as_argument/results/expected.hex";
+	char *expected_readelf_path = "tests_ok/addition_as_argument/results/expected_elf.log";
+	char *expected_objdump_path = "tests_ok/addition_as_argument/results/expected_objdump.log";
 
 	reset_call_counts();
 
@@ -396,6 +463,10 @@ static void ok_addition_as_argument(void) {
 
 		// Wait on the objcopy child to finish
 		check(wait(NULL), "wait");
+
+		printf("  Outputting expected.so info...\n");
+
+		output_dll_info(expected_dll_path, expected_xxd_path, expected_readelf_path, expected_objdump_path);
 	}
 
 	printf("  Running the test...\n");
@@ -433,6 +504,34 @@ static void ok_addition_as_argument(void) {
 	assert(strcmp(grug_on_fn_path, "tests_ok/addition_as_argument/input.grug") == 0);
 
 	free(g);
+
+	printf("  Regenerating output.so...\n");
+
+	if (grug_test_regenerate_dll(grug_path, output_dll_path)) {
+		printf("The test wasn't supposed to print anything, but did:\n");
+		printf("----\n");
+		printf("%s\n", grug_error.msg);
+		printf("----\n");
+
+		exit(EXIT_FAILURE);
+	}
+
+	printf("  Outputting output.so info...\n");
+
+	output_dll_info(output_dll_path, output_xxd_path, output_readelf_path, output_objdump_path);
+
+	printf("  Comparing output.so against expected.so...\n");
+
+	static uint8_t output_dll_bytes[420420];
+	size_t output_dll_bytes_len = read_dll(output_dll_path, output_dll_bytes);
+
+	static uint8_t expected_dll_bytes[420420];
+	size_t expected_dll_bytes_len = read_dll(expected_dll_path, expected_dll_bytes);
+
+	if (expected_dll_bytes_len != output_dll_bytes_len || memcmp(output_dll_bytes, expected_dll_bytes, expected_dll_bytes_len) != 0) {
+		printf("\nThe output differs from the expected output.\n");
+		exit(EXIT_FAILURE);
+	}
 }
 
 static void error_tests(void) {
