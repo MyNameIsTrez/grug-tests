@@ -16,6 +16,12 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+struct runtime_error_data {
+	bool run;
+	void *on_fns;
+	void *g;
+};
+
 static size_t game_fn_nothing_call_count;
 static size_t game_fn_magic_call_count;
 static size_t game_fn_initialize_call_count;
@@ -144,33 +150,22 @@ static void check_null(void *ptr, char *fn_name) {
 	"tests_err/"test_name"/results/grug_output.txt"\
 );
 
-// #define OK_PARSE(path, node) {\
-// 	assert(!json(path, node) || (\
-// 			fprintf(\
-// 				stderr,\
-// 				"json.c:%d: %s in %s\n",\
-// 				json_error_line_number,\
-// 				json_error_messages[json_error],\
-// 				path\
-// 			), abort(), false));\
-// }
-
-// #define ERROR_PARSE(path, error) {\
-// 	struct json_node node;\
-// 	assert(json(path, &node));\
-// 	assert(json_error == error);\
-// }
-
-// static void ok_string_foo(void) {
-// 	struct json_node node;
-// 	OK_PARSE("./tests_ok/string_foo.json", &node);
-// 	assert(node.type == JSON_NODE_STRING);
-// 	assert(strcmp(node.data.string, "foo") == 0);
-// }
-
-// static void error_expected_array_close(void) {
-// 	ERROR_PARSE("./tests_err/expected_array_close.json", JSON_ERROR_EXPECTED_ARRAY_CLOSE);
-// }
+#define TEST_RUNTIME_ERROR(test_name) {\
+	struct runtime_error_data data = runtime_error_prologue(\
+		#test_name,\
+		"tests_err_runtime/"#test_name"/input.grug",\
+		"tests_err_runtime/"#test_name"/expected_error.txt",\
+		"tests_err_runtime/"#test_name"/results",\
+		"tests_err_runtime/"#test_name"/results/output.so",\
+		"tests_err_runtime/"#test_name"/results/output.hex",\
+		"tests_err_runtime/"#test_name"/results/output_elf.log",\
+		"tests_err_runtime/"#test_name"/results/output_objdump.log"\
+	);\
+	if (data.run) {\
+		runtime_error_##test_name(data.on_fns, data.g);\
+		runtime_error_compare_against_expected_error("tests_err_runtime/"#test_name"/expected_error.txt");\
+	}\
+}
 
 static size_t read_dll(char *dll_path, uint8_t *dll_bytes) {
 	// TODO: Check if using mmap() makes this faster:
@@ -258,6 +253,31 @@ static void output_dll_info(char *dll_path, char *xxd_path, char *readelf_path, 
 	run_and_write((char *[]){"objdump", "-D", dll_path, "-Mintel", NULL}, objdump_path);
 }
 
+static bool newer(char *path1, char *path2) {
+	// printf("path1: %s\n", path1);
+	// printf("path2: %s\n", path2);
+
+	struct stat s1;
+	if (stat(path1, &s1) == -1) {
+		if (errno != ENOENT) {
+			perror("stat");
+			exit(EXIT_FAILURE);
+		}
+		// printf("path1 does not exist\n");
+		return false;
+	}
+
+	struct stat s2;
+	check(stat(path2, &s2), "stat");
+
+	// printf("path1 mtime >= path2 mtime: %d\n", s1.st_mtime >= s2.st_mtime);
+
+	// printf("path1 mtime: %ld\n", s1.st_mtime);
+	// printf("path2 mtime: %ld\n", s2.st_mtime);
+
+	return s1.st_mtime >= s2.st_mtime;
+}
+
 static char *get_expected_error(char *expected_error_path) {
 	// TODO: Check if using mmap() makes this faster:
 	// https://stackoverflow.com/a/174808/13279557
@@ -301,6 +321,28 @@ static char *get_expected_error(char *expected_error_path) {
 	return expected_error;
 }
 
+static void runtime_error_compare_against_expected_error(char *expected_error_path) {
+	printf("  Comparing against the expected error...\n");
+
+	char *grug_error_msg = grug_get_runtime_error_reason();
+
+	size_t grug_error_msg_len = strlen(grug_error_msg);
+
+	char *expected_error = get_expected_error(expected_error_path);
+	size_t expected_error_len = strlen(expected_error);
+
+	if (expected_error_len != grug_error_msg_len || memcmp(grug_error_msg, expected_error, expected_error_len) != 0) {
+		printf("\nThe output differs from the expected output.\n");
+		printf("Output:\n");
+		printf("%s\n", grug_error_msg);
+
+		printf("Expected:\n");
+		printf("%s\n", expected_error);
+
+		exit(EXIT_FAILURE);
+	}
+}
+
 static void make_results_dir(char *results_path) {
 	if (mkdir(results_path, 0755) == -1 && errno != EEXIST) {
 		perror("mkdir");
@@ -322,31 +364,6 @@ static int remove_callback(const char *entry_path, const struct stat *entry_info
 
 static int rm_rf(char *path) {
 	return nftw(path, remove_callback, 42, FTW_DEPTH | FTW_PHYS);
-}
-
-static bool newer(char *path1, char *path2) {
-	// printf("path1: %s\n", path1);
-	// printf("path2: %s\n", path2);
-
-	struct stat s1;
-	if (stat(path1, &s1) == -1) {
-		if (errno != ENOENT) {
-			perror("stat");
-			exit(EXIT_FAILURE);
-		}
-		// printf("path1 does not exist\n");
-		return false;
-	}
-
-	struct stat s2;
-	check(stat(path2, &s2), "stat");
-
-	// printf("path1 mtime >= path2 mtime: %d\n", s1.st_mtime >= s2.st_mtime);
-
-	// printf("path1 mtime: %ld\n", s1.st_mtime);
-	// printf("path2 mtime: %ld\n", s2.st_mtime);
-
-	return s1.st_mtime >= s2.st_mtime;
 }
 
 static void test_error(
@@ -411,15 +428,16 @@ static void test_error(
 	}
 }
 
-static void runtime_error_division_by_0(void) {
-	char *grug_path = "tests_err_runtime/division_by_0/input.grug";
-	char *expected_error_path = "tests_err_runtime/division_by_0/expected_error.txt";
-	char *results_path = "tests_err_runtime/division_by_0/results";
-	char *output_dll_path = "tests_err_runtime/division_by_0/results/output.so";
-	char *output_xxd_path = "tests_err_runtime/division_by_0/results/output.hex";
-	char *output_readelf_path = "tests_err_runtime/division_by_0/results/output_elf.log";
-	char *output_objdump_path = "tests_err_runtime/division_by_0/results/output_objdump.log";
-
+static struct runtime_error_data runtime_error_prologue(
+	char *test_name,
+	char *grug_path,
+	char *expected_error_path,
+	char *results_path,
+	char *output_dll_path,
+	char *output_xxd_path,
+	char *output_readelf_path,
+	char *output_objdump_path
+) {
 	if (newer(output_dll_path, grug_path)
 	 && newer(output_dll_path, expected_error_path)
 	 && newer(output_dll_path, "mod_api.h")
@@ -427,11 +445,11 @@ static void runtime_error_division_by_0(void) {
 	 && newer(output_dll_path, "tests.sh")
 	 && newer(output_dll_path, "tests.out")
 	) {
-		printf("Skipping runtime_error_division_by_0...\n");
-		return;
+		printf("Skipping tests_err_runtime/%s...\n", test_name);
+		return (struct runtime_error_data){.run=false};
 	}
 
-	printf("Running runtime_error_division_by_0...\n");
+	printf("Running tests_err_runtime/%s...\n", test_name);
 
 	rm_rf(results_path);
 	make_results_dir(results_path);
@@ -471,10 +489,14 @@ static void runtime_error_division_by_0(void) {
 	void *g = malloc(globals_size);
 	grug_init_globals_fn_t init_globals = get(handle, "init_globals");
 	init_globals(g);
-
-	struct d_on_fns *on_fns = get(handle, "on_fns");
 	#pragma GCC diagnostic pop
 
+	void *on_fns = get(handle, "on_fns");
+
+	return (struct runtime_error_data){.run=true, .on_fns=on_fns, .g=g};
+}
+
+static void runtime_error_division_by_0(void *on_fns, void *g) {
 	bool had_runtime_error = false;
 
 	if (grug_mod_had_runtime_error()) {
@@ -482,32 +504,40 @@ static void runtime_error_division_by_0(void) {
 	}
 
 	if (!had_runtime_error) {
-		on_fns->a(g);
+		((struct d_on_fns *)on_fns)->a(g);
 	}
 
 	free(g);
 
 	assert(had_runtime_error);
+}
 
-	printf("  Comparing against the expected error...\n");
+static bool handler_called;
+static void handler(int sig) {
+	(void)sig;
+	handler_called = true;
+}
 
-	char *grug_error_msg = grug_get_runtime_error_reason();
+static void runtime_error_raise_alrm_with_handler(void *on_fns, void *g) {
+	bool had_runtime_error = false;
 
-	size_t grug_error_msg_len = strlen(grug_error_msg);
+	if (grug_mod_had_runtime_error()) {
+		had_runtime_error = true;
 
-	char *expected_error = get_expected_error(expected_error_path);
-	size_t expected_error_len = strlen(expected_error);
-
-	if (expected_error_len != grug_error_msg_len || memcmp(grug_error_msg, expected_error, expected_error_len) != 0) {
-		printf("\nThe output differs from the expected output.\n");
-		printf("Output:\n");
-		printf("%s\n", grug_error_msg);
-
-		printf("Expected:\n");
-		printf("%s\n", expected_error);
-
-		exit(EXIT_FAILURE);
+		handler_called = false;
+		raise(SIGALRM);
+		assert(handler_called);
 	}
+
+	signal(SIGALRM, handler);
+
+	if (!had_runtime_error) {
+		((struct d_on_fns *)on_fns)->a(g);
+	}
+
+	free(g);
+
+	assert(had_runtime_error);
 }
 
 static void ok_addition_as_argument(void) {
@@ -633,89 +663,89 @@ static void ok_addition_as_argument(void) {
 
 static void error_tests(void) {
 	TEST_ERROR("assign_to_unknown_variable");
-	TEST_ERROR("assignment_isnt_expression");
-	TEST_ERROR("assign_to_unknown_variable");
-	TEST_ERROR("assignment_isnt_expression");
-	TEST_ERROR("bool_unary_minus");
-	TEST_ERROR("cant_add_strings");
-	TEST_ERROR("cant_call_define_fn_1");
-	TEST_ERROR("cant_call_define_fn_2");
-	TEST_ERROR("cant_redefine_global");
-	TEST_ERROR("define_fn_calls_fn");
-	TEST_ERROR("define_fn_different_name");
-	TEST_ERROR("define_fn_not_enough_arguments");
-	TEST_ERROR("define_fn_only_one_max");
-	TEST_ERROR("define_fn_uses_global_variable");
-	TEST_ERROR("define_fn_was_not_declared");
-	TEST_ERROR("f32_missing_digit_after_decimal_point");
-	TEST_ERROR("game_fn_does_not_exist");
-	TEST_ERROR("game_function_call_gets_wrong_arg_type");
-	TEST_ERROR("game_function_call_less_args_expected");
-	TEST_ERROR("game_function_call_more_args_expected");
-	TEST_ERROR("game_function_call_no_args_expected");
-	TEST_ERROR("global_variable_already_uses_local_variable_name");
-	TEST_ERROR("global_variable_before_define");
-	TEST_ERROR("global_variable_calls_fn");
-	TEST_ERROR("global_variable_definition_cant_use_itself");
-	TEST_ERROR("global_variable_definition_requires_value_i32");
-	TEST_ERROR("global_variable_definition_requires_value_string");
-	TEST_ERROR("global_variable_uses_global_variable");
-	TEST_ERROR("helper_fn_does_not_exist");
-	TEST_ERROR("helper_function_call_gets_wrong_arg_type");
-	TEST_ERROR("helper_function_call_less_args_expected");
-	TEST_ERROR("helper_function_call_more_args_expected");
-	TEST_ERROR("helper_function_call_no_args_expected");
-	TEST_ERROR("helper_function_different_return_value_expected");
-	TEST_ERROR("helper_function_missing_return_statement");
-	TEST_ERROR("helper_function_no_return_value_expected");
-	TEST_ERROR("i32_logical_not");
-	TEST_ERROR("i32_too_big");
-	TEST_ERROR("i32_too_small");
-	TEST_ERROR("local_variable_already_exists");
-	TEST_ERROR("local_variable_definition_cant_use_itself");
-	TEST_ERROR("missing_define_fn");
-	TEST_ERROR("no_space_between_comment_character_and_comment");
-	TEST_ERROR("on_fn_before_define");
-	TEST_ERROR("on_fn_duplicate");
-	TEST_ERROR("on_fn_was_not_declared_in_entity");
-	TEST_ERROR("on_fn_wrong_order");
-	TEST_ERROR("on_function_gets_wrong_arg_type");
-	TEST_ERROR("on_function_less_args_expected");
-	TEST_ERROR("on_function_more_args_expected");
-	TEST_ERROR("on_function_no_args_expected");
-	TEST_ERROR("on_function_no_return_value_expected");
-	TEST_ERROR("pass_bool_to_i32_game_param");
-	TEST_ERROR("pass_bool_to_i32_helper_param");
-	TEST_ERROR("resource_type_for_global");
-	TEST_ERROR("resource_type_for_helper_fn_argument");
-	TEST_ERROR("resource_type_for_helper_fn_return_type");
-	TEST_ERROR("resource_type_for_local");
-	TEST_ERROR("resource_type_for_on_fn_argument");
-	TEST_ERROR("string_pointer_arithmetic");
-	TEST_ERROR("too_many_f32_arguments");
-	TEST_ERROR("too_many_i32_arguments");
-	TEST_ERROR("trailing_space_in_comment");
-	TEST_ERROR("unclosed_double_quote");
-	TEST_ERROR("unknown_variable");
-	TEST_ERROR("unused_result");
-	TEST_ERROR("variable_assignment_before_definition");
-	TEST_ERROR("variable_definition_requires_value_i32");
-	TEST_ERROR("variable_definition_requires_value_string");
-	TEST_ERROR("variable_statement_missing_assignment");
-	TEST_ERROR("variable_used_before_definition");
-	TEST_ERROR("wrong_type_global_assignment");
-	TEST_ERROR("wrong_type_global_reassignment");
-	TEST_ERROR("wrong_type_local_assignment");
-	TEST_ERROR("wrong_type_local_reassignment");
+	// TEST_ERROR("assignment_isnt_expression");
+	// TEST_ERROR("assign_to_unknown_variable");
+	// TEST_ERROR("assignment_isnt_expression");
+	// TEST_ERROR("bool_unary_minus");
+	// TEST_ERROR("cant_add_strings");
+	// TEST_ERROR("cant_call_define_fn_1");
+	// TEST_ERROR("cant_call_define_fn_2");
+	// TEST_ERROR("cant_redefine_global");
+	// TEST_ERROR("define_fn_calls_fn");
+	// TEST_ERROR("define_fn_different_name");
+	// TEST_ERROR("define_fn_not_enough_arguments");
+	// TEST_ERROR("define_fn_only_one_max");
+	// TEST_ERROR("define_fn_uses_global_variable");
+	// TEST_ERROR("define_fn_was_not_declared");
+	// TEST_ERROR("f32_missing_digit_after_decimal_point");
+	// TEST_ERROR("game_fn_does_not_exist");
+	// TEST_ERROR("game_function_call_gets_wrong_arg_type");
+	// TEST_ERROR("game_function_call_less_args_expected");
+	// TEST_ERROR("game_function_call_more_args_expected");
+	// TEST_ERROR("game_function_call_no_args_expected");
+	// TEST_ERROR("global_variable_already_uses_local_variable_name");
+	// TEST_ERROR("global_variable_before_define");
+	// TEST_ERROR("global_variable_calls_fn");
+	// TEST_ERROR("global_variable_definition_cant_use_itself");
+	// TEST_ERROR("global_variable_definition_requires_value_i32");
+	// TEST_ERROR("global_variable_definition_requires_value_string");
+	// TEST_ERROR("global_variable_uses_global_variable");
+	// TEST_ERROR("helper_fn_does_not_exist");
+	// TEST_ERROR("helper_function_call_gets_wrong_arg_type");
+	// TEST_ERROR("helper_function_call_less_args_expected");
+	// TEST_ERROR("helper_function_call_more_args_expected");
+	// TEST_ERROR("helper_function_call_no_args_expected");
+	// TEST_ERROR("helper_function_different_return_value_expected");
+	// TEST_ERROR("helper_function_missing_return_statement");
+	// TEST_ERROR("helper_function_no_return_value_expected");
+	// TEST_ERROR("i32_logical_not");
+	// TEST_ERROR("i32_too_big");
+	// TEST_ERROR("i32_too_small");
+	// TEST_ERROR("local_variable_already_exists");
+	// TEST_ERROR("local_variable_definition_cant_use_itself");
+	// TEST_ERROR("missing_define_fn");
+	// TEST_ERROR("no_space_between_comment_character_and_comment");
+	// TEST_ERROR("on_fn_before_define");
+	// TEST_ERROR("on_fn_duplicate");
+	// TEST_ERROR("on_fn_was_not_declared_in_entity");
+	// TEST_ERROR("on_fn_wrong_order");
+	// TEST_ERROR("on_function_gets_wrong_arg_type");
+	// TEST_ERROR("on_function_less_args_expected");
+	// TEST_ERROR("on_function_more_args_expected");
+	// TEST_ERROR("on_function_no_args_expected");
+	// TEST_ERROR("on_function_no_return_value_expected");
+	// TEST_ERROR("pass_bool_to_i32_game_param");
+	// TEST_ERROR("pass_bool_to_i32_helper_param");
+	// TEST_ERROR("resource_type_for_global");
+	// TEST_ERROR("resource_type_for_helper_fn_argument");
+	// TEST_ERROR("resource_type_for_helper_fn_return_type");
+	// TEST_ERROR("resource_type_for_local");
+	// TEST_ERROR("resource_type_for_on_fn_argument");
+	// TEST_ERROR("string_pointer_arithmetic");
+	// TEST_ERROR("too_many_f32_arguments");
+	// TEST_ERROR("too_many_i32_arguments");
+	// TEST_ERROR("trailing_space_in_comment");
+	// TEST_ERROR("unclosed_double_quote");
+	// TEST_ERROR("unknown_variable");
+	// TEST_ERROR("unused_result");
+	// TEST_ERROR("variable_assignment_before_definition");
+	// TEST_ERROR("variable_definition_requires_value_i32");
+	// TEST_ERROR("variable_definition_requires_value_string");
+	// TEST_ERROR("variable_statement_missing_assignment");
+	// TEST_ERROR("variable_used_before_definition");
+	// TEST_ERROR("wrong_type_global_assignment");
+	// TEST_ERROR("wrong_type_global_reassignment");
+	// TEST_ERROR("wrong_type_local_assignment");
+	// TEST_ERROR("wrong_type_local_reassignment");
 }
 
 static void runtime_error_tests(void) {
-	runtime_error_division_by_0();
-	// runtime_error_raise_alrm_with_handler();
-	// runtime_error_raise_fpe_with_handler();
-	// runtime_error_raise_sigsegv_with_handler();
-	// runtime_error_stack_overflow();
-	// runtime_error_time_limit_exceeded();
+	TEST_RUNTIME_ERROR(division_by_0);
+	TEST_RUNTIME_ERROR(raise_alrm_with_handler);
+	// TEST_RUNTIME_ERROR(raise_fpe_with_handler);
+	// TEST_RUNTIME_ERROR(raise_sigsegv_with_handler);
+	// TEST_RUNTIME_ERROR(stack_overflow);
+	// TEST_RUNTIME_ERROR(time_limit_exceeded);
 }
 
 static void ok_tests(void) {
