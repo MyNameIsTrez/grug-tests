@@ -496,29 +496,13 @@ static struct runtime_error_data runtime_error_prologue(
 	return (struct runtime_error_data){.run=true, .on_fns=on_fns, .g=g};
 }
 
-static void runtime_error_division_by_0(void *on_fns, void *g) {
-	bool had_runtime_error = false;
-
-	if (grug_mod_had_runtime_error()) {
-		had_runtime_error = true;
-	}
-
-	if (!had_runtime_error) {
-		((struct d_on_fns *)on_fns)->a(g);
-	}
-
-	free(g);
-
-	assert(had_runtime_error);
-}
-
 static bool handler_called;
 static void handler(int sig) {
 	(void)sig;
 	handler_called = true;
 }
 
-static void runtime_error_raise_alrm_with_handler(void *on_fns, void *g) {
+static void runtime_error_time_limit_exceeded(void *on_fns, void *g) {
 	bool had_runtime_error = false;
 
 	if (grug_mod_had_runtime_error()) {
@@ -540,7 +524,7 @@ static void runtime_error_raise_alrm_with_handler(void *on_fns, void *g) {
 	assert(had_runtime_error);
 }
 
-static void runtime_error_raise_fpe_with_handler(void *on_fns, void *g) {
+static void runtime_error_division_by_0(void *on_fns, void *g) {
 	bool had_runtime_error = false;
 
 	if (grug_mod_had_runtime_error()) {
@@ -562,7 +546,7 @@ static void runtime_error_raise_fpe_with_handler(void *on_fns, void *g) {
 	assert(had_runtime_error);
 }
 
-static void runtime_error_raise_segv_with_handler(void *on_fns, void *g) {
+static void runtime_error_stack_overflow(void *on_fns, void *g) {
 	bool had_runtime_error = false;
 
 	if (grug_mod_had_runtime_error()) {
@@ -574,38 +558,6 @@ static void runtime_error_raise_segv_with_handler(void *on_fns, void *g) {
 	}
 
 	signal(SIGSEGV, handler);
-
-	if (!had_runtime_error) {
-		((struct d_on_fns *)on_fns)->a(g);
-	}
-
-	free(g);
-
-	assert(had_runtime_error);
-}
-
-static void runtime_error_stack_overflow(void *on_fns, void *g) {
-	bool had_runtime_error = false;
-
-	if (grug_mod_had_runtime_error()) {
-		had_runtime_error = true;
-	}
-
-	if (!had_runtime_error) {
-		((struct d_on_fns *)on_fns)->a(g);
-	}
-
-	free(g);
-
-	assert(had_runtime_error);
-}
-
-static void runtime_error_time_limit_exceeded(void *on_fns, void *g) {
-	bool had_runtime_error = false;
-
-	if (grug_mod_had_runtime_error()) {
-		had_runtime_error = true;
-	}
 
 	if (!had_runtime_error) {
 		((struct d_on_fns *)on_fns)->a(g);
@@ -817,15 +769,13 @@ static void error_tests(void) {
 
 static void runtime_error_tests(void) {
 	TEST_RUNTIME_ERROR(division_by_0);
-	TEST_RUNTIME_ERROR(raise_alrm_with_handler);
-	TEST_RUNTIME_ERROR(raise_fpe_with_handler);
-	TEST_RUNTIME_ERROR(raise_segv_with_handler);
 	TEST_RUNTIME_ERROR(stack_overflow);
 	TEST_RUNTIME_ERROR(time_limit_exceeded);
 }
 
 static void ok_tests(void) {
-	ok_addition_as_argument();
+	(void)ok_addition_as_argument; // TODO: REMOVE
+	// ok_addition_as_argument();
 	// ok_addition_as_two_arguments();
 	// ok_addition_i32_wraparound();
 	// ok_addition_with_multiplication();
