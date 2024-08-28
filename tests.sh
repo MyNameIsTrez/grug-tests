@@ -8,13 +8,13 @@ linker_flags='-rdynamic'
 # TODO: Consider always outputting and running grug_asan.o and grug_valgrind.o
 # compiler_flags+=' -fsanitize=address,undefined'
 
-if (! [[ grug/grug.c -ot tests.out ]]) || (! [[ grug/grug.h -ot tests.out ]]) || (! [[ tests.sh -ot tests.out ]])
+if (! [[ grug/grug.c -ot grug.o ]]) || (! [[ grug/grug.h -ot grug.o ]]) || (! [[ tests.sh -ot grug.o ]])
 then
     echo "Recompiling grug.o..."
     clang grug/grug.c -c -o grug.o $compiler_flags || { echo 'Recompiling grug.o failed :('; exit 1; }
 fi
 
-if (! [[ tests.c -ot tests.o ]]) || (! [[ tests.sh -ot tests.out ]])
+if (! [[ tests.c -ot tests.o ]]) || (! [[ tests.sh -ot tests.o ]])
 then
     echo "Recompiling tests.o..."
     clang tests.c -c -o tests.o $compiler_flags || { echo 'Recompiling tests.o failed :('; exit 1; }
