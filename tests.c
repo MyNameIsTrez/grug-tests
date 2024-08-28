@@ -243,7 +243,8 @@ static void run(char *const *argv) {
 }
 
 static void output_dll_info(char *dll_path, char *xxd_path, char *readelf_path, char *objdump_path) {
-	run((char *[]){"xxd", dll_path, xxd_path, NULL});
+	// -Rnever turns colorization off, since you'd just see the color escape code text in a .txt file
+	run((char *[]){"xxd", "-Rnever", dll_path, xxd_path, NULL});
 
 	// These don't work, for some reason, even when ">" is added to the start of the readelf_path/objdump_path
 	// run((char *[]){"readelf", "-a", dll_path, ">", readelf_path, NULL});
