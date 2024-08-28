@@ -135,6 +135,15 @@ static void check_null(void *ptr, char *fn_name) {
 	}
 }
 
+#define TEST_ERROR(test_name) test_error(\
+	test_name,\
+	"tests_err/"test_name"/input.grug",\
+	"tests_err/"test_name"/expected_error.txt",\
+	"tests_err/"test_name"/results",\
+	"tests_err/"test_name"/results/output.so",\
+	"tests_err/"test_name"/results/grug_output.txt"\
+);
+
 // #define OK_PARSE(path, node) {\
 // 	assert(!json(path, node) || (\
 // 			fprintf(\
@@ -340,13 +349,14 @@ static bool newer(char *path1, char *path2) {
 	return s1.st_mtime >= s2.st_mtime;
 }
 
-static void error_assignment_isnt_expression(void) {
-	char *grug_path = "tests_err/assign_to_unknown_variable/input.grug";
-	char *expected_error_path = "tests_err/assign_to_unknown_variable/expected_error.txt";
-	char *results_path = "tests_err/assign_to_unknown_variable/results";
-	char *output_dll_path = "tests_err/assign_to_unknown_variable/results/output.so";
-	char *grug_output_path = "tests_err/assign_to_unknown_variable/results/grug_output.txt";
-
+static void test_error(
+	char *test_name,
+	char *grug_path,
+	char *expected_error_path,
+	char *results_path,
+	char *output_dll_path,
+	char *grug_output_path
+) {
 	if (newer(grug_output_path, grug_path)
 	 && newer(grug_output_path, expected_error_path)
 	 && newer(grug_output_path, "mod_api.h")
@@ -354,11 +364,11 @@ static void error_assignment_isnt_expression(void) {
 	 && newer(grug_output_path, "tests.sh")
 	 && newer(grug_output_path, "tests.out")
 	) {
-		printf("Skipping error_assignment_isnt_expression...\n");
+		printf("Skipping tests_err/%s...\n", test_name);
 		return;
 	}
 
-	printf("Running error_assignment_isnt_expression...\n");
+	printf("Running tests_err/%s...\n", test_name);
 
 	rm_rf(results_path);
 	make_results_dir(results_path);
@@ -622,79 +632,81 @@ static void ok_addition_as_argument(void) {
 }
 
 static void error_tests(void) {
-	error_assignment_isnt_expression();
-	// error_assign_to_unknown_variable();
-	// error_bool_unary_minus();
-	// error_cant_add_strings();
-	// error_cant_call_define_fn_1();
-	// error_cant_call_define_fn_2();
-	// error_cant_redefine_global();
-	// error_define_fn_calls_fn();
-	// error_define_fn_different_name();
-	// error_define_fn_not_enough_arguments();
-	// error_define_fn_only_one_max();
-	// error_define_fn_uses_global_variable();
-	// error_define_fn_was_not_declared();
-	// error_f32_missing_digit_after_decimal_point();
-	// error_game_fn_does_not_exist();
-	// error_game_function_call_gets_wrong_arg_type();
-	// error_game_function_call_less_args_expected();
-	// error_game_function_call_more_args_expected();
-	// error_game_function_call_no_args_expected();
-	// error_global_variable_already_uses_local_variable_name();
-	// error_global_variable_before_define();
-	// error_global_variable_calls_fn();
-	// error_global_variable_definition_cant_use_itself();
-	// error_global_variable_definition_requires_value_i32();
-	// error_global_variable_definition_requires_value_string();
-	// error_global_variable_uses_global_variable();
-	// error_helper_fn_does_not_exist();
-	// error_helper_function_call_gets_wrong_arg_type();
-	// error_helper_function_call_less_args_expected();
-	// error_helper_function_call_more_args_expected();
-	// error_helper_function_call_no_args_expected();
-	// error_helper_function_different_return_value_expected();
-	// error_helper_function_missing_return_statement();
-	// error_helper_function_no_return_value_expected();
-	// error_i32_logical_not();
-	// error_i32_too_big();
-	// error_i32_too_small();
-	// error_local_variable_already_exists();
-	// error_local_variable_definition_cant_use_itself();
-	// error_missing_define_fn();
-	// error_no_space_between_comment_character_and_comment();
-	// error_on_fn_before_define();
-	// error_on_fn_duplicate();
-	// error_on_fn_was_not_declared_in_entity();
-	// error_on_fn_wrong_order();
-	// error_on_function_gets_wrong_arg_type();
-	// error_on_function_less_args_expected();
-	// error_on_function_more_args_expected();
-	// error_on_function_no_args_expected();
-	// error_on_function_no_return_value_expected();
-	// error_pass_bool_to_i32_game_param();
-	// error_pass_bool_to_i32_helper_param();
-	// error_resource_type_for_global();
-	// error_resource_type_for_helper_fn_argument();
-	// error_resource_type_for_helper_fn_return_type();
-	// error_resource_type_for_local();
-	// error_resource_type_for_on_fn_argument();
-	// error_string_pointer_arithmetic();
-	// error_too_many_f32_arguments();
-	// error_too_many_i32_arguments();
-	// error_trailing_space_in_comment();
-	// error_unclosed_double_quote();
-	// error_unknown_variable();
-	// error_unused_result();
-	// error_variable_assignment_before_definition();
-	// error_variable_definition_requires_value_i32();
-	// error_variable_definition_requires_value_string();
-	// error_variable_statement_missing_assignment();
-	// error_variable_used_before_definition();
-	// error_wrong_type_global_assignment();
-	// error_wrong_type_global_reassignment();
-	// error_wrong_type_local_assignment();
-	// error_wrong_type_local_reassignment();
+	TEST_ERROR("assign_to_unknown_variable");
+	TEST_ERROR("assignment_isnt_expression");
+	TEST_ERROR("assign_to_unknown_variable");
+	TEST_ERROR("assignment_isnt_expression");
+	TEST_ERROR("bool_unary_minus");
+	TEST_ERROR("cant_add_strings");
+	TEST_ERROR("cant_call_define_fn_1");
+	TEST_ERROR("cant_call_define_fn_2");
+	TEST_ERROR("cant_redefine_global");
+	TEST_ERROR("define_fn_calls_fn");
+	TEST_ERROR("define_fn_different_name");
+	TEST_ERROR("define_fn_not_enough_arguments");
+	TEST_ERROR("define_fn_only_one_max");
+	TEST_ERROR("define_fn_uses_global_variable");
+	TEST_ERROR("define_fn_was_not_declared");
+	TEST_ERROR("f32_missing_digit_after_decimal_point");
+	TEST_ERROR("game_fn_does_not_exist");
+	TEST_ERROR("game_function_call_gets_wrong_arg_type");
+	TEST_ERROR("game_function_call_less_args_expected");
+	TEST_ERROR("game_function_call_more_args_expected");
+	TEST_ERROR("game_function_call_no_args_expected");
+	TEST_ERROR("global_variable_already_uses_local_variable_name");
+	TEST_ERROR("global_variable_before_define");
+	TEST_ERROR("global_variable_calls_fn");
+	TEST_ERROR("global_variable_definition_cant_use_itself");
+	TEST_ERROR("global_variable_definition_requires_value_i32");
+	TEST_ERROR("global_variable_definition_requires_value_string");
+	TEST_ERROR("global_variable_uses_global_variable");
+	TEST_ERROR("helper_fn_does_not_exist");
+	TEST_ERROR("helper_function_call_gets_wrong_arg_type");
+	TEST_ERROR("helper_function_call_less_args_expected");
+	TEST_ERROR("helper_function_call_more_args_expected");
+	TEST_ERROR("helper_function_call_no_args_expected");
+	TEST_ERROR("helper_function_different_return_value_expected");
+	TEST_ERROR("helper_function_missing_return_statement");
+	TEST_ERROR("helper_function_no_return_value_expected");
+	TEST_ERROR("i32_logical_not");
+	TEST_ERROR("i32_too_big");
+	TEST_ERROR("i32_too_small");
+	TEST_ERROR("local_variable_already_exists");
+	TEST_ERROR("local_variable_definition_cant_use_itself");
+	TEST_ERROR("missing_define_fn");
+	TEST_ERROR("no_space_between_comment_character_and_comment");
+	TEST_ERROR("on_fn_before_define");
+	TEST_ERROR("on_fn_duplicate");
+	TEST_ERROR("on_fn_was_not_declared_in_entity");
+	TEST_ERROR("on_fn_wrong_order");
+	TEST_ERROR("on_function_gets_wrong_arg_type");
+	TEST_ERROR("on_function_less_args_expected");
+	TEST_ERROR("on_function_more_args_expected");
+	TEST_ERROR("on_function_no_args_expected");
+	TEST_ERROR("on_function_no_return_value_expected");
+	TEST_ERROR("pass_bool_to_i32_game_param");
+	TEST_ERROR("pass_bool_to_i32_helper_param");
+	TEST_ERROR("resource_type_for_global");
+	TEST_ERROR("resource_type_for_helper_fn_argument");
+	TEST_ERROR("resource_type_for_helper_fn_return_type");
+	TEST_ERROR("resource_type_for_local");
+	TEST_ERROR("resource_type_for_on_fn_argument");
+	TEST_ERROR("string_pointer_arithmetic");
+	TEST_ERROR("too_many_f32_arguments");
+	TEST_ERROR("too_many_i32_arguments");
+	TEST_ERROR("trailing_space_in_comment");
+	TEST_ERROR("unclosed_double_quote");
+	TEST_ERROR("unknown_variable");
+	TEST_ERROR("unused_result");
+	TEST_ERROR("variable_assignment_before_definition");
+	TEST_ERROR("variable_definition_requires_value_i32");
+	TEST_ERROR("variable_definition_requires_value_string");
+	TEST_ERROR("variable_statement_missing_assignment");
+	TEST_ERROR("variable_used_before_definition");
+	TEST_ERROR("wrong_type_global_assignment");
+	TEST_ERROR("wrong_type_global_reassignment");
+	TEST_ERROR("wrong_type_local_assignment");
+	TEST_ERROR("wrong_type_local_reassignment");
 }
 
 static void runtime_error_tests(void) {
