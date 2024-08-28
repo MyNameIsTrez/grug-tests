@@ -165,8 +165,10 @@ static void check_null(void *ptr, char *fn_name) {
 	);\
 	if (data.run) {\
 		runtime_error_##test_name(data.on_fns, data.g);\
-		runtime_error_epilogue("tests_err_runtime/"#test_name"/expected_error.txt");\
-		unlink("tests_err_runtime/"#test_name"/results/failed");\
+		runtime_error_epilogue(\
+			"tests_err_runtime/"#test_name"/expected_error.txt",\
+			"tests_err_runtime/"#test_name"/results/failed"\
+		);\
 	}\
 }
 
@@ -325,7 +327,7 @@ static char *get_expected_error(char *expected_error_path) {
 	return expected_error;
 }
 
-static void runtime_error_epilogue(char *expected_error_path) {
+static void runtime_error_epilogue(char *expected_error_path, char *failed_file_path) {
 	printf("  Comparing against the expected error...\n");
 
 	char *grug_error_msg = grug_get_runtime_error_reason();
@@ -345,6 +347,8 @@ static void runtime_error_epilogue(char *expected_error_path) {
 
 		exit(EXIT_FAILURE);
 	}
+
+	unlink(failed_file_path);
 }
 
 static void create_failed_file(char *failed_file_path) {
