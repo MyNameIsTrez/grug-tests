@@ -7,6 +7,7 @@
 #include <assert.h>
 #include <dlfcn.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <ftw.h>
 #include <math.h>
 #include <stdio.h>
@@ -203,15 +204,49 @@ static void *get(void *handle, char *label) {
 	return p;
 }
 
-static void output_dll_info(char *output_dll_path, char *xxd_path, char *readelf_path, char *objdump_path) {
-	(void)output_dll_path;
-	(void)xxd_path;
-	(void)readelf_path;
-	(void)objdump_path;
-	// TODO:
-	// xxd $dll_path > $dir"results/output.hex"
-	// readelf -a $dll_path > $dir"results/output_elf.log"
-	// objdump -D $dll_path -M intel > $dir"results/output_objdump.log"
+static void run_and_write(char *const *argv, char *written_path) {
+	pid_t pid = fork();
+	check(pid, "fork");
+
+	if (pid == 0) {
+		int fd = open(written_path, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		check(fd, "open");
+
+		dup2(fd, STDOUT_FILENO); // Redirect stdout to written_path
+
+		close(fd);
+
+		check(execvp(argv[0], argv), "execvp");
+	}
+
+	// Wait on the child to finish
+	check(wait(NULL), "wait");
+}
+
+static void run(char *const *argv) {
+	pid_t pid = fork();
+	check(pid, "fork");
+
+	if (pid == 0) {
+		check(execvp(argv[0], argv), "execvp");
+	}
+
+	// Wait on the child to finish
+	check(wait(NULL), "wait");
+}
+
+static void output_dll_info(char *dll_path, char *xxd_path, char *readelf_path, char *objdump_path) {
+	run((char *[]){"xxd", dll_path, xxd_path, NULL});
+
+	// These don't work, for some reason, even when ">" is added to the start of the readelf_path/objdump_path
+	// run((char *[]){"readelf", "-a", dll_path, ">", readelf_path, NULL});
+	// run((char *[]){"readelf", "-a", dll_path, readelf_path, NULL});
+	// run((char *[]){"objdump", "-D", dll_path, "-Mintel", ">", objdump_path, NULL});
+	// run((char *[]){"objdump", "-D", dll_path, "-Mintel", objdump_path, NULL});
+
+	run_and_write((char *[]){"readelf", "-a", dll_path, NULL}, readelf_path);
+
+	run_and_write((char *[]){"objdump", "-D", dll_path, "-Mintel", NULL}, objdump_path);
 }
 
 static char *get_expected_error(char *expected_error_path) {
@@ -280,13 +315,50 @@ static int rm_rf(char *path) {
 	return nftw(path, remove_callback, 42, FTW_DEPTH | FTW_PHYS);
 }
 
-static void error_assignment_isnt_expression(void) {
-	printf("Running error_assignment_isnt_expression...\n");
+static bool newer(char *path1, char *path2) {
+	// printf("path1: %s\n", path1);
+	// printf("path2: %s\n", path2);
 
+	struct stat s1;
+	if (stat(path1, &s1) == -1) {
+		if (errno != ENOENT) {
+			perror("stat");
+			exit(EXIT_FAILURE);
+		}
+		// printf("path1 does not exist\n");
+		return false;
+	}
+
+	struct stat s2;
+	check(stat(path2, &s2), "stat");
+
+	// printf("path1 mtime >= path2 mtime: %d\n", s1.st_mtime >= s2.st_mtime);
+
+	// printf("path1 mtime: %ld\n", s1.st_mtime);
+	// printf("path2 mtime: %ld\n", s2.st_mtime);
+
+	return s1.st_mtime >= s2.st_mtime;
+}
+
+static void error_assignment_isnt_expression(void) {
 	char *grug_path = "tests_err/assign_to_unknown_variable/input.grug";
 	char *expected_error_path = "tests_err/assign_to_unknown_variable/expected_error.txt";
 	char *results_path = "tests_err/assign_to_unknown_variable/results";
 	char *output_dll_path = "tests_err/assign_to_unknown_variable/results/output.so";
+	char *grug_output_path = "tests_err/assign_to_unknown_variable/results/grug_output.txt";
+
+	if (newer(grug_output_path, grug_path)
+	 && newer(grug_output_path, expected_error_path)
+	 && newer(grug_output_path, "mod_api.h")
+	 && newer(grug_output_path, "mod_api.json")
+	 && newer(grug_output_path, "tests.sh")
+	 && newer(grug_output_path, "tests.out")
+	) {
+		printf("Skipping error_assignment_isnt_expression...\n");
+		return;
+	}
+
+	printf("Running error_assignment_isnt_expression...\n");
 
 	rm_rf(results_path);
 	make_results_dir(results_path);
@@ -295,9 +367,24 @@ static void error_assignment_isnt_expression(void) {
 
 	assert(grug_test_regenerate_dll(grug_path, output_dll_path));
 
-	printf("  Comparing against the expected error...\n");
+	printf("  Outputting grug_output.txt...\n");
+
+	FILE *f = fopen(grug_output_path, "w");
 
 	size_t grug_error_msg_len = strlen(grug_error.msg);
+
+	if (fwrite(grug_error.msg, grug_error_msg_len, 1, f) == 0) {
+		fprintf(stderr, "%s\n", "fwrite had an error\n");
+		exit(EXIT_FAILURE);
+	}
+
+    if (fclose(f) == EOF) {
+		perror("fclose");
+		exit(EXIT_FAILURE);
+		exit(EXIT_FAILURE);
+	}
+
+	printf("  Comparing against the expected error...\n");
 
 	char *expected_error = get_expected_error(expected_error_path);
 	size_t expected_error_len = strlen(expected_error);
@@ -310,14 +397,11 @@ static void error_assignment_isnt_expression(void) {
 		printf("Expected:\n");
 		printf("%s\n", expected_error);
 
-
 		exit(EXIT_FAILURE);
 	}
 }
 
 static void runtime_error_division_by_0(void) {
-	printf("Running runtime_error_division_by_0...\n");
-
 	char *grug_path = "tests_err_runtime/division_by_0/input.grug";
 	char *expected_error_path = "tests_err_runtime/division_by_0/expected_error.txt";
 	char *results_path = "tests_err_runtime/division_by_0/results";
@@ -325,6 +409,19 @@ static void runtime_error_division_by_0(void) {
 	char *output_xxd_path = "tests_err_runtime/division_by_0/results/output.hex";
 	char *output_readelf_path = "tests_err_runtime/division_by_0/results/output_elf.log";
 	char *output_objdump_path = "tests_err_runtime/division_by_0/results/output_objdump.log";
+
+	if (newer(output_dll_path, grug_path)
+	 && newer(output_dll_path, expected_error_path)
+	 && newer(output_dll_path, "mod_api.h")
+	 && newer(output_dll_path, "mod_api.json")
+	 && newer(output_dll_path, "tests.sh")
+	 && newer(output_dll_path, "tests.out")
+	) {
+		printf("Skipping runtime_error_division_by_0...\n");
+		return;
+	}
+
+	printf("Running runtime_error_division_by_0...\n");
 
 	rm_rf(results_path);
 	make_results_dir(results_path);
@@ -341,7 +438,6 @@ static void runtime_error_division_by_0(void) {
 	}
 
 	printf("  Outputting output.so info...\n");
-
 	output_dll_info(output_dll_path, output_xxd_path, output_readelf_path, output_objdump_path);
 
 	printf("  Running the test...\n");
@@ -405,8 +501,6 @@ static void runtime_error_division_by_0(void) {
 }
 
 static void ok_addition_as_argument(void) {
-	printf("Running ok_addition_as_argument...\n");
-
 	char *grug_path = "tests_ok/addition_as_argument/input.grug";
 	char *nasm_path = "tests_ok/addition_as_argument/input.s";
 	char *results_path = "tests_ok/addition_as_argument/results";
@@ -420,6 +514,20 @@ static void ok_addition_as_argument(void) {
 	char *expected_readelf_path = "tests_ok/addition_as_argument/results/expected_elf.log";
 	char *expected_objdump_path = "tests_ok/addition_as_argument/results/expected_objdump.log";
 
+	if (newer(output_dll_path, nasm_path)
+	 && newer(output_dll_path, grug_path)
+	 && newer(output_dll_path, expected_dll_path)
+	 && newer(output_dll_path, "mod_api.h")
+	 && newer(output_dll_path, "mod_api.json")
+	 && newer(output_dll_path, "tests.sh")
+	 && newer(output_dll_path, "tests.out")
+	) {
+		printf("Skipping ok_addition_as_argument...\n");
+		return;
+	}
+
+	printf("Running ok_addition_as_argument...\n");
+
 	reset_call_counts();
 
 	rm_rf(results_path);
@@ -428,65 +536,26 @@ static void ok_addition_as_argument(void) {
 	struct stat nasm_stat;
 	check(stat(nasm_path, &nasm_stat), "stat");
 
-	bool regenerate_expected_dll = false;
-	struct stat expected_dll_stat;
-	if (stat(expected_dll_path, &expected_dll_stat) == -1) {
-		if (errno != ENOENT) {
-			perror("stat");
-			exit(EXIT_FAILURE);
-		}
-		regenerate_expected_dll = true;
-	} else if (nasm_stat.st_mtime > expected_dll_stat.st_mtime) {
-		regenerate_expected_dll = true;
-	}
+	printf("  Regenerating expected.so...\n");
 
-	if (regenerate_expected_dll) {
-		printf("  Regenerating expected.so...\n");
+	run((char *[]){"nasm", nasm_path, "-felf64", "-O0", "-o", nasm_o_path, NULL});
 
-		pid_t pid = fork();
-		check(pid, "fork");
+	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-shared", "--hash-style=sysv", NULL});
 
-		if (pid == 0) {
-			check(execvp("nasm", (char *[]){"nasm", nasm_path, "-felf64", "-O0", "-o", nasm_o_path, NULL}), "execvp");
-		}
+	remove(nasm_o_path);
 
-		// Wait on the nasm child to finish
-		check(wait(NULL), "wait");
+	static char redefine_sym[420];
 
-		pid = fork();
-		check(pid, "fork");
+	size_t nasm_path_len = strlen(nasm_path);
 
-		if (pid == 0) {
-			check(execvp("ld", (char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-shared", "--hash-style=sysv", NULL}), "execvp");
-		}
+	strcpy(redefine_sym, nasm_path);
+	redefine_sym[nasm_path_len] = '=';
+	strcpy(redefine_sym + nasm_path_len + 1, grug_path);
 
-		// Wait on the ld child to finish
-		check(wait(NULL), "wait");
+	run((char *[]){"objcopy", expected_dll_path, "--redefine-sym", redefine_sym, NULL});
 
-		remove(nasm_o_path);
-
-		pid = fork();
-		check(pid, "fork");
-
-		if (pid == 0) {
-			static char redefine_sym[420];
-
-			size_t nasm_path_len = strlen(nasm_path);
-
-			strcpy(redefine_sym, nasm_path);
-			redefine_sym[nasm_path_len] = '=';
-			strcpy(redefine_sym + nasm_path_len + 1, grug_path);
-
-			check(execvp("objcopy", (char *[]){"objcopy", expected_dll_path, "--redefine-sym", redefine_sym, NULL}), "execvp");
-		}
-
-		// Wait on the objcopy child to finish
-		check(wait(NULL), "wait");
-
-		printf("  Outputting expected.so info...\n");
-
-		output_dll_info(expected_dll_path, expected_xxd_path, expected_readelf_path, expected_objdump_path);
-	}
+	printf("  Outputting expected.so info...\n");
+	output_dll_info(expected_dll_path, expected_xxd_path, expected_readelf_path, expected_objdump_path);
 
 	printf("  Running the test...\n");
 
@@ -536,7 +605,6 @@ static void ok_addition_as_argument(void) {
 	}
 
 	printf("  Outputting output.so info...\n");
-
 	output_dll_info(output_dll_path, output_xxd_path, output_readelf_path, output_objdump_path);
 
 	printf("  Comparing output.so against expected.so...\n");

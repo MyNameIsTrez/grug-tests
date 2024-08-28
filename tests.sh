@@ -20,11 +20,14 @@ then
     clang tests.c -c -o tests.o $compiler_flags
 fi
 
-# TODO: Try using the mold linker here, and add README instructions back if it's faster
-echo "Linking tests.out..."
-# TODO: Try removing $compiler_flags here
-clang tests.o grug.o -o tests.out $compiler_flags $linker_flags
+if (! [[ tests.o -ot tests.out ]]) || (! [[ grug.o -ot tests.out ]]) || (! [[ tests.sh -ot tests.out ]])
+then
+    # TODO: Try using the mold linker here, and add README instructions back if it's faster
+    echo "Linking tests.out..."
+    # TODO: Try removing $compiler_flags here
+    clang tests.o grug.o -o tests.out $compiler_flags $linker_flags
+fi
 
 echo "Running tests.out..."
-# valgrind --quiet ./tests.out
-./tests.out
+valgrind --quiet ./tests.out
+# ./tests.out
