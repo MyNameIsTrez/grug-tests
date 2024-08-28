@@ -540,6 +540,82 @@ static void runtime_error_raise_alrm_with_handler(void *on_fns, void *g) {
 	assert(had_runtime_error);
 }
 
+static void runtime_error_raise_fpe_with_handler(void *on_fns, void *g) {
+	bool had_runtime_error = false;
+
+	if (grug_mod_had_runtime_error()) {
+		had_runtime_error = true;
+
+		handler_called = false;
+		raise(SIGFPE);
+		assert(handler_called);
+	}
+
+	signal(SIGFPE, handler);
+
+	if (!had_runtime_error) {
+		((struct d_on_fns *)on_fns)->a(g);
+	}
+
+	free(g);
+
+	assert(had_runtime_error);
+}
+
+static void runtime_error_raise_segv_with_handler(void *on_fns, void *g) {
+	bool had_runtime_error = false;
+
+	if (grug_mod_had_runtime_error()) {
+		had_runtime_error = true;
+
+		handler_called = false;
+		raise(SIGSEGV);
+		assert(handler_called);
+	}
+
+	signal(SIGSEGV, handler);
+
+	if (!had_runtime_error) {
+		((struct d_on_fns *)on_fns)->a(g);
+	}
+
+	free(g);
+
+	assert(had_runtime_error);
+}
+
+static void runtime_error_stack_overflow(void *on_fns, void *g) {
+	bool had_runtime_error = false;
+
+	if (grug_mod_had_runtime_error()) {
+		had_runtime_error = true;
+	}
+
+	if (!had_runtime_error) {
+		((struct d_on_fns *)on_fns)->a(g);
+	}
+
+	free(g);
+
+	assert(had_runtime_error);
+}
+
+static void runtime_error_time_limit_exceeded(void *on_fns, void *g) {
+	bool had_runtime_error = false;
+
+	if (grug_mod_had_runtime_error()) {
+		had_runtime_error = true;
+	}
+
+	if (!had_runtime_error) {
+		((struct d_on_fns *)on_fns)->a(g);
+	}
+
+	free(g);
+
+	assert(had_runtime_error);
+}
+
 static void ok_addition_as_argument(void) {
 	char *grug_path = "tests_ok/addition_as_argument/input.grug";
 	char *nasm_path = "tests_ok/addition_as_argument/input.s";
@@ -663,89 +739,89 @@ static void ok_addition_as_argument(void) {
 
 static void error_tests(void) {
 	TEST_ERROR("assign_to_unknown_variable");
-	// TEST_ERROR("assignment_isnt_expression");
-	// TEST_ERROR("assign_to_unknown_variable");
-	// TEST_ERROR("assignment_isnt_expression");
-	// TEST_ERROR("bool_unary_minus");
-	// TEST_ERROR("cant_add_strings");
-	// TEST_ERROR("cant_call_define_fn_1");
-	// TEST_ERROR("cant_call_define_fn_2");
-	// TEST_ERROR("cant_redefine_global");
-	// TEST_ERROR("define_fn_calls_fn");
-	// TEST_ERROR("define_fn_different_name");
-	// TEST_ERROR("define_fn_not_enough_arguments");
-	// TEST_ERROR("define_fn_only_one_max");
-	// TEST_ERROR("define_fn_uses_global_variable");
-	// TEST_ERROR("define_fn_was_not_declared");
-	// TEST_ERROR("f32_missing_digit_after_decimal_point");
-	// TEST_ERROR("game_fn_does_not_exist");
-	// TEST_ERROR("game_function_call_gets_wrong_arg_type");
-	// TEST_ERROR("game_function_call_less_args_expected");
-	// TEST_ERROR("game_function_call_more_args_expected");
-	// TEST_ERROR("game_function_call_no_args_expected");
-	// TEST_ERROR("global_variable_already_uses_local_variable_name");
-	// TEST_ERROR("global_variable_before_define");
-	// TEST_ERROR("global_variable_calls_fn");
-	// TEST_ERROR("global_variable_definition_cant_use_itself");
-	// TEST_ERROR("global_variable_definition_requires_value_i32");
-	// TEST_ERROR("global_variable_definition_requires_value_string");
-	// TEST_ERROR("global_variable_uses_global_variable");
-	// TEST_ERROR("helper_fn_does_not_exist");
-	// TEST_ERROR("helper_function_call_gets_wrong_arg_type");
-	// TEST_ERROR("helper_function_call_less_args_expected");
-	// TEST_ERROR("helper_function_call_more_args_expected");
-	// TEST_ERROR("helper_function_call_no_args_expected");
-	// TEST_ERROR("helper_function_different_return_value_expected");
-	// TEST_ERROR("helper_function_missing_return_statement");
-	// TEST_ERROR("helper_function_no_return_value_expected");
-	// TEST_ERROR("i32_logical_not");
-	// TEST_ERROR("i32_too_big");
-	// TEST_ERROR("i32_too_small");
-	// TEST_ERROR("local_variable_already_exists");
-	// TEST_ERROR("local_variable_definition_cant_use_itself");
-	// TEST_ERROR("missing_define_fn");
-	// TEST_ERROR("no_space_between_comment_character_and_comment");
-	// TEST_ERROR("on_fn_before_define");
-	// TEST_ERROR("on_fn_duplicate");
-	// TEST_ERROR("on_fn_was_not_declared_in_entity");
-	// TEST_ERROR("on_fn_wrong_order");
-	// TEST_ERROR("on_function_gets_wrong_arg_type");
-	// TEST_ERROR("on_function_less_args_expected");
-	// TEST_ERROR("on_function_more_args_expected");
-	// TEST_ERROR("on_function_no_args_expected");
-	// TEST_ERROR("on_function_no_return_value_expected");
-	// TEST_ERROR("pass_bool_to_i32_game_param");
-	// TEST_ERROR("pass_bool_to_i32_helper_param");
-	// TEST_ERROR("resource_type_for_global");
-	// TEST_ERROR("resource_type_for_helper_fn_argument");
-	// TEST_ERROR("resource_type_for_helper_fn_return_type");
-	// TEST_ERROR("resource_type_for_local");
-	// TEST_ERROR("resource_type_for_on_fn_argument");
-	// TEST_ERROR("string_pointer_arithmetic");
-	// TEST_ERROR("too_many_f32_arguments");
-	// TEST_ERROR("too_many_i32_arguments");
-	// TEST_ERROR("trailing_space_in_comment");
-	// TEST_ERROR("unclosed_double_quote");
-	// TEST_ERROR("unknown_variable");
-	// TEST_ERROR("unused_result");
-	// TEST_ERROR("variable_assignment_before_definition");
-	// TEST_ERROR("variable_definition_requires_value_i32");
-	// TEST_ERROR("variable_definition_requires_value_string");
-	// TEST_ERROR("variable_statement_missing_assignment");
-	// TEST_ERROR("variable_used_before_definition");
-	// TEST_ERROR("wrong_type_global_assignment");
-	// TEST_ERROR("wrong_type_global_reassignment");
-	// TEST_ERROR("wrong_type_local_assignment");
-	// TEST_ERROR("wrong_type_local_reassignment");
+	TEST_ERROR("assignment_isnt_expression");
+	TEST_ERROR("assign_to_unknown_variable");
+	TEST_ERROR("assignment_isnt_expression");
+	TEST_ERROR("bool_unary_minus");
+	TEST_ERROR("cant_add_strings");
+	TEST_ERROR("cant_call_define_fn_1");
+	TEST_ERROR("cant_call_define_fn_2");
+	TEST_ERROR("cant_redefine_global");
+	TEST_ERROR("define_fn_calls_fn");
+	TEST_ERROR("define_fn_different_name");
+	TEST_ERROR("define_fn_not_enough_arguments");
+	TEST_ERROR("define_fn_only_one_max");
+	TEST_ERROR("define_fn_uses_global_variable");
+	TEST_ERROR("define_fn_was_not_declared");
+	TEST_ERROR("f32_missing_digit_after_decimal_point");
+	TEST_ERROR("game_fn_does_not_exist");
+	TEST_ERROR("game_function_call_gets_wrong_arg_type");
+	TEST_ERROR("game_function_call_less_args_expected");
+	TEST_ERROR("game_function_call_more_args_expected");
+	TEST_ERROR("game_function_call_no_args_expected");
+	TEST_ERROR("global_variable_already_uses_local_variable_name");
+	TEST_ERROR("global_variable_before_define");
+	TEST_ERROR("global_variable_calls_fn");
+	TEST_ERROR("global_variable_definition_cant_use_itself");
+	TEST_ERROR("global_variable_definition_requires_value_i32");
+	TEST_ERROR("global_variable_definition_requires_value_string");
+	TEST_ERROR("global_variable_uses_global_variable");
+	TEST_ERROR("helper_fn_does_not_exist");
+	TEST_ERROR("helper_function_call_gets_wrong_arg_type");
+	TEST_ERROR("helper_function_call_less_args_expected");
+	TEST_ERROR("helper_function_call_more_args_expected");
+	TEST_ERROR("helper_function_call_no_args_expected");
+	TEST_ERROR("helper_function_different_return_value_expected");
+	TEST_ERROR("helper_function_missing_return_statement");
+	TEST_ERROR("helper_function_no_return_value_expected");
+	TEST_ERROR("i32_logical_not");
+	TEST_ERROR("i32_too_big");
+	TEST_ERROR("i32_too_small");
+	TEST_ERROR("local_variable_already_exists");
+	TEST_ERROR("local_variable_definition_cant_use_itself");
+	TEST_ERROR("missing_define_fn");
+	TEST_ERROR("no_space_between_comment_character_and_comment");
+	TEST_ERROR("on_fn_before_define");
+	TEST_ERROR("on_fn_duplicate");
+	TEST_ERROR("on_fn_was_not_declared_in_entity");
+	TEST_ERROR("on_fn_wrong_order");
+	TEST_ERROR("on_function_gets_wrong_arg_type");
+	TEST_ERROR("on_function_less_args_expected");
+	TEST_ERROR("on_function_more_args_expected");
+	TEST_ERROR("on_function_no_args_expected");
+	TEST_ERROR("on_function_no_return_value_expected");
+	TEST_ERROR("pass_bool_to_i32_game_param");
+	TEST_ERROR("pass_bool_to_i32_helper_param");
+	TEST_ERROR("resource_type_for_global");
+	TEST_ERROR("resource_type_for_helper_fn_argument");
+	TEST_ERROR("resource_type_for_helper_fn_return_type");
+	TEST_ERROR("resource_type_for_local");
+	TEST_ERROR("resource_type_for_on_fn_argument");
+	TEST_ERROR("string_pointer_arithmetic");
+	TEST_ERROR("too_many_f32_arguments");
+	TEST_ERROR("too_many_i32_arguments");
+	TEST_ERROR("trailing_space_in_comment");
+	TEST_ERROR("unclosed_double_quote");
+	TEST_ERROR("unknown_variable");
+	TEST_ERROR("unused_result");
+	TEST_ERROR("variable_assignment_before_definition");
+	TEST_ERROR("variable_definition_requires_value_i32");
+	TEST_ERROR("variable_definition_requires_value_string");
+	TEST_ERROR("variable_statement_missing_assignment");
+	TEST_ERROR("variable_used_before_definition");
+	TEST_ERROR("wrong_type_global_assignment");
+	TEST_ERROR("wrong_type_global_reassignment");
+	TEST_ERROR("wrong_type_local_assignment");
+	TEST_ERROR("wrong_type_local_reassignment");
 }
 
 static void runtime_error_tests(void) {
 	TEST_RUNTIME_ERROR(division_by_0);
 	TEST_RUNTIME_ERROR(raise_alrm_with_handler);
-	// TEST_RUNTIME_ERROR(raise_fpe_with_handler);
-	// TEST_RUNTIME_ERROR(raise_sigsegv_with_handler);
-	// TEST_RUNTIME_ERROR(stack_overflow);
-	// TEST_RUNTIME_ERROR(time_limit_exceeded);
+	TEST_RUNTIME_ERROR(raise_fpe_with_handler);
+	TEST_RUNTIME_ERROR(raise_segv_with_handler);
+	TEST_RUNTIME_ERROR(stack_overflow);
+	TEST_RUNTIME_ERROR(time_limit_exceeded);
 }
 
 static void ok_tests(void) {
