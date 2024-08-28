@@ -264,6 +264,22 @@ static void make_results_dir(char *results_path) {
 	}
 }
 
+static int remove_callback(const char *entry_path, const struct stat *entry_info, int entry_type, struct FTW *ftw) {
+	(void)entry_info;
+	(void)entry_type;
+	(void)ftw;
+
+	int rv = remove(entry_path);
+
+	check(rv, "remove");
+
+	return rv;
+}
+
+static int rm_rf(char *path) {
+	return nftw(path, remove_callback, 42, FTW_DEPTH | FTW_PHYS);
+}
+
 static void error_assignment_isnt_expression(void) {
 	printf("Running error_assignment_isnt_expression...\n");
 
@@ -272,6 +288,7 @@ static void error_assignment_isnt_expression(void) {
 	char *results_path = "tests_err/assign_to_unknown_variable/results";
 	char *output_dll_path = "tests_err/assign_to_unknown_variable/results/output.so";
 
+	rm_rf(results_path);
 	make_results_dir(results_path);
 
 	printf("  Regenerating output.so...\n");
@@ -309,6 +326,7 @@ static void runtime_error_division_by_0(void) {
 	char *output_readelf_path = "tests_err_runtime/division_by_0/results/output_elf.log";
 	char *output_objdump_path = "tests_err_runtime/division_by_0/results/output_objdump.log";
 
+	rm_rf(results_path);
 	make_results_dir(results_path);
 
 	printf("  Regenerating output.so...\n");
@@ -404,6 +422,7 @@ static void ok_addition_as_argument(void) {
 
 	reset_call_counts();
 
+	rm_rf(results_path);
 	make_results_dir(results_path);
 
 	struct stat nasm_stat;
