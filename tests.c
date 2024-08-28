@@ -147,7 +147,8 @@ static void check_null(void *ptr, char *fn_name) {
 	"tests_err/"test_name"/expected_error.txt",\
 	"tests_err/"test_name"/results",\
 	"tests_err/"test_name"/results/output.so",\
-	"tests_err/"test_name"/results/grug_output.txt"\
+	"tests_err/"test_name"/results/grug_output.txt",\
+	"tests_err/"test_name"/results/failed"\
 );
 
 #define TEST_RUNTIME_ERROR(test_name) {\
@@ -159,11 +160,13 @@ static void check_null(void *ptr, char *fn_name) {
 		"tests_err_runtime/"#test_name"/results/output.so",\
 		"tests_err_runtime/"#test_name"/results/output.hex",\
 		"tests_err_runtime/"#test_name"/results/output_elf.log",\
-		"tests_err_runtime/"#test_name"/results/output_objdump.log"\
+		"tests_err_runtime/"#test_name"/results/output_objdump.log",\
+		"tests_err_runtime/"#test_name"/results/failed"\
 	);\
 	if (data.run) {\
 		runtime_error_##test_name(data.on_fns, data.g);\
 		runtime_error_compare_against_expected_error("tests_err_runtime/"#test_name"/expected_error.txt");\
+		unlink("tests_err_runtime/"#test_name"/results/failed");\
 	}\
 }
 
@@ -343,6 +346,17 @@ static void runtime_error_compare_against_expected_error(char *expected_error_pa
 	}
 }
 
+static void create_failed_file(char *failed_file_path) {
+	int fd = open(failed_file_path, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	check(fd, "open");
+	close(fd);
+}
+
+static bool failed_file_doesnt_exist(char *failed_file_path) {
+	errno = 0;
+	return access(failed_file_path, F_OK) == -1 && errno == ENOENT;
+}
+
 static void make_results_dir(char *results_path) {
 	if (mkdir(results_path, 0755) == -1 && errno != EEXIST) {
 		perror("mkdir");
@@ -372,9 +386,11 @@ static void test_error(
 	char *expected_error_path,
 	char *results_path,
 	char *output_dll_path,
-	char *grug_output_path
+	char *grug_output_path,
+	char *failed_file_path
 ) {
-	if (newer(grug_output_path, grug_path)
+	if (failed_file_doesnt_exist(failed_file_path)
+	 && newer(grug_output_path, grug_path)
 	 && newer(grug_output_path, expected_error_path)
 	 && newer(grug_output_path, "mod_api.h")
 	 && newer(grug_output_path, "mod_api.json")
@@ -389,6 +405,8 @@ static void test_error(
 
 	rm_rf(results_path);
 	make_results_dir(results_path);
+
+	create_failed_file(failed_file_path);
 
 	printf("  Regenerating output.so...\n");
 
@@ -426,6 +444,8 @@ static void test_error(
 
 		exit(EXIT_FAILURE);
 	}
+
+	unlink(failed_file_path);
 }
 
 static struct runtime_error_data runtime_error_prologue(
@@ -436,9 +456,11 @@ static struct runtime_error_data runtime_error_prologue(
 	char *output_dll_path,
 	char *output_xxd_path,
 	char *output_readelf_path,
-	char *output_objdump_path
+	char *output_objdump_path,
+	char *failed_file_path
 ) {
-	if (newer(output_dll_path, grug_path)
+	if (failed_file_doesnt_exist(failed_file_path)
+	 && newer(output_dll_path, grug_path)
 	 && newer(output_dll_path, expected_error_path)
 	 && newer(output_dll_path, "mod_api.h")
 	 && newer(output_dll_path, "mod_api.json")
@@ -453,6 +475,8 @@ static struct runtime_error_data runtime_error_prologue(
 
 	rm_rf(results_path);
 	make_results_dir(results_path);
+
+	create_failed_file(failed_file_path);
 
 	printf("  Regenerating output.so...\n");
 
@@ -581,8 +605,10 @@ static void ok_addition_as_argument(void) {
 	char *expected_xxd_path = "tests_ok/addition_as_argument/results/expected.hex";
 	char *expected_readelf_path = "tests_ok/addition_as_argument/results/expected_elf.log";
 	char *expected_objdump_path = "tests_ok/addition_as_argument/results/expected_objdump.log";
+	char *failed_file_path = "tests_ok/addition_as_argument/results/failed";
 
-	if (newer(output_dll_path, nasm_path)
+	if (failed_file_doesnt_exist(failed_file_path)
+	 && newer(output_dll_path, nasm_path)
 	 && newer(output_dll_path, grug_path)
 	 && newer(output_dll_path, expected_dll_path)
 	 && newer(output_dll_path, "mod_api.h")
@@ -601,6 +627,8 @@ static void ok_addition_as_argument(void) {
 	rm_rf(results_path);
 	make_results_dir(results_path);
 
+	create_failed_file(failed_file_path);
+
 	struct stat nasm_stat;
 	check(stat(nasm_path, &nasm_stat), "stat");
 
@@ -609,8 +637,6 @@ static void ok_addition_as_argument(void) {
 	run((char *[]){"nasm", nasm_path, "-felf64", "-O0", "-o", nasm_o_path, NULL});
 
 	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-shared", "--hash-style=sysv", NULL});
-
-	remove(nasm_o_path);
 
 	static char redefine_sym[420];
 
@@ -687,6 +713,8 @@ static void ok_addition_as_argument(void) {
 		printf("\nThe output differs from the expected output.\n");
 		exit(EXIT_FAILURE);
 	}
+
+	unlink(failed_file_path);
 }
 
 static void error_tests(void) {
@@ -774,8 +802,7 @@ static void runtime_error_tests(void) {
 }
 
 static void ok_tests(void) {
-	(void)ok_addition_as_argument; // TODO: REMOVE
-	// ok_addition_as_argument();
+	ok_addition_as_argument();
 	// ok_addition_as_two_arguments();
 	// ok_addition_i32_wraparound();
 	// ok_addition_with_multiplication();
