@@ -2,6 +2,12 @@
 
 compiler_flags='-Igrug -g -Og -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors'
 
+if [[ -v OLD_LD ]] # If the OLD_LD environment variable was set
+then
+    echo "- OLD_LD was turned on"
+    compiler_flags+=' -DOLD_LD'
+fi
+
 # -rdynamic allows the .so to call functions from test.c
 linker_flags='-rdynamic'
 
