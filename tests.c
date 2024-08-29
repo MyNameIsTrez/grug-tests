@@ -958,7 +958,7 @@ static struct test_data ok_prologue(
 	init_globals(g);
 	#pragma GCC diagnostic pop
 
-	void *on_fns = get(handle, "on_fns");
+	void *on_fns = dlsym(handle, "on_fns");
 
 	return (struct test_data){.run=true, .on_fns=on_fns, .g=g};
 }
@@ -1097,6 +1097,92 @@ static void ok_blocked_alrm(void *on_fns, void *g) {
 	assert(streq(grug_on_fn_name, "on_a"));
 }
 
+static void ok_bool_logical_not_false(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_bool_logical_not_true(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == false);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_bool_returned(void *on_fns, void *g) {
+	assert(game_fn_set_is_happy_call_count == 0);
+	assert(game_fn_is_friday_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_set_is_happy_call_count == 1);
+	assert(game_fn_is_friday_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_set_is_happy_is_happy == true);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_break(void *on_fns, void *g) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 3);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_calls_100(void *on_fns, void *g) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 100);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_calls_1000(void *on_fns, void *g) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 1000);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_continue(void *on_fns, void *g) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 2);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_define_containing_addition(void *on_fns, void *g) {
+	(void)on_fns;
+
+	assert(game_fn_define_b_x == 3);
+
+	free(g);
+}
+
 static void error_tests(void) {
 	TEST_ERROR(assign_to_unknown_variable);
 	TEST_ERROR(assignment_isnt_expression);
@@ -1193,14 +1279,14 @@ static void ok_tests(void) {
 	TEST_OK(and_short_circuit, "d", 0);
 	TEST_OK(and_true, "d", 0);
 	TEST_OK(blocked_alrm, "d", 0);
-	// TEST_OK(bool_logical_not_false, "d", 0);
-	// TEST_OK(bool_logical_not_true, "d", 0);
-	// TEST_OK(bool_returned, "d", 0);
-	// TEST_OK(break, "d", 0);
-	// TEST_OK(calls_100, "d", 0);
-	// TEST_OK(calls_1000, "d", 0);
-	// TEST_OK(continue, "d", 0);
-	// TEST_OK(define_containing_addition, "d", 0);
+	TEST_OK(bool_logical_not_false, "d", 0);
+	TEST_OK(bool_logical_not_true, "d", 0);
+	TEST_OK(bool_returned, "d", 0);
+	TEST_OK(break, "d", 0);
+	TEST_OK(calls_100, "d", 0);
+	TEST_OK(calls_1000, "d", 0);
+	TEST_OK(continue, "d", 0);
+	TEST_OK(define_containing_addition, "b", 0);
 	// TEST_OK(define_containing_string, "d", 0);
 	// TEST_OK(define_with_eight_f32_fields, "d", 0);
 	// TEST_OK(define_with_six_fields, "d", 0);

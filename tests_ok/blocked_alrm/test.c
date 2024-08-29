@@ -16,9 +16,9 @@
 void game_fn_define_d(void) {
 }
 
-static bool fn_nothing_was_called = false;
-void game_fn_nothing(void) {
-	fn_nothing_was_called = true;
+static bool fn_blocked_alrm_was_called = false;
+void game_fn_blocked_alrm(void) {
+	fn_blocked_alrm_was_called = true;
 
 	sigset_t mask;
 
@@ -65,9 +65,9 @@ int main(int argc, char *argv[]) {
 	init_globals(g);
 
 	struct d_on_fns *on_fns = get(handle, "on_fns");
-	assert(!fn_nothing_was_called);
+	assert(!fn_blocked_alrm_was_called);
 	on_fns->a(g);
-	assert(fn_nothing_was_called);
+	assert(fn_blocked_alrm_was_called);
 
 	free(g);
 	#pragma GCC diagnostic pop
