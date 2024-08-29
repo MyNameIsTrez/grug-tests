@@ -1192,6 +1192,60 @@ static void ok_define_containing_string(void *on_fns, void *g) {
 	free(g);
 }
 
+static void ok_define_with_eight_f32_fields(void *on_fns, void *g) {
+	(void)on_fns;
+
+	assert(game_fn_define_t_f1 == 1.0f);
+	assert(game_fn_define_t_f2 == 2.0f);
+	assert(game_fn_define_t_f3 == 3.0f);
+	assert(game_fn_define_t_f4 == 4.0f);
+	assert(game_fn_define_t_f5 == 5.0f);
+	assert(game_fn_define_t_f6 == 6.0f);
+	assert(game_fn_define_t_f7 == 7.0f);
+	assert(game_fn_define_t_f8 == 8.0f);
+
+	free(g);
+}
+
+static void ok_define_with_six_fields(void *on_fns, void *g) {
+	(void)on_fns;
+
+	assert(game_fn_define_m_w == 42);
+	assert(streq(game_fn_define_m_group, "bar"));
+	assert(game_fn_define_m_b1 == true);
+	assert(streq(game_fn_define_m_name, "foobar"));
+	assert(game_fn_define_m_b2 == false);
+	assert(game_fn_define_m_z == 1337);
+
+	free(g);
+}
+
+static void ok_define_with_six_i32_fields(void *on_fns, void *g) {
+	(void)on_fns;
+
+	assert(game_fn_define_n_u == 1);
+	assert(game_fn_define_n_v == 2);
+	assert(game_fn_define_n_w == 3);
+	assert(game_fn_define_n_x == 4);
+	assert(game_fn_define_n_y == 5);
+	assert(game_fn_define_n_z == 6);
+
+	free(g);
+}
+
+static void ok_define_with_six_string_fields(void *on_fns, void *g) {
+	(void)on_fns;
+
+	assert(streq(game_fn_define_o_u, "u"));
+	assert(streq(game_fn_define_o_v, "v"));
+	assert(streq(game_fn_define_o_w, "w"));
+	assert(streq(game_fn_define_o_x, "x"));
+	assert(streq(game_fn_define_o_y, "y"));
+	assert(streq(game_fn_define_o_z, "z"));
+
+	free(g);
+}
+
 static void error_tests(void) {
 	TEST_ERROR(assign_to_unknown_variable);
 	TEST_ERROR(assignment_isnt_expression);
@@ -1297,10 +1351,10 @@ static void ok_tests(void) {
 	TEST_OK(continue, "d", 0);
 	TEST_OK(define_containing_addition, "b", 0);
 	TEST_OK(define_containing_string, "k", 0);
-	// TEST_OK(define_with_eight_f32_fields, "d", 0);
-	// TEST_OK(define_with_six_fields, "d", 0);
-	// TEST_OK(define_with_six_i32_fields, "d", 0);
-	// TEST_OK(define_with_six_string_fields, "d", 0);
+	TEST_OK(define_with_eight_f32_fields, "t", 0);
+	TEST_OK(define_with_six_fields, "m", 0);
+	TEST_OK(define_with_six_i32_fields, "n", 0);
+	TEST_OK(define_with_six_string_fields, "o", 0);
 	// TEST_OK(division_negative_result, "d", 0);
 	// TEST_OK(division_positive_result, "d", 0);
 	// TEST_OK(else_false, "d", 0);
