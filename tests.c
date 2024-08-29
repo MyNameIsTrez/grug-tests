@@ -36,6 +36,7 @@ static size_t game_fn_is_friday_call_count;
 static size_t game_fn_set_is_happy_call_count;
 static size_t game_fn_mega_f32_call_count;
 static size_t game_fn_mega_i32_call_count;
+static size_t game_fn_blocked_alrm_call_count;
 
 static bool streq(char *a, char *b) {
 	return strcmp(a, b) == 0;
@@ -184,6 +185,15 @@ void game_fn_mega_i32(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5
 	game_fn_mega_i32_i6 = i6;
 	game_fn_mega_i32_i7 = i7;
 }
+void game_fn_blocked_alrm(void) {
+	game_fn_blocked_alrm_call_count++;
+
+	sigset_t mask;
+
+	sigprocmask(SIG_BLOCK, NULL, &mask);
+
+	assert(sigismember(&mask, SIGALRM));
+}
 
 void game_fn_define_a(void) {}
 static int32_t game_fn_define_b_x;
@@ -313,6 +323,7 @@ static void reset_call_counts(void) {
 	game_fn_set_is_happy_call_count = 0;
 	game_fn_mega_f32_call_count = 0;
 	game_fn_mega_i32_call_count = 0;
+	game_fn_blocked_alrm_call_count = 0;
 }
 
 static void check(int status, char *fn_name) {
@@ -1014,6 +1025,78 @@ static void ok_addition_with_multiplication_2(void *on_fns, void *g) {
 	assert(streq(grug_on_fn_name, "on_a"));
 }
 
+static void ok_and_false_1(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == false);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_and_false_2(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == false);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_and_false_3(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == false);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_and_short_circuit(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == false);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_and_true(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_blocked_alrm(void *on_fns, void *g) {
+	assert(game_fn_blocked_alrm_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_blocked_alrm_call_count == 1);
+
+	free(g);
+
+	// assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
 static void error_tests(void) {
 	TEST_ERROR(assign_to_unknown_variable);
 	TEST_ERROR(assignment_isnt_expression);
@@ -1104,12 +1187,12 @@ static void ok_tests(void) {
 	TEST_OK(addition_i32_wraparound, "d", 0);
 	TEST_OK(addition_with_multiplication, "d", 0);
 	TEST_OK(addition_with_multiplication_2, "d", 0);
-	// TEST_OK(and_false_1, "d", 0);
-	// TEST_OK(and_false_2, "d", 0);
-	// TEST_OK(and_false_3, "d", 0);
-	// TEST_OK(and_short_circuit, "d", 0);
-	// TEST_OK(and_true, "d", 0);
-	// TEST_OK(blocked_alrm, "d", 0);
+	TEST_OK(and_false_1, "d", 0);
+	TEST_OK(and_false_2, "d", 0);
+	TEST_OK(and_false_3, "d", 0);
+	TEST_OK(and_short_circuit, "d", 0);
+	TEST_OK(and_true, "d", 0);
+	TEST_OK(blocked_alrm, "d", 0);
 	// TEST_OK(bool_logical_not_false, "d", 0);
 	// TEST_OK(bool_logical_not_true, "d", 0);
 	// TEST_OK(bool_returned, "d", 0);

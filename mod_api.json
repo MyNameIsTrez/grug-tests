@@ -523,7 +523,7 @@
 				}
 			]
 		},
-		"omega_f32": {
+		"mega_f32": {
 			"description": "foo",
 			"arguments": [
 				{
@@ -564,7 +564,7 @@
 				}
 			]
 		},
-		"omega_i32": {
+		"mega_i32": {
 			"description": "foo",
 			"arguments": [
 				{
@@ -605,6 +605,9 @@
 					"type": "resource"
 				}
 			]
+		},
+		"blocked_alrm": {
+			"description": "foo"
 		}
 	}
 }

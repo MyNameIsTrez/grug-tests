@@ -25,7 +25,7 @@ extern grug_block_mask
 extern game_fn_define_d
 extern grug_enable_on_fn_runtime_error_handling
 extern sigprocmask
-extern game_fn_nothing
+extern game_fn_blocked_alrm
 extern grug_disable_on_fn_runtime_error_handling
 extern _GLOBAL_OFFSET_TABLE_
 
@@ -82,7 +82,7 @@ on_a:
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	block
-	call game_fn_nothing wrt ..plt
+	call game_fn_blocked_alrm wrt ..plt
 	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
