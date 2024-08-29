@@ -1183,6 +1183,15 @@ static void ok_define_containing_addition(void *on_fns, void *g) {
 	free(g);
 }
 
+static void ok_define_containing_string(void *on_fns, void *g) {
+	(void)on_fns;
+
+	assert(game_fn_define_k_age == 42);
+	assert(streq(game_fn_define_k_name, "foo"));
+
+	free(g);
+}
+
 static void error_tests(void) {
 	TEST_ERROR(assign_to_unknown_variable);
 	TEST_ERROR(assignment_isnt_expression);
@@ -1287,7 +1296,7 @@ static void ok_tests(void) {
 	TEST_OK(calls_1000, "d", 0);
 	TEST_OK(continue, "d", 0);
 	TEST_OK(define_containing_addition, "b", 0);
-	// TEST_OK(define_containing_string, "d", 0);
+	TEST_OK(define_containing_string, "k", 0);
 	// TEST_OK(define_with_eight_f32_fields, "d", 0);
 	// TEST_OK(define_with_six_fields, "d", 0);
 	// TEST_OK(define_with_six_i32_fields, "d", 0);
