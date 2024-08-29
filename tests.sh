@@ -9,7 +9,7 @@ then
 fi
 
 # -rdynamic allows the .so to call functions from test.c
-linker_flags='-rdynamic'
+linker_flags='-rdynamic -lm'
 
 # TODO: Consider always outputting and running grug_asan.o and grug_valgrind.o
 # compiler_flags+=' -fsanitize=address,undefined'

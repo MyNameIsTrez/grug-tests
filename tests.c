@@ -41,24 +41,34 @@ static bool streq(char *a, char *b) {
 	return strcmp(a, b) == 0;
 }
 
-// void game_fn_nothing() {
-// 	game_fn_nothing_call_count++;
-// }
-// int32_t game_fn_magic() {
-// 	game_fn_magic_call_count++;
-// }
+void game_fn_nothing(void) {
+	game_fn_nothing_call_count++;
+}
+int32_t game_fn_magic(void) {
+	game_fn_magic_call_count++;
+
+	return 42;
+}
 static int32_t game_fn_initialize_x;
 void game_fn_initialize(int32_t x) {
 	game_fn_initialize_call_count++;
 
 	game_fn_initialize_x = x;
 }
-// void game_fn_initialize_bool() {
-// 	game_fn_initialize_bool_call_count++;
-// }
-// int32_t game_fn_identity() {
-// 	game_fn_identity_call_count++;
-// }
+static bool game_fn_initialize_bool_b;
+void game_fn_initialize_bool(bool b) {
+	game_fn_initialize_bool_call_count++;
+
+	game_fn_initialize_bool_b = b;
+}
+static int32_t game_fn_identity_x;
+int32_t game_fn_identity(int32_t x) {
+	game_fn_identity_call_count++;
+
+	game_fn_identity_x = x;
+
+	return x;
+}
 static int32_t game_fn_max_x;
 static int32_t game_fn_max_y;
 int32_t game_fn_max(int32_t x, int32_t y) {
@@ -69,56 +79,224 @@ int32_t game_fn_max(int32_t x, int32_t y) {
 
 	return x > y ? x : y;
 }
-// void game_fn_say() {
-// 	game_fn_say_call_count++;
-// }
-// float game_fn_sin() {
-// 	game_fn_sin_call_count++;
-// }
-// float game_fn_cos() {
-// 	game_fn_cos_call_count++;
-// }
-// void game_fn_mega() {
-// 	game_fn_mega_call_count++;
-// }
-// bool game_fn_is_friday() {
-// 	game_fn_is_friday_call_count++;
-// }
-// void game_fn_set_is_happy() {
-// 	game_fn_set_is_happy_call_count++;
-// }
-// void game_fn_mega_f32() {
-// 	game_fn_mega_f32_call_count++;
-// }
-// void game_fn_mega_i32() {
-// 	game_fn_mega_i32_call_count++;
-// }
+static char *game_fn_say_message;
+void game_fn_say(char *message) {
+	game_fn_say_call_count++;
 
-// void game_fn_define_a(void) {}
-// void game_fn_define_b(int32_t x) {}
-// void game_fn_define_c(int32_t x, int32_t y) {}
+	game_fn_say_message = message;
+}
+static float game_fn_sin_x;
+float game_fn_sin(float x) {
+	game_fn_sin_call_count++;
+
+	game_fn_sin_x = x;
+
+	return sinf(x);
+}
+static float game_fn_cos_x;
+float game_fn_cos(float x) {
+	game_fn_cos_call_count++;
+
+	game_fn_cos_x = x;
+
+	return cosf(x);
+}
+static float game_fn_mega_f1;
+static int32_t game_fn_mega_i1;
+static bool game_fn_mega_b1;
+static float game_fn_mega_f2;
+static float game_fn_mega_f3;
+static float game_fn_mega_f4;
+static bool game_fn_mega_b2;
+static int32_t game_fn_mega_i2;
+static float game_fn_mega_f5;
+static float game_fn_mega_f6;
+static float game_fn_mega_f7;
+static float game_fn_mega_f8;
+static int32_t game_fn_mega_i3;
+static char *game_fn_mega_str;
+void game_fn_mega(float f1, int32_t i1, bool b1, float f2, float f3, float f4, bool b2, int32_t i2, float f5, float f6, float f7, float f8, int32_t i3, char *str) {
+	game_fn_mega_call_count++;
+
+	game_fn_mega_f1 = f1;
+	game_fn_mega_i1 = i1;
+	game_fn_mega_b1 = b1;
+	game_fn_mega_f2 = f2;
+	game_fn_mega_f3 = f3;
+	game_fn_mega_f4 = f4;
+	game_fn_mega_b2 = b2;
+	game_fn_mega_i2 = i2;
+	game_fn_mega_f5 = f5;
+	game_fn_mega_f6 = f6;
+	game_fn_mega_f7 = f7;
+	game_fn_mega_f8 = f8;
+	game_fn_mega_i3 = i3;
+	game_fn_mega_str = str;
+}
+bool game_fn_is_friday(void) {
+	game_fn_is_friday_call_count++;
+
+	return true;
+}
+static bool game_fn_set_is_happy_is_happy;
+void game_fn_set_is_happy(bool is_happy) {
+	game_fn_set_is_happy_call_count++;
+
+	game_fn_set_is_happy_is_happy = is_happy;
+}
+static float game_fn_mega_f32_f1;
+static float game_fn_mega_f32_f2;
+static float game_fn_mega_f32_f3;
+static float game_fn_mega_f32_f4;
+static float game_fn_mega_f32_f5;
+static float game_fn_mega_f32_f6;
+static float game_fn_mega_f32_f7;
+static float game_fn_mega_f32_f8;
+static float game_fn_mega_f32_f9;
+void game_fn_mega_f32(float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9) {
+	game_fn_mega_f32_call_count++;
+
+	game_fn_mega_f32_f1 = f1;
+	game_fn_mega_f32_f2 = f2;
+	game_fn_mega_f32_f3 = f3;
+	game_fn_mega_f32_f4 = f4;
+	game_fn_mega_f32_f5 = f5;
+	game_fn_mega_f32_f6 = f6;
+	game_fn_mega_f32_f7 = f7;
+	game_fn_mega_f32_f8 = f8;
+	game_fn_mega_f32_f9 = f9;
+}
+static int32_t game_fn_mega_i32_i1;
+static int32_t game_fn_mega_i32_i2;
+static int32_t game_fn_mega_i32_i3;
+static int32_t game_fn_mega_i32_i4;
+static int32_t game_fn_mega_i32_i5;
+static int32_t game_fn_mega_i32_i6;
+static int32_t game_fn_mega_i32_i7;
+void game_fn_mega_i32(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7) {
+	game_fn_mega_i32_call_count++;
+
+	game_fn_mega_i32_i1 = i1;
+	game_fn_mega_i32_i2 = i2;
+	game_fn_mega_i32_i3 = i3;
+	game_fn_mega_i32_i4 = i4;
+	game_fn_mega_i32_i5 = i5;
+	game_fn_mega_i32_i6 = i6;
+	game_fn_mega_i32_i7 = i7;
+}
+
+void game_fn_define_a(void) {}
+static int32_t game_fn_define_b_x;
+void game_fn_define_b(int32_t x) {
+	game_fn_define_b_x = x;
+}
+static int32_t game_fn_define_c_x;
+static int32_t game_fn_define_c_y;
+void game_fn_define_c(int32_t x, int32_t y) {
+	game_fn_define_c_x = x;
+	game_fn_define_c_y = y;
+}
 void game_fn_define_d(void) {}
-// void game_fn_define_e(void) {}
-// void game_fn_define_f(void) {}
-// void game_fn_define_g(void) {}
-// void game_fn_define_h(int32_t x) {}
-// void game_fn_define_i(int32_t x, int32_t y) {}
-// void game_fn_define_j(void) {}
-// void game_fn_define_k(int32_t age, char *name) {}
-// void game_fn_define_l(char *group, char *name) {}
-// void game_fn_define_m(int32_t w, char *group, bool b1, char *name, bool b2, int32_t z) {}
-// void game_fn_define_n(int32_t u, int32_t v, int32_t w, int32_t x, int32_t y, int32_t z) {}
-// void game_fn_define_o(char *u, char *v, char *w, char *x, char *y, char *z) {}
-// void game_fn_define_p(char *x) {}
-// void game_fn_define_q(char *a, char *b, char *c) {}
-// void game_fn_define_r(void) {}
-// void game_fn_define_s(void) {}
-// void game_fn_define_t(float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8) {}
-
-// void game_fn_define_k(int32_t age, char *name) {
-// 	game_fn_define_k_age = age;
-// 	game_fn_define_k_name = name;
-// }
+void game_fn_define_e(void) {}
+void game_fn_define_f(void) {}
+void game_fn_define_g(void) {}
+static int32_t game_fn_define_h_x;
+void game_fn_define_h(int32_t x) {
+	game_fn_define_h_x = x;
+}
+static int32_t game_fn_define_i_x;
+static int32_t game_fn_define_i_y;
+void game_fn_define_i(int32_t x, int32_t y) {
+	game_fn_define_i_x = x;
+	game_fn_define_i_y = y;
+}
+void game_fn_define_j(void) {}
+static int32_t game_fn_define_k_age;
+static char *game_fn_define_k_name;
+void game_fn_define_k(int32_t age, char *name) {
+	game_fn_define_k_age = age;
+	game_fn_define_k_name = name;
+}
+static char *game_fn_define_l_group;
+static char *game_fn_define_l_name;
+void game_fn_define_l(char *group, char *name) {
+	game_fn_define_l_group = group;
+	game_fn_define_l_name = name;
+}
+static int32_t game_fn_define_m_w;
+static char *game_fn_define_m_group;
+static bool game_fn_define_m_b1;
+static char *game_fn_define_m_name;
+static bool game_fn_define_m_b2;
+static int32_t game_fn_define_m_z;
+void game_fn_define_m(int32_t w, char *group, bool b1, char *name, bool b2, int32_t z) {
+	game_fn_define_m_w = w;
+	game_fn_define_m_group = group;
+	game_fn_define_m_b1 = b1;
+	game_fn_define_m_name = name;
+	game_fn_define_m_b2 = b2;
+	game_fn_define_m_z = z;
+}
+static int32_t game_fn_define_n_u;
+static int32_t game_fn_define_n_v;
+static int32_t game_fn_define_n_w;
+static int32_t game_fn_define_n_x;
+static int32_t game_fn_define_n_y;
+static int32_t game_fn_define_n_z;
+void game_fn_define_n(int32_t u, int32_t v, int32_t w, int32_t x, int32_t y, int32_t z) {
+	game_fn_define_n_u = u;
+	game_fn_define_n_v = v;
+	game_fn_define_n_w = w;
+	game_fn_define_n_x = x;
+	game_fn_define_n_y = y;
+	game_fn_define_n_z = z;
+}
+static char *game_fn_define_o_u;
+static char *game_fn_define_o_v;
+static char *game_fn_define_o_w;
+static char *game_fn_define_o_x;
+static char *game_fn_define_o_y;
+static char *game_fn_define_o_z;
+void game_fn_define_o(char *u, char *v, char *w, char *x, char *y, char *z) {
+	game_fn_define_o_u = u;
+	game_fn_define_o_v = v;
+	game_fn_define_o_w = w;
+	game_fn_define_o_x = x;
+	game_fn_define_o_y = y;
+	game_fn_define_o_z = z;
+}
+static char *game_fn_define_p_x;
+void game_fn_define_p(char *x) {
+	game_fn_define_p_x = x;
+}
+static char *game_fn_define_q_a;
+static char *game_fn_define_q_b;
+static char *game_fn_define_q_c;
+void game_fn_define_q(char *a, char *b, char *c) {
+	game_fn_define_q_a = a;
+	game_fn_define_q_b = b;
+	game_fn_define_q_c = c;
+}
+void game_fn_define_r(void) {}
+void game_fn_define_s(void) {}
+static float game_fn_define_t_f1;
+static float game_fn_define_t_f2;
+static float game_fn_define_t_f3;
+static float game_fn_define_t_f4;
+static float game_fn_define_t_f5;
+static float game_fn_define_t_f6;
+static float game_fn_define_t_f7;
+static float game_fn_define_t_f8;
+void game_fn_define_t(float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8) {
+	game_fn_define_t_f1 = f1;
+	game_fn_define_t_f2 = f2;
+	game_fn_define_t_f3 = f3;
+	game_fn_define_t_f4 = f4;
+	game_fn_define_t_f5 = f5;
+	game_fn_define_t_f6 = f6;
+	game_fn_define_t_f7 = f7;
+	game_fn_define_t_f8 = f8;
+}
 
 static void reset_call_counts(void) {
 	game_fn_nothing_call_count = 0;
@@ -798,7 +976,42 @@ static void ok_addition_as_two_arguments(void *on_fns, void *g) {
 	assert(game_fn_max_y == 9);
 
 	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests_ok/addition_as_two_arguments/input.grug"));
+}
+
+static void ok_addition_i32_wraparound(void *on_fns, void *g) {
+	assert(game_fn_initialize_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == INT32_MIN);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_addition_with_multiplication(void *on_fns, void *g) {
+	assert(game_fn_initialize_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == 14);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_addition_with_multiplication_2(void *on_fns, void *g) {
+	assert(game_fn_initialize_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == 10);
+
+	assert(streq(grug_on_fn_name, "on_a"));
 }
 
 static void error_tests(void) {
@@ -888,145 +1101,145 @@ static void runtime_error_tests(void) {
 static void ok_tests(void) {
 	TEST_OK(addition_as_argument, "d", 0);
 	TEST_OK(addition_as_two_arguments, "d", 0);
-	// TEST_OK(addition_i32_wraparound);
-	// TEST_OK(addition_with_multiplication);
-	// TEST_OK(addition_with_multiplication_2);
-	// TEST_OK(and_false_1);
-	// TEST_OK(and_false_2);
-	// TEST_OK(and_false_3);
-	// TEST_OK(and_short_circuit);
-	// TEST_OK(and_true);
-	// TEST_OK(blocked_alrm);
-	// TEST_OK(bool_logical_not_false);
-	// TEST_OK(bool_logical_not_true);
-	// TEST_OK(bool_returned);
-	// TEST_OK(break);
-	// TEST_OK(calls_100);
-	// TEST_OK(calls_1000);
-	// TEST_OK(continue);
-	// TEST_OK(define_containing_addition);
-	// TEST_OK(define_containing_string);
-	// TEST_OK(define_with_eight_f32_fields);
-	// TEST_OK(define_with_six_fields);
-	// TEST_OK(define_with_six_i32_fields);
-	// TEST_OK(define_with_six_string_fields);
-	// TEST_OK(division_negative_result);
-	// TEST_OK(division_positive_result);
-	// TEST_OK(else_false);
-	// TEST_OK(else_true);
-	// TEST_OK(eq_false);
-	// TEST_OK(eq_true);
-	// TEST_OK(f32_addition);
-	// TEST_OK(f32_argument);
-	// TEST_OK(f32_division);
-	// TEST_OK(f32_eq_false);
-	// TEST_OK(f32_eq_true);
-	// TEST_OK(f32_ge_false);
-	// TEST_OK(f32_ge_true_1);
-	// TEST_OK(f32_ge_true_2);
-	// TEST_OK(f32_global_variable);
-	// TEST_OK(f32_gt_false);
-	// TEST_OK(f32_gt_true);
-	// TEST_OK(f32_le_false);
-	// TEST_OK(f32_le_true_1);
-	// TEST_OK(f32_le_true_2);
-	// TEST_OK(f32_local_variable);
-	// TEST_OK(f32_lt_false);
-	// TEST_OK(f32_lt_true);
-	// TEST_OK(f32_multiplication);
-	// TEST_OK(f32_ne_false);
-	// TEST_OK(f32_negated);
-	// TEST_OK(f32_ne_true);
-	// TEST_OK(f32_passed_to_helper_fn);
-	// TEST_OK(f32_passed_to_on_fn);
-	// TEST_OK(f32_passing_sin_to_cos);
-	// TEST_OK(f32_subtraction);
-	// TEST_OK(fibonacci);
-	// TEST_OK(ge_false);
-	// TEST_OK(ge_true_1);
-	// TEST_OK(ge_true_2);
-	// TEST_OK(global_containing_addition);
-	// TEST_OK(globals);
-	// TEST_OK(globals_1000_i32);
-	// TEST_OK(globals_32);
-	// TEST_OK(globals_64);
-	// TEST_OK(gt_false);
-	// TEST_OK(gt_true);
-	// TEST_OK(helper_fn);
-	// TEST_OK(helper_fn_overwriting_param);
-	// TEST_OK(helper_fn_returning_void_has_no_return);
-	// TEST_OK(helper_fn_returning_void_returns_void);
-	// TEST_OK(i32_max);
-	// TEST_OK(i32_min);
-	// TEST_OK(i32_negated);
-	// TEST_OK(identical_strings_are_shared);
-	// TEST_OK(if_false);
-	// TEST_OK(if_true);
-	// TEST_OK(le_false);
-	// TEST_OK(le_true_1);
-	// TEST_OK(le_true_2);
-	// TEST_OK(lt_false);
-	// TEST_OK(lt_true);
-	// TEST_OK(max_args);
-	// TEST_OK(minimal);
-	// TEST_OK(multiplication_as_two_arguments);
-	// TEST_OK(ne_false);
-	// TEST_OK(negate_parenthesized_expr);
-	// TEST_OK(negative_literal);
-	// TEST_OK(nested_break);
-	// TEST_OK(nested_continue);
-	// TEST_OK(ne_true);
-	// TEST_OK(no_define_fields);
-	// TEST_OK(no_on_fns);
-	// TEST_OK(on_fn);
-	// TEST_OK(on_fn_calling_game_fn_nothing);
-	// TEST_OK(on_fn_calling_game_fn_nothing_twice);
-	// TEST_OK(on_fn_calling_game_fn_plt_order);
-	// TEST_OK(on_fn_calling_helper_fns);
-	// TEST_OK(on_fn_overwriting_param);
-	// TEST_OK(on_fn_passing_argument_to_helper_fn);
-	// TEST_OK(on_fn_passing_magic_to_initialize);
-	// TEST_OK(on_fn_three);
-	// TEST_OK(on_fn_three_unused_first);
-	// TEST_OK(on_fn_three_unused_second);
-	// TEST_OK(on_fn_three_unused_third);
-	// TEST_OK(or_false);
-	// TEST_OK(or_short_circuit);
-	// TEST_OK(or_true_1);
-	// TEST_OK(or_true_2);
-	// TEST_OK(or_true_3);
-	// TEST_OK(pass_string_argument_to_game_fn);
-	// TEST_OK(pass_string_argument_to_helper_fn);
-	// TEST_OK(remainder_negative_result);
-	// TEST_OK(remainder_positive_result);
-	// TEST_OK(resource_in_define);
-	// TEST_OK(return);
-	// TEST_OK(return_from_on_fn);
-	// TEST_OK(return_with_no_value);
-	// TEST_OK(stack_16_byte_alignment);
-	// TEST_OK(stack_16_byte_alignment_midway);
-	// TEST_OK(string_and_on_fn);
-	// TEST_OK(string_eq_false);
-	// TEST_OK(string_eq_true);
-	// TEST_OK(string_eq_true_empty);
-	// TEST_OK(string_ne_false);
-	// TEST_OK(string_ne_false_empty);
-	// TEST_OK(string_ne_true);
-	// TEST_OK(subtraction_negative_result);
-	// TEST_OK(subtraction_positive_result);
-	// TEST_OK(variable);
-	// TEST_OK(variable_does_not_shadow_define_fn);
-	// TEST_OK(variable_reassignment);
-	// TEST_OK(variable_shadows_define_fn);
-	// TEST_OK(variable_shadows_game_fn);
-	// TEST_OK(variable_shadows_helper_fn);
-	// TEST_OK(variable_shadows_on_fn_1);
-	// TEST_OK(variable_shadows_on_fn_2);
-	// TEST_OK(variable_string_global);
-	// TEST_OK(variable_string_local);
-	// TEST_OK(void_function_early_return);
-	// TEST_OK(while_false);
-	// TEST_OK(write_to_global_variable);
+	TEST_OK(addition_i32_wraparound, "d", 0);
+	TEST_OK(addition_with_multiplication, "d", 0);
+	TEST_OK(addition_with_multiplication_2, "d", 0);
+	// TEST_OK(and_false_1, "d", 0);
+	// TEST_OK(and_false_2, "d", 0);
+	// TEST_OK(and_false_3, "d", 0);
+	// TEST_OK(and_short_circuit, "d", 0);
+	// TEST_OK(and_true, "d", 0);
+	// TEST_OK(blocked_alrm, "d", 0);
+	// TEST_OK(bool_logical_not_false, "d", 0);
+	// TEST_OK(bool_logical_not_true, "d", 0);
+	// TEST_OK(bool_returned, "d", 0);
+	// TEST_OK(break, "d", 0);
+	// TEST_OK(calls_100, "d", 0);
+	// TEST_OK(calls_1000, "d", 0);
+	// TEST_OK(continue, "d", 0);
+	// TEST_OK(define_containing_addition, "d", 0);
+	// TEST_OK(define_containing_string, "d", 0);
+	// TEST_OK(define_with_eight_f32_fields, "d", 0);
+	// TEST_OK(define_with_six_fields, "d", 0);
+	// TEST_OK(define_with_six_i32_fields, "d", 0);
+	// TEST_OK(define_with_six_string_fields, "d", 0);
+	// TEST_OK(division_negative_result, "d", 0);
+	// TEST_OK(division_positive_result, "d", 0);
+	// TEST_OK(else_false, "d", 0);
+	// TEST_OK(else_true, "d", 0);
+	// TEST_OK(eq_false, "d", 0);
+	// TEST_OK(eq_true, "d", 0);
+	// TEST_OK(f32_addition, "d", 0);
+	// TEST_OK(f32_argument, "d", 0);
+	// TEST_OK(f32_division, "d", 0);
+	// TEST_OK(f32_eq_false, "d", 0);
+	// TEST_OK(f32_eq_true, "d", 0);
+	// TEST_OK(f32_ge_false, "d", 0);
+	// TEST_OK(f32_ge_true_1, "d", 0);
+	// TEST_OK(f32_ge_true_2, "d", 0);
+	// TEST_OK(f32_global_variable, "d", 0);
+	// TEST_OK(f32_gt_false, "d", 0);
+	// TEST_OK(f32_gt_true, "d", 0);
+	// TEST_OK(f32_le_false, "d", 0);
+	// TEST_OK(f32_le_true_1, "d", 0);
+	// TEST_OK(f32_le_true_2, "d", 0);
+	// TEST_OK(f32_local_variable, "d", 0);
+	// TEST_OK(f32_lt_false, "d", 0);
+	// TEST_OK(f32_lt_true, "d", 0);
+	// TEST_OK(f32_multiplication, "d", 0);
+	// TEST_OK(f32_ne_false, "d", 0);
+	// TEST_OK(f32_negated, "d", 0);
+	// TEST_OK(f32_ne_true, "d", 0);
+	// TEST_OK(f32_passed_to_helper_fn, "d", 0);
+	// TEST_OK(f32_passed_to_on_fn, "d", 0);
+	// TEST_OK(f32_passing_sin_to_cos, "d", 0);
+	// TEST_OK(f32_subtraction, "d", 0);
+	// TEST_OK(fibonacci, "d", 0);
+	// TEST_OK(ge_false, "d", 0);
+	// TEST_OK(ge_true_1, "d", 0);
+	// TEST_OK(ge_true_2, "d", 0);
+	// TEST_OK(global_containing_addition, "d", 0);
+	// TEST_OK(globals, "d", 0);
+	// TEST_OK(globals_1000_i32, "d", 0);
+	// TEST_OK(globals_32, "d", 0);
+	// TEST_OK(globals_64, "d", 0);
+	// TEST_OK(gt_false, "d", 0);
+	// TEST_OK(gt_true, "d", 0);
+	// TEST_OK(helper_fn, "d", 0);
+	// TEST_OK(helper_fn_overwriting_param, "d", 0);
+	// TEST_OK(helper_fn_returning_void_has_no_return, "d", 0);
+	// TEST_OK(helper_fn_returning_void_returns_void, "d", 0);
+	// TEST_OK(i32_max, "d", 0);
+	// TEST_OK(i32_min, "d", 0);
+	// TEST_OK(i32_negated, "d", 0);
+	// TEST_OK(identical_strings_are_shared, "d", 0);
+	// TEST_OK(if_false, "d", 0);
+	// TEST_OK(if_true, "d", 0);
+	// TEST_OK(le_false, "d", 0);
+	// TEST_OK(le_true_1, "d", 0);
+	// TEST_OK(le_true_2, "d", 0);
+	// TEST_OK(lt_false, "d", 0);
+	// TEST_OK(lt_true, "d", 0);
+	// TEST_OK(max_args, "d", 0);
+	// TEST_OK(minimal, "d", 0);
+	// TEST_OK(multiplication_as_two_arguments, "d", 0);
+	// TEST_OK(ne_false, "d", 0);
+	// TEST_OK(negate_parenthesized_expr, "d", 0);
+	// TEST_OK(negative_literal, "d", 0);
+	// TEST_OK(nested_break, "d", 0);
+	// TEST_OK(nested_continue, "d", 0);
+	// TEST_OK(ne_true, "d", 0);
+	// TEST_OK(no_define_fields, "d", 0);
+	// TEST_OK(no_on_fns, "d", 0);
+	// TEST_OK(on_fn, "d", 0);
+	// TEST_OK(on_fn_calling_game_fn_nothing, "d", 0);
+	// TEST_OK(on_fn_calling_game_fn_nothing_twice, "d", 0);
+	// TEST_OK(on_fn_calling_game_fn_plt_order, "d", 0);
+	// TEST_OK(on_fn_calling_helper_fns, "d", 0);
+	// TEST_OK(on_fn_overwriting_param, "d", 0);
+	// TEST_OK(on_fn_passing_argument_to_helper_fn, "d", 0);
+	// TEST_OK(on_fn_passing_magic_to_initialize, "d", 0);
+	// TEST_OK(on_fn_three, "d", 0);
+	// TEST_OK(on_fn_three_unused_first, "d", 0);
+	// TEST_OK(on_fn_three_unused_second, "d", 0);
+	// TEST_OK(on_fn_three_unused_third, "d", 0);
+	// TEST_OK(or_false, "d", 0);
+	// TEST_OK(or_short_circuit, "d", 0);
+	// TEST_OK(or_true_1, "d", 0);
+	// TEST_OK(or_true_2, "d", 0);
+	// TEST_OK(or_true_3, "d", 0);
+	// TEST_OK(pass_string_argument_to_game_fn, "d", 0);
+	// TEST_OK(pass_string_argument_to_helper_fn, "d", 0);
+	// TEST_OK(remainder_negative_result, "d", 0);
+	// TEST_OK(remainder_positive_result, "d", 0);
+	// TEST_OK(resource_in_define, "d", 0);
+	// TEST_OK(return, "d", 0);
+	// TEST_OK(return_from_on_fn, "d", 0);
+	// TEST_OK(return_with_no_value, "d", 0);
+	// TEST_OK(stack_16_byte_alignment, "d", 0);
+	// TEST_OK(stack_16_byte_alignment_midway, "d", 0);
+	// TEST_OK(string_and_on_fn, "d", 0);
+	// TEST_OK(string_eq_false, "d", 0);
+	// TEST_OK(string_eq_true, "d", 0);
+	// TEST_OK(string_eq_true_empty, "d", 0);
+	// TEST_OK(string_ne_false, "d", 0);
+	// TEST_OK(string_ne_false_empty, "d", 0);
+	// TEST_OK(string_ne_true, "d", 0);
+	// TEST_OK(subtraction_negative_result, "d", 0);
+	// TEST_OK(subtraction_positive_result, "d", 0);
+	// TEST_OK(variable, "d", 0);
+	// TEST_OK(variable_does_not_shadow_define_fn, "d", 0);
+	// TEST_OK(variable_reassignment, "d", 0);
+	// TEST_OK(variable_shadows_define_fn, "d", 0);
+	// TEST_OK(variable_shadows_game_fn, "d", 0);
+	// TEST_OK(variable_shadows_helper_fn, "d", 0);
+	// TEST_OK(variable_shadows_on_fn_1, "d", 0);
+	// TEST_OK(variable_shadows_on_fn_2, "d", 0);
+	// TEST_OK(variable_string_global, "d", 0);
+	// TEST_OK(variable_string_local, "d", 0);
+	// TEST_OK(void_function_early_return, "d", 0);
+	// TEST_OK(while_false, "d", 0);
+	// TEST_OK(write_to_global_variable, "d", 0);
 }
 
 int main(void) {
