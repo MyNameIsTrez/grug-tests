@@ -182,7 +182,7 @@ static void check_null(void *ptr, char *fn_name) {
 	}\
 }
 
-#define TEST_OK(test_name) {\
+#define TEST_OK(test_name, expected_define_type, expected_globals_size) {\
 	struct test_data data = ok_prologue(\
 		#test_name,\
 		"tests_ok/"#test_name"/input.grug",\
@@ -194,7 +194,9 @@ static void check_null(void *ptr, char *fn_name) {
 		"tests_ok/"#test_name"/results/expected.hex",\
 		"tests_ok/"#test_name"/results/expected_elf.log",\
 		"tests_ok/"#test_name"/results/expected_objdump.log",\
-		"tests_ok/"#test_name"/results/failed"\
+		"tests_ok/"#test_name"/results/failed",\
+		expected_define_type,\
+		expected_globals_size\
 	);\
 	if (data.run) {\
 		ok_##test_name(data.on_fns, data.g);\
@@ -696,7 +698,9 @@ static struct test_data ok_prologue(
 	char *expected_xxd_path,
 	char *expected_readelf_path,
 	char *expected_objdump_path,
-	char *failed_file_path
+	char *failed_file_path,
+	char *expected_define_type,
+	size_t expected_globals_size
 ) {
 	if (failed_file_doesnt_exist(failed_file_path)
 	 && newer(output_dll_path, nasm_path)
@@ -750,7 +754,7 @@ static struct test_data ok_prologue(
 		exit(EXIT_FAILURE);
 	}
 
-	assert(streq(get(handle, "define_type"), "d"));
+	assert(streq(get(handle, "define_type"), expected_define_type));
 
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wpedantic"
@@ -758,7 +762,7 @@ static struct test_data ok_prologue(
 	define();
 
 	size_t globals_size = *(size_t *)get(handle, "globals_size");
-	assert(globals_size == 0);
+	assert(globals_size == expected_globals_size);
 
 	void *g = malloc(globals_size);
 	grug_init_globals_fn_t init_globals = get(handle, "init_globals");
@@ -882,8 +886,8 @@ static void runtime_error_tests(void) {
 }
 
 static void ok_tests(void) {
-	TEST_OK(addition_as_argument);
-	TEST_OK(addition_as_two_arguments);
+	TEST_OK(addition_as_argument, "d", 0);
+	TEST_OK(addition_as_two_arguments, "d", 0);
 	// TEST_OK(addition_i32_wraparound);
 	// TEST_OK(addition_with_multiplication);
 	// TEST_OK(addition_with_multiplication_2);
