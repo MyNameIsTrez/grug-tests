@@ -78,9 +78,9 @@ on_a:
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	block
-	mov eax, __?float32?__(2.0)
-	push rax
 	mov eax, __?float32?__(1.0)
+	push rax
+	mov eax, __?float32?__(2.0)
 	pop r11
 	movd xmm0, eax
 	movd xmm1, r11d
