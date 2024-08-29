@@ -26,4 +26,4 @@ If the tests don't pass, try running `OLD_LD= ./tests.sh`.
 
 ## More information
 
-See the file `development.md` in this repository.
+See the `development.md` file in this repository.
