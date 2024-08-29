@@ -283,14 +283,25 @@ static void run(char *const *argv) {
 }
 
 static void output_dll_info(char *dll_path, char *xxd_path, char *readelf_path, char *objdump_path) {
-	// -Rnever turns colorization off, since you'd just see the color escape code text in a .txt file
-	run((char *[]){"xxd", "-Rnever", dll_path, xxd_path, NULL});
+	pid_t pid = fork();
+	check(pid, "fork");
 
-	// These don't work, for some reason, even when ">" is added to the start of the readelf_path/objdump_path
-	// run((char *[]){"readelf", "-a", dll_path, ">", readelf_path, NULL});
-	// run((char *[]){"readelf", "-a", dll_path, readelf_path, NULL});
-	// run((char *[]){"objdump", "-D", dll_path, "-Mintel", ">", objdump_path, NULL});
-	// run((char *[]){"objdump", "-D", dll_path, "-Mintel", objdump_path, NULL});
+	if (pid == 0) {
+		// In newer versions off xxd -Rnever turns colorization off,
+		// but in older versions of xxd the -R option didn't exist yet,
+		// so we can't use that
+		int fd = open(xxd_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		check(fd, "open");
+
+		check(dup2(fd, STDOUT_FILENO), "dup2");
+
+		check(close(fd), "close");
+
+		check(execvp("xxd", (char *[]){"xxd", dll_path, NULL}), "execvp");
+	}
+
+	// Wait on the child to finish
+	check(wait(NULL), "wait");
 
 	run_and_write((char *[]){"readelf", "-a", dll_path, NULL}, readelf_path);
 
