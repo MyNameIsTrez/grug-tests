@@ -1,6 +1,7 @@
 #!/bin/bash
 
 compiler_flags='-Igrug -g -Og -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors'
+# compiler_flags='-Igrug -g -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors'
 
 if [[ -v OLD_LD ]] # If the OLD_LD environment variable was set
 then
