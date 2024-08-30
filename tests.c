@@ -1617,6 +1617,298 @@ static void ok_f32_subtraction(void *on_fns, void *g) {
 	assert(streq(grug_on_fn_name, "on_a"));
 }
 
+static void ok_fibonacci(void *on_fns, void *g) {
+	assert(game_fn_initialize_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == 55);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_ge_false(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == false);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_ge_true_1(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_ge_true_2(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_global_containing_addition(void *on_fns, void *g) {
+	(void)on_fns;
+
+	assert(((int32_t*)g)[0] == 5);
+
+	free(g);
+}
+
+static void ok_globals(void *on_fns, void *g) {
+	(void)on_fns;
+
+	assert(game_fn_define_h_x == 42);
+
+	assert(((int32_t*)g)[0] == 420);
+	assert(((int32_t*)g)[1] == 1337);
+
+	free(g);
+}
+
+static void ok_globals_1000(void *on_fns, void *g) {
+	(void)on_fns;
+
+	for (int32_t i = 0; i < 1000; i++) {
+		assert(((int32_t*)g)[i] == i + 1);
+	}
+
+	free(g);
+}
+
+static void ok_globals_32(void *on_fns, void *g) {
+	(void)on_fns;
+
+	for (int32_t i = 0; i < 32; i++) {
+		assert(((int32_t*)g)[i] == i + 1);
+	}
+
+	free(g);
+}
+
+static void ok_globals_64(void *on_fns, void *g) {
+	(void)on_fns;
+
+	for (int32_t i = 0; i < 64; i++) {
+		assert(((int32_t*)g)[i] == i + 1);
+	}
+
+	free(g);
+}
+
+static void ok_gt_false(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == false);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_gt_true(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_helper_fn(void *on_fns, void *g) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 1);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_helper_fn_overwriting_param(void *on_fns, void *g) {
+	assert(game_fn_initialize_call_count == 0);
+	assert(game_fn_sin_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 1);
+	assert(game_fn_sin_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == 20);
+	assert(game_fn_sin_x == 30.0f);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_helper_fn_returning_void_has_no_return(void *on_fns, void *g) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 2);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_helper_fn_returning_void_returns_void(void *on_fns, void *g) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 2);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_i32_max(void *on_fns, void *g) {
+	assert(game_fn_initialize_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == 2147483647);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_i32_min(void *on_fns, void *g) {
+	assert(game_fn_initialize_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == -2147483648);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_i32_negated(void *on_fns, void *g) {
+	assert(game_fn_initialize_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == -42);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_identical_strings_are_shared(void *on_fns, void *g) {
+	(void)on_fns;
+
+	assert(strcmp(game_fn_define_q_a, "a") == 0);
+	assert(strcmp(game_fn_define_q_b, "b") == 0);
+	assert(strcmp(game_fn_define_q_c, "b") == 0);
+
+	free(g);
+}
+
+static void ok_if_false(void *on_fns, void *g) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 2);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_if_true(void *on_fns, void *g) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 3);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_le_false(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == false);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_le_true_1(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_le_true_2(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_lt_false(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == false);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_lt_true(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
 static void error_tests(void) {
 	TEST_ERROR(assign_to_unknown_variable);
 	TEST_ERROR(assignment_isnt_expression);
@@ -1757,32 +2049,32 @@ static void ok_tests(void) {
 	TEST_OK(f32_passed_to_on_fn, "r", 0);
 	TEST_OK(f32_passing_sin_to_cos, "d", 0);
 	TEST_OK(f32_subtraction, "d", 0);
-	// TEST_OK(fibonacci, "d", 0);
-	// TEST_OK(ge_false, "d", 0);
-	// TEST_OK(ge_true_1, "d", 0);
-	// TEST_OK(ge_true_2, "d", 0);
-	// TEST_OK(global_containing_addition, "d", 0);
-	// TEST_OK(globals, "d", 0);
-	// TEST_OK(globals_1000_i32, "d", 0);
-	// TEST_OK(globals_32, "d", 0);
-	// TEST_OK(globals_64, "d", 0);
-	// TEST_OK(gt_false, "d", 0);
-	// TEST_OK(gt_true, "d", 0);
-	// TEST_OK(helper_fn, "d", 0);
-	// TEST_OK(helper_fn_overwriting_param, "d", 0);
-	// TEST_OK(helper_fn_returning_void_has_no_return, "d", 0);
-	// TEST_OK(helper_fn_returning_void_returns_void, "d", 0);
-	// TEST_OK(i32_max, "d", 0);
-	// TEST_OK(i32_min, "d", 0);
-	// TEST_OK(i32_negated, "d", 0);
-	// TEST_OK(identical_strings_are_shared, "d", 0);
-	// TEST_OK(if_false, "d", 0);
-	// TEST_OK(if_true, "d", 0);
-	// TEST_OK(le_false, "d", 0);
-	// TEST_OK(le_true_1, "d", 0);
-	// TEST_OK(le_true_2, "d", 0);
-	// TEST_OK(lt_false, "d", 0);
-	// TEST_OK(lt_true, "d", 0);
+	TEST_OK(fibonacci, "d", 0);
+	TEST_OK(ge_false, "d", 0);
+	TEST_OK(ge_true_1, "d", 0);
+	TEST_OK(ge_true_2, "d", 0);
+	TEST_OK(global_containing_addition, "a", 4);
+	TEST_OK(globals, "h", 8);
+	TEST_OK(globals_1000, "a", 4000);
+	TEST_OK(globals_32, "a", 128);
+	TEST_OK(globals_64, "a", 256);
+	TEST_OK(gt_false, "d", 0);
+	TEST_OK(gt_true, "d", 0);
+	TEST_OK(helper_fn, "d", 0);
+	TEST_OK(helper_fn_overwriting_param, "d", 0);
+	TEST_OK(helper_fn_returning_void_has_no_return, "d", 0);
+	TEST_OK(helper_fn_returning_void_returns_void, "d", 0);
+	TEST_OK(i32_max, "d", 0);
+	TEST_OK(i32_min, "d", 0);
+	TEST_OK(i32_negated, "d", 0);
+	TEST_OK(identical_strings_are_shared, "q", 0);
+	TEST_OK(if_false, "d", 0);
+	TEST_OK(if_true, "d", 0);
+	TEST_OK(le_false, "d", 0);
+	TEST_OK(le_true_1, "d", 0);
+	TEST_OK(le_true_2, "d", 0);
+	TEST_OK(lt_false, "d", 0);
+	TEST_OK(lt_true, "d", 0);
 	// TEST_OK(max_args, "d", 0);
 	// TEST_OK(minimal, "d", 0);
 	// TEST_OK(multiplication_as_two_arguments, "d", 0);
