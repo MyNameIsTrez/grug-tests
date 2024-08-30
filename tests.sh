@@ -1,7 +1,12 @@
 #!/bin/bash
 
-compiler_flags='-Igrug -g -Og -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors'
-# compiler_flags='-Igrug -g -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors'
+compiler_flags='-Igrug -g -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors'
+
+# This makes compilation quite a bit slower
+# compiler_flags+=' -Og'
+
+# This makes compilation quite a bit slower
+# compiler_flags+=' -fsanitize=address,undefined'
 
 if [[ -v OLD_LD ]] # If the OLD_LD environment variable was set
 then
@@ -11,9 +16,6 @@ fi
 
 # -rdynamic allows the .so to call functions from test.c
 linker_flags='-rdynamic -lm'
-
-# TODO: Consider always outputting and running grug_asan.o and grug_valgrind.o
-# compiler_flags+=' -fsanitize=address,undefined'
 
 if (! [[ grug/grug.c -ot grug.o ]]) || (! [[ grug/grug.h -ot grug.o ]]) || (! [[ tests.sh -ot grug.o ]])
 then
@@ -36,5 +38,5 @@ then
 fi
 
 echo "Running tests.out..."
-valgrind --quiet ./tests.out
-# ./tests.out
+# valgrind --quiet ./tests.out
+./tests.out
