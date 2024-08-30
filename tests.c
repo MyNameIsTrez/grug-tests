@@ -686,11 +686,11 @@ static void test_error(
 
 	create_failed_file(failed_file_path);
 
-	printf("  Regenerating output.so...\n");
+	// printf("  Regenerating output.so...\n");
 
 	assert(grug_test_regenerate_dll(grug_path, output_dll_path));
 
-	printf("  Outputting grug_output.txt...\n");
+	// printf("  Outputting grug_output.txt...\n");
 
 	FILE *f = fopen(grug_output_path, "w");
 
@@ -707,7 +707,7 @@ static void test_error(
 		exit(EXIT_FAILURE);
 	}
 
-	printf("  Comparing against the expected error...\n");
+	// printf("  Comparing against the expected error...\n");
 
 	char *expected_error = get_expected_error(expected_error_path);
 	size_t expected_error_len = strlen(expected_error);
@@ -727,7 +727,7 @@ static void test_error(
 }
 
 static void runtime_error_epilogue(char *expected_error_path, char *failed_file_path) {
-	printf("  Comparing against the expected error...\n");
+	// printf("  Comparing against the expected error...\n");
 
 	char *grug_error_msg = grug_get_runtime_error_reason();
 
@@ -780,7 +780,7 @@ static struct test_data runtime_error_prologue(
 
 	create_failed_file(failed_file_path);
 
-	printf("  Regenerating output.so...\n");
+	// printf("  Regenerating output.so...\n");
 
 	if (grug_test_regenerate_dll(grug_path, output_dll_path)) {
 		printf("The test wasn't supposed to print anything during generation of the dll, but did:\n");
@@ -791,10 +791,10 @@ static struct test_data runtime_error_prologue(
 		exit(EXIT_FAILURE);
 	}
 
-	printf("  Outputting output.so info...\n");
+	// printf("  Outputting output.so info...\n");
 	output_dll_info(output_dll_path, output_xxd_path, output_readelf_path, output_objdump_path);
 
-	printf("  Running the test...\n");
+	// printf("  Running the test...\n");
 
 	void *handle = dlopen(output_dll_path, RTLD_NOW);
 	if (!handle) {
@@ -903,7 +903,7 @@ static void ok_epilogue(
 	char *output_objdump_path,
 	char *failed_file_path
 ) {
-	printf("  Regenerating output.so...\n");
+	// printf("  Regenerating output.so...\n");
 
 	if (grug_test_regenerate_dll(grug_path, output_dll_path)) {
 		printf("The test wasn't supposed to print anything, but did:\n");
@@ -914,10 +914,10 @@ static void ok_epilogue(
 		exit(EXIT_FAILURE);
 	}
 
-	printf("  Outputting output.so info...\n");
+	// printf("  Outputting output.so info...\n");
 	output_dll_info(output_dll_path, output_xxd_path, output_readelf_path, output_objdump_path);
 
-	printf("  Comparing output.so against expected.so...\n");
+	// printf("  Comparing output.so against expected.so...\n");
 
 	static uint8_t output_dll_bytes[420420];
 	size_t output_dll_bytes_len = read_dll(output_dll_path, output_dll_bytes);
@@ -973,7 +973,7 @@ static struct test_data ok_prologue(
 	struct stat nasm_stat;
 	check(stat(nasm_path, &nasm_stat), "stat");
 
-	printf("  Regenerating expected.so...\n");
+	// printf("  Regenerating expected.so...\n");
 
 	run((char *[]){"nasm", nasm_path, "-felf64", "-O0", "-o", nasm_o_path, NULL});
 
@@ -989,10 +989,10 @@ static struct test_data ok_prologue(
 
 	run((char *[]){"objcopy", expected_dll_path, "--redefine-sym", redefine_sym, NULL});
 
-	printf("  Outputting expected.so info...\n");
+	// printf("  Outputting expected.so info...\n");
 	output_dll_info(expected_dll_path, expected_xxd_path, expected_readelf_path, expected_objdump_path);
 
-	printf("  Running the test...\n");
+	// printf("  Running the test...\n");
 
 	void *handle = dlopen(expected_dll_path, RTLD_NOW);
 	if (!handle) {
