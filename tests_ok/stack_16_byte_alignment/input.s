@@ -25,8 +25,8 @@ extern grug_block_mask
 extern game_fn_define_d
 extern grug_enable_on_fn_runtime_error_handling
 extern sigprocmask
-extern game_fn_nothing
-extern game_fn_initialize
+extern game_fn_nothing_aligned
+extern game_fn_initialize_aligned
 extern grug_disable_on_fn_runtime_error_handling
 extern _GLOBAL_OFFSET_TABLE_
 
@@ -79,7 +79,7 @@ on_a:
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	block
-	call game_fn_nothing wrt ..plt
+	call game_fn_nothing_aligned wrt ..plt
 	unblock
 
 	; add rsp, 0x8 ; Uncomment to see the unaligned access crash
@@ -90,7 +90,7 @@ on_a:
 	mov eax, 42
 	push rax
 	pop rdi
-	call game_fn_initialize wrt ..plt
+	call game_fn_initialize_aligned wrt ..plt
 	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt

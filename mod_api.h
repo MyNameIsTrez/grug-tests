@@ -92,3 +92,6 @@ void game_fn_mega_f32(float f1, float f2, float f3, float f4, float f5, float f6
 void game_fn_mega_i32(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7);
 // void game_fn_draw(sprite_path);
 void game_fn_blocked_alrm(void);
+void game_fn_nothing_aligned(void);
+int32_t game_fn_magic_aligned(void);
+void game_fn_initialize_aligned(int32_t x);
