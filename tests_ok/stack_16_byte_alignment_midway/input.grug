@@ -4,5 +4,5 @@ define() d {
 }
 
 on_a() {
-    initialize(magic() + 42)
+    initialize_aligned(magic_aligned() + 42)
 }

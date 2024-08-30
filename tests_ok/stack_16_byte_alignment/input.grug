@@ -4,6 +4,6 @@ define() d {
 }
 
 on_a() {
-    nothing()
-    initialize(42)
+    nothing_aligned()
+    initialize_aligned(42)
 }

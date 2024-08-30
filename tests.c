@@ -37,6 +37,9 @@ static size_t game_fn_set_is_happy_call_count;
 static size_t game_fn_mega_f32_call_count;
 static size_t game_fn_mega_i32_call_count;
 static size_t game_fn_blocked_alrm_call_count;
+static size_t game_fn_nothing_aligned_call_count;
+static size_t game_fn_magic_aligned_call_count;
+static size_t game_fn_initialize_aligned_call_count;
 
 static bool streq(char *a, char *b) {
 	return strcmp(a, b) == 0;
@@ -194,6 +197,57 @@ void game_fn_blocked_alrm(void) {
 
 	assert(sigismember(&mask, SIGALRM));
 }
+void game_fn_nothing_aligned(void) {
+	game_fn_nothing_aligned_call_count++;
+
+	// From https://stackoverflow.com/a/2114249/13279557
+	int64_t rsp;
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wlanguage-extension-token"
+	asm ("mov %%rsp, %0" : "=r" (rsp) );
+	#pragma GCC diagnostic pop
+
+	// We need this in order to ensure that the C compiler will 16-byte align
+	// this function with a function prologue, cause we assert that the rsp is divisible by 16 after the function prologue
+	printf(":)\n");
+
+	assert((rsp & 0xf) == 0);
+}
+int32_t game_fn_magic_aligned(void) {
+	game_fn_magic_aligned_call_count++;
+
+	// From https://stackoverflow.com/a/2114249/13279557
+	int64_t rsp;
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wlanguage-extension-token"
+	asm ("mov %%rsp, %0" : "=r" (rsp) );
+	#pragma GCC diagnostic pop
+
+	printf(":)\n");
+
+	assert((rsp & 0xf) == 0);
+
+	return 42;
+}
+static int32_t game_fn_initialize_aligned_x;
+void game_fn_initialize_aligned(int32_t x) {
+	game_fn_initialize_aligned_call_count++;
+
+	game_fn_initialize_aligned_x = x;
+
+	// From https://stackoverflow.com/a/2114249/13279557
+	int64_t rsp;
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wlanguage-extension-token"
+	asm ("mov %%rsp, %0" : "=r" (rsp) );
+	#pragma GCC diagnostic pop
+
+	// We need this in order to ensure that the C compiler will 16-byte align
+	// this function with a function prologue, cause we assert that the rsp is divisible by 16 after the function prologue
+	printf(":)\n");
+
+	assert((rsp & 0xf) == 0);
+}
 
 void game_fn_define_a(void) {}
 static int32_t game_fn_define_b_x;
@@ -324,6 +378,9 @@ static void reset_call_counts(void) {
 	game_fn_mega_f32_call_count = 0;
 	game_fn_mega_i32_call_count = 0;
 	game_fn_blocked_alrm_call_count = 0;
+	game_fn_nothing_aligned_call_count = 0;
+	game_fn_magic_aligned_call_count = 0;
+	game_fn_initialize_aligned_call_count = 0;
 }
 
 static void check(int status, char *fn_name) {
@@ -1909,6 +1966,465 @@ static void ok_lt_true(void *on_fns, void *g) {
 	assert(streq(grug_on_fn_name, "on_a"));
 }
 
+static void ok_max_args(void *on_fns, void *g) {
+	assert(game_fn_mega_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_mega_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_mega_f1 == 1.0f);
+	assert(game_fn_mega_i1 == 21);
+	assert(game_fn_mega_b1 == true);
+	assert(game_fn_mega_f2 == 2.0f);
+	assert(game_fn_mega_f3 == 3.0f);
+	assert(game_fn_mega_f4 == 4.0f);
+	assert(game_fn_mega_b2 == false);
+	assert(game_fn_mega_i2 == 1337);
+	assert(game_fn_mega_f5 == 5.0f);
+	assert(game_fn_mega_f6 == 6.0f);
+	assert(game_fn_mega_f7 == 7.0f);
+	assert(game_fn_mega_f8 == 8.0f);
+	assert(game_fn_mega_i3 == 8192);
+	assert(strcmp(game_fn_mega_str, "foo") == 0);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_minimal(void *on_fns, void *g) {
+	(void)on_fns;
+
+	assert(game_fn_define_h_x == 42);
+
+	free(g);
+}
+
+static void ok_multiplication_as_two_arguments(void *on_fns, void *g) {
+	assert(game_fn_max_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_max_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_max_x == 6);
+	assert(game_fn_max_y == 20);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_ne_false(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == false);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_negate_parenthesized_expr(void *on_fns, void *g) {
+	assert(game_fn_initialize_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == -5);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_negative_literal(void *on_fns, void *g) {
+	assert(game_fn_initialize_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == -42);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_nested_break(void *on_fns, void *g) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 3);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_nested_continue(void *on_fns, void *g) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 2);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_ne_true(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_no_define_fields(void *on_fns, void *g) {
+	(void)on_fns;
+
+	free(g);
+}
+
+static void ok_no_on_fns(void *on_fns, void *g) {
+	(void)on_fns;
+
+	free(g);
+}
+
+static void ok_on_fn(void *on_fns, void *g) {
+	((struct d_on_fns *)on_fns)->a(g);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_on_fn_calling_game_fn_nothing(void *on_fns, void *g) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 1);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_on_fn_calling_game_fn_nothing_twice(void *on_fns, void *g) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 2);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_on_fn_calling_game_fn_plt_order(void *on_fns, void *g) {
+	assert(game_fn_nothing_call_count == 0);
+	assert(game_fn_magic_call_count == 0);
+	assert(game_fn_initialize_call_count == 0);
+	assert(game_fn_identity_call_count == 0);
+	assert(game_fn_max_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 1);
+	assert(game_fn_magic_call_count == 1);
+	assert(game_fn_initialize_call_count == 1);
+	assert(game_fn_identity_call_count == 1);
+	assert(game_fn_max_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == 42);
+	assert(game_fn_identity_x == 69);
+	assert(game_fn_max_x == 1337);
+	assert(game_fn_max_y == 8192);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_on_fn_calling_helper_fns(void *on_fns, void *g) {
+	assert(game_fn_nothing_call_count == 0);
+	assert(game_fn_initialize_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 1);
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == 42);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_on_fn_overwriting_param(void *on_fns, void *g) {
+	assert(game_fn_initialize_call_count == 0);
+	assert(game_fn_sin_call_count == 0);
+	((struct s_on_fns *)on_fns)->a(g, 2, 3.0f);
+	assert(game_fn_initialize_call_count == 1);
+	assert(game_fn_sin_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == 20);
+	assert(game_fn_sin_x == 30.0f);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_on_fn_passing_argument_to_helper_fn(void *on_fns, void *g) {
+	assert(game_fn_initialize_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == 42);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_on_fn_passing_magic_to_initialize(void *on_fns, void *g) {
+	assert(game_fn_magic_call_count == 0);
+	assert(game_fn_initialize_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_magic_call_count == 1);
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_on_fn_three(void *on_fns, void *g) {
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(streq(grug_on_fn_name, "on_a"));
+	((struct j_on_fns *)on_fns)->b(g);
+	assert(streq(grug_on_fn_name, "on_b"));
+	((struct j_on_fns *)on_fns)->c(g);
+	assert(streq(grug_on_fn_name, "on_c"));
+
+	free(g);
+}
+
+static void ok_on_fn_three_unused_first(void *on_fns, void *g) {
+	assert(((struct j_on_fns *)on_fns)->a == NULL);
+	((struct j_on_fns *)on_fns)->b(g);
+	assert(streq(grug_on_fn_name, "on_b"));
+	((struct j_on_fns *)on_fns)->c(g);
+	assert(streq(grug_on_fn_name, "on_c"));
+
+	free(g);
+}
+
+static void ok_on_fn_three_unused_second(void *on_fns, void *g) {
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(((struct j_on_fns *)on_fns)->b == NULL);
+	((struct j_on_fns *)on_fns)->c(g);
+	assert(streq(grug_on_fn_name, "on_c"));
+
+	free(g);
+}
+
+static void ok_on_fn_three_unused_third(void *on_fns, void *g) {
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(streq(grug_on_fn_name, "on_a"));
+	((struct j_on_fns *)on_fns)->b(g);
+	assert(streq(grug_on_fn_name, "on_b"));
+	assert(((struct j_on_fns *)on_fns)->c == NULL);
+
+	free(g);
+}
+
+static void ok_or_false(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == false);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_or_short_circuit(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_or_true_1(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_or_true_2(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_or_true_3(void *on_fns, void *g) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_pass_string_argument_to_game_fn(void *on_fns, void *g) {
+	assert(game_fn_say_call_count == 0);
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(game_fn_say_call_count == 1);
+
+	free(g);
+
+	assert(streq(game_fn_say_message, "foo"));
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_pass_string_argument_to_helper_fn(void *on_fns, void *g) {
+	assert(game_fn_say_call_count == 0);
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(game_fn_say_call_count == 1);
+
+	free(g);
+
+	assert(streq(game_fn_say_message, "foo"));
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_remainder_negative_result(void *on_fns, void *g) {
+	assert(game_fn_initialize_call_count == 0);
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == -1);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_remainder_positive_result(void *on_fns, void *g) {
+	assert(game_fn_initialize_call_count == 0);
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == 1);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_return(void *on_fns, void *g) {
+	assert(game_fn_initialize_call_count == 0);
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == 42);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_return_from_on_fn(void *on_fns, void *g) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 1);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_return_with_no_value(void *on_fns, void *g) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 1);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_stack_16_byte_alignment(void *on_fns, void *g) {
+	assert(game_fn_nothing_aligned_call_count == 0);
+	assert(game_fn_initialize_aligned_call_count == 0);
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_aligned_call_count == 1);
+	assert(game_fn_initialize_aligned_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_aligned_x == 42);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_stack_16_byte_alignment_midway(void *on_fns, void *g) {
+	assert(game_fn_magic_aligned_call_count == 0);
+	assert(game_fn_initialize_aligned_call_count == 0);
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(game_fn_magic_aligned_call_count == 1);
+	assert(game_fn_initialize_aligned_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_aligned_x == 42 + 42);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_string_and_on_fn(void *on_fns, void *g) {
+	assert(streq(game_fn_define_p_x, "foo"));
+
+	((struct p_on_fns *)on_fns)->a(g);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
+static void ok_string_eq_false(void *on_fns, void *g) {
+	((struct d_on_fns *)on_fns)->a(g);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == false);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+}
+
 static void error_tests(void) {
 	TEST_ERROR(assign_to_unknown_variable);
 	TEST_ERROR(assignment_isnt_expression);
@@ -2075,46 +2591,45 @@ static void ok_tests(void) {
 	TEST_OK(le_true_2, "d", 0);
 	TEST_OK(lt_false, "d", 0);
 	TEST_OK(lt_true, "d", 0);
-	// TEST_OK(max_args, "d", 0);
-	// TEST_OK(minimal, "d", 0);
-	// TEST_OK(multiplication_as_two_arguments, "d", 0);
-	// TEST_OK(ne_false, "d", 0);
-	// TEST_OK(negate_parenthesized_expr, "d", 0);
-	// TEST_OK(negative_literal, "d", 0);
-	// TEST_OK(nested_break, "d", 0);
-	// TEST_OK(nested_continue, "d", 0);
-	// TEST_OK(ne_true, "d", 0);
-	// TEST_OK(no_define_fields, "d", 0);
-	// TEST_OK(no_on_fns, "d", 0);
-	// TEST_OK(on_fn, "d", 0);
-	// TEST_OK(on_fn_calling_game_fn_nothing, "d", 0);
-	// TEST_OK(on_fn_calling_game_fn_nothing_twice, "d", 0);
-	// TEST_OK(on_fn_calling_game_fn_plt_order, "d", 0);
-	// TEST_OK(on_fn_calling_helper_fns, "d", 0);
-	// TEST_OK(on_fn_overwriting_param, "d", 0);
-	// TEST_OK(on_fn_passing_argument_to_helper_fn, "d", 0);
-	// TEST_OK(on_fn_passing_magic_to_initialize, "d", 0);
-	// TEST_OK(on_fn_three, "d", 0);
-	// TEST_OK(on_fn_three_unused_first, "d", 0);
-	// TEST_OK(on_fn_three_unused_second, "d", 0);
-	// TEST_OK(on_fn_three_unused_third, "d", 0);
-	// TEST_OK(or_false, "d", 0);
-	// TEST_OK(or_short_circuit, "d", 0);
-	// TEST_OK(or_true_1, "d", 0);
-	// TEST_OK(or_true_2, "d", 0);
-	// TEST_OK(or_true_3, "d", 0);
-	// TEST_OK(pass_string_argument_to_game_fn, "d", 0);
-	// TEST_OK(pass_string_argument_to_helper_fn, "d", 0);
-	// TEST_OK(remainder_negative_result, "d", 0);
-	// TEST_OK(remainder_positive_result, "d", 0);
-	// TEST_OK(resource_in_define, "d", 0);
-	// TEST_OK(return, "d", 0);
-	// TEST_OK(return_from_on_fn, "d", 0);
-	// TEST_OK(return_with_no_value, "d", 0);
-	// TEST_OK(stack_16_byte_alignment, "d", 0);
-	// TEST_OK(stack_16_byte_alignment_midway, "d", 0);
-	// TEST_OK(string_and_on_fn, "d", 0);
-	// TEST_OK(string_eq_false, "d", 0);
+	TEST_OK(max_args, "d", 0);
+	TEST_OK(minimal, "h", 0);
+	TEST_OK(multiplication_as_two_arguments, "d", 0);
+	TEST_OK(ne_false, "d", 0);
+	TEST_OK(negate_parenthesized_expr, "d", 0);
+	TEST_OK(negative_literal, "d", 0);
+	TEST_OK(nested_break, "d", 0);
+	TEST_OK(nested_continue, "d", 0);
+	TEST_OK(ne_true, "d", 0);
+	TEST_OK(no_define_fields, "d", 0);
+	TEST_OK(no_on_fns, "a", 0);
+	TEST_OK(on_fn, "d", 0);
+	TEST_OK(on_fn_calling_game_fn_nothing, "d", 0);
+	TEST_OK(on_fn_calling_game_fn_nothing_twice, "d", 0);
+	TEST_OK(on_fn_calling_game_fn_plt_order, "d", 0);
+	TEST_OK(on_fn_calling_helper_fns, "d", 0);
+	TEST_OK(on_fn_overwriting_param, "s", 0);
+	TEST_OK(on_fn_passing_argument_to_helper_fn, "d", 0);
+	TEST_OK(on_fn_passing_magic_to_initialize, "d", 0);
+	TEST_OK(on_fn_three, "j", 0);
+	TEST_OK(on_fn_three_unused_first, "j", 0);
+	TEST_OK(on_fn_three_unused_second, "j", 0);
+	TEST_OK(on_fn_three_unused_third, "j", 0);
+	TEST_OK(or_false, "d", 0);
+	TEST_OK(or_short_circuit, "d", 0);
+	TEST_OK(or_true_1, "d", 0);
+	TEST_OK(or_true_2, "d", 0);
+	TEST_OK(or_true_3, "d", 0);
+	TEST_OK(pass_string_argument_to_game_fn, "d", 0);
+	TEST_OK(pass_string_argument_to_helper_fn, "d", 0);
+	TEST_OK(remainder_negative_result, "d", 0);
+	TEST_OK(remainder_positive_result, "d", 0);
+	TEST_OK(return, "d", 0);
+	TEST_OK(return_from_on_fn, "d", 0);
+	TEST_OK(return_with_no_value, "d", 0);
+	TEST_OK(stack_16_byte_alignment, "d", 0);
+	TEST_OK(stack_16_byte_alignment_midway, "d", 0);
+	TEST_OK(string_and_on_fn, "p", 0);
+	TEST_OK(string_eq_false, "d", 0);
 	// TEST_OK(string_eq_true, "d", 0);
 	// TEST_OK(string_eq_true_empty, "d", 0);
 	// TEST_OK(string_ne_false, "d", 0);
