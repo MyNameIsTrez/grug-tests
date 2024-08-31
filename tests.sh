@@ -8,6 +8,8 @@ compiler_flags='-Igrug -g -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -
 # This makes compilation quite a bit slower
 # compiler_flags+=' -fsanitize=address,undefined'
 
+compiler_flags+=' -DMODS_DIR_PATH="tests"'
+
 if [[ -v OLD_LD ]] # If the OLD_LD environment variable was set
 then
     echo "- OLD_LD was turned on"
