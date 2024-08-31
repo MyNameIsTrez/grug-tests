@@ -1,18 +1,15 @@
 section .data
 
 global define_type
-define_type: db "h", 0
+define_type: db "u", 0
 
 align 8
 global globals_size
 globals_size: dq 0
 
-global on_fns
-on_fns:
-	dq 0
-
 global strings
 strings:
+	db "tests/ok/resource_in_define/foo.txt", 0 ; The mod is called "ok"
 
 section .text
 
@@ -20,13 +17,13 @@ extern grug_on_fn_name
 extern grug_on_fn_path
 extern grug_block_mask
 
-extern game_fn_define_h
+extern game_fn_define_u
 
 global define
 define:
-	mov eax, 42
+	lea rax, strings[rel 0]
 	mov rdi, rax
-	call game_fn_define_h wrt ..plt
+	call game_fn_define_u wrt ..plt
 	ret
 
 global init_globals

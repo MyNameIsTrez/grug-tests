@@ -361,6 +361,10 @@ void game_fn_define_t(float f1, float f2, float f3, float f4, float f5, float f6
 	game_fn_define_t_f7 = f7;
 	game_fn_define_t_f8 = f8;
 }
+static char *game_fn_define_u_sprite_path;
+void game_fn_define_u(char *sprite_path) {
+	game_fn_define_u_sprite_path = sprite_path;
+}
 
 static void reset_call_counts(void) {
 	game_fn_nothing_call_count = 0;
@@ -2345,6 +2349,14 @@ static void ok_remainder_positive_result(void *on_fns, void *g) {
 	assert(streq(grug_on_fn_name, "on_a"));
 }
 
+// static void ok_resource_in_define(void *on_fns, void *g) {
+// 	(void)on_fns;
+
+// 	assert(streq(game_fn_define_u_sprite_path, "tests/ok/resource_in_define/foo.txt"));
+
+// 	free(g);
+// }
+
 static void ok_return(void *on_fns, void *g) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
@@ -2862,6 +2874,7 @@ static void ok_tests(void) {
 	TEST_OK(pass_string_argument_to_helper_fn, "d", 0);
 	TEST_OK(remainder_negative_result, "d", 0);
 	TEST_OK(remainder_positive_result, "d", 0);
+	// TEST_OK(resource_in_define, "u", 0);
 	TEST_OK(return, "d", 0);
 	TEST_OK(return_from_on_fn, "d", 0);
 	TEST_OK(return_with_no_value, "d", 0);
