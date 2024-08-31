@@ -403,31 +403,31 @@ static void check_null(void *ptr, char *fn_name) {
 
 #define TEST_ERROR(test_name) test_error(\
 	#test_name,\
-	"tests_err/"#test_name"/input.grug",\
-	"tests_err/"#test_name"/expected_error.txt",\
-	"tests_err/"#test_name"/results",\
-	"tests_err/"#test_name"/results/output.so",\
-	"tests_err/"#test_name"/results/grug_output.txt",\
-	"tests_err/"#test_name"/results/failed"\
+	"tests/err/"#test_name"/input.grug",\
+	"tests/err/"#test_name"/expected_error.txt",\
+	"tests/err/"#test_name"/results",\
+	"tests/err/"#test_name"/results/output.so",\
+	"tests/err/"#test_name"/results/grug_output.txt",\
+	"tests/err/"#test_name"/results/failed"\
 );
 
 #define TEST_RUNTIME_ERROR(test_name) {\
 	struct test_data data = runtime_error_prologue(\
 		#test_name,\
-		"tests_err_runtime/"#test_name"/input.grug",\
-		"tests_err_runtime/"#test_name"/expected_error.txt",\
-		"tests_err_runtime/"#test_name"/results",\
-		"tests_err_runtime/"#test_name"/results/output.so",\
-		"tests_err_runtime/"#test_name"/results/output.hex",\
-		"tests_err_runtime/"#test_name"/results/output_elf.log",\
-		"tests_err_runtime/"#test_name"/results/output_objdump.log",\
-		"tests_err_runtime/"#test_name"/results/failed"\
+		"tests/err_runtime/"#test_name"/input.grug",\
+		"tests/err_runtime/"#test_name"/expected_error.txt",\
+		"tests/err_runtime/"#test_name"/results",\
+		"tests/err_runtime/"#test_name"/results/output.so",\
+		"tests/err_runtime/"#test_name"/results/output.hex",\
+		"tests/err_runtime/"#test_name"/results/output_elf.log",\
+		"tests/err_runtime/"#test_name"/results/output_objdump.log",\
+		"tests/err_runtime/"#test_name"/results/failed"\
 	);\
 	if (data.run) {\
 		runtime_error_##test_name(data.on_fns, data.g);\
 		runtime_error_epilogue(\
-			"tests_err_runtime/"#test_name"/expected_error.txt",\
-			"tests_err_runtime/"#test_name"/results/failed"\
+			"tests/err_runtime/"#test_name"/expected_error.txt",\
+			"tests/err_runtime/"#test_name"/results/failed"\
 		);\
 	}\
 }
@@ -435,29 +435,29 @@ static void check_null(void *ptr, char *fn_name) {
 #define TEST_OK(test_name, expected_define_type, expected_globals_size) {\
 	struct test_data data = ok_prologue(\
 		#test_name,\
-		"tests_ok/"#test_name"/input.grug",\
-		"tests_ok/"#test_name"/input.s",\
-		"tests_ok/"#test_name"/results",\
-		"tests_ok/"#test_name"/results/output.so",\
-		"tests_ok/"#test_name"/results/expected.so",\
-		"tests_ok/"#test_name"/results/expected.o",\
-		"tests_ok/"#test_name"/results/expected.hex",\
-		"tests_ok/"#test_name"/results/expected_elf.log",\
-		"tests_ok/"#test_name"/results/expected_objdump.log",\
-		"tests_ok/"#test_name"/results/failed",\
+		"tests/ok/"#test_name"/input.grug",\
+		"tests/ok/"#test_name"/input.s",\
+		"tests/ok/"#test_name"/results",\
+		"tests/ok/"#test_name"/results/output.so",\
+		"tests/ok/"#test_name"/results/expected.so",\
+		"tests/ok/"#test_name"/results/expected.o",\
+		"tests/ok/"#test_name"/results/expected.hex",\
+		"tests/ok/"#test_name"/results/expected_elf.log",\
+		"tests/ok/"#test_name"/results/expected_objdump.log",\
+		"tests/ok/"#test_name"/results/failed",\
 		expected_define_type,\
 		expected_globals_size\
 	);\
 	if (data.run) {\
 		ok_##test_name(data.on_fns, data.g);\
 		ok_epilogue(\
-			"tests_ok/"#test_name"/input.grug",\
-			"tests_ok/"#test_name"/results/output.so",\
-			"tests_ok/"#test_name"/results/expected.so",\
-			"tests_ok/"#test_name"/results/output.hex",\
-			"tests_ok/"#test_name"/results/output_elf.log",\
-			"tests_ok/"#test_name"/results/output_objdump.log",\
-			"tests_ok/"#test_name"/results/failed"\
+			"tests/ok/"#test_name"/input.grug",\
+			"tests/ok/"#test_name"/results/output.so",\
+			"tests/ok/"#test_name"/results/expected.so",\
+			"tests/ok/"#test_name"/results/output.hex",\
+			"tests/ok/"#test_name"/results/output_elf.log",\
+			"tests/ok/"#test_name"/results/output_objdump.log",\
+			"tests/ok/"#test_name"/results/failed"\
 		);\
 	}\
 }
@@ -679,11 +679,11 @@ static void test_error(
 	 && newer(grug_output_path, "tests.sh")
 	 && newer(grug_output_path, "tests.out")
 	) {
-		printf("Skipping tests_err/%s...\n", test_name);
+		printf("Skipping tests/err/%s...\n", test_name);
 		return;
 	}
 
-	printf("Running tests_err/%s...\n", test_name);
+	printf("Running tests/err/%s...\n", test_name);
 
 	rm_rf(results_path);
 	make_results_dir(results_path);
@@ -773,11 +773,11 @@ static struct test_data runtime_error_prologue(
 	 && newer(output_dll_path, "tests.sh")
 	 && newer(output_dll_path, "tests.out")
 	) {
-		printf("Skipping tests_err_runtime/%s...\n", test_name);
+		printf("Skipping tests/err_runtime/%s...\n", test_name);
 		return (struct test_data){.run=false};
 	}
 
-	printf("Running tests_err_runtime/%s...\n", test_name);
+	printf("Running tests/err_runtime/%s...\n", test_name);
 
 	rm_rf(results_path);
 	make_results_dir(results_path);
@@ -961,11 +961,11 @@ static struct test_data ok_prologue(
 	 && newer(output_dll_path, "tests.sh")
 	 && newer(output_dll_path, "tests.out")
 	) {
-		printf("Skipping %s...\n", test_name);
+		printf("Skipping tests/ok/%s...\n", test_name);
 		return (struct test_data){.run=false};
 	}
 
-	printf("Running %s...\n", test_name);
+	printf("Running tests/ok/%s...\n", test_name);
 
 	reset_call_counts();
 
@@ -1034,7 +1034,7 @@ static void ok_addition_as_argument(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 3);
 
 	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests_ok/addition_as_argument/input.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/addition_as_argument/input.grug"));
 }
 
 static void ok_addition_as_two_arguments(void *on_fns, void *g) {
@@ -2677,8 +2677,6 @@ static void ok_write_to_global_variable(void *on_fns, void *g) {
 }
 
 static void error_tests(void) {
-	TEST_ERROR(assign_to_unknown_variable);
-	TEST_ERROR(assignment_isnt_expression);
 	TEST_ERROR(assign_to_unknown_variable);
 	TEST_ERROR(assignment_isnt_expression);
 	TEST_ERROR(bool_unary_minus);

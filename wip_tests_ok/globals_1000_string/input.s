@@ -9,7 +9,7 @@ globals_size: dq 11000
 
 global strings
 strings:
-	db "tests_ok//input.grug", 0
+	db "tests/ok//input.grug", 0
 	db "on_a", 0
 	db "global0001", 0
 	db "global0002", 0
