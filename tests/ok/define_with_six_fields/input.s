@@ -9,8 +9,8 @@ globals_size: dq 0
 
 global strings
 strings:
-	db "bar", 0
 	db "foobar", 0
+	db "bar", 0
 
 section .text
 
@@ -24,13 +24,13 @@ define:
 	xor eax, eax
 	mov r8, rax
 
-	lea rax, strings[rel 4]
+	lea rax, strings[rel 0]
 	mov rcx, rax
 
 	mov eax, 1
 	mov rdx, rax
 
-	lea rax, strings[rel 0]
+	lea rax, strings[rel 7]
 	mov rsi, rax
 
 	mov eax, 42
