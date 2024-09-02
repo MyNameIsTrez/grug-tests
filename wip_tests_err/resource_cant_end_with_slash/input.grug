@@ -1,0 +1,5 @@
+define() u {
+    return {
+        .sprite_path = "resource_cant_end_with_slash/",
+    }
+}

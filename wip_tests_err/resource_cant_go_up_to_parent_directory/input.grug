@@ -1,0 +1,5 @@
+define() u {
+    return {
+        .sprite_path = "../tests_err",
+    }
+}
