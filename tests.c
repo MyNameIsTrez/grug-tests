@@ -2729,6 +2729,9 @@ static void error_tests(void) {
 	TEST_ERROR(on_function_no_return_value_expected);
 	TEST_ERROR(pass_bool_to_i32_game_param);
 	TEST_ERROR(pass_bool_to_i32_helper_param);
+	TEST_ERROR(resource_cant_be_empty_string);
+	TEST_ERROR(resource_cant_have_leading_slash);
+	TEST_ERROR(resource_cant_have_trailing_slash);
 	TEST_ERROR(resource_type_for_global);
 	TEST_ERROR(resource_type_for_helper_fn_argument);
 	TEST_ERROR(resource_type_for_helper_fn_return_type);

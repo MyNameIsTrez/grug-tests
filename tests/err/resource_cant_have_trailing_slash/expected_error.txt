@@ -1,0 +1,1 @@
+Remove the trailing slash from the resource "resource_cant_end_with_slash/"

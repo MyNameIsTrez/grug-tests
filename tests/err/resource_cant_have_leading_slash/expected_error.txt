@@ -1,0 +1,1 @@
+Remove the leading slash from the resource "/resource_cant_start_with_slash/input.grug"
