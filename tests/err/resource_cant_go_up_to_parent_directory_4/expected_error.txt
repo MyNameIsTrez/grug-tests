@@ -1,0 +1,1 @@
+Remove the '..' from the resource "resource_cant_go_up_to_parent_directory_4/../resource_cant_go_up_to_parent_directory_4"
