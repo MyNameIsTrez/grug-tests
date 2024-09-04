@@ -2352,7 +2352,7 @@ static void ok_remainder_positive_result(void *on_fns, void *g) {
 static void ok_resource_can_contain_dot_1(void *on_fns, void *g) {
 	(void)on_fns;
 
-	assert(streq(game_fn_define_u_sprite_path, "tests/ok/.foo"));
+	assert(streq(game_fn_define_u_sprite_path, "tests/ok/resource_can_contain_dot_1/.foo"));
 
 	free(g);
 }
@@ -2360,7 +2360,7 @@ static void ok_resource_can_contain_dot_1(void *on_fns, void *g) {
 static void ok_resource_can_contain_dot_2(void *on_fns, void *g) {
 	(void)on_fns;
 
-	assert(streq(game_fn_define_u_sprite_path, "tests/ok/foo."));
+	assert(streq(game_fn_define_u_sprite_path, "tests/ok/resource_can_contain_dot_2/foo."));
 
 	free(g);
 }
@@ -2368,7 +2368,7 @@ static void ok_resource_can_contain_dot_2(void *on_fns, void *g) {
 static void ok_resource_can_contain_dot_3(void *on_fns, void *g) {
 	(void)on_fns;
 
-	assert(streq(game_fn_define_u_sprite_path, "tests/ok/foo.bar"));
+	assert(streq(game_fn_define_u_sprite_path, "tests/ok/resource_can_contain_dot_3/foo.bar"));
 
 	free(g);
 }
@@ -2376,7 +2376,7 @@ static void ok_resource_can_contain_dot_3(void *on_fns, void *g) {
 static void ok_resource_can_contain_dot_dot_1(void *on_fns, void *g) {
 	(void)on_fns;
 
-	assert(streq(game_fn_define_u_sprite_path, "tests/ok/..foo"));
+	assert(streq(game_fn_define_u_sprite_path, "tests/ok/resource_can_contain_dot_dot_1/..foo"));
 
 	free(g);
 }
@@ -2384,7 +2384,7 @@ static void ok_resource_can_contain_dot_dot_1(void *on_fns, void *g) {
 static void ok_resource_can_contain_dot_dot_2(void *on_fns, void *g) {
 	(void)on_fns;
 
-	assert(streq(game_fn_define_u_sprite_path, "tests/ok/foo.."));
+	assert(streq(game_fn_define_u_sprite_path, "tests/ok/resource_can_contain_dot_dot_2/foo.."));
 
 	free(g);
 }
@@ -2392,7 +2392,7 @@ static void ok_resource_can_contain_dot_dot_2(void *on_fns, void *g) {
 static void ok_resource_can_contain_dot_dot_3(void *on_fns, void *g) {
 	(void)on_fns;
 
-	assert(streq(game_fn_define_u_sprite_path, "tests/ok/foo..bar"));
+	assert(streq(game_fn_define_u_sprite_path, "tests/ok/resource_can_contain_dot_dot_3/foo..bar"));
 
 	free(g);
 }

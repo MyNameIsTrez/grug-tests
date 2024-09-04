@@ -9,7 +9,7 @@ globals_size: dq 0
 
 global strings
 strings:
-	db "tests/ok/foo.", 0
+	db "tests/ok/resource_can_contain_dot_2/foo.", 0
 
 section .text
 
