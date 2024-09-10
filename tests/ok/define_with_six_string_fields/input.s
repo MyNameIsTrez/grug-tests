@@ -16,6 +16,10 @@ strings:
 	db "v", 0
 	db "u", 0
 
+align 8
+global dll_resources_size
+dll_resources_size: dq 0
+
 section .text
 
 extern game_fn_define_o

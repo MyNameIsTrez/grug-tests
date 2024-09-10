@@ -18,6 +18,10 @@ strings:
 	db "tests/ok/variable_shadows_on_fn_2/input.grug", 0
 	db "on_a", 0
 
+align 8
+global dll_resources_size
+dll_resources_size: dq 0
+
 section .text
 
 extern grug_on_fn_name

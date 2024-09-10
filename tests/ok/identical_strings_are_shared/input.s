@@ -12,6 +12,10 @@ strings:
 	db "b", 0
 	db "a", 0
 
+align 8
+global dll_resources_size
+dll_resources_size: dq 0
+
 section .text
 
 extern grug_on_fn_name

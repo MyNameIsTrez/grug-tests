@@ -20,6 +20,9 @@ struct test_data {
 	bool run;
 	void *on_fns;
 	void *g;
+	size_t dll_resources_size;
+	char **dll_resources;
+	size_t *dll_resource_mtimes;
 };
 
 static size_t game_fn_nothing_call_count;
@@ -449,7 +452,7 @@ static void check_null(void *ptr, char *fn_name) {
 		expected_globals_size\
 	);\
 	if (data.run) {\
-		ok_##test_name(data.on_fns, data.g);\
+		ok_##test_name(data.on_fns, data.g, data.dll_resources_size, data.dll_resources, data.dll_resource_mtimes);\
 		ok_epilogue(\
 			"tests/ok/"#test_name"/input.grug",\
 			"tests/ok/"#test_name"/results/output.so",\
@@ -823,6 +826,9 @@ static struct test_data runtime_error_prologue(
 
 	void *on_fns = get(handle, "on_fns");
 
+	size_t *dll_resources_size_ptr = get(handle, "dll_resources_size");
+	assert(dll_resources_size_ptr != NULL);
+
 	return (struct test_data){.run=true, .on_fns=on_fns, .g=g};
 }
 
@@ -1021,10 +1027,23 @@ static struct test_data ok_prologue(
 
 	void *on_fns = dlsym(handle, "on_fns");
 
-	return (struct test_data){.run=true, .on_fns=on_fns, .g=g};
+	size_t *dll_resources_size_ptr = get(handle, "dll_resources_size");
+	assert(dll_resources_size_ptr != NULL);
+
+	char **dll_resources = dlsym(handle, "dll_resources");
+	size_t *dll_resource_mtimes = dlsym(handle, "dll_resource_mtimes");
+
+	return (struct test_data){
+		.run=true,
+		.on_fns=on_fns,
+		.g=g,
+		.dll_resources_size=*dll_resources_size_ptr,
+		.dll_resources=dll_resources,
+		.dll_resource_mtimes=dll_resource_mtimes
+	};
 }
 
-static void ok_addition_as_argument(void *on_fns, void *g) {
+static void ok_addition_as_argument(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -1035,9 +1054,13 @@ static void ok_addition_as_argument(void *on_fns, void *g) {
 
 	assert(streq(grug_on_fn_name, "on_a"));
 	assert(streq(grug_on_fn_path, "tests/ok/addition_as_argument/input.grug"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_addition_as_two_arguments(void *on_fns, void *g) {
+static void ok_addition_as_two_arguments(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_max_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_max_call_count == 1);
@@ -1048,9 +1071,13 @@ static void ok_addition_as_two_arguments(void *on_fns, void *g) {
 	assert(game_fn_max_y == 9);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_addition_i32_wraparound(void *on_fns, void *g) {
+static void ok_addition_i32_wraparound(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -1060,9 +1087,13 @@ static void ok_addition_i32_wraparound(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == INT32_MIN);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_addition_with_multiplication(void *on_fns, void *g) {
+static void ok_addition_with_multiplication(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -1072,9 +1103,13 @@ static void ok_addition_with_multiplication(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 14);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_addition_with_multiplication_2(void *on_fns, void *g) {
+static void ok_addition_with_multiplication_2(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -1084,9 +1119,13 @@ static void ok_addition_with_multiplication_2(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 10);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_and_false_1(void *on_fns, void *g) {
+static void ok_and_false_1(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1096,9 +1135,13 @@ static void ok_and_false_1(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_and_false_2(void *on_fns, void *g) {
+static void ok_and_false_2(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1108,9 +1151,13 @@ static void ok_and_false_2(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_and_false_3(void *on_fns, void *g) {
+static void ok_and_false_3(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1120,9 +1167,13 @@ static void ok_and_false_3(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_and_short_circuit(void *on_fns, void *g) {
+static void ok_and_short_circuit(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1132,9 +1183,13 @@ static void ok_and_short_circuit(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_and_true(void *on_fns, void *g) {
+static void ok_and_true(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1144,21 +1199,27 @@ static void ok_and_true(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_blocked_alrm(void *on_fns, void *g) {
+static void ok_blocked_alrm(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_blocked_alrm_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_blocked_alrm_call_count == 1);
 
 	free(g);
 
-	// assert(game_fn_initialize_bool_b == true);
-
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_bool_logical_not_false(void *on_fns, void *g) {
+static void ok_bool_logical_not_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1168,9 +1229,13 @@ static void ok_bool_logical_not_false(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_bool_logical_not_true(void *on_fns, void *g) {
+static void ok_bool_logical_not_true(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1180,9 +1245,13 @@ static void ok_bool_logical_not_true(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_bool_returned(void *on_fns, void *g) {
+static void ok_bool_returned(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_set_is_happy_call_count == 0);
 	assert(game_fn_is_friday_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -1194,9 +1263,13 @@ static void ok_bool_returned(void *on_fns, void *g) {
 	assert(game_fn_set_is_happy_is_happy == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_break(void *on_fns, void *g) {
+static void ok_break(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 3);
@@ -1204,9 +1277,13 @@ static void ok_break(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_calls_100(void *on_fns, void *g) {
+static void ok_calls_100(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 100);
@@ -1214,9 +1291,13 @@ static void ok_calls_100(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_calls_1000(void *on_fns, void *g) {
+static void ok_calls_1000(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1000);
@@ -1224,9 +1305,13 @@ static void ok_calls_1000(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_continue(void *on_fns, void *g) {
+static void ok_continue(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -1234,26 +1319,38 @@ static void ok_continue(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_define_containing_addition(void *on_fns, void *g) {
+static void ok_define_containing_addition(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	assert(game_fn_define_b_x == 3);
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_define_containing_string(void *on_fns, void *g) {
+static void ok_define_containing_string(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	assert(game_fn_define_k_age == 42);
 	assert(streq(game_fn_define_k_name, "foo"));
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_define_with_eight_f32_fields(void *on_fns, void *g) {
+static void ok_define_with_eight_f32_fields(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	assert(game_fn_define_t_f1 == 1.0f);
@@ -1266,9 +1363,13 @@ static void ok_define_with_eight_f32_fields(void *on_fns, void *g) {
 	assert(game_fn_define_t_f8 == 8.0f);
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_define_with_six_fields(void *on_fns, void *g) {
+static void ok_define_with_six_fields(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	assert(game_fn_define_m_w == 42);
@@ -1279,9 +1380,13 @@ static void ok_define_with_six_fields(void *on_fns, void *g) {
 	assert(game_fn_define_m_z == 1337);
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_define_with_six_i32_fields(void *on_fns, void *g) {
+static void ok_define_with_six_i32_fields(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	assert(game_fn_define_n_u == 1);
@@ -1292,9 +1397,13 @@ static void ok_define_with_six_i32_fields(void *on_fns, void *g) {
 	assert(game_fn_define_n_z == 6);
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_define_with_six_string_fields(void *on_fns, void *g) {
+static void ok_define_with_six_string_fields(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	assert(streq(game_fn_define_o_u, "u"));
@@ -1305,9 +1414,13 @@ static void ok_define_with_six_string_fields(void *on_fns, void *g) {
 	assert(streq(game_fn_define_o_z, "z"));
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_division_negative_result(void *on_fns, void *g) {
+static void ok_division_negative_result(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -1317,9 +1430,13 @@ static void ok_division_negative_result(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == -2);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_division_positive_result(void *on_fns, void *g) {
+static void ok_division_positive_result(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -1329,9 +1446,13 @@ static void ok_division_positive_result(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 2);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_else_false(void *on_fns, void *g) {
+static void ok_else_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -1339,9 +1460,13 @@ static void ok_else_false(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_else_true(void *on_fns, void *g) {
+static void ok_else_true(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 3);
@@ -1349,9 +1474,13 @@ static void ok_else_true(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_eq_false(void *on_fns, void *g) {
+static void ok_eq_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1361,9 +1490,13 @@ static void ok_eq_false(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_eq_true(void *on_fns, void *g) {
+static void ok_eq_true(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1373,9 +1506,13 @@ static void ok_eq_true(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_addition(void *on_fns, void *g) {
+static void ok_f32_addition(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_sin_call_count == 1);
@@ -1385,9 +1522,13 @@ static void ok_f32_addition(void *on_fns, void *g) {
 	assert(game_fn_sin_x == 6.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_argument(void *on_fns, void *g) {
+static void ok_f32_argument(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_sin_call_count == 1);
@@ -1397,9 +1538,13 @@ static void ok_f32_argument(void *on_fns, void *g) {
 	assert(game_fn_sin_x == 4.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_division(void *on_fns, void *g) {
+static void ok_f32_division(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_sin_call_count == 1);
@@ -1409,9 +1554,13 @@ static void ok_f32_division(void *on_fns, void *g) {
 	assert(game_fn_sin_x == 0.5f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_eq_false(void *on_fns, void *g) {
+static void ok_f32_eq_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1421,9 +1570,13 @@ static void ok_f32_eq_false(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_eq_true(void *on_fns, void *g) {
+static void ok_f32_eq_true(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1433,9 +1586,13 @@ static void ok_f32_eq_true(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_ge_false(void *on_fns, void *g) {
+static void ok_f32_ge_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1445,9 +1602,13 @@ static void ok_f32_ge_false(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_ge_true_1(void *on_fns, void *g) {
+static void ok_f32_ge_true_1(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1457,9 +1618,13 @@ static void ok_f32_ge_true_1(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_ge_true_2(void *on_fns, void *g) {
+static void ok_f32_ge_true_2(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1469,9 +1634,13 @@ static void ok_f32_ge_true_2(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_global_variable(void *on_fns, void *g) {
+static void ok_f32_global_variable(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_sin_call_count == 1);
@@ -1481,9 +1650,13 @@ static void ok_f32_global_variable(void *on_fns, void *g) {
 	assert(game_fn_sin_x == 4.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_gt_false(void *on_fns, void *g) {
+static void ok_f32_gt_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1493,9 +1666,13 @@ static void ok_f32_gt_false(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_gt_true(void *on_fns, void *g) {
+static void ok_f32_gt_true(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1505,9 +1682,13 @@ static void ok_f32_gt_true(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_le_false(void *on_fns, void *g) {
+static void ok_f32_le_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1517,9 +1698,13 @@ static void ok_f32_le_false(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_le_true_1(void *on_fns, void *g) {
+static void ok_f32_le_true_1(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1529,9 +1714,13 @@ static void ok_f32_le_true_1(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_le_true_2(void *on_fns, void *g) {
+static void ok_f32_le_true_2(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1541,9 +1730,13 @@ static void ok_f32_le_true_2(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_local_variable(void *on_fns, void *g) {
+static void ok_f32_local_variable(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_sin_call_count == 1);
@@ -1553,9 +1746,13 @@ static void ok_f32_local_variable(void *on_fns, void *g) {
 	assert(game_fn_sin_x == 4.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_lt_false(void *on_fns, void *g) {
+static void ok_f32_lt_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1565,9 +1762,13 @@ static void ok_f32_lt_false(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_lt_true(void *on_fns, void *g) {
+static void ok_f32_lt_true(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1577,9 +1778,13 @@ static void ok_f32_lt_true(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_multiplication(void *on_fns, void *g) {
+static void ok_f32_multiplication(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_sin_call_count == 1);
@@ -1589,9 +1794,13 @@ static void ok_f32_multiplication(void *on_fns, void *g) {
 	assert(game_fn_sin_x == 8.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_ne_false(void *on_fns, void *g) {
+static void ok_f32_ne_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1601,9 +1810,13 @@ static void ok_f32_ne_false(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_negated(void *on_fns, void *g) {
+static void ok_f32_negated(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_sin_call_count == 1);
@@ -1613,9 +1826,13 @@ static void ok_f32_negated(void *on_fns, void *g) {
 	assert(game_fn_sin_x == -4.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_ne_true(void *on_fns, void *g) {
+static void ok_f32_ne_true(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1625,9 +1842,13 @@ static void ok_f32_ne_true(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_passed_to_helper_fn(void *on_fns, void *g) {
+static void ok_f32_passed_to_helper_fn(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_sin_call_count == 1);
@@ -1637,9 +1858,13 @@ static void ok_f32_passed_to_helper_fn(void *on_fns, void *g) {
 	assert(game_fn_sin_x == 42.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_passed_to_on_fn(void *on_fns, void *g) {
+static void ok_f32_passed_to_on_fn(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_sin_call_count == 0);
 	((struct r_on_fns *)on_fns)->a(g, 42.0f);
 	assert(game_fn_sin_call_count == 1);
@@ -1649,9 +1874,13 @@ static void ok_f32_passed_to_on_fn(void *on_fns, void *g) {
 	assert(game_fn_sin_x == 42.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_passing_sin_to_cos(void *on_fns, void *g) {
+static void ok_f32_passing_sin_to_cos(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_sin_call_count == 0);
 	assert(game_fn_cos_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -1664,9 +1893,13 @@ static void ok_f32_passing_sin_to_cos(void *on_fns, void *g) {
 	assert(game_fn_cos_x == sinf(4.0f));
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_f32_subtraction(void *on_fns, void *g) {
+static void ok_f32_subtraction(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_sin_call_count == 1);
@@ -1676,9 +1909,13 @@ static void ok_f32_subtraction(void *on_fns, void *g) {
 	assert(game_fn_sin_x == -2.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_fibonacci(void *on_fns, void *g) {
+static void ok_fibonacci(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -1688,9 +1925,13 @@ static void ok_fibonacci(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 55);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_ge_false(void *on_fns, void *g) {
+static void ok_ge_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1700,9 +1941,13 @@ static void ok_ge_false(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_ge_true_1(void *on_fns, void *g) {
+static void ok_ge_true_1(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1712,9 +1957,13 @@ static void ok_ge_true_1(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_ge_true_2(void *on_fns, void *g) {
+static void ok_ge_true_2(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1724,17 +1973,25 @@ static void ok_ge_true_2(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_global_containing_addition(void *on_fns, void *g) {
+static void ok_global_containing_addition(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	assert(((int32_t*)g)[0] == 5);
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_globals(void *on_fns, void *g) {
+static void ok_globals(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	assert(game_fn_define_h_x == 42);
@@ -1743,9 +2000,13 @@ static void ok_globals(void *on_fns, void *g) {
 	assert(((int32_t*)g)[1] == 1337);
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_globals_1000(void *on_fns, void *g) {
+static void ok_globals_1000(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	for (int32_t i = 0; i < 1000; i++) {
@@ -1753,9 +2014,13 @@ static void ok_globals_1000(void *on_fns, void *g) {
 	}
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_globals_32(void *on_fns, void *g) {
+static void ok_globals_32(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	for (int32_t i = 0; i < 32; i++) {
@@ -1763,9 +2028,13 @@ static void ok_globals_32(void *on_fns, void *g) {
 	}
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_globals_64(void *on_fns, void *g) {
+static void ok_globals_64(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	for (int32_t i = 0; i < 64; i++) {
@@ -1773,9 +2042,13 @@ static void ok_globals_64(void *on_fns, void *g) {
 	}
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_gt_false(void *on_fns, void *g) {
+static void ok_gt_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1785,9 +2058,13 @@ static void ok_gt_false(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_gt_true(void *on_fns, void *g) {
+static void ok_gt_true(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1797,9 +2074,13 @@ static void ok_gt_true(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_helper_fn(void *on_fns, void *g) {
+static void ok_helper_fn(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1);
@@ -1807,9 +2088,13 @@ static void ok_helper_fn(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_helper_fn_overwriting_param(void *on_fns, void *g) {
+static void ok_helper_fn_overwriting_param(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -1822,9 +2107,13 @@ static void ok_helper_fn_overwriting_param(void *on_fns, void *g) {
 	assert(game_fn_sin_x == 30.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_helper_fn_returning_void_has_no_return(void *on_fns, void *g) {
+static void ok_helper_fn_returning_void_has_no_return(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -1832,9 +2121,13 @@ static void ok_helper_fn_returning_void_has_no_return(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_helper_fn_returning_void_returns_void(void *on_fns, void *g) {
+static void ok_helper_fn_returning_void_returns_void(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -1842,9 +2135,13 @@ static void ok_helper_fn_returning_void_returns_void(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_i32_max(void *on_fns, void *g) {
+static void ok_i32_max(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -1854,9 +2151,13 @@ static void ok_i32_max(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 2147483647);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_i32_min(void *on_fns, void *g) {
+static void ok_i32_min(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -1866,9 +2167,13 @@ static void ok_i32_min(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == -2147483648);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_i32_negated(void *on_fns, void *g) {
+static void ok_i32_negated(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -1878,9 +2183,13 @@ static void ok_i32_negated(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == -42);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_identical_strings_are_shared(void *on_fns, void *g) {
+static void ok_identical_strings_are_shared(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	assert(streq(game_fn_define_q_a, "a"));
@@ -1888,9 +2197,13 @@ static void ok_identical_strings_are_shared(void *on_fns, void *g) {
 	assert(streq(game_fn_define_q_c, "b"));
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_if_false(void *on_fns, void *g) {
+static void ok_if_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -1898,9 +2211,13 @@ static void ok_if_false(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_if_true(void *on_fns, void *g) {
+static void ok_if_true(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 3);
@@ -1908,9 +2225,13 @@ static void ok_if_true(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_le_false(void *on_fns, void *g) {
+static void ok_le_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1920,9 +2241,13 @@ static void ok_le_false(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_le_true_1(void *on_fns, void *g) {
+static void ok_le_true_1(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1932,9 +2257,13 @@ static void ok_le_true_1(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_le_true_2(void *on_fns, void *g) {
+static void ok_le_true_2(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1944,9 +2273,13 @@ static void ok_le_true_2(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_lt_false(void *on_fns, void *g) {
+static void ok_lt_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1956,9 +2289,13 @@ static void ok_lt_false(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_lt_true(void *on_fns, void *g) {
+static void ok_lt_true(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -1968,9 +2305,13 @@ static void ok_lt_true(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_max_args(void *on_fns, void *g) {
+static void ok_max_args(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_mega_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_mega_call_count == 1);
@@ -1993,17 +2334,25 @@ static void ok_max_args(void *on_fns, void *g) {
 	assert(streq(game_fn_mega_str, "foo"));
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_minimal(void *on_fns, void *g) {
+static void ok_minimal(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	assert(game_fn_define_h_x == 42);
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_multiplication_as_two_arguments(void *on_fns, void *g) {
+static void ok_multiplication_as_two_arguments(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_max_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_max_call_count == 1);
@@ -2014,9 +2363,13 @@ static void ok_multiplication_as_two_arguments(void *on_fns, void *g) {
 	assert(game_fn_max_y == 20);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_ne_false(void *on_fns, void *g) {
+static void ok_ne_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2026,9 +2379,13 @@ static void ok_ne_false(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_negate_parenthesized_expr(void *on_fns, void *g) {
+static void ok_negate_parenthesized_expr(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2038,9 +2395,13 @@ static void ok_negate_parenthesized_expr(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == -5);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_negative_literal(void *on_fns, void *g) {
+static void ok_negative_literal(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2050,9 +2411,13 @@ static void ok_negative_literal(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == -42);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_nested_break(void *on_fns, void *g) {
+static void ok_nested_break(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 3);
@@ -2060,9 +2425,13 @@ static void ok_nested_break(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_nested_continue(void *on_fns, void *g) {
+static void ok_nested_continue(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -2070,9 +2439,13 @@ static void ok_nested_continue(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_ne_true(void *on_fns, void *g) {
+static void ok_ne_true(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2082,29 +2455,45 @@ static void ok_ne_true(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_no_define_fields(void *on_fns, void *g) {
+static void ok_no_define_fields(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_no_on_fns(void *on_fns, void *g) {
+static void ok_no_on_fns(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_on_fn(void *on_fns, void *g) {
+static void ok_on_fn(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_on_fn_calling_game_fn_nothing(void *on_fns, void *g) {
+static void ok_on_fn_calling_game_fn_nothing(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1);
@@ -2112,9 +2501,13 @@ static void ok_on_fn_calling_game_fn_nothing(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_on_fn_calling_game_fn_nothing_twice(void *on_fns, void *g) {
+static void ok_on_fn_calling_game_fn_nothing_twice(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -2122,9 +2515,13 @@ static void ok_on_fn_calling_game_fn_nothing_twice(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_on_fn_calling_game_fn_plt_order(void *on_fns, void *g) {
+static void ok_on_fn_calling_game_fn_plt_order(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	assert(game_fn_magic_call_count == 0);
 	assert(game_fn_initialize_call_count == 0);
@@ -2145,9 +2542,13 @@ static void ok_on_fn_calling_game_fn_plt_order(void *on_fns, void *g) {
 	assert(game_fn_max_y == 8192);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_on_fn_calling_helper_fns(void *on_fns, void *g) {
+static void ok_on_fn_calling_helper_fns(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -2159,9 +2560,13 @@ static void ok_on_fn_calling_helper_fns(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 42);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_on_fn_overwriting_param(void *on_fns, void *g) {
+static void ok_on_fn_overwriting_param(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	assert(game_fn_sin_call_count == 0);
 	((struct s_on_fns *)on_fns)->a(g, 2, 3.0f);
@@ -2174,9 +2579,13 @@ static void ok_on_fn_overwriting_param(void *on_fns, void *g) {
 	assert(game_fn_sin_x == 30.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_on_fn_passing_argument_to_helper_fn(void *on_fns, void *g) {
+static void ok_on_fn_passing_argument_to_helper_fn(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2186,9 +2595,13 @@ static void ok_on_fn_passing_argument_to_helper_fn(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 42);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_on_fn_passing_magic_to_initialize(void *on_fns, void *g) {
+static void ok_on_fn_passing_magic_to_initialize(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_magic_call_count == 0);
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -2198,9 +2611,13 @@ static void ok_on_fn_passing_magic_to_initialize(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_on_fn_three(void *on_fns, void *g) {
+static void ok_on_fn_three(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(streq(grug_on_fn_name, "on_a"));
 	((struct j_on_fns *)on_fns)->b(g);
@@ -2209,9 +2626,13 @@ static void ok_on_fn_three(void *on_fns, void *g) {
 	assert(streq(grug_on_fn_name, "on_c"));
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_on_fn_three_unused_first(void *on_fns, void *g) {
+static void ok_on_fn_three_unused_first(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(((struct j_on_fns *)on_fns)->a == NULL);
 	((struct j_on_fns *)on_fns)->b(g);
 	assert(streq(grug_on_fn_name, "on_b"));
@@ -2219,9 +2640,13 @@ static void ok_on_fn_three_unused_first(void *on_fns, void *g) {
 	assert(streq(grug_on_fn_name, "on_c"));
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_on_fn_three_unused_second(void *on_fns, void *g) {
+static void ok_on_fn_three_unused_second(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(streq(grug_on_fn_name, "on_a"));
 	assert(((struct j_on_fns *)on_fns)->b == NULL);
@@ -2229,9 +2654,13 @@ static void ok_on_fn_three_unused_second(void *on_fns, void *g) {
 	assert(streq(grug_on_fn_name, "on_c"));
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_on_fn_three_unused_third(void *on_fns, void *g) {
+static void ok_on_fn_three_unused_third(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(streq(grug_on_fn_name, "on_a"));
 	((struct j_on_fns *)on_fns)->b(g);
@@ -2239,9 +2668,13 @@ static void ok_on_fn_three_unused_third(void *on_fns, void *g) {
 	assert(((struct j_on_fns *)on_fns)->c == NULL);
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_or_false(void *on_fns, void *g) {
+static void ok_or_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2251,9 +2684,13 @@ static void ok_or_false(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_or_short_circuit(void *on_fns, void *g) {
+static void ok_or_short_circuit(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2263,9 +2700,13 @@ static void ok_or_short_circuit(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_or_true_1(void *on_fns, void *g) {
+static void ok_or_true_1(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2275,9 +2716,13 @@ static void ok_or_true_1(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_or_true_2(void *on_fns, void *g) {
+static void ok_or_true_2(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2287,9 +2732,13 @@ static void ok_or_true_2(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_or_true_3(void *on_fns, void *g) {
+static void ok_or_true_3(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2299,9 +2748,13 @@ static void ok_or_true_3(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_pass_string_argument_to_game_fn(void *on_fns, void *g) {
+static void ok_pass_string_argument_to_game_fn(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_say_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_say_call_count == 1);
@@ -2311,9 +2764,13 @@ static void ok_pass_string_argument_to_game_fn(void *on_fns, void *g) {
 	assert(streq(game_fn_say_message, "foo"));
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_pass_string_argument_to_helper_fn(void *on_fns, void *g) {
+static void ok_pass_string_argument_to_helper_fn(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_say_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_say_call_count == 1);
@@ -2323,9 +2780,13 @@ static void ok_pass_string_argument_to_helper_fn(void *on_fns, void *g) {
 	assert(streq(game_fn_say_message, "foo"));
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_remainder_negative_result(void *on_fns, void *g) {
+static void ok_remainder_negative_result(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2335,9 +2796,13 @@ static void ok_remainder_negative_result(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == -1);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_remainder_positive_result(void *on_fns, void *g) {
+static void ok_remainder_positive_result(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2347,65 +2812,97 @@ static void ok_remainder_positive_result(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 1);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_resource_can_contain_dot_1(void *on_fns, void *g) {
+static void ok_resource_can_contain_dot_1(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	assert(streq(game_fn_define_u_sprite_path, "tests/ok/resource_can_contain_dot_1/.foo"));
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_resource_can_contain_dot_2(void *on_fns, void *g) {
+static void ok_resource_can_contain_dot_2(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	assert(streq(game_fn_define_u_sprite_path, "tests/ok/resource_can_contain_dot_2/foo."));
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_resource_can_contain_dot_3(void *on_fns, void *g) {
+static void ok_resource_can_contain_dot_3(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	assert(streq(game_fn_define_u_sprite_path, "tests/ok/resource_can_contain_dot_3/foo.bar"));
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_resource_can_contain_dot_dot_1(void *on_fns, void *g) {
+static void ok_resource_can_contain_dot_dot_1(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	assert(streq(game_fn_define_u_sprite_path, "tests/ok/resource_can_contain_dot_dot_1/..foo"));
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_resource_can_contain_dot_dot_2(void *on_fns, void *g) {
+static void ok_resource_can_contain_dot_dot_2(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	assert(streq(game_fn_define_u_sprite_path, "tests/ok/resource_can_contain_dot_dot_2/foo.."));
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_resource_can_contain_dot_dot_3(void *on_fns, void *g) {
+static void ok_resource_can_contain_dot_dot_3(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	assert(streq(game_fn_define_u_sprite_path, "tests/ok/resource_can_contain_dot_dot_3/foo..bar"));
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_resource_in_define(void *on_fns, void *g) {
+static void ok_resource_in_define(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	(void)on_fns;
 
 	assert(streq(game_fn_define_u_sprite_path, "tests/ok/resource_in_define/foo.txt"));
 
 	free(g);
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_return(void *on_fns, void *g) {
+static void ok_return(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2415,9 +2912,13 @@ static void ok_return(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 42);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_return_from_on_fn(void *on_fns, void *g) {
+static void ok_return_from_on_fn(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1);
@@ -2425,9 +2926,13 @@ static void ok_return_from_on_fn(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_return_with_no_value(void *on_fns, void *g) {
+static void ok_return_with_no_value(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1);
@@ -2435,9 +2940,13 @@ static void ok_return_with_no_value(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_stack_16_byte_alignment(void *on_fns, void *g) {
+static void ok_stack_16_byte_alignment(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_aligned_call_count == 0);
 	assert(game_fn_initialize_aligned_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
@@ -2449,9 +2958,13 @@ static void ok_stack_16_byte_alignment(void *on_fns, void *g) {
 	assert(game_fn_initialize_aligned_x == 42);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_stack_16_byte_alignment_midway(void *on_fns, void *g) {
+static void ok_stack_16_byte_alignment_midway(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_magic_aligned_call_count == 0);
 	assert(game_fn_initialize_aligned_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
@@ -2463,9 +2976,13 @@ static void ok_stack_16_byte_alignment_midway(void *on_fns, void *g) {
 	assert(game_fn_initialize_aligned_x == 42 + 42);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_string_and_on_fn(void *on_fns, void *g) {
+static void ok_string_and_on_fn(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(streq(game_fn_define_p_x, "foo"));
 
 	((struct p_on_fns *)on_fns)->a(g);
@@ -2473,9 +2990,13 @@ static void ok_string_and_on_fn(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_string_eq_false(void *on_fns, void *g) {
+static void ok_string_eq_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2485,9 +3006,13 @@ static void ok_string_eq_false(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_string_eq_true(void *on_fns, void *g) {
+static void ok_string_eq_true(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2497,9 +3022,13 @@ static void ok_string_eq_true(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_string_eq_true_empty(void *on_fns, void *g) {
+static void ok_string_eq_true_empty(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2509,9 +3038,13 @@ static void ok_string_eq_true_empty(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_string_ne_false(void *on_fns, void *g) {
+static void ok_string_ne_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2521,9 +3054,13 @@ static void ok_string_ne_false(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_string_ne_false_empty(void *on_fns, void *g) {
+static void ok_string_ne_false_empty(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2533,9 +3070,13 @@ static void ok_string_ne_false_empty(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_string_ne_true(void *on_fns, void *g) {
+static void ok_string_ne_true(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2545,9 +3086,13 @@ static void ok_string_ne_true(void *on_fns, void *g) {
 	assert(game_fn_initialize_bool_b == true);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_subtraction_negative_result(void *on_fns, void *g) {
+static void ok_subtraction_negative_result(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2557,9 +3102,13 @@ static void ok_subtraction_negative_result(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == -3);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_subtraction_positive_result(void *on_fns, void *g) {
+static void ok_subtraction_positive_result(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2569,9 +3118,13 @@ static void ok_subtraction_positive_result(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 3);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_variable(void *on_fns, void *g) {
+static void ok_variable(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2581,9 +3134,13 @@ static void ok_variable(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 42);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_variable_does_not_shadow_define_fn(void *on_fns, void *g) {
+static void ok_variable_does_not_shadow_define_fn(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2593,9 +3150,13 @@ static void ok_variable_does_not_shadow_define_fn(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 42);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_variable_reassignment(void *on_fns, void *g) {
+static void ok_variable_reassignment(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2605,9 +3166,13 @@ static void ok_variable_reassignment(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 69);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_variable_shadows_define_fn(void *on_fns, void *g) {
+static void ok_variable_shadows_define_fn(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2617,9 +3182,13 @@ static void ok_variable_shadows_define_fn(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 42);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_variable_shadows_game_fn(void *on_fns, void *g) {
+static void ok_variable_shadows_game_fn(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2629,9 +3198,13 @@ static void ok_variable_shadows_game_fn(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 42);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_variable_shadows_helper_fn(void *on_fns, void *g) {
+static void ok_variable_shadows_helper_fn(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2641,9 +3214,13 @@ static void ok_variable_shadows_helper_fn(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 42);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_variable_shadows_on_fn_1(void *on_fns, void *g) {
+static void ok_variable_shadows_on_fn_1(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2653,9 +3230,13 @@ static void ok_variable_shadows_on_fn_1(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 42);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_variable_shadows_on_fn_2(void *on_fns, void *g) {
+static void ok_variable_shadows_on_fn_2(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2665,9 +3246,13 @@ static void ok_variable_shadows_on_fn_2(void *on_fns, void *g) {
 	assert(game_fn_initialize_x == 42);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_variable_string_global(void *on_fns, void *g) {
+static void ok_variable_string_global(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_say_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_say_call_count == 1);
@@ -2677,9 +3262,13 @@ static void ok_variable_string_global(void *on_fns, void *g) {
 	assert(streq(game_fn_say_message, "foo"));
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_variable_string_local(void *on_fns, void *g) {
+static void ok_variable_string_local(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_say_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_say_call_count == 1);
@@ -2689,9 +3278,13 @@ static void ok_variable_string_local(void *on_fns, void *g) {
 	assert(streq(game_fn_say_message, "foo"));
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_void_function_early_return(void *on_fns, void *g) {
+static void ok_void_function_early_return(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1);
@@ -2699,9 +3292,13 @@ static void ok_void_function_early_return(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_while_false(void *on_fns, void *g) {
+static void ok_while_false(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -2709,9 +3306,13 @@ static void ok_while_false(void *on_fns, void *g) {
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
-static void ok_write_to_global_variable(void *on_fns, void *g) {
+static void ok_write_to_global_variable(void *on_fns, void *g, size_t dll_resources_size, char **dll_resources, size_t *dll_resource_mtimes) {
 	assert(game_fn_max_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_max_call_count == 1);
@@ -2722,6 +3323,10 @@ static void ok_write_to_global_variable(void *on_fns, void *g) {
 	assert(game_fn_max_y == 69);
 
 	assert(streq(grug_on_fn_name, "on_a"));
+
+	assert(dll_resources_size == 0);
+	assert(dll_resources == NULL);
+	assert(dll_resource_mtimes == NULL);
 }
 
 static void error_tests(void) {

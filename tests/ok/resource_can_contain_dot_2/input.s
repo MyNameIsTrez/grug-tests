@@ -11,6 +11,10 @@ global strings
 strings:
 	db "tests/ok/resource_can_contain_dot_2/foo.", 0
 
+align 8
+global dll_resources_size
+dll_resources_size: dq 0
+
 section .text
 
 extern grug_on_fn_name
