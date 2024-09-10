@@ -12,8 +12,8 @@ strings:
 	db "tests/ok/resource_can_contain_dot_dot_1/..foo", 0
 
 align 8
-global dll_resources_size
-dll_resources_size: dq 0
+global resources_size
+resources_size: dq 0
 
 section .text
 

@@ -15,8 +15,8 @@ global strings
 strings:
 
 align 8
-global dll_resources_size
-dll_resources_size: dq 0
+global resources_size
+resources_size: dq 0
 
 section .text
 

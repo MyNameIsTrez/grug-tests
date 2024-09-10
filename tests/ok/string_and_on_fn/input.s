@@ -18,8 +18,8 @@ strings:
 	db "on_a", 0
 
 align 8
-global dll_resources_size
-dll_resources_size: dq 0
+global resources_size
+resources_size: dq 0
 
 section .text
 
