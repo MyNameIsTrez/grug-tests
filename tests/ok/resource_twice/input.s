@@ -1,7 +1,7 @@
 section .data
 
 global define_type
-define_type: db "u", 0
+define_type: db "v", 0
 
 align 8
 global globals_size
@@ -9,19 +9,22 @@ globals_size: dq 0
 
 global strings
 strings:
-	db "tests/ok/resource_can_contain_dot_2/foo.", 0
+	db "tests/ok/resource_twice/bar.txt", 0
+	db "tests/ok/resource_twice/foo.txt", 0
 
 align 8
 global resources_size
-resources_size: dq 1
+resources_size: dq 2
 
 global resources
 resources:
 	dq strings + 0
+	dq strings + 32
 
 global resource_mtimes
 resource_mtimes:
-	dq 1725965274
+	dq 1726068669
+	dq 1726068648
 
 section .text
 
@@ -29,13 +32,15 @@ extern grug_on_fn_name
 extern grug_on_fn_path
 extern grug_block_mask
 
-extern game_fn_define_u
+extern game_fn_define_v
 
 global define
 define:
 	lea rax, strings[rel 0]
+	mov rsi, rax
+	lea rax, strings[rel 32]
 	mov rdi, rax
-	call game_fn_define_u wrt ..plt
+	call game_fn_define_v wrt ..plt
 	ret
 
 global init_globals

@@ -368,6 +368,12 @@ static char *game_fn_define_u_sprite_path;
 void game_fn_define_u(char *sprite_path) {
 	game_fn_define_u_sprite_path = sprite_path;
 }
+static char *game_fn_define_v_foo;
+static char *game_fn_define_v_bar;
+void game_fn_define_v(char *foo, char *bar) {
+	game_fn_define_v_foo = foo;
+	game_fn_define_v_bar = bar;
+}
 
 static void reset_call_counts(void) {
 	game_fn_nothing_call_count = 0;
@@ -2919,7 +2925,7 @@ static void ok_resource_can_contain_dot_1(void *on_fns, void *g, size_t resource
 
 	assert(resources_size == 1);
 	assert(streq(resources[0], "tests/ok/resource_can_contain_dot_1/.foo"));
-	assert(resource_mtimes == NULL);
+	assert(resource_mtimes[0] == 1725965274);
 }
 
 static void ok_resource_can_contain_dot_2(void *on_fns, void *g, size_t resources_size, char **resources, size_t *resource_mtimes) {
@@ -2931,7 +2937,7 @@ static void ok_resource_can_contain_dot_2(void *on_fns, void *g, size_t resource
 
 	assert(resources_size == 1);
 	assert(streq(resources[0], "tests/ok/resource_can_contain_dot_2/foo."));
-	assert(resource_mtimes == NULL);
+	assert(resource_mtimes[0] == 1725965274);
 }
 
 static void ok_resource_can_contain_dot_3(void *on_fns, void *g, size_t resources_size, char **resources, size_t *resource_mtimes) {
@@ -2943,7 +2949,7 @@ static void ok_resource_can_contain_dot_3(void *on_fns, void *g, size_t resource
 
 	assert(resources_size == 1);
 	assert(streq(resources[0], "tests/ok/resource_can_contain_dot_3/foo.bar"));
-	assert(resource_mtimes == NULL);
+	assert(resource_mtimes[0] == 1725965274);
 }
 
 static void ok_resource_can_contain_dot_dot_1(void *on_fns, void *g, size_t resources_size, char **resources, size_t *resource_mtimes) {
@@ -2955,7 +2961,7 @@ static void ok_resource_can_contain_dot_dot_1(void *on_fns, void *g, size_t reso
 
 	assert(resources_size == 1);
 	assert(streq(resources[0], "tests/ok/resource_can_contain_dot_dot_1/..foo"));
-	assert(resource_mtimes == NULL);
+	assert(resource_mtimes[0] == 1725965274);
 }
 
 static void ok_resource_can_contain_dot_dot_2(void *on_fns, void *g, size_t resources_size, char **resources, size_t *resource_mtimes) {
@@ -2967,7 +2973,7 @@ static void ok_resource_can_contain_dot_dot_2(void *on_fns, void *g, size_t reso
 
 	assert(resources_size == 1);
 	assert(streq(resources[0], "tests/ok/resource_can_contain_dot_dot_2/foo.."));
-	assert(resource_mtimes == NULL);
+	assert(resource_mtimes[0] == 1725965274);
 }
 
 static void ok_resource_can_contain_dot_dot_3(void *on_fns, void *g, size_t resources_size, char **resources, size_t *resource_mtimes) {
@@ -2979,7 +2985,7 @@ static void ok_resource_can_contain_dot_dot_3(void *on_fns, void *g, size_t reso
 
 	assert(resources_size == 1);
 	assert(streq(resources[0], "tests/ok/resource_can_contain_dot_dot_3/foo..bar"));
-	assert(resource_mtimes == NULL);
+	assert(resource_mtimes[0] == 1725965274);
 }
 
 static void ok_resource_in_define(void *on_fns, void *g, size_t resources_size, char **resources, size_t *resource_mtimes) {
@@ -2991,7 +2997,22 @@ static void ok_resource_in_define(void *on_fns, void *g, size_t resources_size, 
 
 	assert(resources_size == 1);
 	assert(streq(resources[0], "tests/ok/resource_in_define/foo.txt"));
-	assert(resource_mtimes == NULL);
+	assert(resource_mtimes[0] == 1725965274);
+}
+
+static void ok_resource_twice(void *on_fns, void *g, size_t resources_size, char **resources, size_t *resource_mtimes) {
+	(void)on_fns;
+
+	assert(streq(game_fn_define_v_foo, "tests/ok/resource_twice/foo.txt"));
+	assert(streq(game_fn_define_v_bar, "tests/ok/resource_twice/bar.txt"));
+
+	free(g);
+
+	assert(resources_size == 2);
+	assert(streq(resources[0], "tests/ok/resource_twice/bar.txt"));
+	assert(streq(resources[1], "tests/ok/resource_twice/foo.txt"));
+	assert(resource_mtimes[0] == 1726068669); // bar.txt
+	assert(resource_mtimes[1] == 1726068648); // foo.txt
 }
 
 static void ok_return(void *on_fns, void *g, size_t resources_size, char **resources, size_t *resource_mtimes) {
@@ -3664,6 +3685,7 @@ static void ok_tests(void) {
 	TEST_OK(resource_can_contain_dot_dot_2, "u", 0);
 	TEST_OK(resource_can_contain_dot_dot_3, "u", 0);
 	TEST_OK(resource_in_define, "u", 0);
+	TEST_OK(resource_twice, "v", 0);
 	TEST_OK(return, "d", 0);
 	TEST_OK(return_from_on_fn, "d", 0);
 	TEST_OK(return_with_no_value, "d", 0);

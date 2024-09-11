@@ -368,6 +368,19 @@
 					"type": "resource"
 				}
 			]
+		},
+		"v": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "foo",
+					"type": "resource"
+				},
+				{
+					"name": "bar",
+					"type": "resource"
+				}
+			]
 		}
 	},
 	"game_functions": {
