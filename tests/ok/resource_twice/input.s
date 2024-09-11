@@ -23,8 +23,8 @@ resources:
 
 global resource_mtimes
 resource_mtimes:
-	dq 1726068669
-	dq 1726068648
+	dq 0
+	dq 0
 
 section .text
 
