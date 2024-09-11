@@ -1007,6 +1007,10 @@ static struct test_data ok_prologue(
 
 	run((char *[]){"objcopy", expected_dll_path, "--redefine-sym", redefine_sym, NULL});
 
+	// TODO: Patch the resource mtimes here!!!
+	// TODO: Try to do this by opening expected.so, where if dlsym("resources_size") is > 0, dlsym("resources") should be looped, so that the mtime of those resources can be gotten with stat().
+	// TODO: Then the placeholder resource mtimes should be overwritten on disk, somehow.
+
 	// printf("  Outputting expected.so info...\n");
 	output_dll_info(expected_dll_path, expected_xxd_path, expected_readelf_path, expected_objdump_path);
 
