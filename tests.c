@@ -1028,7 +1028,6 @@ static struct test_data ok_prologue(
 	void *on_fns = dlsym(handle, "on_fns");
 
 	size_t *resources_size_ptr = get(handle, "resources_size");
-	assert(resources_size_ptr != NULL);
 
 	char **resources = dlsym(handle, "resources");
 	size_t *resource_mtimes = dlsym(handle, "resource_mtimes");
@@ -2918,8 +2917,8 @@ static void ok_resource_can_contain_dot_1(void *on_fns, void *g, size_t resource
 
 	free(g);
 
-	assert(resources_size == 0);
-	assert(resources == NULL);
+	assert(resources_size == 1);
+	assert(streq(resources[0], "tests/ok/resource_can_contain_dot_1/.foo"));
 	assert(resource_mtimes == NULL);
 }
 
@@ -2930,8 +2929,8 @@ static void ok_resource_can_contain_dot_2(void *on_fns, void *g, size_t resource
 
 	free(g);
 
-	assert(resources_size == 0);
-	assert(resources == NULL);
+	assert(resources_size == 1);
+	assert(streq(resources[0], "tests/ok/resource_can_contain_dot_2/foo."));
 	assert(resource_mtimes == NULL);
 }
 
@@ -2942,8 +2941,8 @@ static void ok_resource_can_contain_dot_3(void *on_fns, void *g, size_t resource
 
 	free(g);
 
-	assert(resources_size == 0);
-	assert(resources == NULL);
+	assert(resources_size == 1);
+	assert(streq(resources[0], "tests/ok/resource_can_contain_dot_3/foo.bar"));
 	assert(resource_mtimes == NULL);
 }
 
@@ -2954,8 +2953,8 @@ static void ok_resource_can_contain_dot_dot_1(void *on_fns, void *g, size_t reso
 
 	free(g);
 
-	assert(resources_size == 0);
-	assert(resources == NULL);
+	assert(resources_size == 1);
+	assert(streq(resources[0], "tests/ok/resource_can_contain_dot_dot_1/..foo"));
 	assert(resource_mtimes == NULL);
 }
 
@@ -2966,8 +2965,8 @@ static void ok_resource_can_contain_dot_dot_2(void *on_fns, void *g, size_t reso
 
 	free(g);
 
-	assert(resources_size == 0);
-	assert(resources == NULL);
+	assert(resources_size == 1);
+	assert(streq(resources[0], "tests/ok/resource_can_contain_dot_dot_2/foo.."));
 	assert(resource_mtimes == NULL);
 }
 
@@ -2978,8 +2977,8 @@ static void ok_resource_can_contain_dot_dot_3(void *on_fns, void *g, size_t reso
 
 	free(g);
 
-	assert(resources_size == 0);
-	assert(resources == NULL);
+	assert(resources_size == 1);
+	assert(streq(resources[0], "tests/ok/resource_can_contain_dot_dot_3/foo..bar"));
 	assert(resource_mtimes == NULL);
 }
 
@@ -2990,8 +2989,8 @@ static void ok_resource_in_define(void *on_fns, void *g, size_t resources_size, 
 
 	free(g);
 
-	assert(resources_size == 0);
-	assert(resources == NULL);
+	assert(resources_size == 1);
+	assert(streq(resources[0], "tests/ok/resource_in_define/foo.txt"));
 	assert(resource_mtimes == NULL);
 }
 

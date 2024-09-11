@@ -13,7 +13,11 @@ strings:
 
 align 8
 global resources_size
-resources_size: dq 0
+resources_size: dq 1
+
+global resources
+resources:
+	dq strings + 0
 
 section .text
 
