@@ -38,6 +38,7 @@ void j_on_c(void *globals);
 void p_on_a(void *globals);
 void r_on_a(void *globals, float f);
 void s_on_a(void *globals, int32_t i, float f);
+void w_on_a(void *globals, int32_t self);
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wlanguage-extension-token"
@@ -74,6 +75,9 @@ struct r_on_fns {
 };
 struct s_on_fns {
     typeof(s_on_a) *a;
+};
+struct w_on_fns {
+    typeof(w_on_a) *a;
 };
 #pragma GCC diagnostic pop
 
