@@ -422,70 +422,90 @@ static void check_null(void *ptr, char *fn_name) {
 	}
 }
 
-#define TEST_ERROR(test_name) test_error(\
-	#test_name,\
-	"tests/err/"#test_name"/input.grug",\
-	"tests/err/"#test_name"/expected_error.txt",\
-	"tests/err/"#test_name"/results",\
-	"tests/err/"#test_name"/results/output.so",\
-	"tests/err/"#test_name"/results/grug_output.txt",\
-	"tests/err/"#test_name"/results/failed"\
-);
+#define MAX_WHITELISTED_TESTS 420420
+static char *whitelisted_tests[MAX_WHITELISTED_TESTS];
+static size_t whitelisted_tests_size;
+static bool is_whitelisted_test(char *name) {
+	for (size_t i = 0; i < whitelisted_tests_size; i++) {
+		if (streq(whitelisted_tests[i], name)) {
+			return true;
+		}
+	}
+	return false;
+}
 
-#define TEST_RUNTIME_ERROR(test_name) {\
-	struct test_data data = runtime_error_prologue(\
-		#test_name,\
-		"tests/err_runtime/"#test_name"/input.grug",\
-		"tests/err_runtime/"#test_name"/expected_error.txt",\
-		"tests/err_runtime/"#test_name"/results",\
-		"tests/err_runtime/"#test_name"/results/output.so",\
-		"tests/err_runtime/"#test_name"/results/output.hex",\
-		"tests/err_runtime/"#test_name"/results/output_elf.log",\
-		"tests/err_runtime/"#test_name"/results/output_objdump.log",\
-		"tests/err_runtime/"#test_name"/results/failed"\
-	);\
-	if (data.run) {\
-		runtime_error_##test_name(data.on_fns, data.g);\
-		runtime_error_epilogue(\
-			"tests/err_runtime/"#test_name"/expected_error.txt",\
-			"tests/err_runtime/"#test_name"/results/failed"\
+#define TEST_ERROR(test_name) {\
+	if (whitelisted_tests_size == 0 || is_whitelisted_test(#test_name)) {\
+		test_error(\
+			#test_name,\
+			"tests/err/"#test_name"/input.grug",\
+			"tests/err/"#test_name"/expected_error.txt",\
+			"tests/err/"#test_name"/results",\
+			"tests/err/"#test_name"/results/output.so",\
+			"tests/err/"#test_name"/results/grug_output.txt",\
+			"tests/err/"#test_name"/results/failed"\
 		);\
 	}\
-	if (data.dll && dlclose(data.dll)) {\
-		handle_dlerror("dlclose");\
+}
+
+#define TEST_RUNTIME_ERROR(test_name) {\
+	if (whitelisted_tests_size == 0 || is_whitelisted_test(#test_name)) {\
+		struct test_data data = runtime_error_prologue(\
+			#test_name,\
+			"tests/err_runtime/"#test_name"/input.grug",\
+			"tests/err_runtime/"#test_name"/expected_error.txt",\
+			"tests/err_runtime/"#test_name"/results",\
+			"tests/err_runtime/"#test_name"/results/output.so",\
+			"tests/err_runtime/"#test_name"/results/output.hex",\
+			"tests/err_runtime/"#test_name"/results/output_elf.log",\
+			"tests/err_runtime/"#test_name"/results/output_objdump.log",\
+			"tests/err_runtime/"#test_name"/results/failed"\
+		);\
+		if (data.run) {\
+			runtime_error_##test_name(data.on_fns, data.g);\
+			runtime_error_epilogue(\
+				"tests/err_runtime/"#test_name"/expected_error.txt",\
+				"tests/err_runtime/"#test_name"/results/failed"\
+			);\
+		}\
+		if (data.dll && dlclose(data.dll)) {\
+			handle_dlerror("dlclose");\
+		}\
 	}\
 }
 
 #define TEST_OK(test_name, expected_define_type, expected_globals_size) {\
-	struct test_data data = ok_prologue(\
-		#test_name,\
-		"tests/ok/"#test_name"/input.grug",\
-		"tests/ok/"#test_name"/input.s",\
-		"tests/ok/"#test_name"/results",\
-		"tests/ok/"#test_name"/results/output.so",\
-		"tests/ok/"#test_name"/results/expected.so",\
-		"tests/ok/"#test_name"/results/expected.o",\
-		"tests/ok/"#test_name"/results/expected.hex",\
-		"tests/ok/"#test_name"/results/expected_elf.log",\
-		"tests/ok/"#test_name"/results/expected_objdump.log",\
-		"tests/ok/"#test_name"/results/failed",\
-		expected_define_type,\
-		expected_globals_size\
-	);\
-	if (data.run) {\
-		ok_##test_name(data.on_fns, data.g, data.resources_size, data.resources);\
-		ok_epilogue(\
+	if (whitelisted_tests_size == 0 || is_whitelisted_test(#test_name)) {\
+		struct test_data data = ok_prologue(\
+			#test_name,\
 			"tests/ok/"#test_name"/input.grug",\
+			"tests/ok/"#test_name"/input.s",\
+			"tests/ok/"#test_name"/results",\
 			"tests/ok/"#test_name"/results/output.so",\
 			"tests/ok/"#test_name"/results/expected.so",\
-			"tests/ok/"#test_name"/results/output.hex",\
-			"tests/ok/"#test_name"/results/output_elf.log",\
-			"tests/ok/"#test_name"/results/output_objdump.log",\
-			"tests/ok/"#test_name"/results/failed"\
+			"tests/ok/"#test_name"/results/expected.o",\
+			"tests/ok/"#test_name"/results/expected.hex",\
+			"tests/ok/"#test_name"/results/expected_elf.log",\
+			"tests/ok/"#test_name"/results/expected_objdump.log",\
+			"tests/ok/"#test_name"/results/failed",\
+			expected_define_type,\
+			expected_globals_size\
 		);\
-	}\
-	if (data.dll && dlclose(data.dll)) {\
-		handle_dlerror("dlclose");\
+		if (data.run) {\
+			ok_##test_name(data.on_fns, data.g, data.resources_size, data.resources);\
+			ok_epilogue(\
+				"tests/ok/"#test_name"/input.grug",\
+				"tests/ok/"#test_name"/results/output.so",\
+				"tests/ok/"#test_name"/results/expected.so",\
+				"tests/ok/"#test_name"/results/output.hex",\
+				"tests/ok/"#test_name"/results/output_elf.log",\
+				"tests/ok/"#test_name"/results/output_objdump.log",\
+				"tests/ok/"#test_name"/results/failed"\
+			);\
+		}\
+		if (data.dll && dlclose(data.dll)) {\
+			handle_dlerror("dlclose");\
+		}\
 	}\
 }
 
@@ -3609,7 +3629,11 @@ static void ok_tests(void) {
 	TEST_OK(write_to_global_variable, "d", 8);
 }
 
-int main(void) {
+int main(int argc, char *argv[]) {
+	for (int i = 1; i < argc; i++) {
+		whitelisted_tests[whitelisted_tests_size++] = argv[i];
+	}
+
 	error_tests();
 	runtime_error_tests();
 	ok_tests();

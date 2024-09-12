@@ -40,5 +40,6 @@ then
 fi
 
 echo "Running tests.out..."
-# valgrind --quiet ./tests.out
-./tests.out
+# "$@" passes any whitelisted test names to tests.out
+# valgrind --quiet ./tests.out "$@"
+./tests.out "$@"
