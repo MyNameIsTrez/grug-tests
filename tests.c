@@ -6,6 +6,7 @@
 
 #include <assert.h>
 #include <dlfcn.h>
+#include <elf.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <ftw.h>
@@ -16,7 +17,12 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+#define MAX_DYNSTR_LENGTH 420420
+
 typedef int64_t i64;
+typedef uint16_t u16;
+typedef uint32_t u32;
+typedef uint64_t u64;
 
 struct test_data {
 	bool run;
@@ -25,6 +31,7 @@ struct test_data {
 	size_t resources_size;
 	char **resources;
 	i64 *resource_mtimes;
+	void *dll;
 };
 
 static size_t game_fn_nothing_call_count;
@@ -441,6 +448,9 @@ static void check_null(void *ptr, char *fn_name) {
 			"tests/err_runtime/"#test_name"/results/failed"\
 		);\
 	}\
+	if (data.dll && dlclose(data.dll)) {\
+		handle_dlerror("dlclose");\
+	}\
 }
 
 #define TEST_OK(test_name, expected_define_type, expected_globals_size) {\
@@ -470,6 +480,9 @@ static void check_null(void *ptr, char *fn_name) {
 			"tests/ok/"#test_name"/results/output_objdump.log",\
 			"tests/ok/"#test_name"/results/failed"\
 		);\
+	}\
+	if (data.dll && dlclose(data.dll)) {\
+		handle_dlerror("dlclose");\
 	}\
 }
 
@@ -505,8 +518,8 @@ static size_t read_dll(char *dll_path, uint8_t *dll_bytes) {
 	return dll_bytes_len;
 }
 
-static void *get(void *handle, char *label) {
-	void *p = dlsym(handle, label);
+static void *get(void *dll, char *label) {
+	void *p = dlsym(dll, label);
 	if (!p) {
 		printf("dlsym: %s\n", dlerror());
 		exit(EXIT_FAILURE);
@@ -765,6 +778,17 @@ static void runtime_error_epilogue(char *expected_error_path, char *failed_file_
 	unlink(failed_file_path);
 }
 
+static void handle_dlerror(char *function_name) {
+	char *err = dlerror();
+	if (!err) {
+		fprintf(stderr, "dlerror() was asked to find an error string for %s(), but it couldn't find one", function_name);
+		exit(EXIT_FAILURE);
+	}
+
+	fprintf(stderr, "%s: %s\n", function_name, err);
+	exit(EXIT_FAILURE);
+}
+
 static struct test_data runtime_error_prologue(
 	char *test_name,
 	char *grug_path,
@@ -811,33 +835,32 @@ static struct test_data runtime_error_prologue(
 
 	// printf("  Running the test...\n");
 
-	void *handle = dlopen(output_dll_path, RTLD_NOW);
-	if (!handle) {
-		printf("dlopen: %s\n", dlerror());
-		exit(EXIT_FAILURE);
+	void *dll = dlopen(output_dll_path, RTLD_NOW);
+	if (!dll) {
+		handle_dlerror("dlopen");
 	}
 
-	assert(streq(get(handle, "define_type"), "d"));
+	assert(streq(get(dll, "define_type"), "d"));
 
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wpedantic"
-	grug_define_fn_t define = get(handle, "define");
+	grug_define_fn_t define = get(dll, "define");
 	define();
 
-	size_t globals_size = *(size_t *)get(handle, "globals_size");
+	size_t globals_size = *(size_t *)get(dll, "globals_size");
 	assert(globals_size == 0);
 
 	void *g = malloc(globals_size);
-	grug_init_globals_fn_t init_globals = get(handle, "init_globals");
+	grug_init_globals_fn_t init_globals = get(dll, "init_globals");
 	init_globals(g);
 	#pragma GCC diagnostic pop
 
-	void *on_fns = get(handle, "on_fns");
+	void *on_fns = get(dll, "on_fns");
 
-	size_t *resources_size_ptr = get(handle, "resources_size");
+	size_t *resources_size_ptr = get(dll, "resources_size");
 	assert(resources_size_ptr != NULL);
 
-	return (struct test_data){.run=true, .on_fns=on_fns, .g=g};
+	return (struct test_data){.run=true, .on_fns=on_fns, .g=g, .dll=dll};
 }
 
 static bool handler_called;
@@ -951,6 +974,163 @@ static void ok_epilogue(
 	unlink(failed_file_path);
 }
 
+static void read_chars(FILE *file, size_t offset, size_t count, char *chars) {
+	if (fseek(file, offset, SEEK_SET) == -1) {
+		perror("fseek");
+		exit(EXIT_FAILURE);
+	}
+
+	size_t bytes_read = fread(chars, sizeof(char), count, file);
+	if (bytes_read < count && ferror(file)) {
+		perror("fread");
+		exit(EXIT_FAILURE);
+	}
+}
+
+static u32 read_u32(FILE *file, size_t offset) {
+	if (fseek(file, offset, SEEK_SET) == -1) {
+		perror("fseek");
+		exit(EXIT_FAILURE);
+	}
+
+	u32 value;
+	if (fread(&value, sizeof(u32), 1, file) == 0 && ferror(file)) {
+		perror("fread");
+		exit(EXIT_FAILURE);
+	}
+
+	return value;
+}
+
+static u64 read_u64(FILE *file, size_t offset) {
+	if (fseek(file, offset, SEEK_SET) == -1) {
+		perror("fseek");
+		exit(EXIT_FAILURE);
+	}
+
+	u64 value;
+	if (fread(&value, sizeof(u64), 1, file) == 0 && ferror(file)) {
+		perror("fread");
+		exit(EXIT_FAILURE);
+	}
+
+	return value;
+}
+
+static u64 get_dynstr_size(FILE *file, size_t section_headers_offset) {
+	size_t offset = section_headers_offset;
+
+	size_t section_header_size = 0x40;
+
+	// Skip the null, .hash, and .dynsym sections
+	offset += 3 * section_header_size;
+
+	// Skip the dynstr's name, type, flags, address, and offset
+	offset += 2 * sizeof(u32) + 3 * sizeof(u64);
+
+	return read_u64(file, offset);
+}
+
+static u64 get_dynstr_offset(FILE *file, size_t section_headers_offset) {
+	size_t offset = section_headers_offset;
+
+	size_t section_header_size = 0x40;
+
+	// Skip the null, .hash, and .dynsym sections
+	offset += 3 * section_header_size;
+
+	// Skip the dynstr's name, type, and flags
+	offset += 2 * sizeof(u32) + sizeof(u64);
+
+	return read_u64(file, offset);
+}
+
+static u64 get_dynsym_size(FILE *file, size_t section_headers_offset) {
+	size_t offset = section_headers_offset;
+
+	size_t section_header_size = 0x40;
+
+	// Skip the null and .hash sections
+	offset += 2 * section_header_size;
+
+	// Skip the dynsym's name, type, flags, address, and offset
+	offset += 2 * sizeof(u32) + 3 * sizeof(u64);
+
+	return read_u64(file, offset);
+}
+
+static u64 get_dynsym_offset(FILE *file, size_t section_headers_offset) {
+	size_t offset = section_headers_offset;
+
+	size_t section_header_size = 0x40;
+
+	// Skip the null and .hash sections
+	offset += 2 * section_header_size;
+
+	// Skip the dynsym's name, type, and flags
+	offset += 2 * sizeof(u32) + sizeof(u64);
+
+	return read_u64(file, offset);
+}
+
+static u64 get_section_headers_offset(FILE *file) {
+	// 0x28 is the offset of the section headers offset,
+	// in the ELF header
+	return read_u64(file, 0x28);
+}
+
+static u32 get_symbol_file_offset(FILE *file, char *symbol) {
+	size_t section_headers_offset = get_section_headers_offset(file);
+	// fprintf(stderr, "section_headers_offset: 0x%lx\n", section_headers_offset);
+
+	size_t dynsym_offset = get_dynsym_offset(file, section_headers_offset);
+	// fprintf(stderr, "dynsym_offset: 0x%lx\n", dynsym_offset);
+
+	size_t dynsym_size = get_dynsym_size(file, section_headers_offset);
+	// fprintf(stderr, "dynsym_size: 0x%lx\n", dynsym_size);
+
+	size_t dynstr_offset = get_dynstr_offset(file, section_headers_offset);
+	// fprintf(stderr, "dynstr_offset: 0x%lx\n", dynstr_offset);
+
+	size_t dynstr_size = get_dynstr_size(file, section_headers_offset);
+	// fprintf(stderr, "dynstr_size: 0x%lx\n", dynstr_size);
+
+	assert(dynstr_size <= MAX_DYNSTR_LENGTH);
+
+	static char dynstr[MAX_DYNSTR_LENGTH];
+
+	read_chars(file, dynstr_offset, dynstr_size, dynstr);
+
+	size_t dynsym_entry_size = 0x18;
+	size_t dynsym_entry_count = dynsym_size / dynsym_entry_size;
+	// fprintf(stderr, "dynsym_entry_count: %zu\n", dynsym_entry_count);
+
+	size_t offset = dynsym_offset;
+
+	// Skip the null entry
+	offset += dynsym_entry_size;
+	dynsym_entry_count--;
+
+	for (size_t i = 0; i < dynsym_entry_count; i++) {
+		u32 name_index = read_u32(file, offset);
+		// fprintf(stderr, "name_index: 0x%x\n", name_index);
+
+		char *name = dynstr + name_index;
+		// fprintf(stderr, "name: '%s'\n", name);
+
+		if (streq(name, symbol)) {
+			// Skip name, info, shndx
+			offset += sizeof(u32) + 2 * sizeof(u16);
+
+			return read_u32(file, offset);
+		}
+
+		offset += dynsym_entry_size;
+	}
+
+	return 0;
+}
+
 static struct test_data ok_prologue(
 	char *test_name,
 	char *grug_path,
@@ -1007,6 +1187,19 @@ static struct test_data ok_prologue(
 
 	run((char *[]){"objcopy", expected_dll_path, "--redefine-sym", redefine_sym, NULL});
 
+	FILE *f = fopen(expected_dll_path, "r");
+	check_null(f, "fopen");
+
+	u32 resource_mtimes_offset = get_symbol_file_offset(f, "resource_mtimes");
+	if (resource_mtimes_offset > 0) {
+		fprintf(stderr, "resource_mtimes_offset: 0x%x\n", resource_mtimes_offset);
+	}
+
+    if (fclose(f) == EOF) {
+		perror("fclose");
+		exit(EXIT_FAILURE);
+	}
+
 	// TODO: Patch the resource mtimes here!!!
 	// TODO: Try to do this by opening expected.so, where if dlsym("resources_size") is > 0, dlsym("resources") should be looped, so that the mtime of those resources can be gotten with stat().
 	// TODO: Then the placeholder resource mtimes should be overwritten on disk, somehow.
@@ -1016,33 +1209,32 @@ static struct test_data ok_prologue(
 
 	// printf("  Running the test...\n");
 
-	void *handle = dlopen(expected_dll_path, RTLD_NOW);
-	if (!handle) {
-		fprintf(stderr, "dlopen: %s\n", dlerror());
-		exit(EXIT_FAILURE);
+	void *dll = dlopen(expected_dll_path, RTLD_NOW);
+	if (!dll) {
+		handle_dlerror("dlopen");
 	}
 
-	assert(streq(get(handle, "define_type"), expected_define_type));
+	assert(streq(get(dll, "define_type"), expected_define_type));
 
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wpedantic"
-	grug_define_fn_t define = get(handle, "define");
+	grug_define_fn_t define = get(dll, "define");
 	define();
 
-	size_t globals_size = *(size_t *)get(handle, "globals_size");
+	size_t globals_size = *(size_t *)get(dll, "globals_size");
 	assert(globals_size == expected_globals_size);
 
 	void *g = malloc(globals_size);
-	grug_init_globals_fn_t init_globals = get(handle, "init_globals");
+	grug_init_globals_fn_t init_globals = get(dll, "init_globals");
 	init_globals(g);
 	#pragma GCC diagnostic pop
 
-	void *on_fns = dlsym(handle, "on_fns");
+	void *on_fns = dlsym(dll, "on_fns");
 
-	size_t *resources_size_ptr = get(handle, "resources_size");
+	size_t *resources_size_ptr = get(dll, "resources_size");
 
-	char **resources = dlsym(handle, "resources");
-	i64 *resource_mtimes = dlsym(handle, "resource_mtimes");
+	char **resources = dlsym(dll, "resources");
+	i64 *resource_mtimes = dlsym(dll, "resource_mtimes");
 
 	return (struct test_data){
 		.run = true,
@@ -1050,8 +1242,15 @@ static struct test_data ok_prologue(
 		.g = g,
 		.resources_size = *resources_size_ptr,
 		.resources = resources,
-		.resource_mtimes = resource_mtimes
+		.resource_mtimes = resource_mtimes,
+		.dll = dll,
 	};
+}
+
+static i64 get_mtime(char *path) {
+	struct stat s;
+	check(stat(path, &s), "stat");
+	return s.st_mtime;
 }
 
 static void ok_addition_as_argument(void *on_fns, void *g, size_t resources_size, char **resources, i64 *resource_mtimes) {
@@ -2920,12 +3119,6 @@ static void ok_remainder_positive_result(void *on_fns, void *g, size_t resources
 	assert(resources_size == 0);
 	assert(resources == NULL);
 	assert(resource_mtimes == NULL);
-}
-
-static i64 get_mtime(char *path) {
-	struct stat s;
-	check(stat(path, &s), "stat");
-	return s.st_mtime;
 }
 
 static void ok_resource_can_contain_dot_1(void *on_fns, void *g, size_t resources_size, char **resources, i64 *resource_mtimes) {
