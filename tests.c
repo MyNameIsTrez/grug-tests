@@ -1116,7 +1116,7 @@ static u64 get_section_headers_offset(FILE *file) {
 	return read_u64(file, 0x28);
 }
 
-static u32 get_symbol_file_offset(FILE *file, char *symbol) {
+static u32 get_dynsym_symbol_file_offset(FILE *file, char *symbol) {
 	size_t section_headers_offset = get_section_headers_offset(file);
 	// fprintf(stderr, "section_headers_offset: 0x%lx\n", section_headers_offset);
 
@@ -1233,7 +1233,7 @@ static struct test_data ok_prologue(
 	FILE *f = fopen(expected_dll_path, "r+b"); // read+write in binary
 	check_null(f, "fopen");
 
-	u32 resource_mtimes_offset = get_symbol_file_offset(f, "resource_mtimes");
+	u32 resource_mtimes_offset = get_dynsym_symbol_file_offset(f, "resource_mtimes");
 	if (resource_mtimes_offset > 0) {
 		// fprintf(stderr, "resource_mtimes_offset: 0x%x\n", resource_mtimes_offset);
 
