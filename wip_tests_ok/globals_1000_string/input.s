@@ -9,7 +9,7 @@ globals_size: dq 11000
 
 global strings
 strings:
-	db "tests_ok//input.grug", 0
+	db "tests/ok//input.grug", 0
 	db "on_a", 0
 	db "global0001", 0
 	db "global0002", 0
@@ -1011,6 +1011,10 @@ strings:
 	db "global0998", 0
 	db "global0999", 0
 	db "global1000", 0
+
+align 8
+global resources_size
+resources_size: dq 0
 
 section .text
 

@@ -8,10 +8,6 @@ If you want to allow your compiler to optimize `grug.c` hard, run `OPTIMIZED= ./
 If you want to allow your compiler to optimize `grug.c` extra hard, run `OPTIMIZED= CRASH_ON_UNREACHABLE= ./tests.sh`.
 Use `objdump --section=.text -d optimized.out > optimized.s` with `diff optimized.s optimized_crash_on_unreachable.s > diff.s` if you want to compare the generated sections.
 
-You can do `./tests.sh [test_path]` to run a specific test, like `./tests.sh tests_ok/minimal`
-
-Once you've ran `./tests.sh`, you can run `objdump -D tests_ok/helper_fn/results/expected.so -M intel` to display the assembler contents grug is expected to produce.
-
 ## Run tests.sh on save
 
 1. Install this [Run on Save](https://marketplace.visualstudio.com/items?itemName=emeraldwalk.RunOnSave) extension for VS Code.
@@ -36,7 +32,7 @@ If you replace `-fsanitize=address,undefined,fuzzer -Og` with `-fsanitize=fuzzer
 clear && \
 clang grug/grug.c fuzz.c -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -Wno-language-extension-token -Wno-unused-parameter -g -rdynamic -fsanitize=address,undefined,fuzzer -Og && \
 mkdir -p test_corpus && \
-for d in tests_err/* tests_err_runtime/* tests_ok/*; do name=${d##*/}; cp $d/input.grug test_corpus/$name.grug; done && \
+for d in tests/err/* tests/err_runtime/* tests/ok/*; do name=${d##*/}; cp $d/input.grug test_corpus/$name.grug; done && \
 mkdir -p corpus && \
 ./a.out -merge=1 corpus test_corpus && \
 ./a.out corpus -timeout=1
@@ -74,13 +70,13 @@ In order to visualize what grug.c contains when linked, follow these steps:
 
 ```bash
 clang run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wshadow -Wfatal-errors -g -Igrug -fsanitize=address,undefined -DLOGGING && \
-./a.out tests_ok/helper_fn/input.grug tests_ok/helper_fn/results/expected.so
+./a.out tests/ok/helper_fn/input.grug tests/ok/helper_fn/results/expected.so
 ```
 
 ## gdb
 
 ```bash
-gdb --args a.out tests_ok/helper_fn/input.grug tests_ok/helper_fn/results/expected.so
+gdb --args a.out tests/ok/helper_fn/input.grug tests/ok/helper_fn/results/expected.so
 ```
 
 ## gdbgui
@@ -88,23 +84,23 @@ gdb --args a.out tests_ok/helper_fn/input.grug tests_ok/helper_fn/results/expect
 Use [gdbgui](https://www.gdbgui.com/) to step through the code:
 
 ```bash
-gdbgui "a.out tests_ok/helper_fn/input.grug tests_ok/helper_fn/results/expected.so"
+gdbgui "a.out tests/ok/helper_fn/input.grug tests/ok/helper_fn/results/expected.so"
 ```
 
 ## readelf
 
 ```bash
-clear && ./tests.sh tests_ok/helper_fn
+clear && ./tests.sh tests/ok/helper_fn
 ```
 
 ## gdb on a test
 
 ```bash
-nasm tests_ok/write_to_global_variable/input.s -f elf64 -o tests_ok/write_to_global_variable/results/expected.o &&\
-ld -shared --hash-style=sysv tests_ok/write_to_global_variable/results/expected.o -o tests_ok/write_to_global_variable/results/expected.so &&\
-rm tests_ok/write_to_global_variable/results/expected.o &&\
-clang tests_ok/write_to_global_variable/test.c -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -Wfatal-errors -g -Og -rdynamic -o tests_ok/write_to_global_variable/results/test &&\
-gdb --args tests_ok/write_to_global_variable/results/test tests_ok/write_to_global_variable/results/expected.so
+nasm tests/ok/write_to_global_variable/input.s -f elf64 -o tests/ok/write_to_global_variable/results/expected.o &&\
+ld -shared --hash-style=sysv tests/ok/write_to_global_variable/results/expected.o -o tests/ok/write_to_global_variable/results/expected.so &&\
+rm tests/ok/write_to_global_variable/results/expected.o &&\
+clang tests/ok/write_to_global_variable/test.c -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -Wfatal-errors -g -Og -rdynamic -o tests/ok/write_to_global_variable/results/test &&\
+gdb --args tests/ok/write_to_global_variable/results/test tests/ok/write_to_global_variable/results/expected.so
 ```
 
 ## Manually doing call address calculations

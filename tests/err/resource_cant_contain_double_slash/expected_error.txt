@@ -1,0 +1,1 @@
+Replace the '//' with '/' in the resource "resource_cant_contain_double_slash//input.grug"

@@ -1,0 +1,6 @@
+define() b {
+    return {
+        # foo
+        .x = 42,
+    }
+}

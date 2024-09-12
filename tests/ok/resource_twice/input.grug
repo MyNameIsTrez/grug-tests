@@ -1,0 +1,6 @@
+define() v {
+    return {
+        .foo = "resource_twice/foo.txt",
+        .bar = "resource_twice/bar.txt",
+    }
+}

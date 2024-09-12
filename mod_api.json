@@ -368,6 +368,39 @@
 					"type": "resource"
 				}
 			]
+		},
+		"v": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "foo",
+					"type": "resource"
+				},
+				{
+					"name": "bar",
+					"type": "resource"
+				}
+			]
+		},
+		"w": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "sprite_path",
+					"type": "resource"
+				}
+			],
+			"on_functions": {
+				"on_a": {
+					"description": "foo",
+					"arguments": [
+						{
+							"name": "self",
+							"type": "i32"
+						}
+					]
+				}
+			}
 		}
 	},
 	"game_functions": {

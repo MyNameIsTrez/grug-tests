@@ -1,8 +1,0 @@
-define() d {
-    return {
-    }
-}
-
-on_a() {
-    initialize(9223372036854775807 + 1)
-}

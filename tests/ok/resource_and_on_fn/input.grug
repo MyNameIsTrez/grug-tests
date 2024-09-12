@@ -1,0 +1,8 @@
+define() w {
+    return {
+        .sprite_path = "resource_and_on_fn/foo.txt",
+    }
+}
+
+on_a(self: i32) {
+}

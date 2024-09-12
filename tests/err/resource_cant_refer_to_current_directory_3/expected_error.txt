@@ -1,0 +1,1 @@
+Remove the '.' from the resource "resource_cant_refer_to_current_directory/."
