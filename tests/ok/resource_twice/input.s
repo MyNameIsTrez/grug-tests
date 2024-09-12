@@ -21,11 +21,6 @@ resources:
 	dq strings + 0
 	dq strings + 32
 
-global resource_mtimes
-resource_mtimes:
-	dq 0
-	dq 0
-
 section .text
 
 extern grug_on_fn_name
