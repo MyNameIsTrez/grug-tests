@@ -502,10 +502,10 @@ static size_t read_dll(char *dll_path, uint8_t *dll_bytes) {
 
 	if (fread(dll_bytes, dll_bytes_len, 1, f) == 0) {
 		if (feof(f)) {
-			printf("fread EOF\n");
+			fprintf(stderr, "fread EOF\n");
 		}
 		if (ferror(f)) {
-			printf("fread error\n");
+			fprintf(stderr, "fread error\n");
 		}
 		exit(EXIT_FAILURE);
 	}
@@ -627,10 +627,10 @@ static char *get_expected_error(char *expected_error_path) {
 
 	if (fread(expected_error, expected_error_len, 1, f) == 0) {
 		if (feof(f)) {
-			printf("fread EOF\n");
+			fprintf(stderr, "fread EOF\n");
 		}
 		if (ferror(f)) {
-			printf("fread error\n");
+			fprintf(stderr, "fread error\n");
 		}
 		exit(EXIT_FAILURE);
 	}
@@ -725,7 +725,12 @@ static void test_error(
 	size_t grug_error_msg_len = strlen(grug_error.msg);
 
 	if (fwrite(grug_error.msg, grug_error_msg_len, 1, f) == 0) {
-		fprintf(stderr, "%s\n", "fwrite had an error\n");
+		if (feof(f)) {
+			fprintf(stderr, "fwrite EOF\n");
+		}
+		if (ferror(f)) {
+			fprintf(stderr, "fwrite error\n");
+		}
 		exit(EXIT_FAILURE);
 	}
 
@@ -981,8 +986,13 @@ static void read_chars(FILE *file, size_t offset, size_t count, char *chars) {
 	}
 
 	size_t bytes_read = fread(chars, sizeof(char), count, file);
-	if (bytes_read < count && ferror(file)) {
-		perror("fread");
+	if (bytes_read < count) {
+		if (feof(file)) {
+			fprintf(stderr, "fread EOF\n");
+		}
+		if (ferror(file)) {
+			fprintf(stderr, "fread error\n");
+		}
 		exit(EXIT_FAILURE);
 	}
 }
@@ -994,8 +1004,13 @@ static u32 read_u32(FILE *file, size_t offset) {
 	}
 
 	u32 value;
-	if (fread(&value, sizeof(u32), 1, file) == 0 && ferror(file)) {
-		perror("fread");
+	if (fread(&value, sizeof(u32), 1, file) == 0) {
+		if (feof(file)) {
+			fprintf(stderr, "fread EOF\n");
+		}
+		if (ferror(file)) {
+			fprintf(stderr, "fread error\n");
+		}
 		exit(EXIT_FAILURE);
 	}
 
@@ -1009,12 +1024,34 @@ static u64 read_u64(FILE *file, size_t offset) {
 	}
 
 	u64 value;
-	if (fread(&value, sizeof(u64), 1, file) == 0 && ferror(file)) {
-		perror("fread");
+	if (fread(&value, sizeof(u64), 1, file) == 0) {
+		if (feof(file)) {
+			fprintf(stderr, "fread EOF\n");
+		}
+		if (ferror(file)) {
+			fprintf(stderr, "fread error\n");
+		}
 		exit(EXIT_FAILURE);
 	}
 
 	return value;
+}
+
+static void write_i64(FILE *file, size_t offset, i64 value) {
+	if (fseek(file, offset, SEEK_SET) == -1) {
+		perror("fseek");
+		exit(EXIT_FAILURE);
+	}
+
+	if (fwrite(&value, sizeof(i64), 1, file) == 0) {
+		if (feof(file)) {
+			fprintf(stderr, "fwrite EOF\n");
+		}
+		if (ferror(file)) {
+			fprintf(stderr, "fwrite error\n");
+		}
+		exit(EXIT_FAILURE);
+	}
 }
 
 static u64 get_dynstr_size(FILE *file, size_t section_headers_offset) {
@@ -1131,6 +1168,12 @@ static u32 get_symbol_file_offset(FILE *file, char *symbol) {
 	return 0;
 }
 
+static i64 get_mtime(char *path) {
+	struct stat s;
+	check(stat(path, &s), "stat");
+	return s.st_mtime;
+}
+
 static struct test_data ok_prologue(
 	char *test_name,
 	char *grug_path,
@@ -1187,12 +1230,33 @@ static struct test_data ok_prologue(
 
 	run((char *[]){"objcopy", expected_dll_path, "--redefine-sym", redefine_sym, NULL});
 
-	FILE *f = fopen(expected_dll_path, "r");
+	FILE *f = fopen(expected_dll_path, "r+b"); // read+write in binary
 	check_null(f, "fopen");
 
 	u32 resource_mtimes_offset = get_symbol_file_offset(f, "resource_mtimes");
 	if (resource_mtimes_offset > 0) {
-		fprintf(stderr, "resource_mtimes_offset: 0x%x\n", resource_mtimes_offset);
+		// fprintf(stderr, "resource_mtimes_offset: 0x%x\n", resource_mtimes_offset);
+
+		void *dll = dlopen(expected_dll_path, RTLD_NOW);
+		if (!dll) {
+			handle_dlerror("dlopen");
+		}
+
+		size_t *resources_size_ptr = get(dll, "resources_size");
+		char **resources = get(dll, "resources");
+
+		for (size_t i = 0; i < *resources_size_ptr; i++) {
+			char *resource = resources[i];
+
+			i64 mtime = get_mtime(resource);
+			// fprintf(stderr, "mtime: %li\n", mtime);
+
+			write_i64(f, resource_mtimes_offset + i * sizeof(u64), mtime);
+		}
+
+		if (dlclose(dll)) {
+			handle_dlerror("dlclose");
+		}
 	}
 
     if (fclose(f) == EOF) {
@@ -1245,12 +1309,6 @@ static struct test_data ok_prologue(
 		.resource_mtimes = resource_mtimes,
 		.dll = dll,
 	};
-}
-
-static i64 get_mtime(char *path) {
-	struct stat s;
-	check(stat(path, &s), "stat");
-	return s.st_mtime;
 }
 
 static void ok_addition_as_argument(void *on_fns, void *g, size_t resources_size, char **resources, i64 *resource_mtimes) {
