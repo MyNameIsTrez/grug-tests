@@ -169,20 +169,25 @@ jobs:
       - name: Install nasm
         run: brew install nasm
 
-      # TODO: REMOVE
-      - name: Print nasm help
-        run: nasm --help
-
       - name: Install binutils
         run: brew install binutils
 
       - name: Symlink readelf to bin
         run: sudo ln -s /opt/homebrew/opt/binutils/bin/readelf /usr/local/bin/readelf
 
-      - name: Run the tests
-        run: ./tests.sh
-        env:
-          OLD_LD:
+      - name: Experiment with macho64
+        run: nasm -fmacho64 magic.s -o magic.dylib
+
+      - name: Compile main.c
+        run: clang main.c -o main
+
+      - name: Run main
+        run: ./main
+
+      # - name: Run the tests
+      #   run: ./tests.sh
+      #   env:
+      #     OLD_LD:
 
   # build-mac-clang-asan:
   #   name: mac-clang-asan
