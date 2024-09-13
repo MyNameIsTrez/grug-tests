@@ -30,6 +30,8 @@ linker_flags='-rdynamic -lm'
 
 if [ "$(uname)" == "Darwin" ]; then # If Mac OS X
     echo "Detected macOS"
+    # TODO: REMOVE
+    sudo ls /usr/include
     linker_flags+=' -I.'
 fi
 
