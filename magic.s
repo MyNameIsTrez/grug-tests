@@ -1,5 +1,3 @@
-section .text
-
+.align 2
 magic:
-    mov eax, 42
-    ret
+    mov X0, #42
