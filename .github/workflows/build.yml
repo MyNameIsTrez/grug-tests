@@ -187,6 +187,9 @@ jobs:
       - name: Print main file info
         run: file main
 
+      - name: Print as help
+        run: as --help
+
       - name: Run main
         run: ./main
 
