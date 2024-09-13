@@ -588,6 +588,25 @@ static void *get(void *dll, char *label) {
 	return p;
 }
 
+static void wait_on_child(void) {
+	int status;
+	check(wait(&status), "wait");
+
+	if (WIFEXITED(status) && WEXITSTATUS(status) != 0) {
+		printf("child unexpectedly exited with status %d\n", WEXITSTATUS(status));
+		exit(EXIT_FAILURE);
+	} else if (WIFSIGNALED(status)) {
+		printf("child killed by signal %d\n", WTERMSIG(status));
+		exit(EXIT_FAILURE);
+	} else if (WIFSTOPPED(status)) {
+		printf("child stopped by signal %d\n", WSTOPSIG(status));
+		exit(EXIT_FAILURE);
+	} else if (WIFCONTINUED(status)) {
+		printf("child continued\n");
+		exit(EXIT_FAILURE);
+	}
+}
+
 static void run_and_write(char *const *argv, char *written_path) {
 	pid_t pid = fork();
 	check(pid, "fork");
@@ -605,8 +624,7 @@ static void run_and_write(char *const *argv, char *written_path) {
 		exit(EXIT_FAILURE);
 	}
 
-	// Wait on the child to finish
-	check(wait(NULL), "wait");
+	wait_on_child();
 }
 
 static void run(char *const *argv) {
@@ -619,8 +637,7 @@ static void run(char *const *argv) {
 		exit(EXIT_FAILURE);
 	}
 
-	// Wait on the child to finish
-	check(wait(NULL), "wait");
+	wait_on_child();
 }
 
 static void output_dll_info(char *dll_path, char *xxd_path, char *readelf_path, char *objdump_path) {
@@ -643,8 +660,7 @@ static void output_dll_info(char *dll_path, char *xxd_path, char *readelf_path, 
 		exit(EXIT_FAILURE);
 	}
 
-	// Wait on the child to finish
-	check(wait(NULL), "wait");
+	wait_on_child();
 
 	run_and_write((char *[]){"readelf", "-a", dll_path, NULL}, readelf_path);
 
@@ -934,7 +950,13 @@ static void regenerate_expected_dll(
 
 	run((char *[]){"nasm", nasm_path, "-felf64", "-O0", "-o", nasm_o_path, NULL});
 
+#ifdef __x86_64__
 	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-shared", "--hash-style=sysv", NULL});
+#elif __aarch64__
+	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "--hash-style=sysv", NULL});
+#else
+#error Unsupported or unrecognized architecture
+#endif
 
 	static char redefine_sym[420];
 
