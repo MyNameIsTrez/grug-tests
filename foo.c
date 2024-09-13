@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 int main(void) {
-	int64_t rsp;
+	// int64_t rsp;
 
 #ifdef __x86_64__
 	printf("__x86_64__\n");
@@ -13,13 +13,13 @@ int main(void) {
 	printf("__arm__\n");
 #endif
 
-	#pragma GCC diagnostic push
-	#pragma GCC diagnostic ignored "-Wlanguage-extension-token"
+	// #pragma GCC diagnostic push
+	// #pragma GCC diagnostic ignored "-Wlanguage-extension-token"
 
-	// asm("mov %%rsp, %0" : "=r" (rsp));
-	asm("movq %%rsp, %0" : "=r" (rsp));
+	// // asm("mov %%rsp, %0" : "=r" (rsp));
+	// asm("movq %%rsp, %0" : "=r" (rsp));
 
-	#pragma GCC diagnostic pop
+	// #pragma GCC diagnostic pop
 
-    printf("%lld\n", rsp);
+    // printf("%lld\n", rsp);
 }
