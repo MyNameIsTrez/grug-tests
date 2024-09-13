@@ -148,11 +148,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install gcc
+        # run: brew info gcc
+        run: ls /opt/homebrew/Cellar/gcc/14.2.0
+
       - name: Print gcc version
-        run: /usr/bin/gcc --version
+        run: gcc --version
 
       - name: Build
-        run: /usr/bin/gcc foo.c -o foo -Wfatal-errors
+        run: gcc foo.c -o foo -Wfatal-errors
 
       - name: Run
         run: ./foo
