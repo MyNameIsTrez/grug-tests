@@ -148,14 +148,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install gcc
-        run: ls -l /opt/homebrew/Cellar/gcc/14.2.0/bin/gcc-14
-
-      - name: Print gcc version
-        run: /opt/homebrew/Cellar/gcc/14.2.0/bin/gcc-14 --version
-
       - name: Build
-        run: /opt/homebrew/Cellar/gcc/14.2.0/bin/gcc-14 foo.c -o foo -Wfatal-errors
+        # `gcc` is a nasty symlink to clang, so we use the absolute path of gcc here
+        run: /opt/homebrew/Cellar/gcc/14.2.0/bin/gcc-14 foo.c -o foo -Wfatal-errors -Wno-pragmas
 
       - name: Run
         run: ./foo
