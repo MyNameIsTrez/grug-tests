@@ -213,9 +213,18 @@ void game_fn_nothing_aligned(void) {
 
 	// From https://stackoverflow.com/a/2114249/13279557
 	int64_t rsp;
+
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wlanguage-extension-token"
-	asm("mov %%rsp, %0" : "=r" (rsp));
+
+#ifdef __x86_64__
+	asm("mov %%rsp, %0\n\t" : "=r" (rsp));
+#elif __aarch64__
+	asm("mov %0, sp\n\t" : "=r" (rsp));
+#else
+#error Unsupported or unrecognized architecture
+#endif
+
 	#pragma GCC diagnostic pop
 
 	// We need this in order to ensure that the C compiler will 16-byte align
@@ -229,9 +238,18 @@ int32_t game_fn_magic_aligned(void) {
 
 	// From https://stackoverflow.com/a/2114249/13279557
 	int64_t rsp;
+
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wlanguage-extension-token"
-	asm("mov %%rsp, %0" : "=r" (rsp));
+
+#ifdef __x86_64__
+	asm("mov %%rsp, %0\n\t" : "=r" (rsp));
+#elif __aarch64__
+	asm("mov %0, sp\n\t" : "=r" (rsp));
+#else
+#error Unsupported or unrecognized architecture
+#endif
+
 	#pragma GCC diagnostic pop
 
 	printf(":)\n");
@@ -248,9 +266,18 @@ void game_fn_initialize_aligned(int32_t x) {
 
 	// From https://stackoverflow.com/a/2114249/13279557
 	int64_t rsp;
+
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wlanguage-extension-token"
-	asm("mov %%rsp, %0" : "=r" (rsp));
+
+#ifdef __x86_64__
+	asm("mov %%rsp, %0\n\t" : "=r" (rsp));
+#elif __aarch64__
+	asm("mov %0, sp\n\t" : "=r" (rsp));
+#else
+#error Unsupported or unrecognized architecture
+#endif
+
 	#pragma GCC diagnostic pop
 
 	// We need this in order to ensure that the C compiler will 16-byte align
