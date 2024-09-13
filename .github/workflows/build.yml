@@ -132,6 +132,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Print clang version
+        run: clang --version
+
       - name: Build
         run: clang foo.c -o foo -Wfatal-errors
 
@@ -144,6 +147,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Print gcc version
+        run: gcc --version
 
       - name: Build
         run: gcc foo.c -o foo -Wfatal-errors
