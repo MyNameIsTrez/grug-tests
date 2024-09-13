@@ -25,15 +25,13 @@ then
     echo "- VALGRIND was turned on"
 fi
 
-# -rdynamic allows the .so to call functions from test.c
-linker_flags='-rdynamic -lm'
-
 if [ "$(uname)" == "Darwin" ]; then # If Mac OS X
     echo "Detected macOS"
-    # TODO: REMOVE
-    sudo ls /usr/include
-    linker_flags+=' -I.'
+    compiler_flags+=' -I.'
 fi
+
+# -rdynamic allows the .so to call functions from test.c
+linker_flags='-rdynamic -lm'
 
 CC="${CC:=clang}"
 echo "Compilation will use $CC"
