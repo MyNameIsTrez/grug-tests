@@ -20,3 +20,19 @@ jobs:
         run: ./tests.sh
         env:
           OLD_LD:
+
+  build-ubuntu-gcc:
+    name: ubuntu-gcc
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: sudo apt install nasm
+
+      - name: Run the tests
+        run: ./tests.sh
