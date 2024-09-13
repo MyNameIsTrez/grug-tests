@@ -16,8 +16,5 @@ jobs:
       - name: Install nasm
         run: sudo apt install nasm
 
-      - name: Print nasm version
-        run: nasm --version
-
       - name: Run the tests
         run: ./tests.sh

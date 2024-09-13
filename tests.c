@@ -994,8 +994,21 @@ static void ok_epilogue(
 	static uint8_t expected_dll_bytes[420420];
 	size_t expected_dll_bytes_len = read_dll(expected_dll_path, expected_dll_bytes);
 
-	if (expected_dll_bytes_len != output_dll_bytes_len || memcmp(output_dll_bytes, expected_dll_bytes, expected_dll_bytes_len) != 0) {
-		printf("\nThe output differs from the expected output.\n");
+	if (output_dll_bytes_len != expected_dll_bytes_len || memcmp(output_dll_bytes, expected_dll_bytes, expected_dll_bytes_len) != 0) {
+		fprintf(stderr, "\nThe output differs from the expected output.\n");
+
+		if (output_dll_bytes_len == expected_dll_bytes_len) {
+			fprintf(stderr, "\nThe output DLL bytes length matches the expected length.\n");
+		} else {
+			fprintf(stderr, "\nThe output DLL bytes length was %zu, while the expected length was %zu.\n", output_dll_bytes_len, expected_dll_bytes_len);
+		}
+
+		fprintf(stderr, "Output:\n");
+		write(STDERR_FILENO, output_dll_bytes, output_dll_bytes_len);
+
+		fprintf(stderr, "Expected:\n");
+		write(STDERR_FILENO, expected_dll_bytes, expected_dll_bytes_len);
+
 		exit(EXIT_FAILURE);
 	}
 
