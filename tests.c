@@ -475,23 +475,34 @@ static bool is_whitelisted_test(char *name) {
 	}\
 }
 
-#define TEST_RUNTIME_ERROR(test_name) {\
+#define TEST_RUNTIME_ERROR(test_name, expected_define_type, expected_globals_size) {\
 	if (whitelisted_tests_size == 0 || is_whitelisted_test(#test_name)) {\
 		struct test_data data = runtime_error_prologue(\
 			#test_name,\
 			"tests/err_runtime/"#test_name"/input.grug",\
+			"tests/err_runtime/"#test_name"/input.s",\
 			"tests/err_runtime/"#test_name"/expected_error.txt",\
 			"tests/err_runtime/"#test_name"/results",\
 			"tests/err_runtime/"#test_name"/results/output.so",\
-			"tests/err_runtime/"#test_name"/results/output.hex",\
-			"tests/err_runtime/"#test_name"/results/output_elf.log",\
-			"tests/err_runtime/"#test_name"/results/output_objdump.log",\
-			"tests/err_runtime/"#test_name"/results/failed"\
+			"tests/err_runtime/"#test_name"/results/expected.so",\
+			"tests/err_runtime/"#test_name"/results/expected.o",\
+			"tests/err_runtime/"#test_name"/results/expected.hex",\
+			"tests/err_runtime/"#test_name"/results/expected_elf.log",\
+			"tests/err_runtime/"#test_name"/results/expected_objdump.log",\
+			"tests/err_runtime/"#test_name"/results/failed",\
+			expected_define_type,\
+			expected_globals_size\
 		);\
 		if (data.run) {\
-			runtime_error_##test_name(data.on_fns, data.g);\
+			runtime_error_##test_name(data.on_fns, data.g, data.resources_size, data.resources);\
 			runtime_error_epilogue(\
+				"tests/err_runtime/"#test_name"/input.grug",\
 				"tests/err_runtime/"#test_name"/expected_error.txt",\
+				"tests/err_runtime/"#test_name"/results/output.so",\
+				"tests/err_runtime/"#test_name"/results/expected.so",\
+				"tests/err_runtime/"#test_name"/results/output.hex",\
+				"tests/err_runtime/"#test_name"/results/output_elf.log",\
+				"tests/err_runtime/"#test_name"/results/output_objdump.log",\
 				"tests/err_runtime/"#test_name"/results/failed"\
 			);\
 		}\
@@ -647,6 +658,7 @@ static bool newer(char *path1, char *path2) {
 	struct stat s1;
 	if (stat(path1, &s1) == -1) {
 		if (errno != ENOENT) {
+			printf("path1: \"%s\"\n", path1);
 			perror("stat");
 			exit(EXIT_FAILURE);
 		}
@@ -655,7 +667,11 @@ static bool newer(char *path1, char *path2) {
 	}
 
 	struct stat s2;
-	check(stat(path2, &s2), "stat");
+	if (stat(path2, &s2) < 0) {
+		printf("path2: \"%s\"\n", path2);
+		perror("stat");
+		exit(EXIT_FAILURE);
+	}
 
 	// printf("path1 mtime >= path2 mtime: %d\n", s1.st_mtime >= s2.st_mtime);
 
@@ -815,188 +831,7 @@ static void test_error(
 	unlink(failed_file_path);
 }
 
-static void runtime_error_epilogue(char *expected_error_path, char *failed_file_path) {
-	// printf("  Comparing against the expected error...\n");
-
-	char *grug_error_msg = grug_get_runtime_error_reason();
-
-	size_t grug_error_msg_len = strlen(grug_error_msg);
-
-	char *expected_error = get_expected_error(expected_error_path);
-	size_t expected_error_len = strlen(expected_error);
-
-	if (expected_error_len != grug_error_msg_len || memcmp(grug_error_msg, expected_error, expected_error_len) != 0) {
-		printf("\nThe output differs from the expected output.\n");
-		printf("Output:\n");
-		printf("%s\n", grug_error_msg);
-
-		printf("Expected:\n");
-		printf("%s\n", expected_error);
-
-		exit(EXIT_FAILURE);
-	}
-
-	unlink(failed_file_path);
-}
-
-static void handle_dlerror(char *function_name) {
-	char *err = dlerror();
-	if (!err) {
-		printf("dlerror() was asked to find an error string for %s(), but it couldn't find one", function_name);
-		exit(EXIT_FAILURE);
-	}
-
-	printf("%s: %s\n", function_name, err);
-	exit(EXIT_FAILURE);
-}
-
-static struct test_data runtime_error_prologue(
-	char *test_name,
-	char *grug_path,
-	char *expected_error_path,
-	char *results_path,
-	char *output_dll_path,
-	char *output_xxd_path,
-	char *output_readelf_path,
-	char *output_objdump_path,
-	char *failed_file_path
-) {
-	if (failed_file_doesnt_exist(failed_file_path)
-	 && newer(output_dll_path, grug_path)
-	 && newer(output_dll_path, expected_error_path)
-	 && newer(output_dll_path, "mod_api.h")
-	 && newer(output_dll_path, "mod_api.json")
-	 && newer(output_dll_path, "tests.sh")
-	 && newer(output_dll_path, "tests.out")
-	) {
-		printf("Skipping tests/err_runtime/%s...\n", test_name);
-		return (struct test_data){.run=false};
-	}
-
-	printf("Running tests/err_runtime/%s...\n", test_name);
-
-	rm_rf(results_path);
-	make_results_dir(results_path);
-
-	create_failed_file(failed_file_path);
-
-	// printf("  Regenerating output.so...\n");
-
-	if (grug_test_regenerate_dll(grug_path, output_dll_path, "err_runtime")) {
-		printf("The test wasn't supposed to print anything during generation of the dll, but did:\n");
-		printf("----\n");
-		printf("%s\n", grug_error.msg);
-		printf("----\n");
-
-		exit(EXIT_FAILURE);
-	}
-
-	// printf("  Outputting output.so info...\n");
-	output_dll_info(output_dll_path, output_xxd_path, output_readelf_path, output_objdump_path);
-
-	// printf("  Running the test...\n");
-
-	void *dll = dlopen(output_dll_path, RTLD_NOW);
-	if (!dll) {
-		handle_dlerror("dlopen");
-	}
-
-	assert(streq(get(dll, "define_type"), "d"));
-
-	#pragma GCC diagnostic push
-	#pragma GCC diagnostic ignored "-Wpedantic"
-	grug_define_fn_t define = get(dll, "define");
-	define();
-
-	size_t globals_size = *(size_t *)get(dll, "globals_size");
-	assert(globals_size == 0);
-
-	void *g = malloc(globals_size);
-	grug_init_globals_fn_t init_globals = get(dll, "init_globals");
-	init_globals(g);
-	#pragma GCC diagnostic pop
-
-	void *on_fns = get(dll, "on_fns");
-
-	size_t *resources_size_ptr = get(dll, "resources_size");
-	assert(resources_size_ptr != NULL);
-
-	return (struct test_data){.run=true, .on_fns=on_fns, .g=g, .dll=dll};
-}
-
-static bool handler_called;
-static void handler(int sig) {
-	(void)sig;
-	handler_called = true;
-}
-
-static void runtime_error_time_limit_exceeded(void *on_fns, void *g) {
-	bool had_runtime_error = false;
-
-	if (grug_mod_had_runtime_error()) {
-		had_runtime_error = true;
-
-		handler_called = false;
-		raise(SIGALRM);
-		assert(handler_called);
-	}
-
-	signal(SIGALRM, handler);
-
-	if (!had_runtime_error) {
-		((struct d_on_fns *)on_fns)->a(g);
-	}
-
-	free(g);
-
-	assert(had_runtime_error);
-}
-
-static void runtime_error_division_by_0(void *on_fns, void *g) {
-	bool had_runtime_error = false;
-
-	if (grug_mod_had_runtime_error()) {
-		had_runtime_error = true;
-
-		handler_called = false;
-		raise(SIGFPE);
-		assert(handler_called);
-	}
-
-	signal(SIGFPE, handler);
-
-	if (!had_runtime_error) {
-		((struct d_on_fns *)on_fns)->a(g);
-	}
-
-	free(g);
-
-	assert(had_runtime_error);
-}
-
-static void runtime_error_stack_overflow(void *on_fns, void *g) {
-	bool had_runtime_error = false;
-
-	if (grug_mod_had_runtime_error()) {
-		had_runtime_error = true;
-
-		handler_called = false;
-		raise(SIGSEGV);
-		assert(handler_called);
-	}
-
-	signal(SIGSEGV, handler);
-
-	if (!had_runtime_error) {
-		((struct d_on_fns *)on_fns)->a(g);
-	}
-
-	free(g);
-
-	assert(had_runtime_error);
-}
-
-static void ok_epilogue(
+static void generate_and_compare_output_dll(
 	char *grug_path,
 	char *output_dll_path,
 	char *expected_dll_path,
@@ -1042,43 +877,59 @@ static void ok_epilogue(
 	unlink(failed_file_path);
 }
 
-static struct test_data ok_prologue(
-	char *test_name,
+static void runtime_error_epilogue(
+	char *grug_path,
+	char *expected_error_path,
+	char *output_dll_path,
+	char *expected_dll_path,
+	char *output_xxd_path,
+	char *output_readelf_path,
+	char *output_objdump_path,
+	char *failed_file_path
+) {
+	// printf("  Comparing against the expected error...\n");
+
+	char *grug_error_msg = grug_get_runtime_error_reason();
+
+	size_t grug_error_msg_len = strlen(grug_error_msg);
+
+	char *expected_error = get_expected_error(expected_error_path);
+	size_t expected_error_len = strlen(expected_error);
+
+	if (expected_error_len != grug_error_msg_len || memcmp(grug_error_msg, expected_error, expected_error_len) != 0) {
+		printf("\nThe error message differs from the expected error message.\n");
+		printf("Output:\n");
+		printf("%s\n", grug_error_msg);
+
+		printf("Expected:\n");
+		printf("%s\n", expected_error);
+
+		exit(EXIT_FAILURE);
+	}
+
+	generate_and_compare_output_dll(grug_path, output_dll_path, expected_dll_path, output_xxd_path, output_readelf_path, output_objdump_path, failed_file_path);
+}
+
+static void handle_dlerror(char *function_name) {
+	char *err = dlerror();
+	if (!err) {
+		printf("dlerror() was asked to find an error string for %s(), but it couldn't find one", function_name);
+		exit(EXIT_FAILURE);
+	}
+
+	printf("%s: %s\n", function_name, err);
+	exit(EXIT_FAILURE);
+}
+
+static void regenerate_expected_dll(
 	char *grug_path,
 	char *nasm_path,
-	char *results_path,
-	char *output_dll_path,
 	char *expected_dll_path,
 	char *nasm_o_path,
 	char *expected_xxd_path,
 	char *expected_readelf_path,
-	char *expected_objdump_path,
-	char *failed_file_path,
-	char *expected_define_type,
-	size_t expected_globals_size
+	char *expected_objdump_path
 ) {
-	if (failed_file_doesnt_exist(failed_file_path)
-	 && newer(output_dll_path, nasm_path)
-	 && newer(output_dll_path, grug_path)
-	 && newer(output_dll_path, expected_dll_path)
-	 && newer(output_dll_path, "mod_api.h")
-	 && newer(output_dll_path, "mod_api.json")
-	 && newer(output_dll_path, "tests.sh")
-	 && newer(output_dll_path, "tests.out")
-	) {
-		printf("Skipping tests/ok/%s...\n", test_name);
-		return (struct test_data){.run=false};
-	}
-
-	printf("Running tests/ok/%s...\n", test_name);
-
-	reset_call_counts();
-
-	rm_rf(results_path);
-	make_results_dir(results_path);
-
-	create_failed_file(failed_file_path);
-
 	// printf("  Regenerating expected.so...\n");
 
 	run((char *[]){"nasm", nasm_path, "-felf64", "-O0", "-o", nasm_o_path, NULL});
@@ -1097,8 +948,29 @@ static struct test_data ok_prologue(
 
 	// printf("  Outputting expected.so info...\n");
 	output_dll_info(expected_dll_path, expected_xxd_path, expected_readelf_path, expected_objdump_path);
+}
 
-	// printf("  Running the test...\n");
+static struct test_data get_expected_test_data(
+	char *grug_path,
+	char *nasm_path,
+	char *results_path,
+	char *expected_dll_path,
+	char *nasm_o_path,
+	char *expected_xxd_path,
+	char *expected_readelf_path,
+	char *expected_objdump_path,
+	char *failed_file_path,
+	char *expected_define_type,
+	size_t expected_globals_size
+) {
+	reset_call_counts();
+
+	rm_rf(results_path);
+	make_results_dir(results_path);
+
+	create_failed_file(failed_file_path);
+
+	regenerate_expected_dll(grug_path, nasm_path, expected_dll_path, nasm_o_path, expected_xxd_path, expected_readelf_path, expected_objdump_path);
 
 	void *dll = dlopen(expected_dll_path, RTLD_NOW);
 	if (!dll) {
@@ -1134,6 +1006,176 @@ static struct test_data ok_prologue(
 		.resources = resources,
 		.dll = dll,
 	};
+}
+
+static struct test_data runtime_error_prologue(
+	char *test_name,
+	char *grug_path,
+	char *nasm_path,
+	char *expected_error_path,
+	char *results_path,
+	char *output_dll_path,
+	char *expected_dll_path,
+	char *nasm_o_path,
+	char *expected_xxd_path,
+	char *expected_readelf_path,
+	char *expected_objdump_path,
+	char *failed_file_path,
+	char *expected_define_type,
+	size_t expected_globals_size
+) {
+	if (failed_file_doesnt_exist(failed_file_path)
+	 && newer(output_dll_path, nasm_path)
+	 && newer(output_dll_path, grug_path)
+	 && newer(output_dll_path, expected_error_path)
+	 && newer(output_dll_path, expected_dll_path)
+	 && newer(output_dll_path, "mod_api.h")
+	 && newer(output_dll_path, "mod_api.json")
+	 && newer(output_dll_path, "tests.sh")
+	 && newer(output_dll_path, "tests.out")
+	) {
+		printf("Skipping tests/err_runtime/%s...\n", test_name);
+		return (struct test_data){.run=false};
+	}
+
+	printf("Running tests/err_runtime/%s...\n", test_name);
+
+	return get_expected_test_data(grug_path, nasm_path, results_path, expected_dll_path, nasm_o_path, expected_xxd_path, expected_readelf_path, expected_objdump_path, failed_file_path, expected_define_type, expected_globals_size);
+}
+
+static bool handler_called;
+static void handler(int sig) {
+	(void)sig;
+	handler_called = true;
+}
+
+static void runtime_error_time_limit_exceeded(void *on_fns, void *g, size_t resources_size, char **resources) {
+	bool had_runtime_error = false;
+
+	if (grug_mod_had_runtime_error()) {
+		had_runtime_error = true;
+
+		handler_called = false;
+		raise(SIGALRM);
+		assert(handler_called);
+	}
+
+	signal(SIGALRM, handler);
+
+	if (!had_runtime_error) {
+		((struct d_on_fns *)on_fns)->a(g);
+	}
+
+	free(g);
+
+	assert(had_runtime_error);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/err_runtime/time_limit_exceeded/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+}
+
+static void runtime_error_division_by_0(void *on_fns, void *g, size_t resources_size, char **resources) {
+	bool had_runtime_error = false;
+
+	if (grug_mod_had_runtime_error()) {
+		had_runtime_error = true;
+
+		handler_called = false;
+		raise(SIGFPE);
+		assert(handler_called);
+	}
+
+	signal(SIGFPE, handler);
+
+	if (!had_runtime_error) {
+		((struct d_on_fns *)on_fns)->a(g);
+	}
+
+	free(g);
+
+	assert(had_runtime_error);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/err_runtime/division_by_0/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+}
+
+static void runtime_error_stack_overflow(void *on_fns, void *g, size_t resources_size, char **resources) {
+	bool had_runtime_error = false;
+
+	if (grug_mod_had_runtime_error()) {
+		had_runtime_error = true;
+
+		handler_called = false;
+		raise(SIGSEGV);
+		assert(handler_called);
+	}
+
+	signal(SIGSEGV, handler);
+
+	if (!had_runtime_error) {
+		((struct d_on_fns *)on_fns)->a(g);
+	}
+
+	free(g);
+
+	assert(had_runtime_error);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/err_runtime/stack_overflow/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+}
+
+static void ok_epilogue(
+	char *grug_path,
+	char *output_dll_path,
+	char *expected_dll_path,
+	char *output_xxd_path,
+	char *output_readelf_path,
+	char *output_objdump_path,
+	char *failed_file_path
+) {
+	generate_and_compare_output_dll(grug_path, output_dll_path, expected_dll_path, output_xxd_path, output_readelf_path, output_objdump_path, failed_file_path);
+}
+
+static struct test_data ok_prologue(
+	char *test_name,
+	char *grug_path,
+	char *nasm_path,
+	char *results_path,
+	char *output_dll_path,
+	char *expected_dll_path,
+	char *nasm_o_path,
+	char *expected_xxd_path,
+	char *expected_readelf_path,
+	char *expected_objdump_path,
+	char *failed_file_path,
+	char *expected_define_type,
+	size_t expected_globals_size
+) {
+	if (failed_file_doesnt_exist(failed_file_path)
+	 && newer(output_dll_path, nasm_path)
+	 && newer(output_dll_path, grug_path)
+	 && newer(output_dll_path, expected_dll_path)
+	 && newer(output_dll_path, "mod_api.h")
+	 && newer(output_dll_path, "mod_api.json")
+	 && newer(output_dll_path, "tests.sh")
+	 && newer(output_dll_path, "tests.out")
+	) {
+		printf("Skipping tests/ok/%s...\n", test_name);
+		return (struct test_data){.run=false};
+	}
+
+	printf("Running tests/ok/%s...\n", test_name);
+
+	return get_expected_test_data(grug_path, nasm_path, results_path, expected_dll_path, nasm_o_path, expected_xxd_path, expected_readelf_path, expected_objdump_path, failed_file_path, expected_define_type, expected_globals_size);
 }
 
 static void ok_addition_as_argument(void *on_fns, void *g, size_t resources_size, char **resources) {
@@ -3512,9 +3554,9 @@ static void error_tests(void) {
 }
 
 static void runtime_error_tests(void) {
-	TEST_RUNTIME_ERROR(division_by_0);
-	TEST_RUNTIME_ERROR(stack_overflow);
-	TEST_RUNTIME_ERROR(time_limit_exceeded);
+	TEST_RUNTIME_ERROR(division_by_0, "d", 0);
+	TEST_RUNTIME_ERROR(stack_overflow, "d", 0);
+	TEST_RUNTIME_ERROR(time_limit_exceeded, "d", 0);
 }
 
 static void ok_tests(void) {
