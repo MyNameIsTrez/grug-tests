@@ -148,14 +148,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install gcc
-        run: brew info gcc
-
       - name: Print gcc version
-        run: gcc --version
+        run: /usr/bin/gcc --version
 
       - name: Build
-        run: gcc foo.c -o foo -Wfatal-errors
+        run: /usr/bin/gcc foo.c -o foo -Wfatal-errors
 
       - name: Run
         run: ./foo
