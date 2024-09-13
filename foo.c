@@ -4,29 +4,29 @@
 #include <unistd.h>
 
 int main(void) {
-	// int64_t rsp;
+	int64_t rsp;
 
-#ifdef __x86_64__
-	printf("__x86_64__\n");
-#elif _M_X64
-	printf("_M_X64\n");
-#elif __i386__
-	printf("__i386__\n");
-#elif _M_IX86
-	printf("_M_IX86\n");
-// #elif __aarch64__
-// 	printf("__aarch64__\n");
-#elif _M_ARM64
-	printf("_M_ARM64\n");
-#elif __arm__
-	printf("__arm__\n");
-#elif _M_ARM
-	printf("_M_ARM\n");
-#elif __EMSCRIPTEN__
-	printf("__EMSCRIPTEN__\n");
-#else
-	printf("none!\n");
-#endif
+// #ifdef __x86_64__
+// 	printf("__x86_64__\n");
+// #elif _M_X64
+// 	printf("_M_X64\n");
+// #elif __i386__
+// 	printf("__i386__\n");
+// #elif _M_IX86
+// 	printf("_M_IX86\n");
+// // #elif __aarch64__
+// // 	printf("__aarch64__\n");
+// #elif _M_ARM64
+// 	printf("_M_ARM64\n");
+// #elif __arm__
+// 	printf("__arm__\n");
+// #elif _M_ARM
+// 	printf("_M_ARM\n");
+// #elif __EMSCRIPTEN__
+// 	printf("__EMSCRIPTEN__\n");
+// #else
+// 	printf("none!\n");
+// #endif
 
 	// #pragma GCC diagnostic push
 	// #pragma GCC diagnostic ignored "-Wlanguage-extension-token"
@@ -34,7 +34,14 @@ int main(void) {
 	// asm("mov %%rsp, %0" : "=r" (rsp));
 	// asm("mov %%sp, %0" : "=r" (rsp));
 
+    __asm__ __volatile__(
+        // sp is an alias for r13
+        "mov %%sp,%0"
+        : "=r" (rsp)
+        : /* no input */
+    );
+
 	// #pragma GCC diagnostic pop
 
-    // printf("%lld\n", rsp);
+    printf("%lld\n", rsp);
 }
