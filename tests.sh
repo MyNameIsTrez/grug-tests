@@ -25,6 +25,11 @@ then
     echo "- VALGRIND was turned on"
 fi
 
+if [ "$(uname)" == "Darwin" ]; then # If Mac OS X
+    echo lmao
+    ln -s elf.h /usr/local/include/elf.h
+fi
+
 # -rdynamic allows the .so to call functions from test.c
 linker_flags='-rdynamic -lm'
 
