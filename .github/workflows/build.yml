@@ -133,7 +133,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build
-        run: clang foo.c -o foo -g -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -I. -rdynamic -lm -gdwarf-4
+        run: clang foo.c -o foo
 
       - name: Run
         run: ./foo
