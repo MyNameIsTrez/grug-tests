@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main() {
+int main(void) {
 	int64_t rsp;
 
 	asm("mov %%rsp, %0" : "=r" (rsp));
