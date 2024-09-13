@@ -590,7 +590,7 @@ static void run_and_write(char *const *argv, char *written_path) {
 		close(fd);
 
 		execvp(argv[0], argv);
-		fprintf(stderr, "execvp: %s: %s", argv[0], strerror(errno));
+		fprintf(stderr, "execvp: %s: %s\n", argv[0], strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 
@@ -604,7 +604,7 @@ static void run(char *const *argv) {
 
 	if (pid == 0) {
 		execvp(argv[0], argv);
-		fprintf(stderr, "execvp: %s: %s", argv[0], strerror(errno));
+		fprintf(stderr, "execvp: %s: %s\n", argv[0], strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 
@@ -628,7 +628,7 @@ static void output_dll_info(char *dll_path, char *xxd_path, char *readelf_path, 
 		check(close(fd), "close");
 
 		execvp("xxd", (char *[]){"xxd", dll_path, NULL});
-		fprintf(stderr, "execvp: xxd: %s", strerror(errno));
+		fprintf(stderr, "execvp: xxd: %s\n", strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 

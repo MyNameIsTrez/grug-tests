@@ -169,6 +169,9 @@ jobs:
       - name: Install nasm
         run: brew install nasm
 
+      - name: Install readelf
+        run: brew install readelf
+
       - name: Run the tests
         run: ./tests.sh
         env:
@@ -186,6 +189,9 @@ jobs:
 
   #     - name: Install nasm
   #       run: brew install nasm
+
+  #     - name: Install readelf
+  #       run: brew install readelf
 
   #     - name: Run the tests
   #       run: ./tests.sh
