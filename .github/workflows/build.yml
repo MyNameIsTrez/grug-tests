@@ -169,8 +169,8 @@ jobs:
       - name: Install nasm
         run: brew install nasm
 
-      - name: Install readelf
-        run: brew install readelf
+      - name: Install binutils
+        run: brew install binutils
 
       - name: Run the tests
         run: ./tests.sh
@@ -184,14 +184,7 @@ jobs:
   #   steps:
   #     - uses: actions/checkout@v4
 
-  #     - name: Clone the grug submodule
-  #       run: git submodule update --init
-
-  #     - name: Install nasm
-  #       run: brew install nasm
-
-  #     - name: Install readelf
-  #       run: brew install readelf
+  # TODO: Copy what goes here from the mac-clang job
 
   #     - name: Run the tests
   #       run: ./tests.sh
