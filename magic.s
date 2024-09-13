@@ -1,4 +1,4 @@
-.global _magic
+.global magic
 .align 2
-_magic:
+magic:
     mov X0, #42
