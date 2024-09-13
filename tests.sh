@@ -28,7 +28,6 @@ fi
 if [ "$(uname)" == "Darwin" ]; then # If Mac OS X
     echo "Detected macOS"
     compiler_flags+=' -I.' # For `#include <elf.h>`
-    compiler_flags+=' -fno-integrated-as' # For the `asm("mov %%rsp, %0" : "=r" (rsp));`, see https://bugzilla.redhat.com/show_bug.cgi?id=1692486
 fi
 
 # -rdynamic allows the .so to call functions from test.c
