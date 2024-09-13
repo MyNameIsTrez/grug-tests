@@ -1,4 +1,4 @@
-// The build.yml macOS tasks require this elf.h file
+// The build.yml macOS tasks require this file
 // Source: https://gist.github.com/mlafeldt/3885346#file-elf-h
 
 /* This is the original elf.h file from the GNU C Library; I only removed
