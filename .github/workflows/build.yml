@@ -13,8 +13,11 @@ jobs:
       - name: Clone the grug submodule
         run: git submodule update --init
 
+      - name: Print nasm version
+        run: nasm --version
+
+      - name: Install nasm
+        run: apt install nasm
+
       - name: Run the tests
         run: ./tests.sh
-        env:
-          ACTIONS_RUNNER_DEBUG: true
-          ACTIONS_STEP_DEBUG: true
