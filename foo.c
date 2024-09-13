@@ -6,11 +6,11 @@ int main(void) {
 	// int64_t rsp;
 
 #ifdef __x86_64__
-	printf("__x86_64__\n");
+	fprintf(stderr, "__x86_64__\n");
 #elif __i386__
-	printf("__i386__\n");
+	fprintf(stderr, "__i386__\n");
 #elif __arm__
-	printf("__arm__\n");
+	fprintf(stderr, "__arm__\n");
 #endif
 
 	// #pragma GCC diagnostic push
@@ -21,5 +21,5 @@ int main(void) {
 
 	// #pragma GCC diagnostic pop
 
-    // printf("%lld\n", rsp);
+    // fprintf(stderr, "%lld\n", rsp);
 }
