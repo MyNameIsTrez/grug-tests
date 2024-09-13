@@ -5,7 +5,7 @@ compiler_flags='-Igrug -g -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -
 # This makes compilation quite a bit slower
 # compiler_flags+=' -Og'
 
-if [[ -v ASAN ]]
+if [[ ${ASAN+x} ]]
 then
     # This makes compilation quite a bit slower
     echo "- ASAN was turned on"
@@ -14,13 +14,13 @@ fi
 
 compiler_flags+=' -DMODS_DIR_PATH="tests"'
 
-if [[ -v OLD_LD ]]
+if [[ ${OLD_LD+x} ]]
 then
     echo "- OLD_LD was turned on"
     compiler_flags+=' -DOLD_LD'
 fi
 
-if [[ -v VALGRIND ]]
+if [[ ${VALGRIND+x} ]]
 then
     echo "- VALGRIND was turned on"
 fi
@@ -61,7 +61,7 @@ fi
 
 echo "Running tests.out..."
 # "$@" passes any whitelisted test names to tests.out
-if [[ -v VALGRIND ]]
+if [[ ${VALGRIND+x} ]]
 then
     # This makes compilation quite a bit slower
     valgrind --quiet ./tests.out "$@"

@@ -998,9 +998,9 @@ static void ok_epilogue(
 		printf("\nThe OK test's DLL bytes output differs from the expected output.\n");
 
 		if (output_dll_bytes_len == expected_dll_bytes_len) {
-			printf("\nThe output DLL bytes length matches the expected length.\n");
+			printf("The output DLL bytes length matches the expected length.\n");
 		} else {
-			printf("\nThe output DLL bytes length was %zu, while the expected length was %zu.\n", output_dll_bytes_len, expected_dll_bytes_len);
+			printf("The output DLL bytes length was %zu, while the expected length was %zu.\n", output_dll_bytes_len, expected_dll_bytes_len);
 		}
 
 		exit(EXIT_FAILURE);

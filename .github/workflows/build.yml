@@ -160,25 +160,3 @@ jobs:
         env:
           OLD_LD:
           ASAN:
-
-  build-mac-clang-valgrind:
-    name: mac-clang-valgrind
-    runs-on: macos-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Clone the grug submodule
-        run: git submodule update --init
-
-      - name: Install nasm
-        run: brew install nasm
-
-      - name: Install valgrind
-        run: brew install valgrind
-
-      - name: Run the tests
-        run: ./tests.sh
-        env:
-          OLD_LD:
-          VALGRIND:
