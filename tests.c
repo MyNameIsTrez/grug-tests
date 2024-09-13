@@ -215,7 +215,7 @@ void game_fn_nothing_aligned(void) {
 	int64_t rsp;
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wlanguage-extension-token"
-	asm ("mov %%rsp, %0" : "=r" (rsp) );
+	asm("mov %%rsp, %0" : "=r" (rsp));
 	#pragma GCC diagnostic pop
 
 	// We need this in order to ensure that the C compiler will 16-byte align
@@ -231,7 +231,7 @@ int32_t game_fn_magic_aligned(void) {
 	int64_t rsp;
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wlanguage-extension-token"
-	asm ("mov %%rsp, %0" : "=r" (rsp) );
+	asm("mov %%rsp, %0" : "=r" (rsp));
 	#pragma GCC diagnostic pop
 
 	printf(":)\n");
@@ -250,7 +250,7 @@ void game_fn_initialize_aligned(int32_t x) {
 	int64_t rsp;
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wlanguage-extension-token"
-	asm ("mov %%rsp, %0" : "=r" (rsp) );
+	asm("mov %%rsp, %0" : "=r" (rsp));
 	#pragma GCC diagnostic pop
 
 	// We need this in order to ensure that the C compiler will 16-byte align
