@@ -34,9 +34,16 @@ int main(void) {
 	// asm("mov %%rsp, %0" : "=r" (rsp));
 	// asm("mov %%sp, %0" : "=r" (rsp));
 
+    // __asm__ __volatile__(
+    //     // sp is an alias for r13
+    //     "mov %%sp,%0"
+    //     : "=r" (rsp)
+    //     : /* no input */
+    // );
+
     __asm__ __volatile__(
         // sp is an alias for r13
-        "mov %%sp,%0"
+        "movq %%rsp,%0"
         : "=r" (rsp)
         : /* no input */
     );
