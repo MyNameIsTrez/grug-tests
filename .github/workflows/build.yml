@@ -193,6 +193,12 @@ jobs:
       - name: Print as --version
         run: as --version
 
+      - name: Print type -a as
+        run: type -a as
+
+      - name: Print clang --version
+        run: clang --version
+
       - name: Run main
         run: ./main
 
