@@ -18,3 +18,5 @@ jobs:
 
       - name: Run the tests
         run: ./tests.sh
+        env:
+          OLD_LD:
