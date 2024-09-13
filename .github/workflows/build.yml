@@ -80,3 +80,26 @@ jobs:
         env:
           OLD_LD:
           CC: gcc
+
+  build-ubuntu-gcc-valgrind:
+    name: ubuntu-gcc-valgrind
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: sudo apt install nasm
+
+      - name: Install valgrind
+        run: sudo apt install valgrind
+
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
+          VALGRIND:
+          CC: gcc
