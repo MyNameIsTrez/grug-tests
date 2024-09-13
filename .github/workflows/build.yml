@@ -181,6 +181,9 @@ jobs:
       - name: ls binutils
         run: ls -l /opt/homebrew/opt/binutils/bin
 
+      - name: Run greadelf
+        run: /opt/homebrew/opt/binutils/bin/greadelf
+
       # - name: Symlink greadelf to readelf
       #   run: sudo ln -s "$(pwd)"/tests.out /usr/local/bin/haha12
 
