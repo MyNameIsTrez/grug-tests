@@ -176,7 +176,7 @@ jobs:
         run: sudo ln -s /opt/homebrew/opt/binutils/bin/readelf /usr/local/bin/readelf
 
       - name: Assemble magic.s
-        run: nasm -fmacho64 magic.s -o magic.dylib
+        run: clang magic.s -o magic.dylib
 
       - name: Print magic.dylib file info
         run: file magic.dylib
