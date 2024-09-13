@@ -149,7 +149,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install gcc
-        run: brew install gcc
+        run: brew info gcc
 
       - name: Print gcc version
         run: gcc --version
