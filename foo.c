@@ -14,8 +14,8 @@ int main(void) {
 	printf("__i386__\n");
 #elif _M_IX86
 	printf("_M_IX86\n");
-#elif __aarch64__
-	printf("__aarch64__\n");
+// #elif __aarch64__
+// 	printf("__aarch64__\n");
 #elif _M_ARM64
 	printf("_M_ARM64\n");
 #elif __arm__
@@ -25,7 +25,7 @@ int main(void) {
 #elif __EMSCRIPTEN__
 	printf("__EMSCRIPTEN__\n");
 #else
-	printf("none!\n"); // TODO: WHY DOES THIS END UP GETTING PRINTED??
+	printf("none!\n");
 #endif
 
 	// #pragma GCC diagnostic push
