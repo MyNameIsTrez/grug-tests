@@ -5,7 +5,12 @@
 int main(void) {
 	int64_t rsp;
 
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wlanguage-extension-token"
+
 	asm("mov %%rsp, %0" : "=r" (rsp));
+
+	#pragma GCC diagnostic pop
 
     printf("%ld\n", rsp);
 }
