@@ -135,7 +135,7 @@ jobs:
         run: git submodule update --init
 
       - name: Install nasm
-        run: sudo apt install nasm
+        run: brew install nasm
 
       - name: Run the tests
         run: ./tests.sh
@@ -153,7 +153,7 @@ jobs:
         run: git submodule update --init
 
       - name: Install nasm
-        run: sudo apt install nasm
+        run: brew install nasm
 
       - name: Run the tests
         run: ./tests.sh
@@ -172,10 +172,10 @@ jobs:
         run: git submodule update --init
 
       - name: Install nasm
-        run: sudo apt install nasm
+        run: brew install nasm
 
       - name: Install valgrind
-        run: sudo apt install valgrind
+        run: brew install valgrind
 
       - name: Run the tests
         run: ./tests.sh
