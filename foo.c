@@ -8,7 +8,8 @@ int main(void) {
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wlanguage-extension-token"
 
-	asm("mov %%rsp, %0" : "=r" (rsp));
+	// asm("mov %%rsp, %0" : "=r" (rsp));
+	asm("movq %%rsp, %0" : "=r" (rsp));
 
 	#pragma GCC diagnostic pop
 
