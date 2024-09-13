@@ -6,14 +6,14 @@
 int main(void) {
 	// int64_t rsp;
 
-#ifdef __x86_64__
+#ifdef defined( __x86_64__ )
 	printf("__x86_64__\n");
-#elif __i386__
+#elif defined( __i386__ )
 	printf("__i386__\n");
-#elif __arm__
+#elif defined( __arm__ )
 	printf("__arm__\n");
 #else
-	printf("none!\n");
+	printf("none!\n"); // TODO: WHY DOES THIS END UP GETTING PRINTED??
 #endif
 
 	// #pragma GCC diagnostic push
