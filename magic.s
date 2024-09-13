@@ -1,9 +1,9 @@
 .align 2
-global _magic
+.global _magic
 _magic:
     mov X0, #42
 
 .align 2
-global magic
+.global magic
 magic:
     mov X0, #69

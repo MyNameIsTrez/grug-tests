@@ -163,14 +163,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Clone the grug submodule
-        run: git submodule update --init
+      # TODO: Put this back!
+      # - name: Clone the grug submodule
+      #   run: git submodule update --init
 
-      - name: Install binutils
-        run: brew install binutils
+      # TODO: Put this back!
+      # - name: Install binutils
+      #   run: brew install binutils
 
-      - name: Symlink readelf to bin
-        run: sudo ln -s /opt/homebrew/opt/binutils/bin/readelf /usr/local/bin/readelf
+      # TODO: Put this back!
+      # - name: Symlink readelf to bin
+      #   run: sudo ln -s /opt/homebrew/opt/binutils/bin/readelf /usr/local/bin/readelf
 
       - name: Assemble magic.s
         run: clang magic.s -o magic.dylib -shared
