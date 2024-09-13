@@ -125,53 +125,54 @@ jobs:
   #         VALGRIND:
 
   # TODO: REMOVE!
-  build-foo-clang:
-    name: foo-clang
-    runs-on: macos-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Print clang version
-        run: clang --version
-
-      - name: Build
-        run: clang foo.c -o foo -Wfatal-errors
-
-      - name: Run
-        run: ./foo
-
-  build-foo-gcc:
-    name: foo-gcc
-    runs-on: macos-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Build
-        # `gcc` is a nasty symlink to clang, so we use the absolute path of gcc here
-        run: /opt/homebrew/Cellar/gcc/14.2.0/bin/gcc-14 foo.c -o foo -Wfatal-errors -Wno-pragmas
-
-      - name: Run
-        run: ./foo
-
-  # build-mac-clang:
-  #   name: mac-clang
+  # build-foo-clang:
+  #   name: foo-clang
   #   runs-on: macos-latest
 
   #   steps:
   #     - uses: actions/checkout@v4
 
-  #     - name: Clone the grug submodule
-  #       run: git submodule update --init
+  #     - name: Print clang version
+  #       run: clang --version
 
-  #     - name: Install nasm
-  #       run: brew install nasm
+  #     - name: Build
+  #       run: clang foo.c -o foo -Wfatal-errors
 
-  #     - name: Run the tests
-  #       run: ./tests.sh
-  #       env:
-  #         OLD_LD:
+  #     - name: Run
+  #       run: ./foo
+
+  # TODO: REMOVE!
+  # build-foo-gcc:
+  #   name: foo-gcc
+  #   runs-on: macos-latest
+
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  #     - name: Build
+  #       # `gcc` is a nasty symlink to clang, so we use the absolute path of gcc here
+  #       run: /opt/homebrew/Cellar/gcc/14.2.0/bin/gcc-14 foo.c -o foo -Wfatal-errors -Wno-pragmas
+
+  #     - name: Run
+  #       run: ./foo
+
+  build-mac-clang:
+    name: mac-clang
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: brew install nasm
+
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
 
   # build-mac-clang-asan:
   #   name: mac-clang-asan
