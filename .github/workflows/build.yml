@@ -173,10 +173,13 @@ jobs:
         run: brew install binutils
 
       - name: Print greadelf its location
-        run: which greadelf
+        run: type greadelf
+
+      - name: Print greadelf its detailed location
+        run: type -a greadelf
 
       - name: haha
-        run: echo "$(which greadelf)"/lmao
+        run: echo "$(type greadelf)"/lmao
 
       # - name: Symlink greadelf to readelf
       #   run: sudo ln -s "$(pwd)"/tests.out /usr/local/bin/haha12
