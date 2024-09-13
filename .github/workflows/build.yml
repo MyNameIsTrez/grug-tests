@@ -53,6 +53,9 @@ jobs:
       - name: Install nasm
         run: sudo apt install nasm
 
+      - name: Install valgrind
+        run: sudo apt install valgrind
+
       - name: Run the tests
         run: ./tests.sh
         env:
