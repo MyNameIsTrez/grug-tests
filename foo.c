@@ -12,5 +12,5 @@ int main(void) {
 
 	#pragma GCC diagnostic pop
 
-    printf("%ld\n", rsp);
+    printf("%lld\n", rsp);
 }
