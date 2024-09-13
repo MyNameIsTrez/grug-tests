@@ -169,6 +169,10 @@ jobs:
       - name: Install nasm
         run: brew install nasm
 
+      # TODO: REMOVE
+      - name: Print nasm help
+        run: nasm --help
+
       - name: Install binutils
         run: brew install binutils
 
