@@ -181,6 +181,9 @@ jobs:
       - name: Compile main.c
         run: clang main.c -o main
 
+      - name: Print main file info
+        run: file main
+
       - name: Run main
         run: ./main
 
