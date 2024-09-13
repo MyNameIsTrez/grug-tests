@@ -175,8 +175,11 @@ jobs:
       - name: Symlink readelf to bin
         run: sudo ln -s /opt/homebrew/opt/binutils/bin/readelf /usr/local/bin/readelf
 
-      - name: Experiment with macho64
+      - name: Assemble magic.s
         run: nasm -fmacho64 magic.s -o magic.dylib
+
+      - name: Print magic.dylib file info
+        run: file magic.dylib
 
       - name: Compile main.c
         run: clang main.c -o main
