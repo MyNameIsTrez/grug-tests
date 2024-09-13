@@ -1,4 +1,5 @@
-.global magic
+.global _magic
 .align 2
-magic:
+_magic:
     mov X0, #42
+    ret
