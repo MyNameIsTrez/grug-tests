@@ -552,10 +552,10 @@ static size_t read_dll(char *dll_path, uint8_t *dll_bytes) {
 
 	if (fread(dll_bytes, dll_bytes_len, 1, f) == 0) {
 		if (feof(f)) {
-			fprintf(stderr, "fread EOF\n");
+			printf("fread EOF\n");
 		}
 		if (ferror(f)) {
-			fprintf(stderr, "fread error\n");
+			printf("fread error\n");
 		}
 		exit(EXIT_FAILURE);
 	}
@@ -590,7 +590,7 @@ static void run_and_write(char *const *argv, char *written_path) {
 		close(fd);
 
 		execvp(argv[0], argv);
-		fprintf(stderr, "execvp: %s: %s\n", argv[0], strerror(errno));
+		printf("execvp: %s: %s\n", argv[0], strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 
@@ -604,7 +604,7 @@ static void run(char *const *argv) {
 
 	if (pid == 0) {
 		execvp(argv[0], argv);
-		fprintf(stderr, "execvp: %s: %s\n", argv[0], strerror(errno));
+		printf("execvp: %s: %s\n", argv[0], strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 
@@ -628,7 +628,7 @@ static void output_dll_info(char *dll_path, char *xxd_path, char *readelf_path, 
 		check(close(fd), "close");
 
 		execvp("xxd", (char *[]){"xxd", dll_path, NULL});
-		fprintf(stderr, "execvp: xxd: %s\n", strerror(errno));
+		printf("execvp: xxd: %s\n", strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 
@@ -683,10 +683,10 @@ static char *get_expected_error(char *expected_error_path) {
 
 	if (fread(expected_error, expected_error_len, 1, f) == 0) {
 		if (feof(f)) {
-			fprintf(stderr, "fread EOF\n");
+			printf("fread EOF\n");
 		}
 		if (ferror(f)) {
-			fprintf(stderr, "fread error\n");
+			printf("fread error\n");
 		}
 		exit(EXIT_FAILURE);
 	}
@@ -782,10 +782,10 @@ static void test_error(
 
 	if (fwrite(grug_error.msg, grug_error_msg_len, 1, f) == 0) {
 		if (feof(f)) {
-			fprintf(stderr, "fwrite EOF\n");
+			printf("fwrite EOF\n");
 		}
 		if (ferror(f)) {
-			fprintf(stderr, "fwrite error\n");
+			printf("fwrite error\n");
 		}
 		exit(EXIT_FAILURE);
 	}
@@ -842,11 +842,11 @@ static void runtime_error_epilogue(char *expected_error_path, char *failed_file_
 static void handle_dlerror(char *function_name) {
 	char *err = dlerror();
 	if (!err) {
-		fprintf(stderr, "dlerror() was asked to find an error string for %s(), but it couldn't find one", function_name);
+		printf("dlerror() was asked to find an error string for %s(), but it couldn't find one", function_name);
 		exit(EXIT_FAILURE);
 	}
 
-	fprintf(stderr, "%s: %s\n", function_name, err);
+	printf("%s: %s\n", function_name, err);
 	exit(EXIT_FAILURE);
 }
 
