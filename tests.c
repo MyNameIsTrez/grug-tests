@@ -953,7 +953,7 @@ static void regenerate_expected_dll(
 #ifdef __x86_64__
 	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-shared", "--hash-style=sysv", NULL});
 #elif __aarch64__
-	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "--hash-style=sysv", NULL});
+	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, NULL});
 #else
 #error Unsupported or unrecognized architecture
 #endif
