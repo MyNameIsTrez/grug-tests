@@ -21,6 +21,44 @@ jobs:
         env:
           OLD_LD:
 
+  build-ubuntu-clang-asan:
+    name: ubuntu-clang-asan
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: sudo apt install nasm
+
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
+          ASAN:
+
+  build-ubuntu-clang-valgrind:
+    name: ubuntu-clang-valgrind
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: sudo apt install nasm
+
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
+          VALGRIND:
+
   build-ubuntu-gcc:
     name: ubuntu-gcc
     runs-on: ubuntu-latest
@@ -38,3 +76,4 @@ jobs:
         run: ./tests.sh
         env:
           OLD_LD:
+          CC: gcc
