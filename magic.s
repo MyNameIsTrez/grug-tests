@@ -1,3 +1,3 @@
 .align 2
-magic:
+_magic:
     mov X0, #42
