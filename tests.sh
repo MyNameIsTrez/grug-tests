@@ -34,6 +34,9 @@ echo "Compilation will use $CC"
 if [[ "$CC" = "gcc" ]]
 then
     compiler_flags+=' -Wno-pragmas'
+elif [[ "$CC" = "clang" ]]
+then
+    compiler_flags+=' -gdwarf-4' # build.yml requires this, for some reason
 fi
 
 if (! [[ grug/grug.c -ot grug.o ]]) || (! [[ grug/grug.h -ot grug.o ]]) || (! [[ tests.sh -ot grug.o ]])
