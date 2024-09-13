@@ -123,3 +123,62 @@ jobs:
           OLD_LD:
           CC: gcc
           VALGRIND:
+
+  build-mac-clang:
+    name: mac-clang
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: sudo apt install nasm
+
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
+
+  build-mac-clang-asan:
+    name: mac-clang-asan
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: sudo apt install nasm
+
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
+          ASAN:
+
+  build-mac-clang-valgrind:
+    name: mac-clang-valgrind
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: sudo apt install nasm
+
+      - name: Install valgrind
+        run: sudo apt install valgrind
+
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
+          VALGRIND:
