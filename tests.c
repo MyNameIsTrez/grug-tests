@@ -1003,11 +1003,6 @@ static void ok_epilogue(
 			printf("\nThe output DLL bytes length was %zu, while the expected length was %zu.\n", output_dll_bytes_len, expected_dll_bytes_len);
 		}
 
-		run((char *[]){"diff", output_dll_path, expected_dll_path, NULL});
-
-		// TODO: Is this necessary?
-		fflush(NULL);
-
 		exit(EXIT_FAILURE);
 	}
 
