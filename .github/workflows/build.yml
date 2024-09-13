@@ -3,7 +3,7 @@ name: CI Build
 on: push
 
 env:
-  OLD_LD:
+  ACTIONS_RUNNER_DEBUG: true
 
 jobs:
   build-ubuntu-clang:
