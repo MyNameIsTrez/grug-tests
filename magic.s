@@ -3,7 +3,7 @@
 .data
 
 .global _on_fns
-on_fns:
+_on_fns:
     .xword _magic
 
 .text
