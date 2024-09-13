@@ -588,21 +588,21 @@ static void *get(void *dll, char *label) {
 	return p;
 }
 
-static void wait_on_child(void) {
+static void wait_on_child(char *child_name) {
 	int status;
 	check(wait(&status), "wait");
 
 	if (WIFEXITED(status) && WEXITSTATUS(status) != 0) {
-		printf("child unexpectedly exited with status %d\n", WEXITSTATUS(status));
+		printf("child \"%s\" unexpectedly exited with status %d\n", child_name, WEXITSTATUS(status));
 		exit(EXIT_FAILURE);
 	} else if (WIFSIGNALED(status)) {
-		printf("child killed by signal %d\n", WTERMSIG(status));
+		printf("child \"%s\" killed by signal %d\n", child_name, WTERMSIG(status));
 		exit(EXIT_FAILURE);
 	} else if (WIFSTOPPED(status)) {
-		printf("child stopped by signal %d\n", WSTOPSIG(status));
+		printf("child \"%s\" stopped by signal %d\n", child_name, WSTOPSIG(status));
 		exit(EXIT_FAILURE);
 	} else if (WIFCONTINUED(status)) {
-		printf("child continued\n");
+		printf("child \"%s\" continued\n", child_name);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -624,7 +624,7 @@ static void run_and_write(char *const *argv, char *written_path) {
 		exit(EXIT_FAILURE);
 	}
 
-	wait_on_child();
+	wait_on_child(argv[0]);
 }
 
 static void run(char *const *argv) {
@@ -637,7 +637,7 @@ static void run(char *const *argv) {
 		exit(EXIT_FAILURE);
 	}
 
-	wait_on_child();
+	wait_on_child(argv[0]);
 }
 
 static void output_dll_info(char *dll_path, char *xxd_path, char *readelf_path, char *objdump_path) {
@@ -660,7 +660,7 @@ static void output_dll_info(char *dll_path, char *xxd_path, char *readelf_path, 
 		exit(EXIT_FAILURE);
 	}
 
-	wait_on_child();
+	wait_on_child("xxd");
 
 	run_and_write((char *[]){"readelf", "-a", dll_path, NULL}, readelf_path);
 
