@@ -1,5 +1,5 @@
 .global _magic
-.p2align 4
+.balign 16
 _magic:
-    mov X0, #42
+    mov X0, 42
     ret
