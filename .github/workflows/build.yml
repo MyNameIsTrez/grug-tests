@@ -133,7 +133,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build
-        run: clang foo.c -o foo
+        run: clang foo.c -o foo -Wfatal-errors
 
       - name: Run
         run: ./foo
