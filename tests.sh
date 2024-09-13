@@ -27,7 +27,8 @@ fi
 
 if [ "$(uname)" == "Darwin" ]; then # If Mac OS X
     echo lmao
-    ln -s elf.h /usr/local/include/elf.h
+    ls /usr/local/include
+    sudo ln -s elf.h /usr/local/include/elf.h
 fi
 
 # -rdynamic allows the .so to call functions from test.c
