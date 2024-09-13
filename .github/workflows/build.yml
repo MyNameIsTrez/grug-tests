@@ -172,20 +172,8 @@ jobs:
       - name: Install binutils
         run: brew install binutils
 
-      # - name: Print greadelf its location
-      #   run: type greadelf
-
-      # - name: Print greadelf its detailed location
-      #   run: type -a greadelf
-
-      - name: ls binutils
-        run: ls -l /opt/homebrew/opt/binutils/bin
-
-      - name: Run readelf
-        run: readelf
-
-      # - name: Symlink greadelf to readelf
-      #   run: sudo ln -s "$(pwd)"/tests.out /usr/local/bin/haha12
+      - name: Symlink readelf to bin
+        run: sudo ln -s /opt/homebrew/opt/binutils/bin/readelf /usr/local/bin/readelf
 
       - name: Run the tests
         run: ./tests.sh
