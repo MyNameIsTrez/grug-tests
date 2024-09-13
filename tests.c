@@ -953,7 +953,7 @@ static void regenerate_expected_dll(
 	run((char *[]){"nasm", nasm_path, "-felf64", "-O0", "-o", nasm_o_path, NULL});
 	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-shared", "--hash-style=sysv", NULL});
 #elif __aarch64__
-	run((char *[]){"nasm", nasm_path, "-O0", "-o", nasm_o_path, NULL});
+	run((char *[]){"nasm", nasm_path, "-fmacho64", "-O0", "-o", nasm_o_path, NULL});
 	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-dylib", NULL});
 #else
 #error Unsupported or unrecognized architecture
