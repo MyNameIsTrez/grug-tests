@@ -25,14 +25,13 @@ then
     echo "- VALGRIND was turned on"
 fi
 
-if [ "$(uname)" == "Darwin" ]; then # If Mac OS X
-    echo lmao
-    ls /usr/local/include
-    sudo ln -s elf.h /usr/local/include/elf.h
-fi
-
 # -rdynamic allows the .so to call functions from test.c
 linker_flags='-rdynamic -lm'
+
+if [ "$(uname)" == "Darwin" ]; then # If Mac OS X
+    echo "Detected macOS"
+    linker_flags+=' -I.'
+fi
 
 CC="${CC:=clang}"
 echo "Compilation will use $CC"
