@@ -32,7 +32,7 @@ _resources_size:
 // TODO: USE
 .extern _grug_block_mask
 
-.import _game_fn_define_a[WEAK]
+.extern _game_fn_define_a[WEAK]
 
 .global _define
 _define:
