@@ -167,6 +167,14 @@ jobs:
       # - name: Clone the grug submodule
       #   run: git submodule update --init
 
+      # TODO: Move this to its own job!
+      - name: Install valgrind
+        run: brew install valgrind
+
+      # TODO: Move this to its own job!
+      - name: Print valgrind version
+        run: valgrind --version
+
       # TODO: Put this back!
       # - name: Install binutils
       #   run: brew install binutils
@@ -201,7 +209,7 @@ jobs:
       #   run: clang --version
 
       - name: Run magic_main
-        run: ./magic_main
+        run: valgrind ./magic_main
 
       # - name: Run the tests
       #   run: ./tests.sh
