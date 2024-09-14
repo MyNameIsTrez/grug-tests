@@ -26,15 +26,17 @@ _resources_size:
 .text
 
 // TODO: USE
-.extern grug_on_fn_name
+.extern _grug_on_fn_name
 // TODO: USE
-.extern grug_on_fn_path
+.extern _grug_on_fn_path
 // TODO: USE
-.extern grug_block_mask
+.extern _grug_block_mask
+
+.extern _game_fn_define_a
 
 .global _define
 _define:
-	// call game_fn_define_a wrt ..plt // TODO: How do I do this?
+	bl _game_fn_define_a
 	ret
 
 .balign 16

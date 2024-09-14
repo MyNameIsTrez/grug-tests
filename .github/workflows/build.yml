@@ -182,7 +182,8 @@ jobs:
       #   run: file magic.dylib
 
       - name: Compile main.c
-        run: clang main.c -o main -g -fsanitize=address,undefined
+        # -rdynamic allows magic.dylib to call functions from main.c
+        run: clang main.c -o main -g -fsanitize=address,undefined -rdynamic
 
       # - name: Print main file info
       #   run: file main
