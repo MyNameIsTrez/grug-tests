@@ -181,9 +181,9 @@ jobs:
       # - name: Print magic.dylib file info
       #   run: file magic.dylib
 
-      - name: Compile main.c
-        # -rdynamic allows magic.dylib to call functions from main.c
-        run: clang main.c -o main -g -fsanitize=address,undefined -rdynamic
+      - name: Compile magic_main.c
+        # -rdynamic allows magic.dylib to call functions from magic_main.c
+        run: clang magic_main.c -o magic_main -g -fsanitize=address,undefined -rdynamic
 
       # - name: Print main file info
       #   run: file main
@@ -200,8 +200,8 @@ jobs:
       # - name: Print clang --version
       #   run: clang --version
 
-      - name: Run main
-        run: ./main
+      - name: Run magic_main
+        run: ./magic_main
 
       # - name: Run the tests
       #   run: ./tests.sh
