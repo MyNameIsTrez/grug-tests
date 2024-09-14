@@ -1481,6 +1481,17 @@ static void ok_continue(void *on_fns, void *g, size_t resources_size, char **res
 	assert(resources == NULL);
 }
 
+static void ok_define(void *on_fns, void *g, size_t resources_size, char **resources) {
+	(void)on_fns;
+
+	assert(game_fn_define_h_x == 42);
+
+	free(g);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+}
+
 static void ok_define_containing_addition(void *on_fns, void *g, size_t resources_size, char **resources) {
 	(void)on_fns;
 
@@ -2486,8 +2497,6 @@ static void ok_max_args(void *on_fns, void *g, size_t resources_size, char **res
 
 static void ok_minimal(void *on_fns, void *g, size_t resources_size, char **resources) {
 	(void)on_fns;
-
-	assert(game_fn_define_h_x == 42);
 
 	free(g);
 
@@ -3600,6 +3609,7 @@ static void ok_tests(void) {
 	TEST_OK(calls_100, "d", 0);
 	TEST_OK(calls_1000, "d", 0);
 	TEST_OK(continue, "d", 0);
+	TEST_OK(define, "h", 0);
 	TEST_OK(define_containing_addition, "b", 0);
 	TEST_OK(define_containing_string, "k", 0);
 	TEST_OK(define_with_eight_f32_fields, "t", 0);
@@ -3664,7 +3674,7 @@ static void ok_tests(void) {
 	TEST_OK(lt_false, "d", 0);
 	TEST_OK(lt_true, "d", 0);
 	TEST_OK(max_args, "d", 0);
-	TEST_OK(minimal, "h", 0);
+	TEST_OK(minimal, "a", 0);
 	TEST_OK(multiplication_as_two_arguments, "d", 0);
 	TEST_OK(ne_false, "d", 0);
 	TEST_OK(negate_parenthesized_expr, "d", 0);
