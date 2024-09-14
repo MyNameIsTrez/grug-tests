@@ -1,0 +1,5 @@
+define() h {
+    return {
+        .x = 42,
+    }
+}

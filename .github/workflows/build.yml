@@ -1,0 +1,207 @@
+name: CI Build
+
+on: push
+
+jobs:
+  build-ubuntu-clang:
+    name: ubuntu-clang
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: sudo apt install nasm
+
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
+
+  build-ubuntu-clang-asan:
+    name: ubuntu-clang-asan
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: sudo apt install nasm
+
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
+          ASAN:
+
+  build-ubuntu-clang-valgrind:
+    name: ubuntu-clang-valgrind
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: sudo apt install nasm
+
+      - name: Install valgrind
+        run: sudo apt install valgrind
+
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
+          VALGRIND:
+
+  build-ubuntu-gcc:
+    name: ubuntu-gcc
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: sudo apt install nasm
+
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
+          CC: gcc
+
+  build-ubuntu-gcc-asan:
+    name: ubuntu-gcc-asan
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: sudo apt install nasm
+
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
+          CC: gcc
+          ASAN:
+
+  build-ubuntu-gcc-valgrind:
+    name: ubuntu-gcc-valgrind
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: sudo apt install nasm
+
+      - name: Install valgrind
+        run: sudo apt install valgrind
+
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
+          CC: gcc
+          VALGRIND:
+
+  # TODO: REMOVE!
+  # build-foo-clang:
+  #   name: foo-clang
+  #   runs-on: macos-latest
+
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  #     - name: Print clang version
+  #       run: clang --version
+
+  #     - name: Build
+  #       run: clang foo.c -o foo -Wfatal-errors
+
+  #     - name: Run
+  #       run: ./foo
+
+  # TODO: REMOVE!
+  # build-foo-gcc:
+  #   name: foo-gcc
+  #   runs-on: macos-latest
+
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  #     - name: Build
+  #       # `gcc` is a nasty symlink to clang, so we use the absolute path of gcc here
+  #       run: /opt/homebrew/Cellar/gcc/14.2.0/bin/gcc-14 foo.c -o foo -Wfatal-errors -Wno-pragmas
+
+  #     - name: Run
+  #       run: ./foo
+
+  # build-mac-clang:
+  #   name: mac-clang
+  #   runs-on: macos-latest
+
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  #     # TODO: Put this back!
+  #     # - name: Clone the grug submodule
+  #     #   run: git submodule update --init
+
+  #     # TODO: Put this back!
+  #     # - name: Install binutils
+  #     #   run: brew install binutils
+
+  #     # TODO: Put this back!
+  #     # - name: Symlink readelf to bin
+  #     #   run: sudo ln -s /opt/homebrew/opt/binutils/bin/readelf /usr/local/bin/readelf
+
+  #     - name: Assemble magic.s
+  #       run: clang magic.s -o magic.dylib -shared
+
+  #     - name: Compile magic_main.c
+  #       # -rdynamic allows magic.dylib to call functions from magic_main.c
+  #       run: clang magic_main.c -o magic_main -g -fsanitize=address,undefined -rdynamic
+
+  #     - name: Run magic_main
+  #       run: ./magic_main
+
+  #     # TODO: Put this back!
+  #     # - name: Run the tests
+  #     #   run: ./tests.sh
+  #     #   env:
+  #     #     OLD_LD:
+
+  # build-mac-clang-asan:
+  #   name: mac-clang-asan
+  #   runs-on: macos-latest
+
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  # TODO: Copy what goes here from the mac-clang job
+
+  #     - name: Run the tests
+  #       run: ./tests.sh
+  #       env:
+  #         OLD_LD:
+  #         ASAN:

@@ -1,11 +1,15 @@
 section .data
 
 global define_type
-define_type: db "a", 0
+define_type: db "h", 0
 
 align 8
 global globals_size
 globals_size: dq 0
+
+global on_fns
+on_fns:
+	dq 0
 
 global strings
 strings:
@@ -20,11 +24,13 @@ extern grug_on_fn_name
 extern grug_on_fn_path
 extern grug_block_mask
 
-extern game_fn_define_a
+extern game_fn_define_h
 
 global define
 define:
-	call game_fn_define_a wrt ..plt
+	mov eax, 42
+	mov rdi, rax
+	call game_fn_define_h wrt ..plt
 	ret
 
 global init_globals
