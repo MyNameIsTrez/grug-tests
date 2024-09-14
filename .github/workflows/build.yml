@@ -182,7 +182,7 @@ jobs:
       #   run: file magic.dylib
 
       - name: Compile main.c
-        run: clang main.c -o main
+        run: clang main.c -o main -g -fsanitize=address,undefined
 
       # - name: Print main file info
       #   run: file main
