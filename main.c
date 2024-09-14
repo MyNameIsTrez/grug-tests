@@ -34,33 +34,48 @@ static void *get(void *dll, char *label) {
 }
 
 int main(void) {
+	printf("open dll\n");
     void *dll = dlopen("./magic.dylib", RTLD_NOW);
 	if (!dll) {
 		handle_dlerror("dlopen");
 	}
 
+	printf("get define_type\n");
 	assert(streq(get(dll, "define_type"), "a"));
 
+	printf("get define\n");
 	void (*define)(void) = get(dll, "define");
 	define();
 
-    size_t globals_size = *(size_t *)get(dll, "globals_size");
+	printf("get globals_size\n");
+    size_t *globals_size_ptr = get(dll, "globals_size");
+	assert(globals_size_ptr);
+	printf("dereference globals_size\n");
+    size_t globals_size = *globals_size_ptr;
 	assert(globals_size == 0);
 
+	printf("malloc globals_size\n");
 	void *g = malloc(globals_size);
-    void (*init_globals)(void *globals) = get(dll, "globals_size");
+	printf("get init_globals\n");
+    void (*init_globals)(void *globals) = get(dll, "init_globals");
     init_globals(g);
 
+	// printf("get on_fns\n");
     // void *on_fns = dlsym(dll, "on_fns");
 
+	printf("get resources_size\n");
 	size_t *resources_size_ptr = get(dll, "resources_size");
 
+	printf("get resources\n");
 	char **resources = dlsym(dll, "resources");
 
+	// printf("run magic()\n");
     // assert(((struct magic_on_fns *)on_fns)->magic() == 42);
 
+	printf("free globals\n");
     free(g);
 
+	printf("close dll\n");
     if (dlclose(dll)) {
         handle_dlerror("dlclose");
     }
