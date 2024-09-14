@@ -32,11 +32,11 @@ _resources_size:
 // TODO: USE
 .extern _grug_block_mask
 
-.extern _game_fn_define_a
+.extern game_fn_define_a
 
 .global _define
 _define:
-	bl _game_fn_define_a
+	bl game_fn_define_a
 	ret
 
 .balign 16
