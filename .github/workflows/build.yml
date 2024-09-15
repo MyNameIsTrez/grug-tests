@@ -181,6 +181,9 @@ jobs:
       - name: objdump -D magic.so
         run: objdump -D magic.so
 
+      - name: readelf -a magic.so
+        run: readelf -a magic.so
+
       - name: Compile magic_main.c
         # -rdynamic allows magic.dylib to call functions from magic_main.c
         run: clang magic_main.c -o magic_main -g -fsanitize=address,undefined -rdynamic
