@@ -184,6 +184,9 @@ jobs:
       # - name: ls /opt/homebrew/opt/llvm/bin/
       #   run: ls /opt/homebrew/opt/llvm/bin/
 
+      - name: brew install llvm
+        run: brew install llvm
+
       - name: brew link llvm
         run: brew link llvm
 
