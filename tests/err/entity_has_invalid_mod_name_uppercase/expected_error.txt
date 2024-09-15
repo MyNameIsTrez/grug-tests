@@ -1,1 +1,1 @@
-Entity 'fOo:bar' has an invalid mod name
+Entity 'fOo:bar' its mod name contains the invalid character 'O'

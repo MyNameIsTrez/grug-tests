@@ -1,1 +1,1 @@
-Entity 'foo:x:y' is an invalid name
+Entity 'foo:x:y' its entity name contains the invalid character ':'

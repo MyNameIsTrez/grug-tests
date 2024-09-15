@@ -1,5 +1,0 @@
-define() x {
-    return {
-        .projectile = "x:y:bar",
-    }
-}

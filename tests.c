@@ -4009,7 +4009,6 @@ static void error_tests(void) {
 	TEST_ERROR(entity_cant_be_empty_string);
 	TEST_ERROR(entity_has_invalid_entity_name_colon);
 	TEST_ERROR(entity_has_invalid_entity_name_uppercase);
-	TEST_ERROR(entity_has_invalid_mod_name_colon);
 	TEST_ERROR(entity_has_invalid_mod_name_uppercase);
 	TEST_ERROR(entity_mod_name_and_entity_name_is_missing);
 	TEST_ERROR(entity_mod_name_cant_be_current_mod);

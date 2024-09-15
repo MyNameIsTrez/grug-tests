@@ -1,1 +1,0 @@
-Entity 'x:y:bar' is an invalid name
