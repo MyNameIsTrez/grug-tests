@@ -156,8 +156,8 @@ jobs:
   #     - name: Run
   #       run: ./foo
 
-  build-mac-clang:
-    name: mac-clang
+  build-mac-clang-arm:
+    name: mac-clang-arm
     runs-on: macos-latest
 
     steps:
@@ -183,9 +183,6 @@ jobs:
 
       - name: Assemble magic.s
         run: clang magic.s -o magic.dylib -shared
-
-      # - name: objdump -D magic.dylib
-      #   run: objdump -D magic.dylib
 
       - name: Compile magic_main.c
         # -rdynamic allows magic.dylib to call functions from magic_main.c
@@ -214,3 +211,13 @@ jobs:
   #       env:
   #         OLD_LD:
   #         ASAN:
+
+  build-linux-clang-arm64:
+    name: linux-clang-arm64
+    runs-on: linux-arm64
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Hello, ARM!
+        run: echo "Hello, ARM!"
