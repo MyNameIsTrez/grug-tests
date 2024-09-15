@@ -15,7 +15,6 @@ align 8
 global resources_size
 resources_size: dq 0
 
-align 8
 global entities_size
 entities_size: dq 1
 

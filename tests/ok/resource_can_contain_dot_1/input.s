@@ -19,6 +19,9 @@ global resources
 resources:
 	dq strings + 0
 
+global entities_size
+entities_size: dq 0
+
 section .text
 
 extern grug_on_fn_name

@@ -14,6 +14,9 @@ align 8
 global resources_size
 resources_size: dq 0
 
+global entities_size
+entities_size: dq 0
+
 section .text
 
 extern game_fn_define_n
