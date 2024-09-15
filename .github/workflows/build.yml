@@ -181,8 +181,8 @@ jobs:
       - name: objdump -D magic.dylib
         run: objdump -D magic.dylib
 
-      - name: objcopy magic.dylib --redefine-sym define_type=_define_type
-        run: objcopy magic.dylib --redefine-sym define_type=_define_type
+      - name: llvm objcopy magic.dylib --redefine-sym define_type=_define_type
+        run: llvm objcopy magic.dylib --redefine-sym define_type=_define_type
 
       # - name: file magic.so
       #   run: file magic.so
