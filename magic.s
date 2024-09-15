@@ -7,8 +7,8 @@ define_type:
     .ascii "a"
 
 .balign 8
-.global globals_size
-globals_size:
+.global _globals_size
+_globals_size:
     .xword 0
 
 // .global _on_fns
