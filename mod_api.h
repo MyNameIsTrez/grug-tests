@@ -27,6 +27,7 @@ void game_fn_define_v(char *foo, char *bar);
 void game_fn_define_w(char *sprite_path);
 void game_fn_define_x(char *projectile);
 void game_fn_define_y(char *foo, char *bar);
+void game_fn_define_z(char *projectile);
 
 void d_on_a(void *globals);
 void e_on_a(void *globals);
@@ -43,6 +44,7 @@ void p_on_a(void *globals);
 void r_on_a(void *globals, float f);
 void s_on_a(void *globals, int32_t i, float f);
 void w_on_a(void *globals, int32_t self);
+void z_on_a(void *globals, int32_t self);
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wlanguage-extension-token"
@@ -82,6 +84,9 @@ struct s_on_fns {
 };
 struct w_on_fns {
     typeof(w_on_a) *a;
+};
+struct z_on_fns {
+    typeof(z_on_a) *a;
 };
 #pragma GCC diagnostic pop
 

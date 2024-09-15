@@ -423,6 +423,26 @@
 					"type": "entity"
 				}
 			]
+		},
+		"z": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "projectile",
+					"type": "entity"
+				}
+			],
+			"on_functions": {
+				"on_a": {
+					"description": "foo",
+					"arguments": [
+						{
+							"name": "self",
+							"type": "i32"
+						}
+					]
+				}
+			}
 		}
 	},
 	"game_functions": {

@@ -1,4 +1,4 @@
-define() z {
+define() lol {
     return {
         .a = 42,
     }

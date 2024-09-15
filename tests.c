@@ -425,6 +425,10 @@ void game_fn_define_y(char *foo, char *bar) {
 	game_fn_define_y_foo = foo;
 	game_fn_define_y_bar = bar;
 }
+static char *game_fn_define_z_projectile;
+void game_fn_define_z(char *projectile) {
+	game_fn_define_z_projectile = projectile;
+}
 
 static void reset_call_counts(void) {
 	game_fn_nothing_call_count = 0;
@@ -1751,6 +1755,23 @@ static void ok_else_true(void *on_fns, void *g, size_t resources_size, char **re
 
 	assert(entities_size == 0);
 	assert(entities == NULL);
+}
+
+static void ok_entity_and_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities) {
+	assert(streq(game_fn_define_z_projectile, "ok:foo"));
+
+	((struct z_on_fns *)on_fns)->a(g, 42);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/entity_and_on_fn/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 1);
+	assert(streq(entities[0], "ok:foo"));
 }
 
 static void ok_entity_in_define(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities) {
@@ -4147,6 +4168,7 @@ static void ok_tests(void) {
 	TEST_OK(division_positive_result, "d", 0);
 	TEST_OK(else_false, "d", 0);
 	TEST_OK(else_true, "d", 0);
+	TEST_OK(entity_and_on_fn, "z", 0);
 	TEST_OK(entity_in_define, "x", 0);
 	TEST_OK(entity_in_define_with_mod_specified, "x", 0);
 	TEST_OK(entity_twice, "y", 0);
