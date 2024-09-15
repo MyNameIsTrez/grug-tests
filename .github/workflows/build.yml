@@ -168,18 +168,21 @@ jobs:
       #   run: git submodule update --init
 
       # TODO: Put this back!
-      - name: Install binutils
-        run: brew install binutils
+      # - name: Install binutils
+      #   run: brew install binutils
 
       # TODO: Put this back!
-      - name: Symlink readelf to bin
-        run: sudo ln -s /opt/homebrew/opt/binutils/bin/readelf /usr/local/bin/readelf
+      # - name: Symlink readelf to bin
+      #   run: sudo ln -s /opt/homebrew/opt/binutils/bin/readelf /usr/local/bin/readelf
 
       - name: Assemble magic.s
         run: clang magic.s -o magic.dylib -shared
 
       - name: objdump -D magic.dylib
         run: objdump -D magic.dylib
+
+      - name: objcopy magic.dylib --redefine-sym define_type=_define_type
+        run: objcopy magic.dylib --redefine-sym define_type=_define_type
 
       # - name: file magic.so
       #   run: file magic.so
