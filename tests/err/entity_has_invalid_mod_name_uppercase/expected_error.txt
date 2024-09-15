@@ -1,0 +1,1 @@
+Entity 'fOo:bar' has an invalid mod name

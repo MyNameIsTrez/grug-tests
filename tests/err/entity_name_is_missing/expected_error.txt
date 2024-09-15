@@ -1,0 +1,1 @@
+Entity 'foo:' specifies the mod name 'foo', but it is missing an entity name after the ':'

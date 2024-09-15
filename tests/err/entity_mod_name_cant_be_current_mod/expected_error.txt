@@ -1,0 +1,1 @@
+Entity 'err:foo' its mod name 'err' is invalid, since the file it is in refers to its own mod; just change it to 'foo'
