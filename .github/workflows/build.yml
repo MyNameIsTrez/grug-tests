@@ -181,6 +181,12 @@ jobs:
       - name: objdump -D magic.so
         run: objdump -D magic.so
 
+      - name: file magic.so
+        run: file magic.so
+
+      - name: xxd magic.so
+        run: xxd magic.so
+
       - name: readelf -a magic.so
         run: readelf -a magic.so
 
