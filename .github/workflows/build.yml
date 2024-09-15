@@ -211,6 +211,9 @@ jobs:
       - name: brew --prefix llvm
         run: brew --prefix llvm
 
+      - name: ls /opt/homebrew/opt/llvm
+        run: ls /opt/homebrew/opt/llvm
+
       - name: llvm objcopy magic.dylib --redefine-sym define_type=_define_type
         run: llvm objcopy magic.dylib --redefine-sym define_type=_define_type
 
