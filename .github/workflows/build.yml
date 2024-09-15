@@ -181,23 +181,35 @@ jobs:
       - name: objdump -D magic.dylib
         run: objdump -D magic.dylib
 
+      # - name: ls /usr/local/homebrew/opt/llvm/bin/
+      #   run: ls /opt/homebrew/opt/llvm/bin/
+
       # - name: ls /opt/homebrew/opt/llvm/bin/
       #   run: ls /opt/homebrew/opt/llvm/bin/
 
-      - name: brew install llvm
-        run: brew install llvm
+      # - name: brew install llvm
+      #   run: brew install llvm
 
       # - name: brew link llvm
       #   run: brew link llvm
 
-      - name: echo PATH
-        run: echo $PATH
+      # - name: echo PATH
+      #   run: echo $PATH
 
-      - name: Add llvm to PATH
-        run: \''export PATH="/opt/homebrew/opt/llvm/bin:$PATH"' >> /Users/runner/.bash_profile\'
+      # - name: Add llvm to PATH
+      #   run: \''export PATH="/opt/homebrew/opt/llvm/bin:$PATH"' >> /Users/runner/.bash_profile\'
 
-      - name: echo PATH
-        run: echo $PATH
+      # - name: cat /Users/runner/.bash_profile
+      #   run: cat /Users/runner/.bash_profile
+
+      # - name: echo PATH
+      #   run: echo $PATH
+
+      - name: brew list llvm
+        run: brew list llvm
+
+      - name: brew --prefix llvm
+        run: brew --prefix llvm
 
       - name: llvm objcopy magic.dylib --redefine-sym define_type=_define_type
         run: llvm objcopy magic.dylib --redefine-sym define_type=_define_type
