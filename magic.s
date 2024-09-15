@@ -2,51 +2,51 @@
 
 .data
 
-.global _define_type
-_define_type:
+.global define_type
+define_type:
     .ascii "a"
 
 .balign 8
-.global _globals_size
-_globals_size:
+.global globals_size
+globals_size:
     .xword 0
 
-// .global _on_fns
-// _on_fns:
+// .global on_fns
+// on_fns:
 //     .xword _magic
 
-.global _strings
-_strings:
+.global strings
+strings:
 
 .balign 8
-.global _resources_size
-_resources_size:
+.global resources_size
+resources_size:
     .xword 0
 
 .text
 
 // TODO: USE
-.extern _grug_on_fn_name
+.extern grug_on_fn_name
 // TODO: USE
-.extern _grug_on_fn_path
+.extern grug_on_fn_path
 // TODO: USE
-.extern _grug_block_mask
+.extern grug_block_mask
 
 // TODO: USE
-// .extern _game_fn_define_a[WEAK]
+// .extern game_fn_define_a[WEAK]
 
-.global _define
-_define:
-	// bl _game_fn_define_a
+.global define
+define:
+	// bl game_fn_define_a
 	ret
 
 .balign 16
-.global _init_globals
-_init_globals:
+.global init_globals
+init_globals:
     ret
 
 // .balign 16
-// .global _magic
-// _magic:
+// .global magic
+// magic:
 //     mov w0, 42
 //     ret

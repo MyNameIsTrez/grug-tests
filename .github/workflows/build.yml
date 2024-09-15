@@ -156,8 +156,9 @@ jobs:
   #     - name: Run
   #       run: ./foo
 
-  # build-mac-clang:
-  #   name: mac-clang
+  # Use this to test ARM support in grug.c:
+  # build-mac-clang-arm:
+  #   name: mac-clang-arm
   #   runs-on: macos-latest
 
   #   steps:
@@ -166,14 +167,20 @@ jobs:
   #     # TODO: Put this back!
   #     # - name: Clone the grug submodule
   #     #   run: git submodule update --init
+  #     - name: Add leading underscore to labels, because dlsym() on Macho-O can't load symbols without them
+  #       # For some godforsaken reason `+` nor `\+` here works with sed, but `*` does.
+  #       # I haven't been able to figure out why.
+  #       # See these links for more cursed information about our version of sed:
+  #       # https://stackoverflow.com/a/23146221/13279557
+  #       # https://stackoverflow.com/a/12180129/13279557
+  #       # https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html#tag_09_04
+  #       # https://en.wikibooks.org/wiki/Regular_Expressions/POSIX-Extended_Regular_Expressions
+  #       run: sed -i -E "s/^\([[:alnum:]_]*\):/_\1:/" magic.s &&
+  #         sed -i -E "s/^\.global \([[:alnum:]_]*\)/.global _\1/" magic.s &&
+  #         sed -i -E "s/^\.extern \([[:alnum:]_]*\)/.extern _\1/" magic.s
 
-  #     # TODO: Put this back!
-  #     # - name: Install binutils
-  #     #   run: brew install binutils
-
-  #     # TODO: Put this back!
-  #     # - name: Symlink readelf to bin
-  #     #   run: sudo ln -s /opt/homebrew/opt/binutils/bin/readelf /usr/local/bin/readelf
+  #     - name: cat magic.s
+  #       run: cat magic.s
 
   #     - name: Assemble magic.s
   #       run: clang magic.s -o magic.dylib -shared
@@ -205,3 +212,16 @@ jobs:
   #       env:
   #         OLD_LD:
   #         ASAN:
+
+  # TODO: Add linux-arm64 once it is public to open-source projects:
+  # https://github.com/orgs/community/discussions/19197#discussioncomment-10550689
+  # https://github.com/github/roadmap/issues/960
+  # build-linux-clang-arm64:
+  #   name: linux-clang-arm64
+  #   runs-on: linux-arm64
+
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  #     - name: Hello, ARM!
+  #       run: echo "Hello, ARM!"
