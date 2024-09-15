@@ -173,7 +173,7 @@ jobs:
       # - name: Symlink readelf to bin
       #   run: sudo ln -s /opt/homebrew/opt/binutils/bin/readelf /usr/local/bin/readelf
       - name: Add leading underscore to labels, because dlsym() on Macho-O can't load symbols without them
-        run: sed -i -E "s/\([:alnum:]\)/wow\1/" magic.s
+        run: sed -i -E "s/\([:alnum:]_\)/wow\1/" magic.s
 
         # run: sed -i -E "s/\(\w+\):/_\1:/" magic.s
         # run: sed -i -E "s/^\(\w+\):/_\1:/" magic.s &&
