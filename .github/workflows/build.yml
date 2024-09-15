@@ -186,7 +186,7 @@ jobs:
 
       - name: Compile magic_main.c
         # -rdynamic allows magic.dylib to call functions from magic_main.c
-        run: clang magic_main.c -o magic_main -g -fsanitize=address,undefined -rdynamic
+        run: clang magic_main.c -o magic_main -g -fsanitize=address,undefined
 
       - name: Run magic_main
         run: ./magic_main
@@ -212,12 +212,15 @@ jobs:
   #         OLD_LD:
   #         ASAN:
 
-  build-linux-clang-arm64:
-    name: linux-clang-arm64
-    runs-on: linux-arm64
+  # TODO: Add linux-arm64 once it is public to open-source projects:
+  # https://github.com/orgs/community/discussions/19197#discussioncomment-10550689
+  # https://github.com/github/roadmap/issues/960
+  # build-linux-clang-arm64:
+  #   name: linux-clang-arm64
+  #   runs-on: linux-arm64
 
-    steps:
-      - uses: actions/checkout@v4
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - name: Hello, ARM!
-        run: echo "Hello, ARM!"
+  #     - name: Hello, ARM!
+  #       run: echo "Hello, ARM!"
