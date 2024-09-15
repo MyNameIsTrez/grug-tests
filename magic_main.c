@@ -40,7 +40,7 @@ static void *get(void *dll, char *label) {
 
 int main(void) {
 	printf("open dll\n");
-    void *dll = dlopen("./magic.dylib", RTLD_NOW);
+    void *dll = dlopen("./magic.so", RTLD_NOW);
 	if (!dll) {
 		handle_dlerror("dlopen");
 	}

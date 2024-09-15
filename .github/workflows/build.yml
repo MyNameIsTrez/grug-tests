@@ -176,7 +176,10 @@ jobs:
       #   run: sudo ln -s /opt/homebrew/opt/binutils/bin/readelf /usr/local/bin/readelf
 
       - name: Assemble magic.s
-        run: clang magic.s -o magic.dylib -shared
+        run: clang magic.s -o magic.so -shared
+
+      - name: objdump -D magic.so
+        run: objdump -D magic.so
 
       - name: Compile magic_main.c
         # -rdynamic allows magic.dylib to call functions from magic_main.c
