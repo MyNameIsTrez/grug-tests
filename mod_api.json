@@ -410,6 +410,19 @@
 					"type": "entity"
 				}
 			]
+		},
+		"y": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "foo",
+					"type": "entity"
+				},
+				{
+					"name": "bar",
+					"type": "entity"
+				}
+			]
 		}
 	},
 	"game_functions": {

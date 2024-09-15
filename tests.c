@@ -419,6 +419,12 @@ static char *game_fn_define_x_projectile;
 void game_fn_define_x(char *projectile) {
 	game_fn_define_x_projectile = projectile;
 }
+static char *game_fn_define_y_foo;
+static char *game_fn_define_y_bar;
+void game_fn_define_y(char *foo, char *bar) {
+	game_fn_define_y_foo = foo;
+	game_fn_define_y_bar = bar;
+}
 
 static void reset_call_counts(void) {
 	game_fn_nothing_call_count = 0;
@@ -1773,6 +1779,22 @@ static void ok_entity_in_define_with_mod_specified(void *on_fns, void *g, size_t
 
 	assert(entities_size == 1);
 	assert(streq(entities[0], "wow:foo"));
+}
+
+static void ok_entity_twice(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities) {
+	(void)on_fns;
+
+	assert(streq(game_fn_define_y_foo, "ok:foo"));
+	assert(streq(game_fn_define_y_bar, "ok:bar"));
+
+	free(g);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 2);
+	assert(streq(entities[0], "ok:bar"));
+	assert(streq(entities[1], "ok:foo"));
 }
 
 static void ok_eq_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities) {
@@ -4127,6 +4149,7 @@ static void ok_tests(void) {
 	TEST_OK(else_true, "d", 0);
 	TEST_OK(entity_in_define, "x", 0);
 	TEST_OK(entity_in_define_with_mod_specified, "x", 0);
+	TEST_OK(entity_twice, "y", 0);
 	TEST_OK(eq_false, "d", 0);
 	TEST_OK(eq_true, "d", 0);
 	TEST_OK(f32_addition, "d", 0);
