@@ -186,7 +186,7 @@ jobs:
 
       - name: Compile magic_main.c
         # -rdynamic allows magic.dylib to call functions from magic_main.c
-        run: clang magic_main.c -o magic_main -g -fsanitize=address,undefined
+        run: clang magic_main.c -o magic_main -g -fsanitize=address,undefined -rdynamic
 
       - name: Run magic_main
         run: ./magic_main
