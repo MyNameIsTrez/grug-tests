@@ -413,6 +413,10 @@ static char *game_fn_define_w_sprite_path;
 void game_fn_define_w(char *sprite_path) {
 	game_fn_define_w_sprite_path = sprite_path;
 }
+static char *game_fn_define_x_projectile;
+void game_fn_define_x(char *projectile) {
+	game_fn_define_x_projectile = projectile;
+}
 
 static void reset_call_counts(void) {
 	game_fn_nothing_call_count = 0;
@@ -3509,6 +3513,7 @@ static void error_tests(void) {
 	TEST_ERROR(define_fn_only_one_max);
 	TEST_ERROR(define_fn_uses_global_variable);
 	TEST_ERROR(define_fn_was_not_declared);
+	TEST_ERROR(entity_cant_be_empty_string);
 	TEST_ERROR(f32_missing_digit_after_decimal_point);
 	TEST_ERROR(game_fn_does_not_exist);
 	TEST_ERROR(game_function_call_gets_wrong_arg_type);

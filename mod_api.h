@@ -23,6 +23,9 @@ void game_fn_define_r(void);
 void game_fn_define_s(void);
 void game_fn_define_t(float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8);
 void game_fn_define_u(char *sprite_path);
+void game_fn_define_v(char *foo, char *bar);
+void game_fn_define_w(char *sprite_path);
+void game_fn_define_x(char *projectile);
 
 void d_on_a(void *globals);
 void e_on_a(void *globals);

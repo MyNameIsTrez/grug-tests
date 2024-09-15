@@ -401,6 +401,15 @@
 					]
 				}
 			}
+		},
+		"x": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "projectile",
+					"type": "entity"
+				}
+			]
 		}
 	},
 	"game_functions": {
