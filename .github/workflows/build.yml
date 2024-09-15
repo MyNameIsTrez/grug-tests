@@ -166,19 +166,18 @@ jobs:
       # TODO: Put this back!
       # - name: Clone the grug submodule
       #   run: git submodule update --init
-
       # TODO: Put this back!
       # - name: Install binutils
       #   run: brew install binutils
-
       # TODO: Put this back!
       # - name: Symlink readelf to bin
       #   run: sudo ln -s /opt/homebrew/opt/binutils/bin/readelf /usr/local/bin/readelf
-
       - name: Add leading underscore to labels, because dlsym() on Macho-O can't load symbols without them
-        run: sed -i -E "s/^\(\w+\):/_\1:/" magic.s &&
-          sed -i -E "s/^.global \(\w+\)/.global _\1/" magic.s &&
-          sed -i -E "s/^.extern \(\w+\)/.extern _\1/" magic.s
+        run: sed -i -E "s/^\(\w+\):/_\1:/" magic.s
+
+        # run: sed -i -E "s/^\(\w+\):/_\1:/" magic.s &&
+        #   sed -i -E "s/^\.global \(\w+\)/.global _\1/" magic.s &&
+        #   sed -i -E "s/^\.extern \(\w+\)/.extern _\1/" magic.s
 
       - name: cat magic.s
         run: cat magic.s
