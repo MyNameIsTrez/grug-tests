@@ -180,11 +180,12 @@ jobs:
 
       - name: objdump -D magic.dylib
         run: objdump -D magic.dylib
-      - name: ls /usr/local/opt/llvm/bin/
-        run: ls /usr/local/opt/llvm/bin/
 
-      - name: /usr/local/opt/llvm/bin/llvm objcopy magic.dylib --redefine-sym define_type=_define_type
-        run: /usr/local/opt/llvm/bin/llvm objcopy magic.dylib --redefine-sym define_type=_define_type
+      - name: ls /opt/homebrew/opt/llvm/bin/
+        run: ls /opt/homebrew/opt/llvm/bin/
+
+      - name: /opt/homebrew/opt/llvm/bin/llvm objcopy magic.dylib --redefine-sym define_type=_define_type
+        run: /opt/homebrew/opt/llvm/bin/llvm objcopy magic.dylib --redefine-sym define_type=_define_type
 
       # - name: file magic.so
       #   run: file magic.so
