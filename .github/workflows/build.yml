@@ -205,8 +205,8 @@ jobs:
       # - name: echo PATH
       #   run: echo $PATH
 
-      - name: brew list llvm
-        run: brew list llvm
+      # - name: brew list llvm
+      #   run: brew list llvm
 
       - name: brew --prefix llvm
         run: brew --prefix llvm
