@@ -167,6 +167,13 @@ jobs:
       # - name: Clone the grug submodule
       #   run: git submodule update --init
       - name: Add leading underscore to labels, because dlsym() on Macho-O can't load symbols without them
+        # For some godforsaken reason `+` nor `\+` here works with sed, but `*` does.
+        # I haven't been able to figure out why.
+        # See these links for more cursed information about our version of sed:
+        # https://stackoverflow.com/a/23146221/13279557
+        # https://stackoverflow.com/a/12180129/13279557
+        # https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html#tag_09_04
+        # https://en.wikibooks.org/wiki/Regular_Expressions/POSIX-Extended_Regular_Expressions
         run: sed -i -E "s/^\([[:alnum:]_]*\):/_\1:/" magic.s &&
           sed -i -E "s/^\.global \([[:alnum:]_]*\)/.global _\1/" magic.s &&
           sed -i -E "s/^\.extern \([[:alnum:]_]*\)/.extern _\1/" magic.s
@@ -174,22 +181,18 @@ jobs:
       - name: cat magic.s
         run: cat magic.s
 
-      # TODO: Put this back!
-      # - name: Assemble magic.s
-      #   run: clang magic.s -o magic.dylib -shared
+      - name: Assemble magic.s
+        run: clang magic.s -o magic.dylib -shared
 
-      # TODO: Put this back!
       # - name: objdump -D magic.dylib
       #   run: objdump -D magic.dylib
 
-      # TODO: Put this back!
-      # - name: Compile magic_main.c
-      #   # -rdynamic allows magic.dylib to call functions from magic_main.c
-      #   run: clang magic_main.c -o magic_main -g -fsanitize=address,undefined -rdynamic
+      - name: Compile magic_main.c
+        # -rdynamic allows magic.dylib to call functions from magic_main.c
+        run: clang magic_main.c -o magic_main -g -fsanitize=address,undefined -rdynamic
 
-      # TODO: Put this back!
-      # - name: Run magic_main
-      #   run: ./magic_main
+      - name: Run magic_main
+        run: ./magic_main
 
       # TODO: Put this back!
       # - name: Run the tests
