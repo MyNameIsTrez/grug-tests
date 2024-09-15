@@ -166,41 +166,30 @@ jobs:
       # TODO: Put this back!
       # - name: Clone the grug submodule
       #   run: git submodule update --init
-      # TODO: Put this back!
-      # - name: Install binutils
-      #   run: brew install binutils
-      # TODO: Put this back!
-      # - name: Symlink readelf to bin
-      #   run: sudo ln -s /opt/homebrew/opt/binutils/bin/readelf /usr/local/bin/readelf
       - name: Add leading underscore to labels, because dlsym() on Macho-O can't load symbols without them
-        run: sed -i -E "s/\([[:alnum:]_]\+\):/_\1:/" magic.s &&
-          sed -i -E "s/\.global \([[:alnum:]_]\+\)/.global _\1/" magic.s &&
-          sed -i -E "s/\.extern \([[:alnum:]_]\+\)/.extern _\1/" magic.s
+        run: sed -i -E "s/\([[:alnum:]_]\)+:/_\1:/" magic.s &&
+          sed -i -E "s/\.global \([[:alnum:]_]\)+/.global _\1/" magic.s &&
+          sed -i -E "s/\.extern \([[:alnum:]_]\)+/.extern _\1/" magic.s
 
       - name: cat magic.s
         run: cat magic.s
 
-      - name: Assemble magic.s
-        run: clang magic.s -o magic.dylib -shared
+      # TODO: Put this back!
+      # - name: Assemble magic.s
+      #   run: clang magic.s -o magic.dylib -shared
 
-      - name: objdump -D magic.dylib
-        run: objdump -D magic.dylib
+      # TODO: Put this back!
+      # - name: objdump -D magic.dylib
+      #   run: objdump -D magic.dylib
 
-      # - name: file magic.so
-      #   run: file magic.so
+      # TODO: Put this back!
+      # - name: Compile magic_main.c
+      #   # -rdynamic allows magic.dylib to call functions from magic_main.c
+      #   run: clang magic_main.c -o magic_main -g -fsanitize=address,undefined -rdynamic
 
-      # - name: xxd magic.so
-      #   run: xxd magic.so
-
-      # - name: readelf -a magic.so
-      #   run: readelf -a magic.so
-
-      - name: Compile magic_main.c
-        # -rdynamic allows magic.dylib to call functions from magic_main.c
-        run: clang magic_main.c -o magic_main -g -fsanitize=address,undefined -rdynamic
-
-      - name: Run magic_main
-        run: ./magic_main
+      # TODO: Put this back!
+      # - name: Run magic_main
+      #   run: ./magic_main
 
       # TODO: Put this back!
       # - name: Run the tests
