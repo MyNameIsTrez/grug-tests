@@ -176,7 +176,7 @@ jobs:
         run: sudo ln -s /opt/homebrew/opt/binutils/bin/readelf /usr/local/bin/readelf
 
       - name: Assemble magic.s
-        run: clang magic.s -o magic.so -shared
+        run: clang magic.s -o magic.so -shared --target=aarch64-unknown-linux-gnu
 
       - name: objdump -D magic.so
         run: objdump -D magic.so
