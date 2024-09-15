@@ -167,9 +167,9 @@ jobs:
       # - name: Clone the grug submodule
       #   run: git submodule update --init
       - name: Add leading underscore to labels, because dlsym() on Macho-O can't load symbols without them
-        run: sed -i -E "s/\([[:alnum:]_]*\):/_\1:/" magic.s &&
-          sed -i -E "s/\.global \([[:alnum:]_]*\)/.global _\1/" magic.s &&
-          sed -i -E "s/\.extern \([[:alnum:]_]*\)/.extern _\1/" magic.s
+        run: sed -i -E "s/\([[:alnum:]_]\*\):/_\1:/" magic.s &&
+          sed -i -E "s/\.global \([[:alnum:]_]\*\)/.global _\1/" magic.s &&
+          sed -i -E "s/\.extern \([[:alnum:]_]\*\)/.extern _\1/" magic.s
 
       - name: cat magic.s
         run: cat magic.s
