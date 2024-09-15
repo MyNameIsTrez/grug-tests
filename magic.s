@@ -1,4 +1,4 @@
-// Assemble with clang magic.s --target=arm64 -shared
+// Assemble: clang magic.s --target=arm64 -shared
 
 .data
 
