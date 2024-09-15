@@ -187,8 +187,17 @@ jobs:
       - name: brew install llvm
         run: brew install llvm
 
-      - name: brew link llvm
-        run: brew link llvm
+      # - name: brew link llvm
+      #   run: brew link llvm
+
+      - name: echo PATH
+        run: echo $PATH
+
+      - name: Add llvm to PATH
+        run: \''export PATH="/opt/homebrew/opt/llvm/bin:$PATH"' >> /Users/runner/.bash_profile\'
+
+      - name: echo PATH
+        run: echo $PATH
 
       - name: llvm objcopy magic.dylib --redefine-sym define_type=_define_type
         run: llvm objcopy magic.dylib --redefine-sym define_type=_define_type
