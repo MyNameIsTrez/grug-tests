@@ -443,6 +443,43 @@
 					]
 				}
 			}
+		},
+		"a2": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "sprite_path",
+					"type": "resource"
+				},
+				{
+					"name": "projectile",
+					"type": "entity"
+				}
+			],
+			"on_functions": {
+				"on_a": {
+					"description": "foo",
+					"arguments": [
+						{
+							"name": "self",
+							"type": "i32"
+						}
+					]
+				}
+			}
+		},
+		"b2": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "sprite_path",
+					"type": "resource"
+				},
+				{
+					"name": "projectile",
+					"type": "entity"
+				}
+			]
 		}
 	},
 	"game_functions": {

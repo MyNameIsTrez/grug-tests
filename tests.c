@@ -429,6 +429,18 @@ static char *game_fn_define_z_projectile;
 void game_fn_define_z(char *projectile) {
 	game_fn_define_z_projectile = projectile;
 }
+static char *game_fn_define_a2_sprite_path;
+static char *game_fn_define_a2_projectile;
+void game_fn_define_a2(char *sprite_path, char *projectile) {
+	game_fn_define_a2_sprite_path = sprite_path;
+	game_fn_define_a2_projectile = projectile;
+}
+static char *game_fn_define_b2_sprite_path;
+static char *game_fn_define_b2_projectile;
+void game_fn_define_b2(char *sprite_path, char *projectile) {
+	game_fn_define_b2_sprite_path = sprite_path;
+	game_fn_define_b2_projectile = projectile;
+}
 
 static void reset_call_counts(void) {
 	game_fn_nothing_call_count = 0;
@@ -3396,6 +3408,37 @@ static void ok_remainder_positive_result(void *on_fns, void *g, size_t resources
 	assert(entities == NULL);
 }
 
+static void ok_resource_and_entity(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities) {
+	(void)on_fns;
+
+	assert(streq(game_fn_define_b2_sprite_path, "tests/ok/resource_and_entity/foo.txt"));
+
+	free(g);
+
+	assert(resources_size == 1);
+	assert(streq(resources[0], "tests/ok/resource_and_entity/foo.txt"));
+
+	assert(entities_size == 1);
+	assert(streq(entities[0], "ok:foo"));
+}
+
+static void ok_resource_and_entity_and_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities) {
+	assert(streq(game_fn_define_a2_sprite_path, "tests/ok/resource_and_entity_and_on_fn/foo.txt"));
+
+	((struct a2_on_fns *)on_fns)->a(g, 42);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/resource_and_entity_and_on_fn/input.grug"));
+
+	assert(resources_size == 1);
+	assert(streq(resources[0], "tests/ok/resource_and_entity_and_on_fn/foo.txt"));
+
+	assert(entities_size == 1);
+	assert(streq(entities[0], "ok:foo"));
+}
+
 static void ok_resource_and_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities) {
 	assert(streq(game_fn_define_w_sprite_path, "tests/ok/resource_and_on_fn/foo.txt"));
 
@@ -4257,6 +4300,8 @@ static void ok_tests(void) {
 	TEST_OK(pass_string_argument_to_helper_fn, "d", 0);
 	TEST_OK(remainder_negative_result, "d", 0);
 	TEST_OK(remainder_positive_result, "d", 0);
+	TEST_OK(resource_and_entity, "b2", 0);
+	TEST_OK(resource_and_entity_and_on_fn, "a2", 0);
 	TEST_OK(resource_and_on_fn, "w", 0);
 	TEST_OK(resource_can_contain_dot_1, "u", 0);
 	TEST_OK(resource_can_contain_dot_2, "u", 0);

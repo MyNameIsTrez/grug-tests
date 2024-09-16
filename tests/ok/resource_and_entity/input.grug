@@ -1,0 +1,6 @@
+define() b2 {
+    return {
+        .sprite_path = "resource_and_entity/foo.txt",
+        .projectile = "foo",
+    }
+}

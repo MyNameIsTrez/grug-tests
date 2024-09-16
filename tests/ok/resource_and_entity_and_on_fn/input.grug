@@ -1,0 +1,9 @@
+define() a2 {
+    return {
+        .sprite_path = "resource_and_entity_and_on_fn/foo.txt",
+        .projectile = "foo",
+    }
+}
+
+on_a(self: i32) {
+}
