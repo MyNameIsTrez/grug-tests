@@ -53,6 +53,7 @@ static size_t game_fn_blocked_alrm_call_count;
 static size_t game_fn_nothing_aligned_call_count;
 static size_t game_fn_magic_aligned_call_count;
 static size_t game_fn_initialize_aligned_call_count;
+static size_t game_fn_spawn_call_count;
 
 static bool streq(char *a, char *b) {
 	return strcmp(a, b) == 0;
@@ -288,6 +289,12 @@ void game_fn_initialize_aligned(int32_t x) {
 
 	assert((rsp & 0xf) == 0);
 }
+static char *game_fn_spawn_name;
+void game_fn_spawn(char *name) {
+	game_fn_spawn_call_count++;
+
+	game_fn_spawn_name = name;
+}
 
 void game_fn_define_a(void) {}
 static int32_t game_fn_define_b_x;
@@ -461,6 +468,7 @@ static void reset_call_counts(void) {
 	game_fn_nothing_aligned_call_count = 0;
 	game_fn_magic_aligned_call_count = 0;
 	game_fn_initialize_aligned_call_count = 0;
+	game_fn_spawn_call_count = 0;
 }
 
 static void check(int status, char *fn_name) {
@@ -3554,6 +3562,25 @@ static void ok_resource_in_define(void *on_fns, void *g, size_t resources_size, 
 	assert(entities == NULL);
 }
 
+static void ok_resource_in_define_and_entity_in_game_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities) {
+	assert(streq(game_fn_define_w_sprite_path, "tests/ok/resource_in_define_and_entity_in_game_fn/foo.txt"));
+
+	assert(game_fn_spawn_call_count == 0);
+	((struct w_on_fns *)on_fns)->a(g, 42);
+	assert(game_fn_spawn_call_count == 1);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/resource_in_define_and_entity_in_game_fn/input.grug"));
+
+	assert(resources_size == 1);
+	assert(streq(resources[0], "tests/ok/resource_in_define_and_entity_in_game_fn/foo.txt"));
+
+	assert(entities_size == 1);
+	assert(streq(entities[0], "ok:bar"));
+}
+
 static void ok_resource_twice(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities) {
 	(void)on_fns;
 
@@ -4310,6 +4337,7 @@ static void ok_tests(void) {
 	TEST_OK(resource_can_contain_dot_dot_2, "u", 0);
 	TEST_OK(resource_can_contain_dot_dot_3, "u", 0);
 	TEST_OK(resource_in_define, "u", 0);
+	TEST_OK(resource_in_define_and_entity_in_game_fn, "w", 0);
 	TEST_OK(resource_twice, "v", 0);
 	TEST_OK(return, "d", 0);
 	TEST_OK(return_from_on_fn, "d", 0);

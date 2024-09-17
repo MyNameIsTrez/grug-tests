@@ -115,3 +115,4 @@ void game_fn_blocked_alrm(void);
 void game_fn_nothing_aligned(void);
 int32_t game_fn_magic_aligned(void);
 void game_fn_initialize_aligned(int32_t x);
+void game_fn_spawn(char *name);

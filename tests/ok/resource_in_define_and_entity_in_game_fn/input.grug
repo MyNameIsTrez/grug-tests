@@ -1,0 +1,9 @@
+define() w {
+    return {
+        .sprite_path = "resource_in_define_and_entity_in_game_fn/foo.txt",
+    }
+}
+
+on_a(self: i32) {
+    spawn("bar")
+}

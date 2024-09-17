@@ -736,6 +736,15 @@
 					"type": "i32"
 				}
 			]
+		},
+		"spawn": {
+			"description": "foo",
+			"arguments": [
+				{
+					"name": "name",
+					"type": "entity"
+				}
+			]
 		}
 	}
 }
