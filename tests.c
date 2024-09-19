@@ -3245,6 +3245,18 @@ static void ok_on_fn_three_unused_third(void *on_fns, void *g, size_t resources_
 	assert(entities == NULL);
 }
 
+static void ok_on_fn_usage_is_optional(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities) {
+	assert(((struct d_on_fns *)on_fns)->a == NULL);
+
+	free(g);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+}
+
 static void ok_or_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
@@ -4318,6 +4330,7 @@ static void ok_tests(void) {
 	TEST_OK(on_fn_three_unused_first, "j", 0);
 	TEST_OK(on_fn_three_unused_second, "j", 0);
 	TEST_OK(on_fn_three_unused_third, "j", 0);
+	TEST_OK(on_fn_usage_is_optional, "d", 0);
 	TEST_OK(or_false, "d", 0);
 	TEST_OK(or_short_circuit, "d", 0);
 	TEST_OK(or_true_1, "d", 0);
