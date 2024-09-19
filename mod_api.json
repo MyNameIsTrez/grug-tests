@@ -745,6 +745,36 @@
 					"type": "entity"
 				}
 			]
+		},
+		"has_resource": {
+			"description": "foo",
+			"return_type": "bool",
+			"arguments": [
+				{
+					"name": "path",
+					"type": "resource"
+				}
+			]
+		},
+		"has_entity": {
+			"description": "foo",
+			"return_type": "bool",
+			"arguments": [
+				{
+					"name": "name",
+					"type": "entity"
+				}
+			]
+		},
+		"has_string": {
+			"description": "foo",
+			"return_type": "bool",
+			"arguments": [
+				{
+					"name": "str",
+					"type": "string"
+				}
+			]
 		}
 	}
 }

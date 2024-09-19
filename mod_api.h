@@ -116,3 +116,6 @@ void game_fn_nothing_aligned(void);
 int32_t game_fn_magic_aligned(void);
 void game_fn_initialize_aligned(int32_t x);
 void game_fn_spawn(char *name);
+bool game_fn_has_resource(char *path);
+bool game_fn_has_entity(char *name);
+bool game_fn_has_string(char *str);

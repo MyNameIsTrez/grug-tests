@@ -54,6 +54,9 @@ static size_t game_fn_nothing_aligned_call_count;
 static size_t game_fn_magic_aligned_call_count;
 static size_t game_fn_initialize_aligned_call_count;
 static size_t game_fn_spawn_call_count;
+static size_t game_fn_has_resource_call_count;
+static size_t game_fn_has_entity_call_count;
+static size_t game_fn_has_string_call_count;
 
 static bool streq(char *a, char *b) {
 	return strcmp(a, b) == 0;
@@ -295,6 +298,30 @@ void game_fn_spawn(char *name) {
 
 	game_fn_spawn_name = name;
 }
+static char *game_fn_has_resource_path;
+bool game_fn_has_resource(char *path) {
+	game_fn_has_resource_call_count++;
+
+	game_fn_has_resource_path = path;
+
+	return true;
+}
+static char *game_fn_has_entity_name;
+bool game_fn_has_entity(char *name) {
+	game_fn_has_entity_call_count++;
+
+	game_fn_has_entity_name = name;
+
+	return true;
+}
+static char *game_fn_has_string_str;
+bool game_fn_has_string(char *str) {
+	game_fn_has_string_call_count++;
+
+	game_fn_has_string_str = str;
+
+	return true;
+}
 
 void game_fn_define_a(void) {}
 static int32_t game_fn_define_b_x;
@@ -469,6 +496,9 @@ static void reset_call_counts(void) {
 	game_fn_magic_aligned_call_count = 0;
 	game_fn_initialize_aligned_call_count = 0;
 	game_fn_spawn_call_count = 0;
+	game_fn_has_resource_call_count = 0;
+	game_fn_has_entity_call_count = 0;
+	game_fn_has_string_call_count = 0;
 }
 
 static void check(int status, char *fn_name) {
@@ -1792,6 +1822,31 @@ static void ok_entity_and_on_fn(void *on_fns, void *g, size_t resources_size, ch
 
 	assert(entities_size == 1);
 	assert(streq(entities[0], "ok:foo"));
+}
+
+static void ok_entity_and_resource_as_subexpression(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities) {
+	assert(game_fn_has_resource_call_count == 0);
+	assert(game_fn_has_entity_call_count == 0);
+	assert(game_fn_has_string_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_has_resource_call_count == 1);
+	assert(game_fn_has_entity_call_count == 1);
+	assert(game_fn_has_string_call_count == 1);
+
+	free(g);
+
+	assert(streq(game_fn_has_resource_path, "tests/ok/entity_and_resource_as_subexpression/foo.txt"));
+	assert(streq(game_fn_has_entity_name, "ok:baz"));
+	assert(streq(game_fn_has_string_str, "bar"));
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/entity_and_resource_as_subexpression/input.grug"));
+
+	assert(resources_size == 1);
+	assert(streq(resources[0], "tests/ok/entity_and_resource_as_subexpression/foo.txt"));
+
+	assert(entities_size == 1);
+	assert(streq(entities[0], "ok:baz"));
 }
 
 static void ok_entity_in_define(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities) {
@@ -4251,6 +4306,7 @@ static void ok_tests(void) {
 	TEST_OK(else_false, "d", 0);
 	TEST_OK(else_true, "d", 0);
 	TEST_OK(entity_and_on_fn, "z", 0);
+	TEST_OK(entity_and_resource_as_subexpression, "d", 0);
 	TEST_OK(entity_in_define, "x", 0);
 	TEST_OK(entity_in_define_with_mod_specified, "x", 0);
 	TEST_OK(entity_twice, "y", 0);
