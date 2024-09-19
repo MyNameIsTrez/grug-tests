@@ -108,8 +108,7 @@ on_a:
 
 	; AND 1, part 1
 	test eax, eax
-	jne $+0x7 ; If the expr was true, jump over the next statement
-	jmp strict $+0x4a ; If false, jump to the end
+	je strict $+0x4b
 
 	block
 	lea rax, strings[rel 116]
@@ -125,8 +124,7 @@ on_a:
 
 	; AND 2, part 1
 	test eax, eax
-	jne $+0x7 ; If the expr was true, jump over the next statement
-	jmp strict $+0x4a ; If false, jump to the end
+	je strict $+0x4b
 
 	block
 	lea rax, strings[rel 120]

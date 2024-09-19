@@ -87,8 +87,7 @@ on_a:
 	block
 	mov eax, 1
 	test eax, eax
-	jne $+0x7
-	jmp strict $+0x11
+	je strict $+0x12
 	xor eax, eax
 	test eax, eax
 	mov eax, 0
