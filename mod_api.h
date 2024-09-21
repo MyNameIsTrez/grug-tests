@@ -31,66 +31,48 @@ void game_fn_define_z(char *projectile);
 void game_fn_define_a2(char *sprite_path, char *projectile);
 void game_fn_define_b2(char *sprite_path, char *projectile);
 
-void d_on_a(void *globals);
-void e_on_a(void *globals);
-void e_on_b(void *globals);
-void f_on_a(void *globals, int32_t self);
-void g_on_a(void *globals, int32_t self, int32_t x);
-void h_on_a(void *globals, int32_t self);
-void i_on_a(void *globals, int32_t self);
-void i_on_b(void *globals, int32_t self, int32_t x);
-void j_on_a(void *globals);
-void j_on_b(void *globals);
-void j_on_c(void *globals);
-void p_on_a(void *globals);
-void r_on_a(void *globals, float f);
-void s_on_a(void *globals, int32_t i, float f);
-void w_on_a(void *globals, int32_t self);
-void z_on_a(void *globals, int32_t self);
-void a2_on_a(void *globals, int32_t self);
-
 struct d_on_fns {
-    typeof(d_on_a) *a;
+    void (*a)(void *globals);
 };
 struct e_on_fns {
-    typeof(e_on_a) *a;
-    typeof(e_on_b) *b;
+    void (*a)(void *globals);
+    void (*b)(void *globals);
 };
 struct f_on_fns {
-    typeof(f_on_a) *a;
+    void (*a)(void *globals, int32_t self);
 };
 struct g_on_fns {
-    typeof(g_on_a) *a;
+    void (*a)(void *globals, int32_t self, int32_t x);
 };
 struct h_on_fns {
-    typeof(h_on_a) *a;
+    void (*a)(void *globals, int32_t self);
 };
 struct i_on_fns {
-    typeof(i_on_a) *a;
-    typeof(i_on_b) *b;
+    void (*a)(void *globals, int32_t self);
+    void (*b)(void *globals, int32_t self, int32_t x);
 };
 struct j_on_fns {
-    typeof(j_on_a) *a;
-    typeof(j_on_b) *b;
-    typeof(j_on_c) *c;
+    void (*a)(void *globals);
+    void (*b)(void *globals);
+    void (*c)(void *globals);
 };
 struct p_on_fns {
-    typeof(p_on_a) *a;
+    void (*a)(void *globals);
 };
 struct r_on_fns {
-    typeof(r_on_a) *a;
+    void (*a)(void *globals, float f);
 };
 struct s_on_fns {
-    typeof(s_on_a) *a;
+    void (*a)(void *globals, int32_t i, float f);
 };
 struct w_on_fns {
-    typeof(w_on_a) *a;
+    void (*a)(void *globals, int32_t self);
 };
 struct z_on_fns {
-    typeof(z_on_a) *a;
+    void (*a)(void *globals, int32_t self);
 };
 struct a2_on_fns {
-    typeof(a2_on_a) *a;
+    void (*a)(void *globals, int32_t self);
 };
 
 void game_fn_nothing(void);
