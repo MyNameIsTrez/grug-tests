@@ -411,7 +411,8 @@
 			"fields": [
 				{
 					"name": "projectile",
-					"type": "entity"
+					"type": "entity",
+					"entity_type": ""
 				}
 			]
 		},
@@ -420,11 +421,13 @@
 			"fields": [
 				{
 					"name": "foo",
-					"type": "entity"
+					"type": "entity",
+					"entity_type": ""
 				},
 				{
 					"name": "bar",
-					"type": "entity"
+					"type": "entity",
+					"entity_type": ""
 				}
 			]
 		},
@@ -433,7 +436,8 @@
 			"fields": [
 				{
 					"name": "projectile",
-					"type": "entity"
+					"type": "entity",
+					"entity_type": ""
 				}
 			],
 			"on_functions": {
@@ -458,7 +462,8 @@
 				},
 				{
 					"name": "projectile",
-					"type": "entity"
+					"type": "entity",
+					"entity_type": ""
 				}
 			],
 			"on_functions": {
@@ -483,7 +488,8 @@
 				},
 				{
 					"name": "projectile",
-					"type": "entity"
+					"type": "entity",
+					"entity_type": ""
 				}
 			]
 		}
@@ -749,7 +755,8 @@
 			"arguments": [
 				{
 					"name": "name",
-					"type": "entity"
+					"type": "entity",
+					"entity_type": ""
 				}
 			]
 		},
@@ -770,7 +777,8 @@
 			"arguments": [
 				{
 					"name": "name",
-					"type": "entity"
+					"type": "entity",
+					"entity_type": ""
 				}
 			]
 		},
