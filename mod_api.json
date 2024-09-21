@@ -365,7 +365,8 @@
 			"fields": [
 				{
 					"name": "sprite_path",
-					"type": "resource"
+					"type": "resource",
+					"resource_extension": ""
 				}
 			]
 		},
@@ -374,11 +375,13 @@
 			"fields": [
 				{
 					"name": "foo",
-					"type": "resource"
+					"type": "resource",
+					"resource_extension": ""
 				},
 				{
 					"name": "bar",
-					"type": "resource"
+					"type": "resource",
+					"resource_extension": ""
 				}
 			]
 		},
@@ -387,7 +390,8 @@
 			"fields": [
 				{
 					"name": "sprite_path",
-					"type": "resource"
+					"type": "resource",
+					"resource_extension": ""
 				}
 			],
 			"on_functions": {
@@ -449,7 +453,8 @@
 			"fields": [
 				{
 					"name": "sprite_path",
-					"type": "resource"
+					"type": "resource",
+					"resource_extension": ""
 				},
 				{
 					"name": "projectile",
@@ -473,7 +478,8 @@
 			"fields": [
 				{
 					"name": "sprite_path",
-					"type": "resource"
+					"type": "resource",
+					"resource_extension": ""
 				},
 				{
 					"name": "projectile",
@@ -714,7 +720,8 @@
 			"arguments": [
 				{
 					"name": "sprite_path",
-					"type": "resource"
+					"type": "resource",
+					"resource_extension": ""
 				}
 			]
 		},
@@ -752,7 +759,8 @@
 			"arguments": [
 				{
 					"name": "path",
-					"type": "resource"
+					"type": "resource",
+					"resource_extension": ""
 				}
 			]
 		},

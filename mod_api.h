@@ -49,8 +49,6 @@ void w_on_a(void *globals, int32_t self);
 void z_on_a(void *globals, int32_t self);
 void a2_on_a(void *globals, int32_t self);
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wlanguage-extension-token"
 struct d_on_fns {
     typeof(d_on_a) *a;
 };
@@ -94,7 +92,6 @@ struct z_on_fns {
 struct a2_on_fns {
     typeof(a2_on_a) *a;
 };
-#pragma GCC diagnostic pop
 
 void game_fn_nothing(void);
 int32_t game_fn_magic(void);
