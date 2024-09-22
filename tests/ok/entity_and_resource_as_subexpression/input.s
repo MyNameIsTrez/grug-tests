@@ -13,6 +13,7 @@ on_fns:
 
 global strings
 strings:
+	db 0
 	db "tests/ok/entity_and_resource_as_subexpression/input.grug", 0
 	db "on_a", 0
 	db "tests/ok/entity_and_resource_as_subexpression/foo.txt", 0
@@ -25,14 +26,18 @@ resources_size: dq 1
 
 global resources
 resources:
-	dq strings + 62
+	dq strings + 63
 
 global entities_size
 entities_size: dq 1
 
 global entities
 entities:
-	dq strings + 120
+	dq strings + 121
+
+global entity_types
+entity_types:
+	dq strings + 0
 
 section .text
 
@@ -88,11 +93,11 @@ on_a:
 	lea rbx, [rel $$]
 	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
 
-	lea rax, strings[rel 0]
+	lea rax, strings[rel 1]
 	mov r11, rbx[grug_on_fn_path wrt ..got]
 	mov [r11], rax
 
-	lea rax, strings[rel 57]
+	lea rax, strings[rel 58]
 	mov r11, rbx[grug_on_fn_name wrt ..got]
 	mov [r11], rax
 
@@ -100,7 +105,7 @@ on_a:
 
 	block
 	block
-	lea rax, strings[rel 62]
+	lea rax, strings[rel 63]
 	push rax
 	pop rdi
 	call game_fn_has_resource wrt ..plt
@@ -111,7 +116,7 @@ on_a:
 	je strict $+0x4b
 
 	block
-	lea rax, strings[rel 116]
+	lea rax, strings[rel 117]
 	push rax
 	pop rdi
 	call game_fn_has_string wrt ..plt
@@ -127,7 +132,7 @@ on_a:
 	je strict $+0x4b
 
 	block
-	lea rax, strings[rel 120]
+	lea rax, strings[rel 121]
 	push rax
 	pop rdi
 	call game_fn_has_entity wrt ..plt

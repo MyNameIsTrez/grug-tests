@@ -13,6 +13,7 @@ on_fns:
 
 global strings
 strings:
+	db 0
 	db "ok:foo", 0
 	db "tests/ok/entity_and_on_fn/input.grug", 0
 	db "on_a", 0
@@ -26,6 +27,10 @@ entities_size: dq 1
 
 global entities
 entities:
+	dq strings + 1
+
+global entity_types
+entity_types:
 	dq strings + 0
 
 section .text
@@ -41,7 +46,7 @@ extern _GLOBAL_OFFSET_TABLE_
 
 global define
 define:
-	lea rax, strings[rel 0]
+	lea rax, strings[rel 1]
 	mov rdi, rax
 	call game_fn_define_z wrt ..plt
 	ret
@@ -62,11 +67,11 @@ on_a:
 	lea rbx, [rel $$]
 	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
 
-	lea rax, strings[rel 7]
+	lea rax, strings[rel 8]
 	mov r11, rbx[grug_on_fn_path wrt ..got]
 	mov [r11], rax
 
-	lea rax, strings[rel 44]
+	lea rax, strings[rel 45]
 	mov r11, rbx[grug_on_fn_name wrt ..got]
 	mov [r11], rax
 

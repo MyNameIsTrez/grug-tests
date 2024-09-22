@@ -9,6 +9,7 @@ globals_size: dq 0
 
 global strings
 strings:
+	db 0
 	db "ok:foo", 0
 	db "tests/ok/resource_and_entity/foo.txt", 0
 
@@ -18,13 +19,17 @@ resources_size: dq 1
 
 global resources
 resources:
-	dq strings + 7
+	dq strings + 8
 
 global entities_size
 entities_size: dq 1
 
 global entities
 entities:
+	dq strings + 1
+
+global entity_types
+entity_types:
 	dq strings + 0
 
 section .text
@@ -33,9 +38,9 @@ extern game_fn_define_b2
 
 global define
 define:
-	lea rax, strings[rel 0]
+	lea rax, strings[rel 1]
 	mov rsi, rax
-	lea rax, strings[rel 7]
+	lea rax, strings[rel 8]
 	mov rdi, rax
 	call game_fn_define_b2 wrt ..plt
 	ret
