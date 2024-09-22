@@ -1898,6 +1898,24 @@ static void ok_entity_and_resource_as_subexpression(void *on_fns, void *g, size_
 	assert(streq(entity_types[0], ""));
 }
 
+static void ok_entity_duplicate(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	(void)on_fns;
+
+	assert(streq(game_fn_define_y_foo, "ok:foo"));
+	assert(streq(game_fn_define_y_bar, "ok:foo"));
+
+	free(g);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 2);
+	assert(streq(entities[0], "ok:foo"));
+	assert(streq(entity_types[0], ""));
+	assert(streq(entities[1], "ok:foo"));
+	assert(streq(entity_types[1], ""));
+}
+
 static void ok_entity_in_define(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	(void)on_fns;
 
@@ -3763,6 +3781,22 @@ static void ok_resource_can_contain_dot_dot_3(void *on_fns, void *g, size_t reso
 	assert(entity_types == NULL);
 }
 
+static void ok_resource_duplicate(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	(void)on_fns;
+
+	assert(streq(game_fn_define_v_foo, "tests/ok/resource_duplicate/foo.txt"));
+	assert(streq(game_fn_define_v_bar, "tests/ok/resource_duplicate/foo.txt"));
+
+	free(g);
+
+	assert(resources_size == 1);
+	assert(streq(resources[0], "tests/ok/resource_duplicate/foo.txt"));
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_resource_in_define(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	(void)on_fns;
 
@@ -4485,6 +4519,7 @@ static void ok_tests(void) {
 	TEST_OK(else_true, "d", 0);
 	TEST_OK(entity_and_on_fn, "z", 0);
 	TEST_OK(entity_and_resource_as_subexpression, "d", 0);
+	TEST_OK(entity_duplicate, "y", 0);
 	TEST_OK(entity_in_define, "x", 0);
 	TEST_OK(entity_in_define_with_mod_specified, "x", 0);
 	TEST_OK(entity_twice, "y", 0);
@@ -4583,6 +4618,7 @@ static void ok_tests(void) {
 	TEST_OK(resource_can_contain_dot_dot_1, "u", 0);
 	TEST_OK(resource_can_contain_dot_dot_2, "u", 0);
 	TEST_OK(resource_can_contain_dot_dot_3, "u", 0);
+	TEST_OK(resource_duplicate, "v", 0);
 	TEST_OK(resource_in_define, "u", 0);
 	TEST_OK(resource_in_define_and_entity_in_game_fn, "w", 0);
 	TEST_OK(resource_twice, "v", 0);
