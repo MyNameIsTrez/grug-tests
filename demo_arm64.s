@@ -1,4 +1,6 @@
-// Assemble: clang magic.s --target=arm64 -shared
+// Assemble: clang demo_arm64.s --target=arm64 -shared
+// Assemble: as demo_arm64.s
+// Assemble: llvm-mc-14 --arch=arm64 --filetype=obj -o demo_arm64.o demo_arm64.s
 
 .data
 
