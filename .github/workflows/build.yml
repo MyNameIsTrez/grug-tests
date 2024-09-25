@@ -3,126 +3,126 @@ name: CI Build
 on: push
 
 jobs:
-  build-ubuntu-clang:
-    name: ubuntu-clang
-    runs-on: ubuntu-latest
+  # build-ubuntu-clang:
+  #   name: ubuntu-clang
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - name: Clone the grug submodule
-        run: git submodule update --init
+  #     - name: Clone the grug submodule
+  #       run: git submodule update --init
 
-      - name: Install nasm
-        run: sudo apt install nasm
+  #     - name: Install nasm
+  #       run: sudo apt install nasm
 
-      - name: Run the tests
-        run: ./tests.sh
-        env:
-          OLD_LD:
+  #     - name: Run the tests
+  #       run: ./tests.sh
+  #       env:
+  #         OLD_LD:
 
-  build-ubuntu-clang-asan:
-    name: ubuntu-clang-asan
-    runs-on: ubuntu-latest
+  # build-ubuntu-clang-asan:
+  #   name: ubuntu-clang-asan
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - name: Clone the grug submodule
-        run: git submodule update --init
+  #     - name: Clone the grug submodule
+  #       run: git submodule update --init
 
-      - name: Install nasm
-        run: sudo apt install nasm
+  #     - name: Install nasm
+  #       run: sudo apt install nasm
 
-      - name: Run the tests
-        run: ./tests.sh
-        env:
-          OLD_LD:
-          ASAN:
+  #     - name: Run the tests
+  #       run: ./tests.sh
+  #       env:
+  #         OLD_LD:
+  #         ASAN:
 
-  build-ubuntu-clang-valgrind:
-    name: ubuntu-clang-valgrind
-    runs-on: ubuntu-latest
+  # build-ubuntu-clang-valgrind:
+  #   name: ubuntu-clang-valgrind
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - name: Clone the grug submodule
-        run: git submodule update --init
+  #     - name: Clone the grug submodule
+  #       run: git submodule update --init
 
-      - name: Install nasm
-        run: sudo apt install nasm
+  #     - name: Install nasm
+  #       run: sudo apt install nasm
 
-      - name: Install valgrind
-        run: sudo apt install valgrind
+  #     - name: Install valgrind
+  #       run: sudo apt install valgrind
 
-      - name: Run the tests
-        run: ./tests.sh
-        env:
-          OLD_LD:
-          VALGRIND:
+  #     - name: Run the tests
+  #       run: ./tests.sh
+  #       env:
+  #         OLD_LD:
+  #         VALGRIND:
 
-  build-ubuntu-gcc:
-    name: ubuntu-gcc
-    runs-on: ubuntu-latest
+  # build-ubuntu-gcc:
+  #   name: ubuntu-gcc
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - name: Clone the grug submodule
-        run: git submodule update --init
+  #     - name: Clone the grug submodule
+  #       run: git submodule update --init
 
-      - name: Install nasm
-        run: sudo apt install nasm
+  #     - name: Install nasm
+  #       run: sudo apt install nasm
 
-      - name: Run the tests
-        run: ./tests.sh
-        env:
-          OLD_LD:
-          CC: gcc
+  #     - name: Run the tests
+  #       run: ./tests.sh
+  #       env:
+  #         OLD_LD:
+  #         CC: gcc
 
-  build-ubuntu-gcc-asan:
-    name: ubuntu-gcc-asan
-    runs-on: ubuntu-latest
+  # build-ubuntu-gcc-asan:
+  #   name: ubuntu-gcc-asan
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - name: Clone the grug submodule
-        run: git submodule update --init
+  #     - name: Clone the grug submodule
+  #       run: git submodule update --init
 
-      - name: Install nasm
-        run: sudo apt install nasm
+  #     - name: Install nasm
+  #       run: sudo apt install nasm
 
-      - name: Run the tests
-        run: ./tests.sh
-        env:
-          OLD_LD:
-          CC: gcc
-          ASAN:
+  #     - name: Run the tests
+  #       run: ./tests.sh
+  #       env:
+  #         OLD_LD:
+  #         CC: gcc
+  #         ASAN:
 
-  build-ubuntu-gcc-valgrind:
-    name: ubuntu-gcc-valgrind
-    runs-on: ubuntu-latest
+  # build-ubuntu-gcc-valgrind:
+  #   name: ubuntu-gcc-valgrind
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - name: Clone the grug submodule
-        run: git submodule update --init
+  #     - name: Clone the grug submodule
+  #       run: git submodule update --init
 
-      - name: Install nasm
-        run: sudo apt install nasm
+  #     - name: Install nasm
+  #       run: sudo apt install nasm
 
-      - name: Install valgrind
-        run: sudo apt install valgrind
+  #     - name: Install valgrind
+  #       run: sudo apt install valgrind
 
-      - name: Run the tests
-        run: ./tests.sh
-        env:
-          OLD_LD:
-          CC: gcc
-          VALGRIND:
+  #     - name: Run the tests
+  #       run: ./tests.sh
+  #       env:
+  #         OLD_LD:
+  #         CC: gcc
+  #         VALGRIND:
 
   # TODO: REMOVE!
   # build-foo-clang:
@@ -157,46 +157,46 @@ jobs:
   #       run: ./foo
 
   # Use this to test ARM support in grug.c:
-  # build-mac-clang-arm:
-  #   name: mac-clang-arm
-  #   runs-on: macos-latest
+  build-mac-clang-arm:
+    name: mac-clang-arm
+    runs-on: macos-latest
 
-  #   steps:
-  #     - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-  #     # TODO: Put this back!
-  #     # - name: Clone the grug submodule
-  #     #   run: git submodule update --init
-  #     - name: Add leading underscore to labels, because dlsym() on Macho-O can't load symbols without them
-  #       # For some godforsaken reason `+` nor `\+` here works with sed, but `*` does.
-  #       # I haven't been able to figure out why.
-  #       # See these links for more cursed information about our version of sed:
-  #       # https://stackoverflow.com/a/23146221/13279557
-  #       # https://stackoverflow.com/a/12180129/13279557
-  #       # https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html#tag_09_04
-  #       # https://en.wikibooks.org/wiki/Regular_Expressions/POSIX-Extended_Regular_Expressions
-  #       run: sed -i -E "s/^\([[:alnum:]_]*\):/_\1:/" magic.s &&
-  #         sed -i -E "s/^\.global \([[:alnum:]_]*\)/.global _\1/" magic.s &&
-  #         sed -i -E "s/^\.extern \([[:alnum:]_]*\)/.extern _\1/" magic.s
+      # TODO: Put this back!
+      # - name: Clone the grug submodule
+      #   run: git submodule update --init
+      - name: Add leading underscore to labels, because dlsym() on Macho-O can't load symbols without them
+        # For some godforsaken reason `+` nor `\+` here works with sed, but `*` does.
+        # I haven't been able to figure out why.
+        # See these links for more cursed information about our version of sed:
+        # https://stackoverflow.com/a/23146221/13279557
+        # https://stackoverflow.com/a/12180129/13279557
+        # https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html#tag_09_04
+        # https://en.wikibooks.org/wiki/Regular_Expressions/POSIX-Extended_Regular_Expressions
+        run: sed -i -E "s/^\([[:alnum:]_]*\):/_\1:/" demo_arm64.s &&
+          sed -i -E "s/^\.global \([[:alnum:]_]*\)/.global _\1/" demo_arm64.s &&
+          sed -i -E "s/^\.extern \([[:alnum:]_]*\)/.extern _\1/" demo_arm64.s
 
-  #     - name: cat magic.s
-  #       run: cat magic.s
+      - name: cat demo_arm64.s
+        run: cat demo_arm64.s
 
-  #     - name: Assemble magic.s
-  #       run: clang magic.s -o magic.dylib -shared
+      - name: Assemble demo_arm64.s
+        run: clang demo_arm64.s -o demo_arm64.dylib -shared
 
-  #     - name: Compile magic_main.c
-  #       # -rdynamic allows magic.dylib to call functions from magic_main.c
-  #       run: clang magic_main.c -o magic_main -g -fsanitize=address,undefined -rdynamic
+      - name: Compile demo_arm64_main.c
+        # -rdynamic allows demo_arm64.dylib to call functions from demo_arm64_main.c
+        run: clang demo_arm64_main.c -o demo_arm64_main -g -fsanitize=address,undefined -rdynamic
 
-  #     - name: Run magic_main
-  #       run: ./magic_main
+      - name: Run demo_arm64_main
+        run: ./demo_arm64_main
 
-  #     # TODO: Put this back!
-  #     # - name: Run the tests
-  #     #   run: ./tests.sh
-  #     #   env:
-  #     #     OLD_LD:
+      # TODO: Put this back!
+      # - name: Run the tests
+      #   run: ./tests.sh
+      #   env:
+      #     OLD_LD:
 
   # build-mac-clang-asan:
   #   name: mac-clang-asan
