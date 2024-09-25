@@ -17,6 +17,9 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+// Forward declaration
+bool grug_test_regenerate_dll(char *grug_file_path, char *dll_path, char *mod);
+
 #define MAX_DYNSTR_LENGTH 420420
 
 typedef int64_t i64;
