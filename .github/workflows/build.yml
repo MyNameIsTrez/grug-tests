@@ -3,144 +3,149 @@ name: CI Build
 on: push
 
 jobs:
-  test:
+  build-ubuntu-clang:
+    name: ubuntu-clang
     runs-on: ubuntu-latest
+
     steps:
-      - name: checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Enable KVM
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
+      - name: Clone the grug submodule
+        run: git submodule update --init
 
-      - name: run tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          script: lsb_release -a && uname -a
+      - name: Install nasm
+        run: sudo apt install nasm
 
-  # build-ubuntu-clang:
-  #   name: ubuntu-clang
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
+
+  build-ubuntu-clang-asan:
+    name: ubuntu-clang-asan
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: sudo apt install nasm
+
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
+          ASAN:
+
+  build-ubuntu-clang-valgrind:
+    name: ubuntu-clang-valgrind
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: sudo apt install nasm
+
+      - name: Install valgrind
+        run: sudo apt install valgrind
+
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
+          VALGRIND:
+
+  build-ubuntu-gcc:
+    name: ubuntu-gcc
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: sudo apt install nasm
+
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
+          CC: gcc
+
+  build-ubuntu-gcc-asan:
+    name: ubuntu-gcc-asan
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: sudo apt install nasm
+
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
+          CC: gcc
+          ASAN:
+
+  build-ubuntu-gcc-valgrind:
+    name: ubuntu-gcc-valgrind
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Install nasm
+        run: sudo apt install nasm
+
+      - name: Install valgrind
+        run: sudo apt install valgrind
+
+      - name: Run the tests
+        run: ./tests.sh
+        env:
+          OLD_LD:
+          CC: gcc
+          VALGRIND:
+
+  # TODO: This is supposed to emulate Android, but I'm not sure whether it's working,
+  # since the `script: lsb_release -a && uname -a` prints Ubuntu 22.04,
+  # which seems like the job container's linux version, so not the Android version
+  # This code is the first snippet from the "Usage & Examples" section here:
+  # https://github.com/marketplace/actions/android-emulator-runner
+  # test:
   #   runs-on: ubuntu-latest
-
   #   steps:
-  #     - uses: actions/checkout@v4
+  #     - name: checkout
+  #       uses: actions/checkout@v4
 
-  #     - name: Clone the grug submodule
-  #       run: git submodule update --init
+  #     - name: Enable KVM
+  #       run: |
+  #         echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+  #         sudo udevadm control --reload-rules
+  #         sudo udevadm trigger --name-match=kvm
 
-  #     - name: Install nasm
-  #       run: sudo apt install nasm
-
-  #     - name: Run the tests
-  #       run: ./tests.sh
-  #       env:
-  #         OLD_LD:
-
-  # build-ubuntu-clang-asan:
-  #   name: ubuntu-clang-asan
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - uses: actions/checkout@v4
-
-  #     - name: Clone the grug submodule
-  #       run: git submodule update --init
-
-  #     - name: Install nasm
-  #       run: sudo apt install nasm
-
-  #     - name: Run the tests
-  #       run: ./tests.sh
-  #       env:
-  #         OLD_LD:
-  #         ASAN:
-
-  # build-ubuntu-clang-valgrind:
-  #   name: ubuntu-clang-valgrind
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - uses: actions/checkout@v4
-
-  #     - name: Clone the grug submodule
-  #       run: git submodule update --init
-
-  #     - name: Install nasm
-  #       run: sudo apt install nasm
-
-  #     - name: Install valgrind
-  #       run: sudo apt install valgrind
-
-  #     - name: Run the tests
-  #       run: ./tests.sh
-  #       env:
-  #         OLD_LD:
-  #         VALGRIND:
-
-  # build-ubuntu-gcc:
-  #   name: ubuntu-gcc
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - uses: actions/checkout@v4
-
-  #     - name: Clone the grug submodule
-  #       run: git submodule update --init
-
-  #     - name: Install nasm
-  #       run: sudo apt install nasm
-
-  #     - name: Run the tests
-  #       run: ./tests.sh
-  #       env:
-  #         OLD_LD:
-  #         CC: gcc
-
-  # build-ubuntu-gcc-asan:
-  #   name: ubuntu-gcc-asan
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - uses: actions/checkout@v4
-
-  #     - name: Clone the grug submodule
-  #       run: git submodule update --init
-
-  #     - name: Install nasm
-  #       run: sudo apt install nasm
-
-  #     - name: Run the tests
-  #       run: ./tests.sh
-  #       env:
-  #         OLD_LD:
-  #         CC: gcc
-  #         ASAN:
-
-  # build-ubuntu-gcc-valgrind:
-  #   name: ubuntu-gcc-valgrind
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - uses: actions/checkout@v4
-
-  #     - name: Clone the grug submodule
-  #       run: git submodule update --init
-
-  #     - name: Install nasm
-  #       run: sudo apt install nasm
-
-  #     - name: Install valgrind
-  #       run: sudo apt install valgrind
-
-  #     - name: Run the tests
-  #       run: ./tests.sh
-  #       env:
-  #         OLD_LD:
-  #         CC: gcc
-  #         VALGRIND:
+  #     - name: run tests
+  #       uses: reactivecircus/android-emulator-runner@v2
+  #       with:
+  #         api-level: 29
+  #         script: lsb_release -a && uname -a
 
   # TODO: REMOVE!
   # build-foo-clang:
