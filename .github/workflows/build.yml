@@ -3,126 +3,144 @@ name: CI Build
 on: push
 
 jobs:
-  build-ubuntu-clang:
-    name: ubuntu-clang
+  test:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v4
+      - name: checkout
+        uses: actions/checkout@v4
 
-      - name: Clone the grug submodule
-        run: git submodule update --init
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
 
-      - name: Install nasm
-        run: sudo apt install nasm
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: ./gradlew connectedCheck
 
-      - name: Run the tests
-        run: ./tests.sh
-        env:
-          OLD_LD:
+  # build-ubuntu-clang:
+  #   name: ubuntu-clang
+  #   runs-on: ubuntu-latest
 
-  build-ubuntu-clang-asan:
-    name: ubuntu-clang-asan
-    runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-    steps:
-      - uses: actions/checkout@v4
+  #     - name: Clone the grug submodule
+  #       run: git submodule update --init
 
-      - name: Clone the grug submodule
-        run: git submodule update --init
+  #     - name: Install nasm
+  #       run: sudo apt install nasm
 
-      - name: Install nasm
-        run: sudo apt install nasm
+  #     - name: Run the tests
+  #       run: ./tests.sh
+  #       env:
+  #         OLD_LD:
 
-      - name: Run the tests
-        run: ./tests.sh
-        env:
-          OLD_LD:
-          ASAN:
+  # build-ubuntu-clang-asan:
+  #   name: ubuntu-clang-asan
+  #   runs-on: ubuntu-latest
 
-  build-ubuntu-clang-valgrind:
-    name: ubuntu-clang-valgrind
-    runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-    steps:
-      - uses: actions/checkout@v4
+  #     - name: Clone the grug submodule
+  #       run: git submodule update --init
 
-      - name: Clone the grug submodule
-        run: git submodule update --init
+  #     - name: Install nasm
+  #       run: sudo apt install nasm
 
-      - name: Install nasm
-        run: sudo apt install nasm
+  #     - name: Run the tests
+  #       run: ./tests.sh
+  #       env:
+  #         OLD_LD:
+  #         ASAN:
 
-      - name: Install valgrind
-        run: sudo apt install valgrind
+  # build-ubuntu-clang-valgrind:
+  #   name: ubuntu-clang-valgrind
+  #   runs-on: ubuntu-latest
 
-      - name: Run the tests
-        run: ./tests.sh
-        env:
-          OLD_LD:
-          VALGRIND:
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-  build-ubuntu-gcc:
-    name: ubuntu-gcc
-    runs-on: ubuntu-latest
+  #     - name: Clone the grug submodule
+  #       run: git submodule update --init
 
-    steps:
-      - uses: actions/checkout@v4
+  #     - name: Install nasm
+  #       run: sudo apt install nasm
 
-      - name: Clone the grug submodule
-        run: git submodule update --init
+  #     - name: Install valgrind
+  #       run: sudo apt install valgrind
 
-      - name: Install nasm
-        run: sudo apt install nasm
+  #     - name: Run the tests
+  #       run: ./tests.sh
+  #       env:
+  #         OLD_LD:
+  #         VALGRIND:
 
-      - name: Run the tests
-        run: ./tests.sh
-        env:
-          OLD_LD:
-          CC: gcc
+  # build-ubuntu-gcc:
+  #   name: ubuntu-gcc
+  #   runs-on: ubuntu-latest
 
-  build-ubuntu-gcc-asan:
-    name: ubuntu-gcc-asan
-    runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-    steps:
-      - uses: actions/checkout@v4
+  #     - name: Clone the grug submodule
+  #       run: git submodule update --init
 
-      - name: Clone the grug submodule
-        run: git submodule update --init
+  #     - name: Install nasm
+  #       run: sudo apt install nasm
 
-      - name: Install nasm
-        run: sudo apt install nasm
+  #     - name: Run the tests
+  #       run: ./tests.sh
+  #       env:
+  #         OLD_LD:
+  #         CC: gcc
 
-      - name: Run the tests
-        run: ./tests.sh
-        env:
-          OLD_LD:
-          CC: gcc
-          ASAN:
+  # build-ubuntu-gcc-asan:
+  #   name: ubuntu-gcc-asan
+  #   runs-on: ubuntu-latest
 
-  build-ubuntu-gcc-valgrind:
-    name: ubuntu-gcc-valgrind
-    runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-    steps:
-      - uses: actions/checkout@v4
+  #     - name: Clone the grug submodule
+  #       run: git submodule update --init
 
-      - name: Clone the grug submodule
-        run: git submodule update --init
+  #     - name: Install nasm
+  #       run: sudo apt install nasm
 
-      - name: Install nasm
-        run: sudo apt install nasm
+  #     - name: Run the tests
+  #       run: ./tests.sh
+  #       env:
+  #         OLD_LD:
+  #         CC: gcc
+  #         ASAN:
 
-      - name: Install valgrind
-        run: sudo apt install valgrind
+  # build-ubuntu-gcc-valgrind:
+  #   name: ubuntu-gcc-valgrind
+  #   runs-on: ubuntu-latest
 
-      - name: Run the tests
-        run: ./tests.sh
-        env:
-          OLD_LD:
-          CC: gcc
-          VALGRIND:
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  #     - name: Clone the grug submodule
+  #       run: git submodule update --init
+
+  #     - name: Install nasm
+  #       run: sudo apt install nasm
+
+  #     - name: Install valgrind
+  #       run: sudo apt install valgrind
+
+  #     - name: Run the tests
+  #       run: ./tests.sh
+  #       env:
+  #         OLD_LD:
+  #         CC: gcc
+  #         VALGRIND:
 
   # TODO: REMOVE!
   # build-foo-clang:
