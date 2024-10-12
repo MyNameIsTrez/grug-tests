@@ -1,0 +1,1 @@
+Expected token type NEWLINE_TOKEN, but got SPACE_TOKEN on line 7

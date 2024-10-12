@@ -1,1 +1,1 @@
-Unexpected trailing whitespace in the comment token '# foo ' at token index 8
+A comment has trailing whitespace at character 54 of the grug text file

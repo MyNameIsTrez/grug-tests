@@ -1,1 +1,1 @@
-Expected a single space between the '#' in '#foo' and the rest of the comment at token index 8
+Expected a single space after the '#' at character 49 of the grug text file

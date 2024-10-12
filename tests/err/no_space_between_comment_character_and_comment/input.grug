@@ -1,2 +1,8 @@
-define() a { #foo
+define() d {
+    return {
+    }
+}
+
+on_a() {
+    #foo
 }

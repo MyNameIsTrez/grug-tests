@@ -1,1 +1,1 @@
-The variable 'foo' was not assigned a value at token index 18
+The variable 'foo' was not assigned a value on line 7

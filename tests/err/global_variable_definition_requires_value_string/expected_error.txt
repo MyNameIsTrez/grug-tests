@@ -1,1 +1,1 @@
-Expected token type ASSIGNMENT_TOKEN, but got NEWLINES_TOKEN at token index 16
+Expected token type SPACE_TOKEN, but got NEWLINE_TOKEN on line 6

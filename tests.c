@@ -4395,6 +4395,8 @@ static void error_tests(void) {
 	TEST_ERROR(cant_call_define_fn_1);
 	TEST_ERROR(cant_call_define_fn_2);
 	TEST_ERROR(cant_redefine_global);
+	TEST_ERROR(comment_at_the_end_of_another_statement);
+	TEST_ERROR(comment_at_the_end_of_define);
 	TEST_ERROR(define_fn_calls_fn);
 	TEST_ERROR(define_fn_different_name);
 	TEST_ERROR(define_fn_not_enough_arguments);
