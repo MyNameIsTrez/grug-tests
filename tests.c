@@ -1855,6 +1855,42 @@ static void ok_else_false(void *on_fns, void *g, size_t resources_size, char **r
 	assert(entity_types == NULL);
 }
 
+static void ok_else_if_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 2);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/else_if_false/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_else_if_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 3);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/else_if_true/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_else_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -4556,6 +4592,8 @@ static void ok_tests(void) {
 	TEST_OK(division_negative_result, "d", 0);
 	TEST_OK(division_positive_result, "d", 0);
 	TEST_OK(else_false, "d", 0);
+	TEST_OK(else_if_false, "d", 0);
+	TEST_OK(else_if_true, "d", 0);
 	TEST_OK(else_true, "d", 0);
 	TEST_OK(empty_line, "d", 0);
 	TEST_OK(entity_and_on_fn, "z", 0);
