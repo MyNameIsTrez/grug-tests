@@ -20,6 +20,12 @@ then
     compiler_flags+=' -DOLD_LD'
 fi
 
+if [[ ${LOGGING+x} ]]
+then
+    echo "- LOGGING was turned on"
+    compiler_flags+=' -DLOGGING'
+fi
+
 if [[ ${VALGRIND+x} ]]
 then
     echo "- VALGRIND was turned on"
