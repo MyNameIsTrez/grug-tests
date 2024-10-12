@@ -1,1 +1,1 @@
-Expected a single space after the '#' at character 49 of the grug text file
+Expected a single space after the '#' on line 7 of the grug text file

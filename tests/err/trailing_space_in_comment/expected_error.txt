@@ -1,1 +1,1 @@
-A comment has trailing whitespace at character 54 of the grug text file
+A comment has trailing whitespace on line 7 of the grug text file
