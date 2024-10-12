@@ -1635,6 +1635,22 @@ static void ok_calls_1000(void *on_fns, void *g, size_t resources_size, char **r
 	assert(entity_types == NULL);
 }
 
+static void ok_comment(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	((struct d_on_fns *)on_fns)->a(g);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/comment/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_continue(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -1848,6 +1864,24 @@ static void ok_else_true(void *on_fns, void *g, size_t resources_size, char **re
 
 	assert(streq(grug_on_fn_name, "on_a"));
 	assert(streq(grug_on_fn_path, "tests/ok/else_true/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_empty_line(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 2);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/empty_line/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4510,6 +4544,7 @@ static void ok_tests(void) {
 	TEST_OK(break, "d", 0);
 	TEST_OK(calls_100, "d", 0);
 	TEST_OK(calls_1000, "d", 0);
+	TEST_OK(comment, "d", 0);
 	TEST_OK(continue, "d", 0);
 	TEST_OK(define, "h", 0);
 	TEST_OK(define_containing_addition, "b", 0);
@@ -4522,6 +4557,7 @@ static void ok_tests(void) {
 	TEST_OK(division_positive_result, "d", 0);
 	TEST_OK(else_false, "d", 0);
 	TEST_OK(else_true, "d", 0);
+	TEST_OK(empty_line, "d", 0);
 	TEST_OK(entity_and_on_fn, "z", 0);
 	TEST_OK(entity_and_resource_as_subexpression, "d", 0);
 	TEST_OK(entity_duplicate, "y", 0);
