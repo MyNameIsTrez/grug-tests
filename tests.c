@@ -531,6 +531,19 @@ static bool is_whitelisted_test(char *name) {
 	return false;
 }
 
+#define TEST_DUMPING(test_name) {\
+	if (whitelisted_tests_size == 0 || is_whitelisted_test(#test_name)) {\
+		test_dumping(\
+			#test_name,\
+			"tests/dumping/"#test_name"/input.grug",\
+			"tests/dumping/"#test_name"/results",\
+			"tests/dumping/"#test_name"/results/dump.json",\
+			"tests/dumping/"#test_name"/results/applied.grug",\
+			"tests/dumping/"#test_name"/results/failed"\
+		);\
+	}\
+}
+
 #define TEST_ERROR(test_name) {\
 	if (whitelisted_tests_size == 0 || is_whitelisted_test(#test_name)) {\
 		test_error(\
@@ -617,21 +630,19 @@ static bool is_whitelisted_test(char *name) {
 	}\
 }
 
-static size_t read_dll(char *dll_path, uint8_t *dll_bytes) {
-	// TODO: Check if using mmap() makes this faster:
-	// https://stackoverflow.com/a/174808/13279557
-	FILE *f = fopen(dll_path, "r");
+static size_t read_file(char *path, uint8_t *bytes) {
+	FILE *f = fopen(path, "r");
 	check_null(f, "fopen");
 
 	check(fseek(f, 0, SEEK_END), "fseek");
 
 	long ftell_result = ftell(f);
 	check(ftell_result, "ftell");
-	size_t dll_bytes_len = ftell_result;
+	size_t len = ftell_result;
 
 	check(fseek(f, 0, SEEK_SET), "fseek");
 
-	if (fread(dll_bytes, dll_bytes_len, 1, f) == 0) {
+	if (fread(bytes, len, 1, f) == 0) {
 		if (feof(f)) {
 			printf("fread EOF\n");
 		}
@@ -646,7 +657,7 @@ static size_t read_dll(char *dll_path, uint8_t *dll_bytes) {
 		exit(EXIT_FAILURE);
 	}
 
-	return dll_bytes_len;
+	return len;
 }
 
 static void *get(void *dll, char *label) {
@@ -768,30 +779,8 @@ static bool newer(char *path1, char *path2) {
 }
 
 static char *get_expected_error(char *expected_error_path) {
-	// TODO: Check if using mmap() makes this faster:
-	// https://stackoverflow.com/a/174808/13279557
-	FILE *f = fopen(expected_error_path, "r");
-	check_null(f, "fopen");
-
-	check(fseek(f, 0, SEEK_END), "fseek");
-
-	long ftell_result = ftell(f);
-	check(ftell_result, "ftell");
-	size_t expected_error_len = ftell_result;
-
 	static char expected_error[420];
-
-	check(fseek(f, 0, SEEK_SET), "fseek");
-
-	if (fread(expected_error, expected_error_len, 1, f) == 0) {
-		if (feof(f)) {
-			printf("fread EOF\n");
-		}
-		if (ferror(f)) {
-			printf("fread error\n");
-		}
-		exit(EXIT_FAILURE);
-	}
+	size_t expected_error_len = read_file(expected_error_path, (uint8_t *)expected_error);
 
 	if (expected_error[expected_error_len - 1] == '\n') {
 		expected_error_len--;
@@ -801,11 +790,6 @@ static char *get_expected_error(char *expected_error_path) {
 	}
 
 	expected_error[expected_error_len] = '\0';
-
-    if (fclose(f) == EOF) {
-		perror("fclose");
-		exit(EXIT_FAILURE);
-	}
 
 	return expected_error;
 }
@@ -842,6 +826,65 @@ static int remove_callback(const char *entry_path, const struct stat *entry_info
 
 static int rm_rf(char *path) {
 	return nftw(path, remove_callback, 42, FTW_DEPTH | FTW_PHYS);
+}
+
+static void test_dumping(
+	char *test_name,
+	char *grug_path,
+	char *results_path,
+	char *dump_path,
+	char *applied_path,
+	char *failed_file_path
+) {
+	if (failed_file_doesnt_exist(failed_file_path)
+	 && newer(applied_path, grug_path)
+	 && newer(applied_path, dump_path)
+	 && newer(applied_path, "mod_api.h")
+	 && newer(applied_path, "mod_api.json")
+	 && newer(applied_path, "tests.sh")
+	 && newer(applied_path, "tests.out")
+	) {
+		printf("Skipping tests/dumping/%s...\n", test_name);
+		return;
+	}
+
+	printf("Running tests/dumping/%s...\n", test_name);
+
+	rm_rf(results_path);
+	make_results_dir(results_path);
+
+	create_failed_file(failed_file_path);
+
+	if (grug_dump_file_ast(grug_path, dump_path)) {
+		printf("Failed to dump file AST.\n");
+		exit(EXIT_FAILURE);
+	}
+
+	if (grug_apply_file_ast(dump_path, applied_path)) {
+		printf("Failed to apply file AST.\n");
+		exit(EXIT_FAILURE);
+	}
+
+	static uint8_t grug_path_bytes[420420];
+	size_t grug_path_bytes_len = read_file(grug_path, grug_path_bytes);
+	grug_path_bytes[grug_path_bytes_len] = '\0';
+
+	// static uint8_t applied_path_bytes[420420];
+	// size_t applied_path_bytes_len = read_file(applied_path, applied_path_bytes);
+	// applied_path_bytes[applied_path_bytes_len] = '\0';
+
+	// if (grug_path_bytes_len != applied_path_bytes_len || memcmp(grug_path_bytes, applied_path_bytes, grug_path_bytes_len) != 0) {
+	// 	printf("\nThe output differs from the expected output.\n");
+	// 	printf("grug_path_bytes:\n");
+	// 	printf("%s\n", grug_path_bytes);
+
+	// 	printf("applied_path_bytes:\n");
+	// 	printf("%s\n", applied_path_bytes);
+
+	// 	exit(EXIT_FAILURE);
+	// }
+
+	unlink(failed_file_path);
 }
 
 static void test_error(
@@ -943,10 +986,10 @@ static void generate_and_compare_output_dll(
 	// printf("  Comparing output.so against expected.so...\n");
 
 	static uint8_t output_dll_bytes[420420];
-	size_t output_dll_bytes_len = read_dll(output_dll_path, output_dll_bytes);
+	size_t output_dll_bytes_len = read_file(output_dll_path, output_dll_bytes);
 
 	static uint8_t expected_dll_bytes[420420];
-	size_t expected_dll_bytes_len = read_dll(expected_dll_path, expected_dll_bytes);
+	size_t expected_dll_bytes_len = read_file(expected_dll_path, expected_dll_bytes);
 
 	if (output_dll_bytes_len != expected_dll_bytes_len || memcmp(output_dll_bytes, expected_dll_bytes, expected_dll_bytes_len) != 0) {
 		printf("\nThe OK test's DLL bytes output differs from the expected output.\n");
@@ -4493,6 +4536,10 @@ static void ok_write_to_global_variable(void *on_fns, void *g, size_t resources_
 	assert(entity_types == NULL);
 }
 
+static void dumping_tests(void) {
+	TEST_DUMPING(minimal);
+}
+
 static void error_tests(void) {
 	TEST_ERROR(assign_to_unknown_variable);
 	TEST_ERROR(assignment_isnt_expression);
@@ -4773,6 +4820,7 @@ int main(int argc, char *argv[]) {
 		whitelisted_tests[whitelisted_tests_size++] = argv[i];
 	}
 
+	dumping_tests();
 	error_tests();
 	runtime_error_tests();
 	ok_tests();
