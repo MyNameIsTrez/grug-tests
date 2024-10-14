@@ -642,13 +642,8 @@ static size_t read_file(char *path, uint8_t *bytes) {
 
 	check(fseek(f, 0, SEEK_SET), "fseek");
 
-	if (fread(bytes, len, 1, f) == 0) {
-		if (feof(f)) {
-			printf("fread EOF\n");
-		}
-		if (ferror(f)) {
-			printf("fread error\n");
-		}
+	if (fread(bytes, len, 1, f) < len && ferror(f)) {
+		printf("fread error\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -856,12 +851,12 @@ static void test_dumping(
 	create_failed_file(failed_file_path);
 
 	if (grug_dump_file_ast(grug_path, dump_path)) {
-		printf("Failed to dump file AST.\n");
+		printf("Failed to dump file AST: %s:%d: %s (detected in grug.c:%d)\n", grug_error.path, grug_error.line_number, grug_error.msg, grug_error.grug_c_line_number);
 		exit(EXIT_FAILURE);
 	}
 
 	if (grug_apply_file_ast(dump_path, applied_path)) {
-		printf("Failed to apply file AST.\n");
+		printf("Failed to apply file AST: %s:%d: %s (detected in grug.c:%d)\n", grug_error.path, grug_error.line_number, grug_error.msg, grug_error.grug_c_line_number);
 		exit(EXIT_FAILURE);
 	}
 
@@ -869,20 +864,20 @@ static void test_dumping(
 	size_t grug_path_bytes_len = read_file(grug_path, grug_path_bytes);
 	grug_path_bytes[grug_path_bytes_len] = '\0';
 
-	// static uint8_t applied_path_bytes[420420];
-	// size_t applied_path_bytes_len = read_file(applied_path, applied_path_bytes);
-	// applied_path_bytes[applied_path_bytes_len] = '\0';
+	static uint8_t applied_path_bytes[420420];
+	size_t applied_path_bytes_len = read_file(applied_path, applied_path_bytes);
+	applied_path_bytes[applied_path_bytes_len] = '\0';
 
-	// if (grug_path_bytes_len != applied_path_bytes_len || memcmp(grug_path_bytes, applied_path_bytes, grug_path_bytes_len) != 0) {
-	// 	printf("\nThe output differs from the expected output.\n");
-	// 	printf("grug_path_bytes:\n");
-	// 	printf("%s\n", grug_path_bytes);
+	if (grug_path_bytes_len != applied_path_bytes_len || memcmp(grug_path_bytes, applied_path_bytes, grug_path_bytes_len) != 0) {
+		printf("\nThe output differs from the expected output.\n");
+		printf("grug_path_bytes:\n");
+		printf("%s\n", grug_path_bytes);
 
-	// 	printf("applied_path_bytes:\n");
-	// 	printf("%s\n", applied_path_bytes);
+		printf("applied_path_bytes:\n");
+		printf("%s\n", applied_path_bytes);
 
-	// 	exit(EXIT_FAILURE);
-	// }
+		exit(EXIT_FAILURE);
+	}
 
 	unlink(failed_file_path);
 }
@@ -926,12 +921,7 @@ static void test_error(
 	size_t grug_error_msg_len = strlen(grug_error.msg);
 
 	if (fwrite(grug_error.msg, grug_error_msg_len, 1, f) == 0) {
-		if (feof(f)) {
-			printf("fwrite EOF\n");
-		}
-		if (ferror(f)) {
-			printf("fwrite error\n");
-		}
+		printf("fwrite error\n");
 		exit(EXIT_FAILURE);
 	}
 
