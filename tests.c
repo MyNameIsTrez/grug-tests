@@ -531,19 +531,6 @@ static bool is_whitelisted_test(char *name) {
 	return false;
 }
 
-#define TEST_DUMPING(test_name) {\
-	if (whitelisted_tests_size == 0 || is_whitelisted_test(#test_name)) {\
-		test_dumping(\
-			#test_name,\
-			"tests/dumping/"#test_name"/input.grug",\
-			"tests/dumping/"#test_name"/results",\
-			"tests/dumping/"#test_name"/results/dump.json",\
-			"tests/dumping/"#test_name"/results/applied.grug",\
-			"tests/dumping/"#test_name"/results/failed"\
-		);\
-	}\
-}
-
 #define TEST_ERROR(test_name) {\
 	if (whitelisted_tests_size == 0 || is_whitelisted_test(#test_name)) {\
 		test_error(\
@@ -586,6 +573,8 @@ static bool is_whitelisted_test(char *name) {
 				"tests/err_runtime/"#test_name"/results/output.hex",\
 				"tests/err_runtime/"#test_name"/results/output_elf.log",\
 				"tests/err_runtime/"#test_name"/results/output_objdump.log",\
+				"tests/err_runtime/"#test_name"/results/dump.json",\
+				"tests/err_runtime/"#test_name"/results/applied.grug",\
 				"tests/err_runtime/"#test_name"/results/failed"\
 			);\
 		}\
@@ -621,6 +610,8 @@ static bool is_whitelisted_test(char *name) {
 				"tests/ok/"#test_name"/results/output.hex",\
 				"tests/ok/"#test_name"/results/output_elf.log",\
 				"tests/ok/"#test_name"/results/output_objdump.log",\
+				"tests/ok/"#test_name"/results/dump.json",\
+				"tests/ok/"#test_name"/results/applied.grug",\
 				"tests/ok/"#test_name"/results/failed"\
 			);\
 		}\
@@ -823,66 +814,6 @@ static int rm_rf(char *path) {
 	return nftw(path, remove_callback, 42, FTW_DEPTH | FTW_PHYS);
 }
 
-static void test_dumping(
-	char *test_name,
-	char *grug_path,
-	char *results_path,
-	char *dump_path,
-	char *applied_path,
-	char *failed_file_path
-) {
-	if (failed_file_doesnt_exist(failed_file_path)
-	 && newer(applied_path, grug_path)
-	 && newer(applied_path, dump_path)
-	 && newer(applied_path, "mod_api.h")
-	 && newer(applied_path, "mod_api.json")
-	 && newer(applied_path, "tests.sh")
-	 && newer(applied_path, "tests.out")
-	) {
-		printf("Skipping tests/dumping/%s...\n", test_name);
-		return;
-	}
-
-	printf("Running tests/dumping/%s...\n", test_name);
-
-	rm_rf(results_path);
-	make_results_dir(results_path);
-
-	create_failed_file(failed_file_path);
-
-	if (grug_dump_file_ast(grug_path, dump_path)) {
-		printf("Failed to dump file AST: %s:%d: %s (detected in grug.c:%d)\n", grug_error.path, grug_error.line_number, grug_error.msg, grug_error.grug_c_line_number);
-		exit(EXIT_FAILURE);
-	}
-
-	if (grug_apply_file_ast(dump_path, applied_path)) {
-		printf("Failed to apply file AST: %s:%d: %s (detected in grug.c:%d)\n", grug_error.path, grug_error.line_number, grug_error.msg, grug_error.grug_c_line_number);
-		exit(EXIT_FAILURE);
-	}
-
-	static uint8_t grug_path_bytes[420420];
-	size_t grug_path_bytes_len = read_file(grug_path, grug_path_bytes);
-	grug_path_bytes[grug_path_bytes_len] = '\0';
-
-	static uint8_t applied_path_bytes[420420];
-	size_t applied_path_bytes_len = read_file(applied_path, applied_path_bytes);
-	applied_path_bytes[applied_path_bytes_len] = '\0';
-
-	if (grug_path_bytes_len != applied_path_bytes_len || memcmp(grug_path_bytes, applied_path_bytes, grug_path_bytes_len) != 0) {
-		printf("\nThe output differs from the expected output.\n");
-		printf("grug_path_bytes:\n");
-		printf("%s\n", grug_path_bytes);
-
-		printf("applied_path_bytes:\n");
-		printf("%s\n", applied_path_bytes);
-
-		// TODO: ADD THIS BACK!
-		// exit(EXIT_FAILURE);
-	}
-
-	unlink(failed_file_path);
-}
-
 static void test_error(
 	char *test_name,
 	char *grug_path,
@@ -951,6 +882,42 @@ static void test_error(
 	unlink(failed_file_path);
 }
 
+static void diff_dump_and_apply(
+	char *grug_path,
+	char *dump_path,
+	char *applied_path
+) {
+	if (grug_dump_file_ast(grug_path, dump_path)) {
+		printf("Failed to dump file AST: %s:%d: %s (detected in grug.c:%d)\n", grug_error.path, grug_error.line_number, grug_error.msg, grug_error.grug_c_line_number);
+		exit(EXIT_FAILURE);
+	}
+
+	if (grug_apply_file_ast(dump_path, applied_path)) {
+		printf("Failed to apply file AST: %s:%d: %s (detected in grug.c:%d)\n", grug_error.path, grug_error.line_number, grug_error.msg, grug_error.grug_c_line_number);
+		exit(EXIT_FAILURE);
+	}
+
+	static uint8_t grug_path_bytes[420420];
+	size_t grug_path_bytes_len = read_file(grug_path, grug_path_bytes);
+	grug_path_bytes[grug_path_bytes_len] = '\0';
+
+	static uint8_t applied_path_bytes[420420];
+	size_t applied_path_bytes_len = read_file(applied_path, applied_path_bytes);
+	applied_path_bytes[applied_path_bytes_len] = '\0';
+
+	if (grug_path_bytes_len != applied_path_bytes_len || memcmp(grug_path_bytes, applied_path_bytes, grug_path_bytes_len) != 0) {
+		printf("\nThe output differs from the expected output.\n");
+		printf("grug_path_bytes:\n");
+		printf("%s\n", grug_path_bytes);
+
+		printf("applied_path_bytes:\n");
+		printf("%s\n", applied_path_bytes);
+
+		// TODO: ADD THIS BACK!
+		// exit(EXIT_FAILURE);
+	}
+}
+
 static void generate_and_compare_output_dll(
 	char *grug_path,
 	char *output_dll_path,
@@ -958,6 +925,8 @@ static void generate_and_compare_output_dll(
 	char *output_xxd_path,
 	char *output_readelf_path,
 	char *output_objdump_path,
+	char *dump_path,
+	char *applied_path,
 	char *failed_file_path
 ) {
 	// printf("  Regenerating output.so...\n");
@@ -994,6 +963,8 @@ static void generate_and_compare_output_dll(
 		exit(EXIT_FAILURE);
 	}
 
+	diff_dump_and_apply(grug_path, dump_path, applied_path);
+
 	unlink(failed_file_path);
 }
 
@@ -1005,6 +976,8 @@ static void runtime_error_epilogue(
 	char *output_xxd_path,
 	char *output_readelf_path,
 	char *output_objdump_path,
+	char *dump_path,
+	char *applied_path,
 	char *failed_file_path
 ) {
 	// printf("  Comparing against the expected error...\n");
@@ -1027,7 +1000,7 @@ static void runtime_error_epilogue(
 		exit(EXIT_FAILURE);
 	}
 
-	generate_and_compare_output_dll(grug_path, output_dll_path, expected_dll_path, output_xxd_path, output_readelf_path, output_objdump_path, failed_file_path);
+	generate_and_compare_output_dll(grug_path, output_dll_path, expected_dll_path, output_xxd_path, output_readelf_path, output_objdump_path, dump_path, applied_path, failed_file_path);
 }
 
 static void handle_dlerror(char *function_name) {
@@ -1296,9 +1269,11 @@ static void ok_epilogue(
 	char *output_xxd_path,
 	char *output_readelf_path,
 	char *output_objdump_path,
+	char *dump_path,
+	char *applied_path,
 	char *failed_file_path
 ) {
-	generate_and_compare_output_dll(grug_path, output_dll_path, expected_dll_path, output_xxd_path, output_readelf_path, output_objdump_path, failed_file_path);
+	generate_and_compare_output_dll(grug_path, output_dll_path, expected_dll_path, output_xxd_path, output_readelf_path, output_objdump_path, dump_path, applied_path, failed_file_path);
 }
 
 static struct test_data ok_prologue(
@@ -4527,10 +4502,6 @@ static void ok_write_to_global_variable(void *on_fns, void *g, size_t resources_
 	assert(entity_types == NULL);
 }
 
-static void dumping_tests(void) {
-	TEST_DUMPING(minimal);
-}
-
 static void error_tests(void) {
 	TEST_ERROR(assign_to_unknown_variable);
 	TEST_ERROR(assignment_isnt_expression);
@@ -4811,7 +4782,6 @@ int main(int argc, char *argv[]) {
 		whitelisted_tests[whitelisted_tests_size++] = argv[i];
 	}
 
-	dumping_tests();
 	error_tests();
 	runtime_error_tests();
 	ok_tests();
