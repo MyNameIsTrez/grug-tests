@@ -1,0 +1,11 @@
+define() d {
+    return {
+    }
+}
+
+on_a() {
+    while true {
+
+        nothing()
+    }
+}

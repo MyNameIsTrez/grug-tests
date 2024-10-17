@@ -4517,6 +4517,10 @@ static void error_tests(void) {
 	TEST_ERROR(define_fn_only_one_max);
 	TEST_ERROR(define_fn_uses_global_variable);
 	TEST_ERROR(define_fn_was_not_declared);
+	TEST_ERROR(empty_line_after_group);
+	TEST_ERROR(empty_line_before_group);
+	TEST_ERROR(empty_line_fn_group);
+	TEST_ERROR(empty_line_while_group);
 	TEST_ERROR(entity_cant_be_empty_string);
 	TEST_ERROR(entity_has_invalid_entity_name_colon);
 	TEST_ERROR(entity_has_invalid_entity_name_uppercase);
@@ -4549,6 +4553,7 @@ static void error_tests(void) {
 	TEST_ERROR(i32_logical_not);
 	TEST_ERROR(i32_too_big);
 	TEST_ERROR(i32_too_small);
+	TEST_ERROR(indentation_going_down_by_2);
 	TEST_ERROR(local_variable_already_exists);
 	TEST_ERROR(local_variable_definition_cant_use_itself);
 	TEST_ERROR(missing_define_fn);
