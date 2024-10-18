@@ -7,5 +7,6 @@ define() d {
 uses: i32 = 420
 
 # bar
+# baz
 armor: i32 = 1337
 health: i32 = 100
