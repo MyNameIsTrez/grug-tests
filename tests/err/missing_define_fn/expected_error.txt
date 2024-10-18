@@ -1,1 +1,1 @@
-Every grug file requires exactly one define_ function
+Every grug file requires exactly one define function

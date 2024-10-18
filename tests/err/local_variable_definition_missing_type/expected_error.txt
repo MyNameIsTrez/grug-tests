@@ -1,0 +1,1 @@
+Can't assign to the variable 'foo', since it does not exist

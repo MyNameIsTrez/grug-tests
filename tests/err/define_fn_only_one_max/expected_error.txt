@@ -1,1 +1,1 @@
-There can't be more than one define_ function in a grug file
+There can't be more than one define function in a grug file

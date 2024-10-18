@@ -1,7 +1,7 @@
 section .data
 
 global define_type
-define_type: db "h", 0
+define_type: db "d", 0
 
 align 8
 global globals_size

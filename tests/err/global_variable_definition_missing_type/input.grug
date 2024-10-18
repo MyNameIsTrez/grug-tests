@@ -1,0 +1,9 @@
+define() d {
+    return {
+    }
+}
+
+foo = 42
+
+on_a() {
+}

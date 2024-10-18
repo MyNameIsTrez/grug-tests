@@ -1708,10 +1708,9 @@ static void ok_comment_above_define_fn_twice(void *on_fns, void *g, size_t resou
 static void ok_comment_above_globals(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	(void)on_fns;
 
-	assert(game_fn_define_h_x == 42);
-
 	assert(((int32_t*)g)[0] == 420);
 	assert(((int32_t*)g)[1] == 1337);
+	assert(((int32_t*)g)[2] == 100);
 
 	free(g);
 
@@ -4637,6 +4636,7 @@ static void error_tests(void) {
 	TEST_ERROR(global_variable_before_define);
 	TEST_ERROR(global_variable_calls_fn);
 	TEST_ERROR(global_variable_definition_cant_use_itself);
+	TEST_ERROR(global_variable_definition_missing_type);
 	TEST_ERROR(global_variable_definition_requires_value_i32);
 	TEST_ERROR(global_variable_definition_requires_value_string);
 	TEST_ERROR(global_variable_uses_global_variable);
@@ -4654,6 +4654,7 @@ static void error_tests(void) {
 	TEST_ERROR(indentation_going_down_by_2);
 	TEST_ERROR(local_variable_already_exists);
 	TEST_ERROR(local_variable_definition_cant_use_itself);
+	TEST_ERROR(local_variable_definition_missing_type);
 	TEST_ERROR(lone_block_comment);
 	TEST_ERROR(lone_outside_comment);
 	TEST_ERROR(lone_outside_comment_at_end);
@@ -4734,7 +4735,7 @@ static void ok_tests(void) {
 	TEST_OK(comment_above_block_twice, "d", 0);
 	TEST_OK(comment_above_define_fn, "d", 0);
 	TEST_OK(comment_above_define_fn_twice, "d", 0);
-	TEST_OK(comment_above_globals, "d", 0);
+	TEST_OK(comment_above_globals, "d", 12);
 	TEST_OK(comment_above_helper_fn, "d", 0);
 	TEST_OK(comment_above_on_fn, "d", 0);
 	TEST_OK(continue, "d", 0);
