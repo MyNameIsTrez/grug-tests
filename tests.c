@@ -1643,13 +1643,111 @@ static void ok_calls_1000(void *on_fns, void *g, size_t resources_size, char **r
 	assert(entity_types == NULL);
 }
 
-static void ok_comment(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_comment_above_block(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 1);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/comment_above_block/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_comment_above_block_twice(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 1);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/comment_above_block_twice/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_comment_above_define_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	(void)on_fns;
+
+	free(g);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_comment_above_define_fn_twice(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	(void)on_fns;
+
+	free(g);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_comment_above_globals(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	(void)on_fns;
+
+	assert(game_fn_define_h_x == 42);
+
+	assert(((int32_t*)g)[0] == 420);
+	assert(((int32_t*)g)[1] == 1337);
+
+	free(g);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_comment_above_helper_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 1);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/comment_above_helper_fn/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_comment_above_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	free(g);
 
 	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/comment/input.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/comment_above_on_fn/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4556,6 +4654,9 @@ static void error_tests(void) {
 	TEST_ERROR(indentation_going_down_by_2);
 	TEST_ERROR(local_variable_already_exists);
 	TEST_ERROR(local_variable_definition_cant_use_itself);
+	TEST_ERROR(lone_block_comment);
+	TEST_ERROR(lone_outside_comment);
+	TEST_ERROR(lone_outside_comment_at_end);
 	TEST_ERROR(missing_define_fn);
 	TEST_ERROR(no_space_between_comment_character_and_comment);
 	TEST_ERROR(on_fn_before_define);
@@ -4629,7 +4730,13 @@ static void ok_tests(void) {
 	TEST_OK(break, "d", 0);
 	TEST_OK(calls_100, "d", 0);
 	TEST_OK(calls_1000, "d", 0);
-	TEST_OK(comment, "d", 0);
+	TEST_OK(comment_above_block, "d", 0);
+	TEST_OK(comment_above_block_twice, "d", 0);
+	TEST_OK(comment_above_define_fn, "d", 0);
+	TEST_OK(comment_above_define_fn_twice, "d", 0);
+	TEST_OK(comment_above_globals, "d", 0);
+	TEST_OK(comment_above_helper_fn, "d", 0);
+	TEST_OK(comment_above_on_fn, "d", 0);
 	TEST_OK(continue, "d", 0);
 	TEST_OK(define, "h", 0);
 	TEST_OK(define_containing_addition, "b", 0);

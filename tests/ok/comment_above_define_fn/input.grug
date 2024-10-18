@@ -1,0 +1,5 @@
+# foo
+define() d {
+    return {
+    }
+}

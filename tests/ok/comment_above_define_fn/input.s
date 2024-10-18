@@ -1,7 +1,7 @@
 section .data
 
 global define_type
-define_type: db "h", 0
+define_type: db "d", 0
 
 align 8
 global globals_size
@@ -23,13 +23,11 @@ entities_size: dq 0
 
 section .text
 
-extern game_fn_define_h
+extern game_fn_define_d
 
 global define
 define:
-	mov eax, 42
-	mov rdi, rax
-	call game_fn_define_h wrt ..plt
+	call game_fn_define_d wrt ..plt
 	ret
 
 global init_globals
