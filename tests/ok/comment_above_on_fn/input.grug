@@ -4,5 +4,6 @@ define() d {
 }
 
 # foo
+# bar
 on_a() {
 }

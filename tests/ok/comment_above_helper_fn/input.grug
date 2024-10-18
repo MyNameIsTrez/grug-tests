@@ -8,6 +8,7 @@ on_a() {
 }
 
 # foo
+# bar
 helper_foo() {
     nothing()
 }
