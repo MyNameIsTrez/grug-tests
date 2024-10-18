@@ -942,6 +942,9 @@ static void generate_and_compare_output_dll(
 	// printf("  Outputting output.so info...\n");
 	output_dll_info(output_dll_path, output_xxd_path, output_readelf_path, output_objdump_path);
 
+	// printf("  Dumping + applying grug_path, and diffing it against the original file...\n");
+	diff_dump_and_apply(grug_path, dump_path, applied_path);
+
 	// printf("  Comparing output.so against expected.so...\n");
 
 	static uint8_t output_dll_bytes[420420];
@@ -961,8 +964,6 @@ static void generate_and_compare_output_dll(
 
 		exit(EXIT_FAILURE);
 	}
-
-	diff_dump_and_apply(grug_path, dump_path, applied_path);
 
 	unlink(failed_file_path);
 }

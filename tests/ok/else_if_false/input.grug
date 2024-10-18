@@ -6,7 +6,7 @@ define() d {
 on_a() {
     nothing()
     if true {
-    } else if (true) {
+    } else if true {
         nothing()
     }
     nothing()
