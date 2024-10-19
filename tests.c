@@ -17,7 +17,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-// Forward declaration
+// Forward declaration, since grug.h doesn't declare it
 bool grug_test_regenerate_dll(char *grug_file_path, char *dll_path, char *mod);
 
 #define MAX_DYNSTR_LENGTH 420420
@@ -735,9 +735,6 @@ static void output_dll_info(char *dll_path, char *xxd_path, char *readelf_path, 
 }
 
 static bool newer(char *path1, char *path2) {
-	// printf("path1: %s\n", path1);
-	// printf("path2: %s\n", path2);
-
 	struct stat s1;
 	if (stat(path1, &s1) == -1) {
 		if (errno != ENOENT) {
@@ -745,7 +742,6 @@ static bool newer(char *path1, char *path2) {
 			perror("stat");
 			exit(EXIT_FAILURE);
 		}
-		// printf("path1 does not exist\n");
 		return false;
 	}
 
@@ -755,11 +751,6 @@ static bool newer(char *path1, char *path2) {
 		perror("stat");
 		exit(EXIT_FAILURE);
 	}
-
-	// printf("path1 mtime >= path2 mtime: %d\n", s1.st_mtime >= s2.st_mtime);
-
-	// printf("path1 mtime: %ld\n", s1.st_mtime);
-	// printf("path2 mtime: %ld\n", s2.st_mtime);
 
 	return s1.st_mtime >= s2.st_mtime;
 }
@@ -842,11 +833,7 @@ static void test_error(
 
 	create_failed_file(failed_file_path);
 
-	// printf("  Regenerating output.so...\n");
-
 	assert(grug_test_regenerate_dll(grug_path, output_dll_path, "err"));
-
-	// printf("  Outputting grug_output.txt...\n");
 
 	FILE *f = fopen(grug_output_path, "w");
 
@@ -862,8 +849,6 @@ static void test_error(
 		exit(EXIT_FAILURE);
 		exit(EXIT_FAILURE);
 	}
-
-	// printf("  Comparing against the expected error...\n");
 
 	char *expected_error = get_expected_error(expected_error_path);
 	size_t expected_error_len = strlen(expected_error);
@@ -928,8 +913,6 @@ static void generate_and_compare_output_dll(
 	char *applied_path,
 	char *failed_file_path
 ) {
-	// printf("  Regenerating output.so...\n");
-
 	if (grug_test_regenerate_dll(grug_path, output_dll_path, "ok")) {
 		printf("The test wasn't supposed to print anything, but did:\n");
 		printf("----\n");
@@ -939,13 +922,9 @@ static void generate_and_compare_output_dll(
 		exit(EXIT_FAILURE);
 	}
 
-	// printf("  Outputting output.so info...\n");
 	output_dll_info(output_dll_path, output_xxd_path, output_readelf_path, output_objdump_path);
 
-	// printf("  Dumping + applying grug_path, and diffing it against the original file...\n");
 	diff_dump_and_apply(grug_path, dump_path, applied_path);
-
-	// printf("  Comparing output.so against expected.so...\n");
 
 	static uint8_t output_dll_bytes[420420];
 	size_t output_dll_bytes_len = read_file(output_dll_path, output_dll_bytes);
@@ -980,8 +959,6 @@ static void runtime_error_epilogue(
 	char *applied_path,
 	char *failed_file_path
 ) {
-	// printf("  Comparing against the expected error...\n");
-
 	char *grug_error_msg = grug_get_runtime_error_reason();
 
 	size_t grug_error_msg_len = strlen(grug_error_msg);
@@ -1023,8 +1000,6 @@ static void regenerate_expected_dll(
 	char *expected_readelf_path,
 	char *expected_objdump_path
 ) {
-	// printf("  Regenerating expected.so...\n");
-
 #ifdef __x86_64__
 	run((char *[]){"nasm", nasm_path, "-felf64", "-O0", "-o", nasm_o_path, NULL});
 	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-shared", "--hash-style=sysv", NULL});
@@ -1045,7 +1020,6 @@ static void regenerate_expected_dll(
 
 	run((char *[]){"objcopy", expected_dll_path, "--redefine-sym", redefine_sym, NULL});
 
-	// printf("  Outputting expected.so info...\n");
 	output_dll_info(expected_dll_path, expected_xxd_path, expected_readelf_path, expected_objdump_path);
 }
 
@@ -4618,6 +4592,8 @@ static void error_tests(void) {
 	TEST_ERROR(empty_line_after_group);
 	TEST_ERROR(empty_line_before_group);
 	TEST_ERROR(empty_line_fn_group);
+	TEST_ERROR(empty_line_missing_between_globals);
+	TEST_ERROR(empty_line_missing_between_statements);
 	TEST_ERROR(empty_line_while_group);
 	TEST_ERROR(entity_cant_be_empty_string);
 	TEST_ERROR(entity_has_invalid_entity_name_colon);

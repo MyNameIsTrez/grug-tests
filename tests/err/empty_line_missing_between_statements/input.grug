@@ -5,12 +5,6 @@ define() d {
 
 on_a() {
     nothing()
-
     # foo
-    if false {
-    } else if false {
-    } else {
-        nothing()
-    }
     nothing()
 }
