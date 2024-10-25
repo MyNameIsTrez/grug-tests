@@ -3,7 +3,4 @@ define() d {
     }
 }
 
-on_a() {
-}
-
 # foo

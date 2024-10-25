@@ -872,12 +872,12 @@ static void diff_dump_and_apply(
 	char *dump_path,
 	char *applied_path
 ) {
-	if (grug_dump_file_ast(grug_path, dump_path)) {
+	if (grug_dump_file_to_json(grug_path, dump_path)) {
 		printf("Failed to dump file AST: %s:%d: %s (detected in grug.c:%d)\n", grug_error.path, grug_error.line_number, grug_error.msg, grug_error.grug_c_line_number);
 		exit(EXIT_FAILURE);
 	}
 
-	if (grug_apply_file_ast(dump_path, applied_path)) {
+	if (grug_generate_file_from_json(dump_path, applied_path)) {
 		printf("Failed to apply file AST: %s:%d: %s (detected in grug.c:%d)\n", grug_error.path, grug_error.line_number, grug_error.msg, grug_error.grug_c_line_number);
 		exit(EXIT_FAILURE);
 	}
@@ -1722,6 +1722,58 @@ static void ok_comment_above_on_fn(void *on_fns, void *g, size_t resources_size,
 
 	assert(streq(grug_on_fn_name, "on_a"));
 	assert(streq(grug_on_fn_path, "tests/ok/comment_above_on_fn/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_comment_lone_block(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	(void)on_fns;
+
+	free(g);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_comment_lone_block_at_end(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	(void)on_fns;
+
+	free(g);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_comment_lone_global(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	(void)on_fns;
+
+	free(g);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_comment_lone_global_at_end(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	(void)on_fns;
+
+	free(g);
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4632,9 +4684,6 @@ static void error_tests(void) {
 	TEST_ERROR(local_variable_already_exists);
 	TEST_ERROR(local_variable_definition_cant_use_itself);
 	TEST_ERROR(local_variable_definition_missing_type);
-	TEST_ERROR(lone_block_comment);
-	TEST_ERROR(lone_outside_comment);
-	TEST_ERROR(lone_outside_comment_at_end);
 	TEST_ERROR(missing_define_fn);
 	TEST_ERROR(no_space_between_comment_character_and_comment);
 	TEST_ERROR(on_fn_before_define);
@@ -4715,6 +4764,10 @@ static void ok_tests(void) {
 	TEST_OK(comment_above_globals, "d", 12);
 	TEST_OK(comment_above_helper_fn, "d", 0);
 	TEST_OK(comment_above_on_fn, "d", 0);
+	TEST_OK(comment_lone_block, "d", 0);
+	TEST_OK(comment_lone_block_at_end, "d", 0);
+	TEST_OK(comment_lone_global, "d", 0);
+	TEST_OK(comment_lone_global_at_end, "d", 0);
 	TEST_OK(continue, "d", 0);
 	TEST_OK(define, "h", 0);
 	TEST_OK(define_containing_addition, "b", 0);
