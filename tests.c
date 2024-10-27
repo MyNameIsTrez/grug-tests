@@ -873,12 +873,12 @@ static void diff_dump_and_apply(
 	char *applied_path
 ) {
 	if (grug_dump_file_to_json(grug_path, dump_path)) {
-		printf("Failed to dump file AST: %s:%d: %s (detected in grug.c:%d)\n", grug_error.path, grug_error.line_number, grug_error.msg, grug_error.grug_c_line_number);
+		printf("Failed to dump file AST: %s: %s (detected in grug.c:%d)\n", grug_error.path, grug_error.msg, grug_error.grug_c_line_number);
 		exit(EXIT_FAILURE);
 	}
 
 	if (grug_generate_file_from_json(dump_path, applied_path)) {
-		printf("Failed to apply file AST: %s:%d: %s (detected in grug.c:%d)\n", grug_error.path, grug_error.line_number, grug_error.msg, grug_error.grug_c_line_number);
+		printf("Failed to apply file AST: %s: %s (detected in grug.c:%d)\n", grug_error.path, grug_error.msg, grug_error.grug_c_line_number);
 		exit(EXIT_FAILURE);
 	}
 
