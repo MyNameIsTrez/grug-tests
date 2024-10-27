@@ -3,7 +3,6 @@ define() d {
     }
 }
 
+a: i32 = 0
 on_a() {
-    nothing()
-    nothing()
 }

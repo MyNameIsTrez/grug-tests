@@ -1731,6 +1731,40 @@ static void ok_comment_above_on_fn(void *on_fns, void *g, size_t resources_size,
 	assert(entity_types == NULL);
 }
 
+static void ok_comment_between_globals(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	(void)on_fns;
+
+	assert(((int32_t*)g)[0] == 420);
+	assert(((int32_t*)g)[1] == 1337);
+
+	free(g);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_comment_between_statements(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 2);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/comment_between_statements/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_comment_lone_block(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -4730,6 +4764,9 @@ static void error_tests(void) {
 	TEST_ERROR(local_variable_definition_cant_use_itself);
 	TEST_ERROR(local_variable_definition_missing_type);
 	TEST_ERROR(missing_define_fn);
+	TEST_ERROR(missing_empty_line_between_define_fn_and_global);
+	TEST_ERROR(missing_empty_line_between_global_and_on_fn);
+	TEST_ERROR(missing_empty_line_between_on_fn_and_helper_fn);
 	TEST_ERROR(no_space_between_comment_character_and_comment);
 	TEST_ERROR(on_fn_before_define);
 	TEST_ERROR(on_fn_duplicate);
@@ -4809,6 +4846,8 @@ static void ok_tests(void) {
 	TEST_OK(comment_above_globals, "d", 12);
 	TEST_OK(comment_above_helper_fn, "d", 0);
 	TEST_OK(comment_above_on_fn, "d", 0);
+	TEST_OK(comment_between_globals, "a", 8);
+	TEST_OK(comment_between_statements, "d", 0);
 	TEST_OK(comment_lone_block, "d", 0);
 	TEST_OK(comment_lone_block_at_end, "d", 0);
 	TEST_OK(comment_lone_global, "d", 0);

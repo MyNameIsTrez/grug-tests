@@ -4,6 +4,6 @@ define() d {
 }
 
 on_a() {
-    nothing()
-    nothing()
+}
+helper_a() {
 }
