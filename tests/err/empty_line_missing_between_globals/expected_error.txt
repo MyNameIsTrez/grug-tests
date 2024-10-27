@@ -1,1 +1,0 @@
-There is an unexpected comment after a global variable, on line 7

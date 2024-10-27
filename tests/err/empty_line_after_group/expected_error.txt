@@ -1,1 +1,1 @@
-Expected a statement or comment on line 10
+Unexpected empty line, on line 9

@@ -1732,9 +1732,14 @@ static void ok_comment_above_on_fn(void *on_fns, void *g, size_t resources_size,
 }
 
 static void ok_comment_lone_block(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 1);
 
 	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/comment_lone_block/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1745,9 +1750,12 @@ static void ok_comment_lone_block(void *on_fns, void *g, size_t resources_size, 
 }
 
 static void ok_comment_lone_block_at_end(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
+	((struct d_on_fns *)on_fns)->a(g);
 
 	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/comment_lone_block_at_end/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1758,9 +1766,12 @@ static void ok_comment_lone_block_at_end(void *on_fns, void *g, size_t resources
 }
 
 static void ok_comment_lone_global(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
+	((struct d_on_fns *)on_fns)->a(g);
 
 	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/comment_lone_global/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3451,6 +3462,40 @@ static void ok_no_on_fns(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entity_types == NULL);
 }
 
+static void ok_no_empty_line_between_globals(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	(void)on_fns;
+
+	assert(((int32_t*)g)[0] == 420);
+	assert(((int32_t*)g)[1] == 1337);
+
+	free(g);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_no_empty_line_between_statements(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 2);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/no_empty_line_between_statements/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
@@ -4642,10 +4687,10 @@ static void error_tests(void) {
 	TEST_ERROR(define_fn_uses_global_variable);
 	TEST_ERROR(define_fn_was_not_declared);
 	TEST_ERROR(empty_line_after_group);
+	TEST_ERROR(empty_line_at_start_of_file);
 	TEST_ERROR(empty_line_before_group);
 	TEST_ERROR(empty_line_fn_group);
-	TEST_ERROR(empty_line_missing_between_globals);
-	TEST_ERROR(empty_line_missing_between_statements);
+	TEST_ERROR(empty_line_twice_at_end_of_file);
 	TEST_ERROR(empty_line_while_group);
 	TEST_ERROR(entity_cant_be_empty_string);
 	TEST_ERROR(entity_has_invalid_entity_name_colon);
@@ -4855,6 +4900,8 @@ static void ok_tests(void) {
 	TEST_OK(ne_true, "d", 0);
 	TEST_OK(no_define_fields, "d", 0);
 	TEST_OK(no_on_fns, "a", 0);
+	TEST_OK(no_empty_line_between_globals, "a", 8);
+	TEST_OK(no_empty_line_between_statements, "d", 0);
 	TEST_OK(on_fn, "d", 0);
 	TEST_OK(on_fn_calling_game_fn_nothing, "d", 0);
 	TEST_OK(on_fn_calling_game_fn_nothing_twice, "d", 0);

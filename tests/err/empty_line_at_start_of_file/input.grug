@@ -1,8 +1,5 @@
+
 define() d {
     return {
     }
 }
-
-a: i32 = 0
-# foo
-b: i32 = 0
