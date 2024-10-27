@@ -5002,5 +5002,5 @@ int main(int argc, char *argv[]) {
 	runtime_error_tests();
 	ok_tests();
 
-	printf("\nAll tests passed!\n");
+	printf("\nAll tests passed! 🎉\n");
 }
