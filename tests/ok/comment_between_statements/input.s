@@ -13,7 +13,7 @@ on_fns:
 
 global strings
 strings:
-	db "tests/ok/no_empty_line_between_statements/input.grug", 0
+	db "tests/ok/comment_between_statements/input.grug", 0
 	db "on_a", 0
 
 align 8
@@ -78,7 +78,7 @@ on_a:
 	mov r11, rbx[grug_on_fn_path wrt ..got]
 	mov [r11], rax
 
-	lea rax, strings[rel 53]
+	lea rax, strings[rel 47]
 	mov r11, rbx[grug_on_fn_name wrt ..got]
 	mov [r11], rax
 

@@ -1815,19 +1815,6 @@ static void ok_comment_lone_global(void *on_fns, void *g, size_t resources_size,
 	assert(entity_types == NULL);
 }
 
-static void ok_comment_lone_global_at_end(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	free(g);
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
 static void ok_continue(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -4714,6 +4701,7 @@ static void error_tests(void) {
 	TEST_ERROR(cant_redefine_global);
 	TEST_ERROR(comment_at_the_end_of_another_statement);
 	TEST_ERROR(comment_at_the_end_of_define);
+	TEST_ERROR(comment_lone_global_at_end);
 	TEST_ERROR(define_fn_calls_fn);
 	TEST_ERROR(define_fn_different_name);
 	TEST_ERROR(define_fn_not_enough_arguments);
@@ -4725,6 +4713,7 @@ static void error_tests(void) {
 	TEST_ERROR(empty_line_before_group);
 	TEST_ERROR(empty_line_fn_group);
 	TEST_ERROR(empty_line_twice_at_end_of_file);
+	TEST_ERROR(empty_line_twice_between_local_statements);
 	TEST_ERROR(empty_line_while_group);
 	TEST_ERROR(entity_cant_be_empty_string);
 	TEST_ERROR(entity_has_invalid_entity_name_colon);
@@ -4851,7 +4840,6 @@ static void ok_tests(void) {
 	TEST_OK(comment_lone_block, "d", 0);
 	TEST_OK(comment_lone_block_at_end, "d", 0);
 	TEST_OK(comment_lone_global, "d", 0);
-	TEST_OK(comment_lone_global_at_end, "d", 0);
 	TEST_OK(continue, "d", 0);
 	TEST_OK(define, "h", 0);
 	TEST_OK(define_containing_addition, "b", 0);

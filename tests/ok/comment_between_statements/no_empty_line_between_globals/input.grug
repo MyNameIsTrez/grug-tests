@@ -1,8 +1,0 @@
-define() d {
-    return {
-    }
-}
-
-a: i32 = 420
-# foo
-b: i32 = 1337
