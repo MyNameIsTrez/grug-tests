@@ -564,6 +564,10 @@ static bool is_whitelisted_test(char *name) {
 			expected_globals_size\
 		);\
 		if (data.run) {\
+			runtime_error_reason = NULL;\
+			had_runtime_error = false;\
+			runtime_error_on_fn_name = NULL;\
+			runtime_error_on_fn_path = NULL;\
 			runtime_error_##test_name(data.on_fns, data.g, data.resources_size, data.resources, data.entities_size, data.entities, data.entity_types);\
 			runtime_error_epilogue(\
 				"tests/err_runtime/"#test_name"/input.grug",\
@@ -947,6 +951,8 @@ static void generate_and_compare_output_dll(
 	unlink(failed_file_path);
 }
 
+static char *runtime_error_reason = NULL;
+
 static void runtime_error_epilogue(
 	char *grug_path,
 	char *expected_error_path,
@@ -959,17 +965,15 @@ static void runtime_error_epilogue(
 	char *applied_path,
 	char *failed_file_path
 ) {
-	char *grug_error_msg = grug_get_runtime_error_reason();
-
-	size_t grug_error_msg_len = strlen(grug_error_msg);
+	size_t grug_error_msg_len = strlen(runtime_error_reason);
 
 	char *expected_error = get_expected_error(expected_error_path);
 	size_t expected_error_len = strlen(expected_error);
 
-	if (expected_error_len != grug_error_msg_len || memcmp(grug_error_msg, expected_error, expected_error_len) != 0) {
+	if (expected_error_len != grug_error_msg_len || memcmp(runtime_error_reason, expected_error, expected_error_len) != 0) {
 		printf("\nThe error message differs from the expected error message.\n");
 		printf("Output:\n");
-		printf("%s\n", grug_error_msg);
+		printf("%s\n", runtime_error_reason);
 
 		printf("Expected:\n");
 		printf("%s\n", expected_error);
@@ -1013,10 +1017,13 @@ static void regenerate_expected_dll(
 	static char redefine_sym[420];
 
 	size_t nasm_path_len = strlen(nasm_path);
+	size_t grug_path_len = strlen(grug_path);
 
-	strcpy(redefine_sym, nasm_path);
+	assert(nasm_path_len + 1 + grug_path_len + 1 <= sizeof(redefine_sym));
+
+	memcpy(redefine_sym, nasm_path, nasm_path_len);
 	redefine_sym[nasm_path_len] = '=';
-	strcpy(redefine_sym + nasm_path_len + 1, grug_path);
+	memcpy(redefine_sym + nasm_path_len + 1, grug_path, grug_path_len);
 
 	run((char *[]){"objcopy", expected_dll_path, "--redefine-sym", redefine_sym, NULL});
 
@@ -1134,35 +1141,41 @@ static struct test_data runtime_error_prologue(
 	return get_expected_test_data(grug_path, nasm_path, results_path, expected_dll_path, nasm_o_path, expected_xxd_path, expected_readelf_path, expected_objdump_path, failed_file_path, expected_define_type, expected_globals_size);
 }
 
-static bool handler_called;
-static void handler(int sig) {
+static bool signal_handler_called = false;
+static void signal_handler(int sig) {
 	(void)sig;
-	handler_called = true;
+	signal_handler_called = true;
+}
+
+static bool had_runtime_error = false;
+static char *runtime_error_on_fn_name = NULL;
+static char *runtime_error_on_fn_path = NULL;
+static void runtime_error_handler(char *reason, enum grug_runtime_error_type type, char *on_fn_name, char *on_fn_path) {
+	(void)type;
+
+	had_runtime_error = true;
+
+	runtime_error_reason = reason;
+
+	runtime_error_on_fn_name = on_fn_name;
+	runtime_error_on_fn_path = on_fn_path;
 }
 
 static void runtime_error_time_limit_exceeded(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	bool had_runtime_error = false;
+	signal(SIGALRM, signal_handler);
 
-	if (grug_mod_had_runtime_error()) {
-		had_runtime_error = true;
-
-		handler_called = false;
-		raise(SIGALRM);
-		assert(handler_called);
-	}
-
-	signal(SIGALRM, handler);
-
-	if (!had_runtime_error) {
-		((struct d_on_fns *)on_fns)->a(g);
-	}
-
-	free(g);
+	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/time_limit_exceeded/input.grug"));
+	signal_handler_called = false;
+	raise(SIGALRM);
+	assert(signal_handler_called);
+
+	free(g);
+
+	assert(streq(runtime_error_on_fn_name, "on_a"));
+	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/time_limit_exceeded/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1173,28 +1186,20 @@ static void runtime_error_time_limit_exceeded(void *on_fns, void *g, size_t reso
 }
 
 static void runtime_error_division_by_0(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	bool had_runtime_error = false;
+	signal(SIGFPE, signal_handler);
 
-	if (grug_mod_had_runtime_error()) {
-		had_runtime_error = true;
-
-		handler_called = false;
-		raise(SIGFPE);
-		assert(handler_called);
-	}
-
-	signal(SIGFPE, handler);
-
-	if (!had_runtime_error) {
-		((struct d_on_fns *)on_fns)->a(g);
-	}
-
-	free(g);
+	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/division_by_0/input.grug"));
+	signal_handler_called = false;
+	raise(SIGFPE);
+	assert(signal_handler_called);
+
+	free(g);
+
+	assert(streq(runtime_error_on_fn_name, "on_a"));
+	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/division_by_0/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1205,28 +1210,20 @@ static void runtime_error_division_by_0(void *on_fns, void *g, size_t resources_
 }
 
 static void runtime_error_stack_overflow(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	bool had_runtime_error = false;
+	signal(SIGSEGV, signal_handler);
 
-	if (grug_mod_had_runtime_error()) {
-		had_runtime_error = true;
-
-		handler_called = false;
-		raise(SIGSEGV);
-		assert(handler_called);
-	}
-
-	signal(SIGSEGV, handler);
-
-	if (!had_runtime_error) {
-		((struct d_on_fns *)on_fns)->a(g);
-	}
-
-	free(g);
+	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/stack_overflow/input.grug"));
+	signal_handler_called = false;
+	raise(SIGSEGV);
+	assert(signal_handler_called);
+
+	free(g);
+
+	assert(streq(runtime_error_on_fn_name, "on_a"));
+	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/stack_overflow/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4805,6 +4802,8 @@ static void error_tests(void) {
 }
 
 static void runtime_error_tests(void) {
+	grug_set_runtime_error_handler(runtime_error_handler);
+
 	TEST_RUNTIME_ERROR(division_by_0, "d", 0);
 	TEST_RUNTIME_ERROR(stack_overflow, "d", 0);
 	TEST_RUNTIME_ERROR(time_limit_exceeded, "d", 0);
