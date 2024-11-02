@@ -1,1 +1,1 @@
-An on_ function divided an i32 by 0
+Division of an i32 by 0

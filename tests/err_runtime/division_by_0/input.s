@@ -25,8 +25,14 @@ entities_size: dq 0
 
 section .text
 
-extern grug_on_fn_name
-extern grug_on_fn_path
+extern grug_runtime_error_jmp_buffer
+extern __sigsetjmp
+
+extern grug_runtime_error_handler
+
+extern grug_runtime_error_reason
+extern grug_runtime_error_type
+
 extern grug_block_mask
 
 extern game_fn_define_d
@@ -74,13 +80,28 @@ on_a:
 	lea rbx, [rel $$]
 	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
 
-	lea rax, strings[rel 0]
-	mov r11, rbx[grug_on_fn_path wrt ..got]
-	mov [r11], rax
+	mov esi, 1
+	mov rdi, rbx[grug_runtime_error_jmp_buffer wrt ..got]
+	call __sigsetjmp wrt ..plt
+	test eax, eax
+	je strict $+0x36
 
-	lea rax, strings[rel 43]
-	mov r11, rbx[grug_on_fn_name wrt ..got]
-	mov [r11], rax
+	lea rcx, strings[rel 0]
+
+	lea rdx, strings[rel 43]
+
+	mov esi, rbx[grug_runtime_error_type wrt ..got]
+
+	mov rdi, rbx[grug_runtime_error_reason wrt ..got]
+	mov rdi, [rdi]
+
+	mov rax, [rel grug_runtime_error_handler wrt ..got]
+	call [rax]
+
+	mov rbx, rbp[-0x8]
+	mov rsp, rbp
+	pop rbp
+	ret
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
