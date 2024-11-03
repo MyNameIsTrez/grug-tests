@@ -1152,11 +1152,11 @@ static bool had_runtime_error = false;
 static char *runtime_error_on_fn_name = NULL;
 static char *runtime_error_on_fn_path = NULL;
 static void runtime_error_handler(char *reason, enum grug_runtime_error_type type, char *on_fn_name, char *on_fn_path) {
-	(void)type;
-
 	had_runtime_error = true;
 
 	runtime_error_reason = reason;
+
+	assert(type == GRUG_ON_FN_DIVISION_BY_ZERO || type == GRUG_ON_FN_STACK_OVERFLOW || type == GRUG_ON_FN_TIME_LIMIT_EXCEEDED);
 
 	runtime_error_on_fn_name = on_fn_name;
 	runtime_error_on_fn_path = on_fn_path;

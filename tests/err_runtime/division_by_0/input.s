@@ -36,7 +36,6 @@ extern grug_enable_on_fn_runtime_error_handling
 extern sigprocmask
 extern game_fn_initialize
 extern grug_disable_on_fn_runtime_error_handling
-extern _GLOBAL_OFFSET_TABLE_
 
 global define
 define:
@@ -52,16 +51,17 @@ init_globals:
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call __sigsetjmp wrt ..plt
 	test eax, eax
-	je strict $+0x30
+	je strict $+0x33
+
+	call grug_get_runtime_error_reason wrt ..plt
+	mov rdi, rax
 
 	lea rcx, strings[rel 0]
 
 	lea rdx, strings[rel 43]
 
-	mov esi, [rel grug_runtime_error_type wrt ..got]
-
-	call grug_get_runtime_error_reason wrt ..plt
-	mov rdi, rax
+	mov rsi, [rel grug_runtime_error_type wrt ..got]
+	mov esi, [rsi]
 
 	mov rax, [rel grug_runtime_error_handler wrt ..got]
 	call [rax]
