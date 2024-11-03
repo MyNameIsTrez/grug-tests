@@ -25,13 +25,12 @@ entities_size: dq 0
 
 section .text
 
-extern grug_in_on_fn
 extern grug_runtime_error_jmp_buffer
 extern __sigsetjmp
 
 extern grug_runtime_error_handler
 
-extern grug_runtime_error_reason
+extern grug_get_runtime_error_reason
 extern grug_runtime_error_type
 
 extern grug_block_mask
@@ -81,20 +80,11 @@ on_a:
 	lea rbx, [rel $$]
 	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
 
-	mov rax, rbx[grug_in_on_fn wrt ..got]
-	mov rax, [rax]
-	test eax, eax
-	jne strict $+0x63
-
-	; TODO: Try to turn this into a local variable, stored in a register grug_in_on_fn?
-	mov rax, rbx[grug_in_on_fn wrt ..got]
-	mov [rax], byte 1
-
 	mov esi, 1
 	mov rdi, rbx[grug_runtime_error_jmp_buffer wrt ..got]
 	call __sigsetjmp wrt ..plt
 	test eax, eax
-	je strict $+0x40
+	je strict $+0x34
 
 	lea rcx, strings[rel 0]
 
@@ -102,14 +92,12 @@ on_a:
 
 	mov esi, rbx[grug_runtime_error_type wrt ..got]
 
-	mov rdi, rbx[grug_runtime_error_reason wrt ..got]
-	mov rdi, [rdi]
+	call grug_get_runtime_error_reason wrt ..plt
+	mov rdi, rax
 
 	mov rax, [rel grug_runtime_error_handler wrt ..got]
 	call [rax]
 
-	mov rax, rbx[grug_in_on_fn wrt ..got]
-	mov [rax], byte 0
 	mov rbx, rbp[-0x8]
 	mov rsp, rbp
 	pop rbp
@@ -132,8 +120,6 @@ on_a:
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
-	mov rax, rbx[grug_in_on_fn wrt ..got]
-	mov [rax], byte 0
 	mov rbx, rbp[-0x8]
 	mov rsp, rbp
 	pop rbp

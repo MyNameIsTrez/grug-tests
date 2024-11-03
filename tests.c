@@ -565,6 +565,7 @@ static bool is_whitelisted_test(char *name) {
 		);\
 		if (data.run) {\
 			runtime_error_reason = NULL;\
+			signal_handler_called = false;\
 			had_runtime_error = false;\
 			runtime_error_on_fn_name = NULL;\
 			runtime_error_on_fn_path = NULL;\
@@ -1168,7 +1169,6 @@ static void runtime_error_time_limit_exceeded(void *on_fns, void *g, size_t reso
 
 	assert(had_runtime_error);
 
-	signal_handler_called = false;
 	raise(SIGALRM);
 	assert(signal_handler_called);
 
@@ -1192,7 +1192,6 @@ static void runtime_error_division_by_0(void *on_fns, void *g, size_t resources_
 
 	assert(had_runtime_error);
 
-	signal_handler_called = false;
 	raise(SIGFPE);
 	assert(signal_handler_called);
 
@@ -1216,7 +1215,6 @@ static void runtime_error_stack_overflow(void *on_fns, void *g, size_t resources
 
 	assert(had_runtime_error);
 
-	signal_handler_called = false;
 	raise(SIGSEGV);
 	assert(signal_handler_called);
 
