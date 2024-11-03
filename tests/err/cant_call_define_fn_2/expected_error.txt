@@ -1,1 +1,1 @@
-The game function 'define_d' does not exist
+The function 'define_d' does not exist

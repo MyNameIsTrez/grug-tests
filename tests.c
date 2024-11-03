@@ -4324,6 +4324,8 @@ static void error_tests(void) {
 	TEST_ERROR(missing_empty_line_between_on_fn_and_helper_fn);
 	TEST_ERROR(no_space_between_comment_character_and_comment);
 	TEST_ERROR(on_fn_before_define);
+	TEST_ERROR(on_fn_cant_be_called_by_helper_fn);
+	TEST_ERROR(on_fn_cant_be_called_by_on_fn);
 	TEST_ERROR(on_fn_duplicate);
 	TEST_ERROR(on_fn_was_not_declared_in_entity);
 	TEST_ERROR(on_fn_wrong_order);

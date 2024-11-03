@@ -1,1 +1,1 @@
-The game function 'define' does not exist
+Mods aren't allowed to call their own define function
