@@ -4304,6 +4304,7 @@ static void error_tests(void) {
 	TEST_ERROR(global_variable_definition_requires_value_string);
 	TEST_ERROR(global_variable_uses_global_variable);
 	TEST_ERROR(helper_fn_does_not_exist);
+	TEST_ERROR(helper_fn_is_not_called);
 	TEST_ERROR(helper_function_call_gets_wrong_arg_type);
 	TEST_ERROR(helper_function_call_less_args_expected);
 	TEST_ERROR(helper_function_call_more_args_expected);
