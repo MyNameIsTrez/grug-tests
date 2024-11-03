@@ -25,17 +25,13 @@ entities_size: dq 0
 
 section .text
 
-extern grug_runtime_error_jmp_buffer
-extern __sigsetjmp
-
 extern grug_runtime_error_handler
-
-extern grug_get_runtime_error_reason
-extern grug_runtime_error_type
-
+extern grug_runtime_error_jmp_buffer
 extern grug_block_mask
-
+extern grug_runtime_error_type
 extern game_fn_define_d
+extern __sigsetjmp
+extern grug_get_runtime_error_reason
 extern grug_enable_on_fn_runtime_error_handling
 extern sigprocmask
 extern game_fn_initialize
@@ -50,6 +46,30 @@ define:
 global init_globals
 init_globals:
 	ret
+
+%macro error_handling 0
+	mov esi, 1
+	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
+	call __sigsetjmp wrt ..plt
+	test eax, eax
+	je strict $+0x30
+
+	lea rcx, strings[rel 0]
+
+	lea rdx, strings[rel 43]
+
+	mov esi, [rel grug_runtime_error_type wrt ..got]
+
+	call grug_get_runtime_error_reason wrt ..plt
+	mov rdi, rax
+
+	mov rax, [rel grug_runtime_error_handler wrt ..got]
+	call [rax]
+
+	mov rsp, rbp
+	pop rbp
+	ret
+%endmacro
 
 %macro block 0
 	xor edx, edx
@@ -76,27 +96,7 @@ on_a:
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rdi
 
-	mov esi, 1
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call __sigsetjmp wrt ..plt
-	test eax, eax
-	je strict $+0x30
-
-	lea rcx, strings[rel 0]
-
-	lea rdx, strings[rel 43]
-
-	mov esi, [rel grug_runtime_error_type wrt ..got]
-
-	call grug_get_runtime_error_reason wrt ..plt
-	mov rdi, rax
-
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
-
-	mov rsp, rbp
-	pop rbp
-	ret
+	error_handling
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
