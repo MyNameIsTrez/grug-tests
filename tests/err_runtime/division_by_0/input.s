@@ -53,7 +53,7 @@ init_globals:
 
 %macro block 0
 	xor edx, edx
-	mov rsi, rbx[grug_block_mask wrt ..got]
+	mov rsi, [rel grug_block_mask wrt ..got]
 	xor edi, edi
 	call sigprocmask wrt ..plt
 %endmacro
@@ -61,7 +61,7 @@ init_globals:
 %macro unblock 0
 	push rax
 	xor edx, edx
-	mov rsi, rbx[grug_block_mask wrt ..got]
+	mov rsi, [rel grug_block_mask wrt ..got]
 	mov edi, 1
 	sub rsp, byte 0x8
 	call sigprocmask wrt ..plt
@@ -74,23 +74,19 @@ on_a:
 	push rbp
 	mov rbp, rsp
 	sub rsp, byte 0x10
-	mov rbp[-0x8], rbx
-	mov rbp[-0x10], rdi
-
-	lea rbx, [rel $$]
-	add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
+	mov rbp[-0x8], rdi
 
 	mov esi, 1
-	mov rdi, rbx[grug_runtime_error_jmp_buffer wrt ..got]
+	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call __sigsetjmp wrt ..plt
 	test eax, eax
-	je strict $+0x34
+	je strict $+0x30
 
 	lea rcx, strings[rel 0]
 
 	lea rdx, strings[rel 43]
 
-	mov esi, rbx[grug_runtime_error_type wrt ..got]
+	mov esi, [rel grug_runtime_error_type wrt ..got]
 
 	call grug_get_runtime_error_reason wrt ..plt
 	mov rdi, rax
@@ -98,7 +94,6 @@ on_a:
 	mov rax, [rel grug_runtime_error_handler wrt ..got]
 	call [rax]
 
-	mov rbx, rbp[-0x8]
 	mov rsp, rbp
 	pop rbp
 	ret
@@ -120,7 +115,6 @@ on_a:
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
-	mov rbx, rbp[-0x8]
 	mov rsp, rbp
 	pop rbp
 	ret

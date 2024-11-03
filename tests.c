@@ -734,7 +734,7 @@ static void output_dll_info(char *dll_path, char *xxd_path, char *readelf_path, 
 
 	wait_on_child("xxd");
 
-	run_and_write((char *[]){"readelf", "-a", dll_path, NULL}, readelf_path);
+	run_and_write((char *[]){"readelf", "--wide", "-a", dll_path, NULL}, readelf_path);
 
 	run_and_write((char *[]){"objdump", "-D", dll_path, "-Mintel", NULL}, objdump_path);
 }
