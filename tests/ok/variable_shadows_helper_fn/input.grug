@@ -6,6 +6,7 @@ define() d {
 on_a() {
     helper_foo: i32 = 42
     initialize(helper_foo)
+    helper_foo()
 }
 
 helper_foo() {

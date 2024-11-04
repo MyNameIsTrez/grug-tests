@@ -21,10 +21,6 @@ entities_size: dq 0
 
 section .text
 
-extern grug_on_fn_name
-extern grug_on_fn_path
-extern grug_block_mask
-
 extern game_fn_define_q
 
 global define
