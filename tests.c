@@ -761,7 +761,7 @@ static bool newer(char *path1, char *path2) {
 }
 
 static char *get_expected_error(char *expected_error_path) {
-	static char expected_error[420];
+	static char expected_error[420420];
 	size_t expected_error_len = read_file(expected_error_path, (uint8_t *)expected_error);
 
 	if (expected_error[expected_error_len - 1] == '\n') {
@@ -1015,7 +1015,8 @@ static void regenerate_expected_dll(
 #error Unsupported or unrecognized architecture
 #endif
 
-	static char redefine_sym[420];
+	// redefine_sym = "<nasm_path>=<grug_path>"
+	static char redefine_sym[420420];
 
 	size_t nasm_path_len = strlen(nasm_path);
 	size_t grug_path_len = strlen(grug_path);
@@ -1023,8 +1024,11 @@ static void regenerate_expected_dll(
 	assert(nasm_path_len + 1 + grug_path_len + 1 <= sizeof(redefine_sym));
 
 	memcpy(redefine_sym, nasm_path, nasm_path_len);
+
 	redefine_sym[nasm_path_len] = '=';
-	memcpy(redefine_sym + nasm_path_len + 1, grug_path, grug_path_len);
+
+	// Null-terminates redefine_sym too
+	memcpy(redefine_sym + nasm_path_len + 1, grug_path, grug_path_len + 1);
 
 	run((char *[]){"objcopy", expected_dll_path, "--redefine-sym", redefine_sym, NULL});
 
