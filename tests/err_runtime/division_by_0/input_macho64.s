@@ -27,6 +27,7 @@ section .text
 
 extern grug_runtime_error_handler
 extern grug_runtime_error_jmp_buffer
+extern grug_on_fns_in_safe_mode
 extern grug_block_mask
 extern grug_runtime_error_type
 extern game_fn_define_d

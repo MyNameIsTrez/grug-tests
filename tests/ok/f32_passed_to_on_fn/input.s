@@ -27,6 +27,7 @@ section .text
 
 extern grug_runtime_error_handler
 extern grug_runtime_error_jmp_buffer
+extern grug_on_fns_in_safe_mode
 extern grug_block_mask
 extern grug_runtime_error_type
 extern game_fn_define_r
@@ -96,6 +97,11 @@ on_a:
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rdi
 	movss rbp[-0xc], xmm0
+
+	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
+	mov al, [rax]
+	test al, al
+	je strict $+0x0
 
 	error_handling
 

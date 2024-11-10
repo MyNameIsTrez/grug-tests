@@ -27,6 +27,7 @@ section .text
 
 extern grug_runtime_error_handler
 extern grug_runtime_error_jmp_buffer
+extern grug_on_fns_in_safe_mode
 extern grug_block_mask
 extern grug_runtime_error_type
 extern game_fn_define_d
@@ -98,29 +99,22 @@ on_a:
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rdi
 
+	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
+	mov al, [rax]
+	test al, al
+	je strict $+0xc7
+
 	error_handling
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	block
 	call game_fn_is_friday wrt ..plt
-
-	push rax
-	xor edx, edx
-	mov rsi, [rel grug_block_mask wrt ..got]
-	mov edi, 1
-	sub rsp, byte 0x8
-	call sigprocmask wrt ..plt
-	add rsp, byte 0x8
-	pop rax
+	unblock
 
 	mov rbp[-0x9], eax
 
-	xor edx, edx
-	mov rsi, [rel grug_block_mask wrt ..got]
-	xor edi, edi
-	call sigprocmask wrt ..plt
-
+	block
 	mov eax, rbp[-0x9]
 	push rax
 
@@ -129,6 +123,20 @@ on_a:
 	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
+
+	mov rsp, rbp
+	pop rbp
+	ret
+
+	call game_fn_is_friday wrt ..plt
+
+	mov rbp[-0x9], eax
+
+	mov eax, rbp[-0x9]
+	push rax
+
+	pop rdi
+	call game_fn_set_is_happy wrt ..plt
 
 	mov rsp, rbp
 	pop rbp
