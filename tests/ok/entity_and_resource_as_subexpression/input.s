@@ -176,3 +176,45 @@ on_a:
 	mov rsp, rbp
 	pop rbp
 	ret
+
+	lea rax, strings[rel 63]
+	push rax
+	pop rdi
+	call game_fn_has_resource wrt ..plt
+
+	; AND 1, part 1
+	test eax, eax
+	je strict $+0x4b
+
+	lea rax, strings[rel 117]
+	push rax
+	pop rdi
+	call game_fn_has_string wrt ..plt
+
+	; AND 1, part 2
+	test eax, eax
+	mov eax, 0
+	setne al
+
+	; AND 2, part 1
+	test eax, eax
+	je strict $+0x4b
+
+	lea rax, strings[rel 121]
+	push rax
+	pop rdi
+	call game_fn_has_entity wrt ..plt
+
+	; AND 2, part 2
+	test eax, eax
+	mov eax, 0
+	setne al
+
+	push rax
+
+	pop rdi
+	call game_fn_initialize_bool wrt ..plt
+
+	mov rsp, rbp
+	pop rbp
+	ret

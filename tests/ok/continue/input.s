@@ -100,7 +100,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x0
+	je strict $+0xfd
 
 	error_handling
 
@@ -143,6 +143,42 @@ on_a:
 	jmp strict $-0x98 ; jump to start of loop
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
+
+	mov rsp, rbp
+	pop rbp
+	ret
+
+	xor eax, eax
+	mov rbp[-0xc], eax
+
+	mov eax, 2
+	push rax
+
+	mov eax, rbp[-0xc]
+	pop r11
+	cmp rax, r11
+
+	mov eax, 0x0
+	setl al
+
+	test eax, eax
+	je strict $+0x2b
+
+	call game_fn_nothing wrt ..plt
+
+	; i++
+	mov eax, 1
+	push rax
+	mov eax, rbp[-0xc]
+	pop r11
+	add rax, r11
+	mov rbp[-0xc], eax
+
+	jmp strict $-0x34 ; continue
+
+	call game_fn_nothing wrt ..plt
+
+	jmp strict $-0x3e ; jump to start of loop
 
 	mov rsp, rbp
 	pop rbp
