@@ -119,7 +119,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x0
+	je strict $+0x164
 
 	error_handling
 
@@ -184,7 +184,7 @@ on_a:
 
 	; AND 1, part 1
 	test eax, eax
-	je strict $+0x4b
+	je strict $+0x1e
 
 	lea rax, strings[rel 117]
 	push rax
@@ -198,7 +198,7 @@ on_a:
 
 	; AND 2, part 1
 	test eax, eax
-	je strict $+0x4b
+	je strict $+0x1e
 
 	lea rax, strings[rel 121]
 	push rax
