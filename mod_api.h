@@ -32,47 +32,47 @@ void game_fn_define_a2(char *sprite_path, char *projectile);
 void game_fn_define_b2(char *sprite_path, char *projectile);
 
 struct d_on_fns {
-    void (*a)(void *globals);
+    void (*a)(void *globals, int32_t me);
 };
 struct e_on_fns {
-    void (*a)(void *globals);
-    void (*b)(void *globals);
+    void (*a)(void *globals, int32_t me);
+    void (*b)(void *globals, int32_t me);
 };
 struct f_on_fns {
-    void (*a)(void *globals, int32_t x);
+    void (*a)(void *globals, int32_t me, int32_t x);
 };
 struct g_on_fns {
-    void (*a)(void *globals, int32_t x, int32_t y);
+    void (*a)(void *globals, int32_t me, int32_t x, int32_t y);
 };
 struct h_on_fns {
-    void (*a)(void *globals, int32_t x);
+    void (*a)(void *globals, int32_t me, int32_t x);
 };
 struct i_on_fns {
-    void (*a)(void *globals, int32_t x);
-    void (*b)(void *globals, int32_t x, int32_t y);
+    void (*a)(void *globals, int32_t me, int32_t x);
+    void (*b)(void *globals, int32_t me, int32_t x, int32_t y);
 };
 struct j_on_fns {
-    void (*a)(void *globals);
-    void (*b)(void *globals);
-    void (*c)(void *globals);
+    void (*a)(void *globals, int32_t me);
+    void (*b)(void *globals, int32_t me);
+    void (*c)(void *globals, int32_t me);
 };
 struct p_on_fns {
-    void (*a)(void *globals);
+    void (*a)(void *globals, int32_t me);
 };
 struct r_on_fns {
-    void (*a)(void *globals, float f);
+    void (*a)(void *globals, int32_t me, float f);
 };
 struct s_on_fns {
-    void (*a)(void *globals, int32_t i, float f);
+    void (*a)(void *globals, int32_t me, int32_t i, float f);
 };
 struct w_on_fns {
-    void (*a)(void *globals, int32_t x);
+    void (*a)(void *globals, int32_t me, int32_t x);
 };
 struct z_on_fns {
-    void (*a)(void *globals, int32_t x);
+    void (*a)(void *globals, int32_t me, int32_t x);
 };
 struct a2_on_fns {
-    void (*a)(void *globals, int32_t x);
+    void (*a)(void *globals, int32_t me, int32_t x);
 };
 
 void game_fn_nothing(void);

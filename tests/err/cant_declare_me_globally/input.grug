@@ -1,0 +1,6 @@
+define() a {
+    return {
+    }
+}
+
+me: i32 = 0
