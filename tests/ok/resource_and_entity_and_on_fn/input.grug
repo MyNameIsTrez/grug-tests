@@ -5,5 +5,5 @@ define() a2 {
     }
 }
 
-on_a(self: i32) {
+on_a(x: i32) {
 }

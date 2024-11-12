@@ -51,7 +51,7 @@
 					"description": "foo",
 					"arguments": [
 						{
-							"name": "self",
+							"name": "x",
 							"type": "i32"
 						}
 					]
@@ -65,11 +65,11 @@
 					"description": "foo",
 					"arguments": [
 						{
-							"name": "self",
+							"name": "x",
 							"type": "i32"
 						},
 						{
-							"name": "x",
+							"name": "y",
 							"type": "i32"
 						}
 					]
@@ -89,7 +89,7 @@
 					"description": "foo",
 					"arguments": [
 						{
-							"name": "self",
+							"name": "x",
 							"type": "i32"
 						}
 					]
@@ -113,7 +113,7 @@
 					"description": "foo",
 					"arguments": [
 						{
-							"name": "self",
+							"name": "x",
 							"type": "i32"
 						}
 					]
@@ -122,11 +122,11 @@
 					"description": "foo",
 					"arguments": [
 						{
-							"name": "self",
+							"name": "x",
 							"type": "i32"
 						},
 						{
-							"name": "x",
+							"name": "y",
 							"type": "i32"
 						}
 					]
@@ -399,7 +399,7 @@
 					"description": "foo",
 					"arguments": [
 						{
-							"name": "self",
+							"name": "x",
 							"type": "i32"
 						}
 					]
@@ -445,7 +445,7 @@
 					"description": "foo",
 					"arguments": [
 						{
-							"name": "self",
+							"name": "x",
 							"type": "i32"
 						}
 					]
@@ -471,7 +471,7 @@
 					"description": "foo",
 					"arguments": [
 						{
-							"name": "self",
+							"name": "x",
 							"type": "i32"
 						}
 					]

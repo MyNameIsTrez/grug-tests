@@ -3,5 +3,5 @@ define() f {
     }
 }
 
-on_a(self: string) {
+on_a(x: string) {
 }

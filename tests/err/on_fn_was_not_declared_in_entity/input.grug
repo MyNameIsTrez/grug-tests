@@ -4,5 +4,5 @@ define() b {
     }
 }
 
-on_z(self: i32) {
+on_z(x: i32) {
 }

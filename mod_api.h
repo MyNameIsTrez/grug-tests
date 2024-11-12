@@ -39,17 +39,17 @@ struct e_on_fns {
     void (*b)(void *globals);
 };
 struct f_on_fns {
-    void (*a)(void *globals, int32_t self);
+    void (*a)(void *globals, int32_t x);
 };
 struct g_on_fns {
-    void (*a)(void *globals, int32_t self, int32_t x);
+    void (*a)(void *globals, int32_t x, int32_t y);
 };
 struct h_on_fns {
-    void (*a)(void *globals, int32_t self);
+    void (*a)(void *globals, int32_t x);
 };
 struct i_on_fns {
-    void (*a)(void *globals, int32_t self);
-    void (*b)(void *globals, int32_t self, int32_t x);
+    void (*a)(void *globals, int32_t x);
+    void (*b)(void *globals, int32_t x, int32_t y);
 };
 struct j_on_fns {
     void (*a)(void *globals);
@@ -66,13 +66,13 @@ struct s_on_fns {
     void (*a)(void *globals, int32_t i, float f);
 };
 struct w_on_fns {
-    void (*a)(void *globals, int32_t self);
+    void (*a)(void *globals, int32_t x);
 };
 struct z_on_fns {
-    void (*a)(void *globals, int32_t self);
+    void (*a)(void *globals, int32_t x);
 };
 struct a2_on_fns {
-    void (*a)(void *globals, int32_t self);
+    void (*a)(void *globals, int32_t x);
 };
 
 void game_fn_nothing(void);

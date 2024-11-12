@@ -3,5 +3,5 @@ define() f {
     }
 }
 
-on_a(self: i32, foo: i32) {
+on_a(x: i32, y: i32) {
 }

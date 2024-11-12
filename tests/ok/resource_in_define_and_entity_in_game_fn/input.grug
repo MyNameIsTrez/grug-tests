@@ -4,6 +4,6 @@ define() w {
     }
 }
 
-on_a(self: i32) {
+on_a(x: i32) {
     spawn("bar")
 }

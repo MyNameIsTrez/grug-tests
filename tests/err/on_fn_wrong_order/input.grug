@@ -5,8 +5,8 @@ define() i {
     }
 }
 
-on_b(self: i32, x: i32) {
+on_b(x: i32, y: i32) {
 }
 
-on_a(self: i32) {
+on_a(x: i32) {
 }

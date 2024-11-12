@@ -7,5 +7,5 @@ on_a() {
     helper_foo("foo")
 }
 
-helper_foo(self: i32) {
+helper_foo(x: i32) {
 }
