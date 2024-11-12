@@ -101,7 +101,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x0
+	je strict $+0x6f
 
 	error_handling
 
@@ -118,6 +118,20 @@ on_a:
 	call helper_shout
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
+
+	mov rsp, rbp
+	pop rbp
+	ret
+
+	mov rax, rbp[-0x8]
+	push rax
+
+	lea rax, strings[rel 59]
+	push rax
+
+	pop rsi
+	pop rdi
+	call helper_shout
 
 	mov rsp, rbp
 	pop rbp

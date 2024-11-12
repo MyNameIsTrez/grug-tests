@@ -101,7 +101,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x0
+	je strict $+0xc6
 
 	error_handling
 
@@ -123,6 +123,21 @@ on_a:
 	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
+
+	mov rsp, rbp
+	pop rbp
+	ret
+
+	call game_fn_nothing_aligned wrt ..plt
+
+	; add rsp, 0x8 ; Uncomment to see the unaligned access crash
+
+	; This shows that no matter how many arguments there are,
+	; we just need to make sure to have decremented rsp by multiples of 16
+	mov eax, 42
+	push rax
+	pop rdi
+	call game_fn_initialize_aligned wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

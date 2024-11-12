@@ -101,7 +101,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x0
+	je strict $+0xd4
 
 	error_handling
 
@@ -128,6 +128,26 @@ on_a:
 	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
+
+	mov rsp, rbp
+	pop rbp
+	ret
+
+	; magic_aligned() + 42
+	mov eax, 42
+	push rax
+
+	sub rsp, byte 0x8 ; Comment this out along with the `add rsp, 0x8` below the call to see the unaligned access crash
+	call game_fn_magic_aligned wrt ..plt
+	add rsp, byte 0x8
+
+	pop r11
+	add rax, r11
+	push rax
+
+	; initialize_aligned(magic_aligned() + 42)
+	pop rdi
+	call game_fn_initialize_aligned wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

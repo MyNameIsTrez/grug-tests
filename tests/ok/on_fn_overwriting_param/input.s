@@ -103,7 +103,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x0
+	je strict $+0xe1
 
 	error_handling
 
@@ -136,6 +136,32 @@ on_a:
 	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
+
+	mov rsp, rbp
+	pop rbp
+	ret
+
+	; i = 20
+	mov eax, 20
+	mov rbp[-0xc], eax
+
+	; initialize(i)
+	mov eax, rbp[-0xc]
+	push rax
+	pop rdi
+	call game_fn_initialize wrt ..plt
+
+	; f = 30.0
+	mov eax, __?float32?__(30.0)
+	mov rbp[-0x10], eax
+
+	; sin(f)
+	mov eax, rbp[-0x10]
+	push rax
+	pop rax
+	movd xmm0, eax
+	call game_fn_sin wrt ..plt
+	movd eax, xmm0
 
 	mov rsp, rbp
 	pop rbp
