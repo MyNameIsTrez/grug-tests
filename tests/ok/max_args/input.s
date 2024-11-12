@@ -101,7 +101,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x0
+	je strict $+0x110
 
 	error_handling
 
@@ -196,6 +196,96 @@ on_a:
 	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
+
+	mov rsp, rbp
+	pop rbp
+	ret
+
+	; Pushing arguments
+
+	mov eax, __?float32?__(1.0)
+	push rax
+
+	mov eax, 21
+	push rax
+
+	mov eax, 1
+	push rax
+
+	mov eax, __?float32?__(2.0)
+	push rax
+
+	mov eax, __?float32?__(3.0)
+	push rax
+
+	mov eax, __?float32?__(4.0)
+	push rax
+
+	xor eax, eax
+	push rax
+
+	mov eax, 1337
+	push rax
+
+	mov eax, __?float32?__(5.0)
+	push rax
+
+	mov eax, __?float32?__(6.0)
+	push rax
+
+	mov eax, __?float32?__(7.0)
+	push rax
+
+	mov eax, __?float32?__(8.0)
+	push rax
+
+	mov eax, 8192
+	push rax
+
+	lea rax, strings[rel 34]
+	push rax
+
+	; Popping arguments
+
+	pop r9 ; "foo"
+
+	pop r8 ; 8192
+
+	pop rax ; 8.0
+	movd xmm7, eax
+
+	pop rax ; 7.0
+	movd xmm6, eax
+
+	pop rax ; 6.0
+	movd xmm5, eax
+
+	pop rax ; 5.0
+	movd xmm4, eax
+
+	pop rcx ; 1337
+
+	pop rdx ; false
+
+	pop rax ; 4.0
+	movd xmm3, eax
+
+	pop rax ; 3.0
+	movd xmm2, eax
+
+	pop rax ; 2.0
+	movd xmm1, eax
+
+	pop rsi ; true
+
+	pop rdi ; 21
+
+	pop rax ; 1.0
+	movd xmm0, eax
+
+	; Calling function
+
+	call game_fn_mega wrt ..plt
 
 	mov rsp, rbp
 	pop rbp
