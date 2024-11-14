@@ -5,7 +5,7 @@ define_type: db "u", 0
 
 align 8
 global globals_size
-globals_size: dq 0
+globals_size: dq 8
 
 global strings
 strings:
@@ -35,4 +35,5 @@ define:
 
 global init_globals
 init_globals:
+	mov rdi[0x0], rsi
 	ret

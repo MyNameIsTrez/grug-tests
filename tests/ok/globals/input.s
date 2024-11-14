@@ -5,7 +5,7 @@ define_type: db "h", 0
 
 align 8
 global globals_size
-globals_size: dq 8
+globals_size: dq 16
 
 global on_fns
 on_fns:
@@ -34,8 +34,9 @@ define:
 
 global init_globals
 init_globals:
+	mov rdi[0x0], rsi
 	mov eax, 420
-	mov rdi[byte 0x0], eax
+	mov rdi[0x8], eax
 	mov eax, 1337
-	mov rdi[0x4], eax
+	mov rdi[0xc], eax
 	ret

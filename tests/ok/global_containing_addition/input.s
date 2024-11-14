@@ -5,7 +5,7 @@ define_type: db "a", 0
 
 align 8
 global globals_size
-globals_size: dq 4
+globals_size: dq 12
 
 global strings
 strings:
@@ -28,10 +28,11 @@ define:
 
 global init_globals
 init_globals:
+	mov rdi[0x0], rsi
 	mov eax, 3
 	push rax
 	mov eax, 2
 	pop r11
 	add rax, r11
-	mov rdi[byte 0x0], eax
+	mov rdi[0x8], eax
 	ret

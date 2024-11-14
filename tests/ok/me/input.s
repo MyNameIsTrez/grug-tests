@@ -5,7 +5,7 @@ define_type: db "d", 0
 
 align 8
 global globals_size
-globals_size: dq 0
+globals_size: dq 8
 
 global on_fns
 on_fns:
@@ -13,7 +13,7 @@ on_fns:
 
 global strings
 strings:
-	db "tests/ok/on_fn_calling_game_fn_plt_order/input.grug", 0
+	db "tests/ok/me/input.grug", 0
 	db "on_a", 0
 
 align 8
@@ -35,7 +35,7 @@ extern __sigsetjmp
 extern grug_get_runtime_error_reason
 extern grug_enable_on_fn_runtime_error_handling
 extern sigprocmask
-extern game_fn_initialize
+extern game_fn_set_target
 extern grug_disable_on_fn_runtime_error_handling
 
 global define
@@ -45,6 +45,7 @@ define:
 
 global init_globals
 init_globals:
+	mov rdi[0x0], rsi
 	ret
 
 %macro error_handling 0
@@ -59,7 +60,7 @@ init_globals:
 
 	lea rcx, strings[rel 0]
 
-	lea rdx, strings[rel 52]
+	lea rdx, strings[rel 23]
 
 	mov rsi, [rel grug_runtime_error_type wrt ..got]
 	mov esi, [rsi]
@@ -96,22 +97,22 @@ on_a:
 	mov rbp, rsp
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rdi
-	mov rbp[-0xc], esi
 
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x171
+	je strict $+0x97
 
 	error_handling
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	block
-	mov eax, rbp[-0xc]
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	push rax
 	pop rdi
-	call game_fn_initialize wrt ..plt
+	call game_fn_set_target wrt ..plt
 	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
@@ -120,10 +121,11 @@ on_a:
 	pop rbp
 	ret
 
-	mov eax, rbp[-0xc]
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	push rax
 	pop rdi
-	call game_fn_initialize wrt ..plt
+	call game_fn_set_target wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

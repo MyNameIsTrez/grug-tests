@@ -5,7 +5,7 @@ define_type: db "a", 0
 
 align 8
 global globals_size
-globals_size: dq 128
+globals_size: dq 136
 
 global strings
 strings:
@@ -28,68 +28,69 @@ define:
 
 global init_globals
 init_globals:
+	mov rdi[0x0], rsi
 	mov eax, 1
-	mov rdi[byte 0x0], eax
-	mov eax, 2
-	mov rdi[0x4], eax
-	mov eax, 3
 	mov rdi[0x8], eax
-	mov eax, 4
+	mov eax, 2
 	mov rdi[0xc], eax
-	mov eax, 5
+	mov eax, 3
 	mov rdi[0x10], eax
-	mov eax, 6
+	mov eax, 4
 	mov rdi[0x14], eax
-	mov eax, 7
+	mov eax, 5
 	mov rdi[0x18], eax
-	mov eax, 8
+	mov eax, 6
 	mov rdi[0x1c], eax
-	mov eax, 9
+	mov eax, 7
 	mov rdi[0x20], eax
-	mov eax, 10
+	mov eax, 8
 	mov rdi[0x24], eax
-	mov eax, 11
+	mov eax, 9
 	mov rdi[0x28], eax
-	mov eax, 12
+	mov eax, 10
 	mov rdi[0x2c], eax
-	mov eax, 13
+	mov eax, 11
 	mov rdi[0x30], eax
-	mov eax, 14
+	mov eax, 12
 	mov rdi[0x34], eax
-	mov eax, 15
+	mov eax, 13
 	mov rdi[0x38], eax
-	mov eax, 16
+	mov eax, 14
 	mov rdi[0x3c], eax
-	mov eax, 17
+	mov eax, 15
 	mov rdi[0x40], eax
-	mov eax, 18
+	mov eax, 16
 	mov rdi[0x44], eax
-	mov eax, 19
+	mov eax, 17
 	mov rdi[0x48], eax
-	mov eax, 20
+	mov eax, 18
 	mov rdi[0x4c], eax
-	mov eax, 21
+	mov eax, 19
 	mov rdi[0x50], eax
-	mov eax, 22
+	mov eax, 20
 	mov rdi[0x54], eax
-	mov eax, 23
+	mov eax, 21
 	mov rdi[0x58], eax
-	mov eax, 24
+	mov eax, 22
 	mov rdi[0x5c], eax
-	mov eax, 25
+	mov eax, 23
 	mov rdi[0x60], eax
-	mov eax, 26
+	mov eax, 24
 	mov rdi[0x64], eax
-	mov eax, 27
+	mov eax, 25
 	mov rdi[0x68], eax
-	mov eax, 28
+	mov eax, 26
 	mov rdi[0x6c], eax
-	mov eax, 29
+	mov eax, 27
 	mov rdi[0x70], eax
-	mov eax, 30
+	mov eax, 28
 	mov rdi[0x74], eax
-	mov eax, 31
+	mov eax, 29
 	mov rdi[0x78], eax
-	mov eax, 32
+	mov eax, 30
 	mov rdi[0x7c], eax
+	mov eax, 31
+	mov rdi[0x80], eax
+	mov eax, 32
+	mov rdi[0x84], eax
 	ret

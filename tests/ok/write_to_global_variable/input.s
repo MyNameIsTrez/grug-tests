@@ -5,7 +5,7 @@ define_type: db "d", 0
 
 align 8
 global globals_size
-globals_size: dq 8
+globals_size: dq 16
 
 global on_fns
 on_fns:
@@ -45,10 +45,11 @@ define:
 
 global init_globals
 init_globals:
+	mov rdi[0x0], rsi
 	mov eax, 42
-	mov rdi[byte 0x0], eax
+	mov rdi[0x8], eax
 	mov eax, 69
-	mov rdi[0x4], eax
+	mov rdi[0xc], eax
 	ret
 
 %macro error_handling 0
@@ -114,23 +115,23 @@ on_a:
 	mov eax, 1
 	push rax
 	mov rax, rbp[-0x8]
-	mov eax, rax[byte 0x0]
+	mov eax, rax[0x8]
 	pop r11
 	add rax, r11
 
 	; foo = foo + 1
 	mov r11, rbp[-0x8]
-	mov r11[byte 0x0], eax
+	mov r11[0x8], eax
 
 	; push foo
 	block
 	mov rax, rbp[-0x8]
-	mov eax, rax[byte 0x0]
+	mov eax, rax[0x8]
 	push rax
 
 	; push bar
 	mov rax, rbp[-0x8]
-	mov eax, rax[0x4]
+	mov eax, rax[0xc]
 	push rax
 
 	pop rsi
@@ -148,22 +149,22 @@ on_a:
 	mov eax, 1
 	push rax
 	mov rax, rbp[-0x8]
-	mov eax, rax[byte 0x0]
+	mov eax, rax[0x8]
 	pop r11
 	add rax, r11
 
 	; foo = foo + 1
 	mov r11, rbp[-0x8]
-	mov r11[byte 0x0], eax
+	mov r11[0x8], eax
 
 	; push foo
 	mov rax, rbp[-0x8]
-	mov eax, rax[byte 0x0]
+	mov eax, rax[0x8]
 	push rax
 
 	; push bar
 	mov rax, rbp[-0x8]
-	mov eax, rax[0x4]
+	mov eax, rax[0xc]
 	push rax
 
 	pop rsi

@@ -5,7 +5,7 @@ define_type: db "d", 0
 
 align 8
 global globals_size
-globals_size: dq 4
+globals_size: dq 12
 
 global on_fns
 on_fns:
@@ -45,8 +45,9 @@ define:
 
 global init_globals
 init_globals:
+	mov rdi[0x0], rsi
 	mov eax, __?float32?__(0.0)
-	mov rdi[byte 0x0], eax
+	mov rdi[0x8], eax
 	ret
 
 %macro error_handling 0
@@ -110,11 +111,11 @@ on_a:
 
 	mov eax, __?float32?__(4.0)
 	mov r11, rbp[-0x8]
-	mov r11[byte 0x0], eax
+	mov r11[byte 0x8], eax
 
 	block
 	mov rax, rbp[-0x8]
-	mov eax, rax[byte 0x0]
+	mov eax, rax[byte 0x8]
 	push rax
 
 	pop rax
@@ -131,10 +132,10 @@ on_a:
 
 	mov eax, __?float32?__(4.0)
 	mov r11, rbp[-0x8]
-	mov r11[byte 0x0], eax
+	mov r11[byte 0x8], eax
 
 	mov rax, rbp[-0x8]
-	mov eax, rax[byte 0x0]
+	mov eax, rax[byte 0x8]
 	push rax
 
 	pop rax

@@ -13,7 +13,7 @@ on_fns:
 
 global strings
 strings:
-	db "tests/ok/f32_eq_true/input.grug", 0
+	db "tests/ok/id_local_variable_get_and_set/input.grug", 0
 	db "on_a", 0
 
 align 8
@@ -35,7 +35,8 @@ extern __sigsetjmp
 extern grug_get_runtime_error_reason
 extern grug_enable_on_fn_runtime_error_handling
 extern sigprocmask
-extern game_fn_initialize_bool
+extern game_fn_get_opponent
+extern game_fn_set_target
 extern grug_disable_on_fn_runtime_error_handling
 
 global define
@@ -60,7 +61,7 @@ init_globals:
 
 	lea rcx, strings[rel 0]
 
-	lea rdx, strings[rel 32]
+	lea rdx, strings[rel 50]
 
 	mov rsi, [rel grug_runtime_error_type wrt ..got]
 	mov esi, [rsi]
@@ -101,26 +102,22 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0xad
+	je strict $+0xc9
 
 	error_handling
 
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	block
-	mov eax, __?float32?__(2.0)
-	push rax
-	mov eax, __?float32?__(2.0)
-	pop r11
-	movd xmm0, eax
-	movd xmm1, r11d
-	xor eax, eax
-	comiss xmm0, xmm1
-	sete al
-	push rax
+	call game_fn_get_opponent wrt ..plt
+	unblock
+	mov rbp[-0x10], rax
 
+	block
+	mov rax, rbp[-0x10]
+	push rax
 	pop rdi
-	call game_fn_initialize_bool wrt ..plt
+	call game_fn_set_target wrt ..plt
 	unblock
 
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
@@ -129,19 +126,13 @@ on_a:
 	pop rbp
 	ret
 
-	mov eax, __?float32?__(2.0)
-	push rax
-	mov eax, __?float32?__(2.0)
-	pop r11
-	movd xmm0, eax
-	movd xmm1, r11d
-	xor eax, eax
-	comiss xmm0, xmm1
-	sete al
-	push rax
+	call game_fn_get_opponent wrt ..plt
+	mov rbp[-0x10], rax
 
+	mov rax, rbp[-0x10]
+	push rax
 	pop rdi
-	call game_fn_initialize_bool wrt ..plt
+	call game_fn_set_target wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

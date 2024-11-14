@@ -5,7 +5,7 @@ define_type: db "d", 0
 
 align 8
 global globals_size
-globals_size: dq 0
+globals_size: dq 8
 
 global on_fns
 on_fns:
@@ -45,6 +45,7 @@ define:
 
 global init_globals
 init_globals:
+	mov rdi[0x0], rsi
 	ret
 
 %macro error_handling 0

@@ -791,6 +791,19 @@
 					"type": "string"
 				}
 			]
+		},
+		"get_opponent": {
+			"description": "foo",
+			"return_type": "id"
+		},
+		"set_target": {
+			"description": "foo",
+			"arguments": [
+				{
+					"name": "target",
+					"type": "id"
+				}
+			]
 		}
 	}
 }
