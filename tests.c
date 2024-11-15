@@ -3319,6 +3319,40 @@ static void ok_no_on_fns(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entity_types == NULL);
 }
 
+static void ok_null_id_initializing_global(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_set_target_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_set_target_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_set_target_target == UINT64_MAX);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_null_id_initializing_local(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_set_target_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_set_target_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_set_target_target == UINT64_MAX);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_no_empty_line_between_globals(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	(void)on_fns;
 
@@ -4439,19 +4473,21 @@ static void error_tests(void) {
 	TEST_ERROR(i32_logical_not);
 	TEST_ERROR(i32_too_big);
 	TEST_ERROR(i32_too_small);
-	TEST_ERROR(id_arithmetic_me_plus_1);
-	TEST_ERROR(id_arithmetic_me_plus_me);
 	TEST_ERROR(indentation_going_down_by_2);
 	TEST_ERROR(local_variable_already_exists);
 	TEST_ERROR(local_variable_definition_cant_use_itself);
 	TEST_ERROR(local_variable_definition_missing_type);
 	TEST_ERROR(me_cant_be_assigned_to_global);
 	TEST_ERROR(me_cant_be_written_to);
+	TEST_ERROR(me_plus_1);
+	TEST_ERROR(me_plus_me);
 	TEST_ERROR(missing_define_fn);
 	TEST_ERROR(missing_empty_line_between_define_fn_and_global);
 	TEST_ERROR(missing_empty_line_between_global_and_on_fn);
 	TEST_ERROR(missing_empty_line_between_on_fn_and_helper_fn);
 	TEST_ERROR(no_space_between_comment_character_and_comment);
+	TEST_ERROR(null_id_plus_1);
+	TEST_ERROR(null_id_plus_null_id);
 	TEST_ERROR(on_fn_before_define);
 	TEST_ERROR(on_fn_cant_be_called_by_helper_fn);
 	TEST_ERROR(on_fn_cant_be_called_by_on_fn);
@@ -4630,6 +4666,8 @@ static void ok_tests(void) {
 	TEST_OK(ne_true, "d", 8);
 	TEST_OK(no_define_fields, "d", 8);
 	TEST_OK(no_on_fns, "a", 8);
+	TEST_OK(null_id_initializing_global, "d", 16);
+	TEST_OK(null_id_initializing_local, "d", 8);
 	TEST_OK(no_empty_line_between_globals, "a", 16);
 	TEST_OK(no_empty_line_between_statements, "d", 8);
 	TEST_OK(on_fn, "d", 8);

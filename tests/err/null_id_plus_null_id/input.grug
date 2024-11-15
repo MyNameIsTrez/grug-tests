@@ -1,0 +1,8 @@
+define() d {
+    return {
+    }
+}
+
+on_a() {
+    set_target(null_id + null_id)
+}

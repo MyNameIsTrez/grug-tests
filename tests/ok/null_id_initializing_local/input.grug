@@ -1,0 +1,9 @@
+define() d {
+    return {
+    }
+}
+
+on_a() {
+    foo: id = null_id
+    set_target(foo)
+}
