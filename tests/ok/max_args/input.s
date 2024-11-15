@@ -102,7 +102,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x110
+	je strict $+0x113
 
 	error_handling
 
@@ -147,7 +147,8 @@ on_a:
 	mov eax, __?float32?__(8.0)
 	push rax
 
-	mov eax, 8192
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	push rax
 
 	lea rax, strings[rel 34]
@@ -157,7 +158,7 @@ on_a:
 
 	pop r9 ; "foo"
 
-	pop r8 ; 8192
+	pop r8 ; me
 
 	pop rax ; 8.0
 	movd xmm7, eax
@@ -240,7 +241,8 @@ on_a:
 	mov eax, __?float32?__(8.0)
 	push rax
 
-	mov eax, 8192
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	push rax
 
 	lea rax, strings[rel 34]
@@ -250,7 +252,7 @@ on_a:
 
 	pop r9 ; "foo"
 
-	pop r8 ; 8192
+	pop r8 ; me
 
 	pop rax ; 8.0
 	movd xmm7, eax

@@ -625,8 +625,8 @@
 					"type": "f32"
 				},
 				{
-					"name": "i3",
-					"type": "i32"
+					"name": "id",
+					"type": "id"
 				},
 				{
 					"name": "str",

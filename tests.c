@@ -140,9 +140,9 @@ static float game_fn_mega_f5;
 static float game_fn_mega_f6;
 static float game_fn_mega_f7;
 static float game_fn_mega_f8;
-static int32_t game_fn_mega_i3;
+static int32_t game_fn_mega_id;
 static char *game_fn_mega_str;
-void game_fn_mega(float f1, int32_t i1, bool b1, float f2, float f3, float f4, bool b2, int32_t i2, float f5, float f6, float f7, float f8, int32_t i3, char *str) {
+void game_fn_mega(float f1, int32_t i1, bool b1, float f2, float f3, float f4, bool b2, int32_t i2, float f5, float f6, float f7, float f8, uint64_t id, char *str) {
 	game_fn_mega_call_count++;
 
 	game_fn_mega_f1 = f1;
@@ -157,7 +157,7 @@ void game_fn_mega(float f1, int32_t i1, bool b1, float f2, float f3, float f4, b
 	game_fn_mega_f6 = f6;
 	game_fn_mega_f7 = f7;
 	game_fn_mega_f8 = f8;
-	game_fn_mega_i3 = i3;
+	game_fn_mega_id = id;
 	game_fn_mega_str = str;
 }
 bool game_fn_is_friday(void) {
@@ -3102,7 +3102,7 @@ static void ok_max_args(void *on_fns, void *g, size_t resources_size, char **res
 	assert(game_fn_mega_f6 == 6.0f);
 	assert(game_fn_mega_f7 == 7.0f);
 	assert(game_fn_mega_f8 == 8.0f);
-	assert(game_fn_mega_i3 == 8192);
+	assert(game_fn_mega_id == 42);
 	assert(streq(game_fn_mega_str, "foo"));
 
 	assert(resources_size == 0);

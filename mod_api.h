@@ -84,7 +84,7 @@ int32_t game_fn_max(int32_t x, int32_t y);
 void game_fn_say(char *message);
 float game_fn_sin(float x);
 float game_fn_cos(float x);
-void game_fn_mega(float f1, int32_t i1, bool b1, float f2, float f3, float f4, bool b2, int32_t i2, float f5, float f6, float f7, float f8, int32_t i3, char *str);
+void game_fn_mega(float f1, int32_t i1, bool b1, float f2, float f3, float f4, bool b2, int32_t i2, float f5, float f6, float f7, float f8, uint64_t id, char *str);
 bool game_fn_is_friday(void);
 void game_fn_set_is_happy(bool is_happy);
 void game_fn_mega_f32(float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9);
