@@ -4376,6 +4376,7 @@ static void error_tests(void) {
 	TEST_ERROR(comment_lone_global_at_end);
 	TEST_ERROR(define_fn_calls_fn);
 	TEST_ERROR(define_fn_different_name);
+	TEST_ERROR(define_fn_different_type);
 	TEST_ERROR(define_fn_not_enough_arguments);
 	TEST_ERROR(define_fn_only_one_max);
 	TEST_ERROR(define_fn_uses_global_variable);
