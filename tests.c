@@ -3130,6 +3130,23 @@ static void ok_me(void *on_fns, void *g, size_t resources_size, char **resources
 	assert(entity_types == NULL);
 }
 
+static void ok_me_passed_to_helper_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_set_target_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_set_target_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_set_target_target == 42);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_minimal(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	(void)on_fns;
 
@@ -4579,6 +4596,7 @@ static void ok_tests(void) {
 	TEST_OK(lt_true, "d", 8);
 	TEST_OK(max_args, "d", 8);
 	TEST_OK(me, "d", 8);
+	TEST_OK(me_passed_to_helper_fn, "d", 8);
 	TEST_OK(minimal, "a", 8);
 	TEST_OK(multiplication_as_two_arguments, "d", 8);
 	TEST_OK(ne_false, "d", 8);
