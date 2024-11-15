@@ -1,0 +1,6 @@
+define() d {
+    return {
+    }
+}
+
+foo: id = me
