@@ -4427,6 +4427,7 @@ static void error_tests(void) {
 	TEST_ERROR(local_variable_already_exists);
 	TEST_ERROR(local_variable_definition_cant_use_itself);
 	TEST_ERROR(local_variable_definition_missing_type);
+	TEST_ERROR(me_cant_be_written_to);
 	TEST_ERROR(missing_define_fn);
 	TEST_ERROR(missing_empty_line_between_define_fn_and_global);
 	TEST_ERROR(missing_empty_line_between_global_and_on_fn);
