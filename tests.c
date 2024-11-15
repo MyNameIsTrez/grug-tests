@@ -4421,6 +4421,8 @@ static void error_tests(void) {
 	TEST_ERROR(i32_logical_not);
 	TEST_ERROR(i32_too_big);
 	TEST_ERROR(i32_too_small);
+	TEST_ERROR(id_arithmetic_me_plus_1);
+	TEST_ERROR(id_arithmetic_me_plus_me);
 	TEST_ERROR(indentation_going_down_by_2);
 	TEST_ERROR(local_variable_already_exists);
 	TEST_ERROR(local_variable_definition_cant_use_itself);
