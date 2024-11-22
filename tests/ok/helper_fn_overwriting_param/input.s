@@ -41,7 +41,9 @@ extern game_fn_sin
 
 global define
 define:
+	sub rsp, byte 0x8
 	call game_fn_define_d wrt ..plt
+	add rsp, byte 0x8
 	ret
 
 global init_globals

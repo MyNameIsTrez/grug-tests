@@ -23,6 +23,7 @@ extern game_fn_define_t
 
 global define
 define:
+	sub rsp, byte 0x8
 	mov eax, __?float32?__(8.0)
 	movd xmm7, eax
 	mov eax, __?float32?__(7.0)
@@ -40,6 +41,7 @@ define:
 	mov eax, __?float32?__(1.0)
 	movd xmm0, eax
 	call game_fn_define_t wrt ..plt
+	add rsp, byte 0x8
 	ret
 
 global init_globals

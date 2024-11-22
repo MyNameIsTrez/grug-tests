@@ -22,6 +22,47 @@ bool grug_test_regenerate_dll(char *grug_file_path, char *dll_path, char *mod);
 
 #define MAX_DYNSTR_LENGTH 420420
 
+// From https://stackoverflow.com/a/2114249/13279557
+#ifdef __x86_64__
+#define ASSERT_16_BYTE_STACK_ALIGNED() {\
+	int64_t rsp;\
+	\
+	_Pragma("GCC diagnostic push")\
+	_Pragma("GCC diagnostic ignored \"-Wlanguage-extension-token\"")\
+	\
+	asm("mov %%rsp, %0\n\t" : "=r" (rsp));\
+	\
+	if ((rsp & 0xf) != 0) {\
+		static char msg[] = "The stack was not 16-byte aligned!\n";\
+		write(STDERR_FILENO, msg, sizeof(msg) - 1);\
+		abort();\
+	}\
+	\
+	_Pragma("GCC diagnostic pop")\
+}
+#elif __aarch64__
+#define ASSERT_16_BYTE_STACK_ALIGNED() {\
+	int64_t rsp;\
+	\
+	_Pragma("GCC diagnostic push")\
+	_Pragma("GCC diagnostic ignored \"-Wlanguage-extension-token\"")\
+	\
+	asm("mov %0, sp\n\t" : "=r" (rsp));\
+	\
+	_Pragma("GCC diagnostic pop")\
+	\
+	if ((rsp & 0xf) != 0) {\
+		static char msg[] = "The stack was not 16-byte aligned!\n";\
+		write(STDERR_FILENO, msg, sizeof(msg) - 1);\
+		abort();\
+	}\
+	\
+	assert((rsp & 0xf) == 0);\
+}
+#else
+#error Unsupported or unrecognized architecture
+#endif
+
 typedef int64_t i64;
 typedef uint16_t u16;
 typedef uint32_t u32;
@@ -221,82 +262,19 @@ void game_fn_blocked_alrm(void) {
 	assert(sigismember(&mask, SIGALRM));
 }
 void game_fn_nothing_aligned(void) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_nothing_aligned_call_count++;
-
-	// From https://stackoverflow.com/a/2114249/13279557
-	int64_t rsp;
-
-	#pragma GCC diagnostic push
-	#pragma GCC diagnostic ignored "-Wlanguage-extension-token"
-
-#ifdef __x86_64__
-	asm("mov %%rsp, %0\n\t" : "=r" (rsp));
-#elif __aarch64__
-	asm("mov %0, sp\n\t" : "=r" (rsp));
-#else
-#error Unsupported or unrecognized architecture
-#endif
-
-	#pragma GCC diagnostic pop
-
-	// We need this in order to ensure that the C compiler will 16-byte align
-	// this function with a function prologue, cause we assert that the rsp is divisible by 16 after the function prologue
-	printf(":)\n");
-
-	assert((rsp & 0xf) == 0);
 }
 int32_t game_fn_magic_aligned(void) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_magic_aligned_call_count++;
-
-	// From https://stackoverflow.com/a/2114249/13279557
-	int64_t rsp;
-
-	#pragma GCC diagnostic push
-	#pragma GCC diagnostic ignored "-Wlanguage-extension-token"
-
-#ifdef __x86_64__
-	asm("mov %%rsp, %0\n\t" : "=r" (rsp));
-#elif __aarch64__
-	asm("mov %0, sp\n\t" : "=r" (rsp));
-#else
-#error Unsupported or unrecognized architecture
-#endif
-
-	#pragma GCC diagnostic pop
-
-	printf(":)\n");
-
-	assert((rsp & 0xf) == 0);
-
 	return 42;
 }
 static int32_t game_fn_initialize_aligned_x;
 void game_fn_initialize_aligned(int32_t x) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_initialize_aligned_call_count++;
-
 	game_fn_initialize_aligned_x = x;
-
-	// From https://stackoverflow.com/a/2114249/13279557
-	int64_t rsp;
-
-	#pragma GCC diagnostic push
-	#pragma GCC diagnostic ignored "-Wlanguage-extension-token"
-
-#ifdef __x86_64__
-	asm("mov %%rsp, %0\n\t" : "=r" (rsp));
-#elif __aarch64__
-	asm("mov %0, sp\n\t" : "=r" (rsp));
-#else
-#error Unsupported or unrecognized architecture
-#endif
-
-	#pragma GCC diagnostic pop
-
-	// We need this in order to ensure that the C compiler will 16-byte align
-	// this function with a function prologue, cause we assert that the rsp is divisible by 16 after the function prologue
-	printf(":)\n");
-
-	assert((rsp & 0xf) == 0);
 }
 static char *game_fn_spawn_name;
 void game_fn_spawn(char *name) {
@@ -340,41 +318,59 @@ void game_fn_set_target(uint64_t target) {
 	game_fn_set_target_target = target;
 }
 
-void game_fn_define_a(void) {}
+void game_fn_define_a(void) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
+}
 static int32_t game_fn_define_b_x;
 void game_fn_define_b(int32_t x) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_b_x = x;
 }
 static int32_t game_fn_define_c_x;
 static int32_t game_fn_define_c_y;
 void game_fn_define_c(int32_t x, int32_t y) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_c_x = x;
 	game_fn_define_c_y = y;
 }
-void game_fn_define_d(void) {}
-void game_fn_define_e(void) {}
-void game_fn_define_f(void) {}
-void game_fn_define_g(void) {}
+void game_fn_define_d(void) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
+}
+void game_fn_define_e(void) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
+}
+void game_fn_define_f(void) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
+}
+void game_fn_define_g(void) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
+}
 static int32_t game_fn_define_h_x;
 void game_fn_define_h(int32_t x) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_h_x = x;
 }
 static int32_t game_fn_define_i_x;
 static int32_t game_fn_define_i_y;
 void game_fn_define_i(int32_t x, int32_t y) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_i_x = x;
 	game_fn_define_i_y = y;
 }
-void game_fn_define_j(void) {}
+void game_fn_define_j(void) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
+}
 static int32_t game_fn_define_k_age;
 static char *game_fn_define_k_name;
 void game_fn_define_k(int32_t age, char *name) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_k_age = age;
 	game_fn_define_k_name = name;
 }
 static char *game_fn_define_l_group;
 static char *game_fn_define_l_name;
 void game_fn_define_l(char *group, char *name) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_l_group = group;
 	game_fn_define_l_name = name;
 }
@@ -385,6 +381,7 @@ static char *game_fn_define_m_name;
 static bool game_fn_define_m_b2;
 static int32_t game_fn_define_m_z;
 void game_fn_define_m(int32_t w, char *group, bool b1, char *name, bool b2, int32_t z) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_m_w = w;
 	game_fn_define_m_group = group;
 	game_fn_define_m_b1 = b1;
@@ -399,6 +396,7 @@ static int32_t game_fn_define_n_x;
 static int32_t game_fn_define_n_y;
 static int32_t game_fn_define_n_z;
 void game_fn_define_n(int32_t u, int32_t v, int32_t w, int32_t x, int32_t y, int32_t z) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_n_u = u;
 	game_fn_define_n_v = v;
 	game_fn_define_n_w = w;
@@ -413,6 +411,7 @@ static char *game_fn_define_o_x;
 static char *game_fn_define_o_y;
 static char *game_fn_define_o_z;
 void game_fn_define_o(char *u, char *v, char *w, char *x, char *y, char *z) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_o_u = u;
 	game_fn_define_o_v = v;
 	game_fn_define_o_w = w;
@@ -422,18 +421,24 @@ void game_fn_define_o(char *u, char *v, char *w, char *x, char *y, char *z) {
 }
 static char *game_fn_define_p_x;
 void game_fn_define_p(char *x) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_p_x = x;
 }
 static char *game_fn_define_q_a;
 static char *game_fn_define_q_b;
 static char *game_fn_define_q_c;
 void game_fn_define_q(char *a, char *b, char *c) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_q_a = a;
 	game_fn_define_q_b = b;
 	game_fn_define_q_c = c;
 }
-void game_fn_define_r(void) {}
-void game_fn_define_s(void) {}
+void game_fn_define_r(void) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
+}
+void game_fn_define_s(void) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
+}
 static float game_fn_define_t_f1;
 static float game_fn_define_t_f2;
 static float game_fn_define_t_f3;
@@ -443,6 +448,7 @@ static float game_fn_define_t_f6;
 static float game_fn_define_t_f7;
 static float game_fn_define_t_f8;
 void game_fn_define_t(float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_t_f1 = f1;
 	game_fn_define_t_f2 = f2;
 	game_fn_define_t_f3 = f3;
@@ -454,41 +460,49 @@ void game_fn_define_t(float f1, float f2, float f3, float f4, float f5, float f6
 }
 static char *game_fn_define_u_sprite_path;
 void game_fn_define_u(char *sprite_path) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_u_sprite_path = sprite_path;
 }
 static char *game_fn_define_v_foo;
 static char *game_fn_define_v_bar;
 void game_fn_define_v(char *foo, char *bar) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_v_foo = foo;
 	game_fn_define_v_bar = bar;
 }
 static char *game_fn_define_w_sprite_path;
 void game_fn_define_w(char *sprite_path) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_w_sprite_path = sprite_path;
 }
 static char *game_fn_define_x_projectile;
 void game_fn_define_x(char *projectile) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_x_projectile = projectile;
 }
 static char *game_fn_define_y_foo;
 static char *game_fn_define_y_bar;
 void game_fn_define_y(char *foo, char *bar) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_y_foo = foo;
 	game_fn_define_y_bar = bar;
 }
 static char *game_fn_define_z_projectile;
 void game_fn_define_z(char *projectile) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_z_projectile = projectile;
 }
 static char *game_fn_define_a2_sprite_path;
 static char *game_fn_define_a2_projectile;
 void game_fn_define_a2(char *sprite_path, char *projectile) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_a2_sprite_path = sprite_path;
 	game_fn_define_a2_projectile = projectile;
 }
 static char *game_fn_define_b2_sprite_path;
 static char *game_fn_define_b2_projectile;
 void game_fn_define_b2(char *sprite_path, char *projectile) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_b2_sprite_path = sprite_path;
 	game_fn_define_b2_projectile = projectile;
 }
@@ -658,7 +672,7 @@ static size_t read_file(char *path, uint8_t *bytes) {
 		exit(EXIT_FAILURE);
 	}
 
-    if (fclose(f) == EOF) {
+	if (fclose(f) == EOF) {
 		perror("fclose");
 		exit(EXIT_FAILURE);
 	}
@@ -864,7 +878,7 @@ static void test_error(
 		exit(EXIT_FAILURE);
 	}
 
-    if (fclose(f) == EOF) {
+	if (fclose(f) == EOF) {
 		perror("fclose");
 		exit(EXIT_FAILURE);
 		exit(EXIT_FAILURE);

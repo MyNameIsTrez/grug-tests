@@ -23,6 +23,7 @@ extern game_fn_define_n
 
 global define
 define:
+	sub rsp, byte 0x8
 	mov eax, 6
 	mov r9, rax
 	mov eax, 5
@@ -36,6 +37,7 @@ define:
 	mov eax, 1
 	mov rdi, rax
 	call game_fn_define_n wrt ..plt
+	add rsp, byte 0x8
 	ret
 
 global init_globals

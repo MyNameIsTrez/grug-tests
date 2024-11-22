@@ -28,9 +28,11 @@ extern game_fn_define_u
 
 global define
 define:
+	sub rsp, byte 0x8
 	lea rax, strings[rel 0]
 	mov rdi, rax
 	call game_fn_define_u wrt ..plt
+	add rsp, byte 0x8
 	ret
 
 global init_globals

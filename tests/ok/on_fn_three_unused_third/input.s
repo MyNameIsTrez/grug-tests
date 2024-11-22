@@ -43,7 +43,9 @@ extern grug_disable_on_fn_runtime_error_handling
 
 global define
 define:
+	sub rsp, byte 0x8
 	call game_fn_define_j wrt ..plt
+	add rsp, byte 0x8
 	ret
 
 global init_globals

@@ -49,9 +49,11 @@ extern grug_disable_on_fn_runtime_error_handling
 
 global define
 define:
+	sub rsp, byte 0x8
 	lea rax, strings[rel 1]
 	mov rdi, rax
 	call game_fn_define_z wrt ..plt
+	add rsp, byte 0x8
 	ret
 
 global init_globals
