@@ -1195,6 +1195,8 @@ static void runtime_error_handler(char *reason, enum grug_runtime_error_type typ
 	runtime_error_on_fn_path = on_fn_path;
 }
 
+char *grug_get_runtime_error_reason(void);
+
 static void runtime_error_time_limit_exceeded(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	signal(SIGALRM, signal_handler);
 
@@ -1206,6 +1208,8 @@ static void runtime_error_time_limit_exceeded(void *on_fns, void *g, size_t reso
 	assert(signal_handler_called);
 
 	free(g);
+
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason()));
 
 	assert(runtime_error_type == GRUG_ON_FN_TIME_LIMIT_EXCEEDED);
 
@@ -1232,6 +1236,8 @@ static void runtime_error_division_by_0(void *on_fns, void *g, size_t resources_
 
 	free(g);
 
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason()));
+
 	assert(runtime_error_type == GRUG_ON_FN_DIVISION_BY_ZERO);
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
@@ -1256,6 +1262,8 @@ static void runtime_error_stack_overflow(void *on_fns, void *g, size_t resources
 	assert(signal_handler_called);
 
 	free(g);
+
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason()));
 
 	assert(runtime_error_type == GRUG_ON_FN_STACK_OVERFLOW);
 
