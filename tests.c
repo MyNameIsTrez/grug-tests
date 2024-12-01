@@ -596,6 +596,7 @@ static bool is_whitelisted_test(char *name) {
 			runtime_error_reason = NULL;\
 			signal_handler_called = false;\
 			had_runtime_error = false;\
+			runtime_error_type = -1;\
 			runtime_error_on_fn_name = NULL;\
 			runtime_error_on_fn_path = NULL;\
 			runtime_error_##test_name(data.on_fns, data.g, data.resources_size, data.resources, data.entities_size, data.entities, data.entity_types);\
@@ -1182,15 +1183,14 @@ static void signal_handler(int sig) {
 }
 
 static bool had_runtime_error = false;
+static enum grug_runtime_error_type runtime_error_type = -1;
 static char *runtime_error_on_fn_name = NULL;
 static char *runtime_error_on_fn_path = NULL;
 static void runtime_error_handler(char *reason, enum grug_runtime_error_type type, char *on_fn_name, char *on_fn_path) {
 	had_runtime_error = true;
 
 	runtime_error_reason = reason;
-
-	assert(type == GRUG_ON_FN_DIVISION_BY_ZERO || type == GRUG_ON_FN_STACK_OVERFLOW || type == GRUG_ON_FN_TIME_LIMIT_EXCEEDED);
-
+	runtime_error_type = type;
 	runtime_error_on_fn_name = on_fn_name;
 	runtime_error_on_fn_path = on_fn_path;
 }
@@ -1206,6 +1206,8 @@ static void runtime_error_time_limit_exceeded(void *on_fns, void *g, size_t reso
 	assert(signal_handler_called);
 
 	free(g);
+
+	assert(runtime_error_type == GRUG_ON_FN_TIME_LIMIT_EXCEEDED);
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/time_limit_exceeded/input.grug"));
@@ -1230,6 +1232,8 @@ static void runtime_error_division_by_0(void *on_fns, void *g, size_t resources_
 
 	free(g);
 
+	assert(runtime_error_type == GRUG_ON_FN_DIVISION_BY_ZERO);
+
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/division_by_0/input.grug"));
 
@@ -1252,6 +1256,8 @@ static void runtime_error_stack_overflow(void *on_fns, void *g, size_t resources
 	assert(signal_handler_called);
 
 	free(g);
+
+	assert(runtime_error_type == GRUG_ON_FN_STACK_OVERFLOW);
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/stack_overflow/input.grug"));
