@@ -26,7 +26,9 @@ entities_size: dq 0
 section .text
 
 extern grug_runtime_error_handler
+extern grug_on_fn_name
 extern grug_runtime_error_jmp_buffer
+extern grug_on_fn_path
 extern grug_on_fns_in_safe_mode
 extern grug_block_mask
 extern grug_runtime_error_type

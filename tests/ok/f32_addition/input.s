@@ -26,7 +26,9 @@ entities_size: dq 0
 section .text
 
 extern grug_runtime_error_handler
+extern grug_on_fn_name
 extern grug_runtime_error_jmp_buffer
+extern grug_on_fn_path
 extern grug_on_fns_in_safe_mode
 extern grug_block_mask
 extern grug_runtime_error_type
@@ -49,6 +51,16 @@ global init_globals
 init_globals:
 	mov rdi[0x0], rsi
 	ret
+
+%macro save_on_fn_name_and_path 0
+	mov rax, [rel grug_on_fn_path wrt ..got]
+	lea r11, strings[rel 0]
+	mov [rax], r11
+
+	mov rax, [rel grug_on_fn_name wrt ..got]
+	lea r11, strings[rel 33]
+	mov [rax], r11
+%endmacro
 
 %macro error_handling 0
 	mov esi, 1
@@ -103,7 +115,9 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0xbb
+	je strict $+0xdd
+
+	save_on_fn_name_and_path
 
 	error_handling
 
