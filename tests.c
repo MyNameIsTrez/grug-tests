@@ -15,12 +15,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
+#include <time.h>
 #include <unistd.h>
 
 // Forward declaration, since grug.h doesn't declare it
 bool grug_test_regenerate_dll(char *grug_file_path, char *dll_path, char *mod);
-
-#define MAX_DYNSTR_LENGTH 420420
 
 // From https://stackoverflow.com/a/2114249/13279557
 #ifdef __x86_64__
@@ -79,6 +78,67 @@ struct test_data {
 	char **entity_types;
 	void *dll;
 };
+
+struct error_test_data {
+	char *test_name_str;
+	char *grug_path;
+	char *expected_error_path;
+	char *results_path;
+	char *output_dll_path;
+	char *grug_output_path;
+	char *failed_file_path;
+};
+static struct error_test_data error_test_datas[420420];
+static size_t error_test_datas_size;
+
+struct runtime_error_test_data {
+	void (*run)(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types);
+	char *test_name_str;
+	char *grug_path;
+	char *nasm_path;
+	char *expected_error_path;
+	char *results_path;
+	char *output_dll_path;
+	char *expected_dll_path;
+	char *nasm_o_path;
+	char *output_xxd_path;
+	char *expected_xxd_path;
+	char *output_readelf_path;
+	char *expected_readelf_path;
+	char *output_objdump_path;
+	char *expected_objdump_path;
+	char *dump_path;
+	char *applied_path;
+	char *failed_file_path;
+	char *expected_define_type_str;
+	size_t expected_globals_size_value;
+};
+static struct runtime_error_test_data runtime_error_test_datas[420420];
+static size_t runtime_error_test_datas_size;
+
+struct ok_test_data {
+	void (*run)(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types);
+	char *test_name_str;
+	char *grug_path;
+	char *nasm_path;
+	char *results_path;
+	char *output_dll_path;
+	char *expected_dll_path;
+	char *nasm_o_path;
+	char *output_xxd_path;
+	char *expected_xxd_path;
+	char *output_readelf_path;
+	char *expected_readelf_path;
+	char *output_objdump_path;
+	char *expected_objdump_path;
+	char *dump_path;
+	char *applied_path;
+	char *failed_file_path;
+	char *expected_define_type_str;
+	size_t expected_globals_size_value;
+};
+static struct ok_test_data ok_test_datas[420420];
+static size_t ok_test_datas_size;
 
 static size_t game_fn_nothing_call_count;
 static size_t game_fn_magic_call_count;
@@ -560,99 +620,83 @@ static bool is_whitelisted_test(char *name) {
 	return false;
 }
 
-#define TEST_ERROR(test_name) {\
+#define ADD_TEST_ERROR(test_name) {\
 	if (whitelisted_tests_size == 0 || is_whitelisted_test(#test_name)) {\
-		test_error(\
-			#test_name,\
-			"tests/err/"#test_name"/input.grug",\
-			"tests/err/"#test_name"/expected_error.txt",\
-			"tests/err/"#test_name"/results",\
-			"tests/err/"#test_name"/results/output.so",\
-			"tests/err/"#test_name"/results/grug_output.txt",\
-			"tests/err/"#test_name"/results/failed"\
-		);\
+		error_test_datas[error_test_datas_size++] = (struct error_test_data){\
+			.test_name_str = #test_name,\
+			.grug_path = "tests/err/"#test_name"/input.grug",\
+			.expected_error_path = "tests/err/"#test_name"/expected_error.txt",\
+			.results_path = "tests/err/"#test_name"/results",\
+			.output_dll_path = "tests/err/"#test_name"/results/output.so",\
+			.grug_output_path = "tests/err/"#test_name"/results/grug_output.txt",\
+			.failed_file_path = "tests/err/"#test_name"/results/failed"\
+		};\
 	}\
 }
 
-#define TEST_RUNTIME_ERROR(test_name, expected_define_type, expected_globals_size) {\
+#define ADD_TEST_RUNTIME_ERROR(test_name, expected_define_type, expected_globals_size) {\
 	if (whitelisted_tests_size == 0 || is_whitelisted_test(#test_name)) {\
-		struct test_data data = runtime_error_prologue(\
-			#test_name,\
-			"tests/err_runtime/"#test_name"/input.grug",\
-			"tests/err_runtime/"#test_name"/input.s",\
-			"tests/err_runtime/"#test_name"/expected_error.txt",\
-			"tests/err_runtime/"#test_name"/results",\
-			"tests/err_runtime/"#test_name"/results/output.so",\
-			"tests/err_runtime/"#test_name"/results/expected.so",\
-			"tests/err_runtime/"#test_name"/results/expected.o",\
-			"tests/err_runtime/"#test_name"/results/expected.hex",\
-			"tests/err_runtime/"#test_name"/results/expected_elf.log",\
-			"tests/err_runtime/"#test_name"/results/expected_objdump.log",\
-			"tests/err_runtime/"#test_name"/results/failed",\
-			expected_define_type,\
-			expected_globals_size\
-		);\
-		if (data.run) {\
-			runtime_error_reason = NULL;\
-			signal_handler_called = false;\
-			had_runtime_error = false;\
-			runtime_error_type = -1;\
-			runtime_error_on_fn_name = NULL;\
-			runtime_error_on_fn_path = NULL;\
-			runtime_error_##test_name(data.on_fns, data.g, data.resources_size, data.resources, data.entities_size, data.entities, data.entity_types);\
-			runtime_error_epilogue(\
-				"tests/err_runtime/"#test_name"/input.grug",\
-				"tests/err_runtime/"#test_name"/expected_error.txt",\
-				"tests/err_runtime/"#test_name"/results/output.so",\
-				"tests/err_runtime/"#test_name"/results/expected.so",\
-				"tests/err_runtime/"#test_name"/results/output.hex",\
-				"tests/err_runtime/"#test_name"/results/output_elf.log",\
-				"tests/err_runtime/"#test_name"/results/output_objdump.log",\
-				"tests/err_runtime/"#test_name"/results/dump.json",\
-				"tests/err_runtime/"#test_name"/results/applied.grug",\
-				"tests/err_runtime/"#test_name"/results/failed"\
-			);\
-		}\
-		if (data.dll && dlclose(data.dll)) {\
-			handle_dlerror("dlclose");\
-		}\
+		runtime_error_test_datas[runtime_error_test_datas_size++] = (struct runtime_error_test_data){\
+			.run = runtime_error_##test_name,\
+			.test_name_str = #test_name,\
+			.grug_path = "tests/err_runtime/"#test_name"/input.grug",\
+			.nasm_path = "tests/err_runtime/"#test_name"/input.s",\
+			.expected_error_path = "tests/err_runtime/"#test_name"/expected_error.txt",\
+			.results_path = "tests/err_runtime/"#test_name"/results",\
+			.output_dll_path = "tests/err_runtime/"#test_name"/results/output.so",\
+			.expected_dll_path = "tests/err_runtime/"#test_name"/results/expected.so",\
+			.nasm_o_path = "tests/err_runtime/"#test_name"/results/expected.o",\
+			.output_xxd_path = "tests/err_runtime/"#test_name"/results/output.hex",\
+			.expected_xxd_path = "tests/err_runtime/"#test_name"/results/expected.hex",\
+			.output_readelf_path = "tests/err_runtime/"#test_name"/results/output_elf.log",\
+			.expected_readelf_path = "tests/err_runtime/"#test_name"/results/expected_elf.log",\
+			.output_objdump_path = "tests/err_runtime/"#test_name"/results/output_objdump.log",\
+			.expected_objdump_path = "tests/err_runtime/"#test_name"/results/expected_objdump.log",\
+			.dump_path = "tests/err_runtime/"#test_name"/results/dump.json",\
+			.applied_path = "tests/err_runtime/"#test_name"/results/applied.grug",\
+			.failed_file_path = "tests/err_runtime/"#test_name"/results/failed",\
+			.expected_define_type_str = expected_define_type,\
+			.expected_globals_size_value = expected_globals_size\
+		};\
 	}\
 }
 
-#define TEST_OK(test_name, expected_define_type, expected_globals_size) {\
+#define ADD_TEST_OK(test_name, expected_define_type, expected_globals_size) {\
 	if (whitelisted_tests_size == 0 || is_whitelisted_test(#test_name)) {\
-		struct test_data data = ok_prologue(\
-			#test_name,\
-			"tests/ok/"#test_name"/input.grug",\
-			"tests/ok/"#test_name"/input.s",\
-			"tests/ok/"#test_name"/results",\
-			"tests/ok/"#test_name"/results/output.so",\
-			"tests/ok/"#test_name"/results/expected.so",\
-			"tests/ok/"#test_name"/results/expected.o",\
-			"tests/ok/"#test_name"/results/expected.hex",\
-			"tests/ok/"#test_name"/results/expected_elf.log",\
-			"tests/ok/"#test_name"/results/expected_objdump.log",\
-			"tests/ok/"#test_name"/results/failed",\
-			expected_define_type,\
-			expected_globals_size\
-		);\
-		if (data.run) {\
-			ok_##test_name(data.on_fns, data.g, data.resources_size, data.resources, data.entities_size, data.entities, data.entity_types);\
-			ok_epilogue(\
-				"tests/ok/"#test_name"/input.grug",\
-				"tests/ok/"#test_name"/results/output.so",\
-				"tests/ok/"#test_name"/results/expected.so",\
-				"tests/ok/"#test_name"/results/output.hex",\
-				"tests/ok/"#test_name"/results/output_elf.log",\
-				"tests/ok/"#test_name"/results/output_objdump.log",\
-				"tests/ok/"#test_name"/results/dump.json",\
-				"tests/ok/"#test_name"/results/applied.grug",\
-				"tests/ok/"#test_name"/results/failed"\
-			);\
-		}\
-		if (data.dll && dlclose(data.dll)) {\
-			handle_dlerror("dlclose");\
-		}\
+		ok_test_datas[ok_test_datas_size++] = (struct ok_test_data){\
+			.run = ok_##test_name,\
+			.test_name_str = #test_name,\
+			.grug_path = "tests/ok/"#test_name"/input.grug",\
+			.nasm_path = "tests/ok/"#test_name"/input.s",\
+			.results_path = "tests/ok/"#test_name"/results",\
+			.output_dll_path = "tests/ok/"#test_name"/results/output.so",\
+			.expected_dll_path = "tests/ok/"#test_name"/results/expected.so",\
+			.nasm_o_path = "tests/ok/"#test_name"/results/expected.o",\
+			.output_xxd_path = "tests/ok/"#test_name"/results/output.hex",\
+			.expected_xxd_path = "tests/ok/"#test_name"/results/expected.hex",\
+			.output_readelf_path = "tests/ok/"#test_name"/results/output_elf.log",\
+			.expected_readelf_path = "tests/ok/"#test_name"/results/expected_elf.log",\
+			.output_objdump_path = "tests/ok/"#test_name"/results/output_objdump.log",\
+			.expected_objdump_path = "tests/ok/"#test_name"/results/expected_objdump.log",\
+			.dump_path = "tests/ok/"#test_name"/results/dump.json",\
+			.applied_path = "tests/ok/"#test_name"/results/applied.grug",\
+			.failed_file_path = "tests/ok/"#test_name"/results/failed",\
+			.expected_define_type_str = expected_define_type,\
+			.expected_globals_size_value = expected_globals_size\
+		};\
+	}\
+}
+
+// This is the Fisher-Yates shuffle:
+// https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+// https://blog.codinghorror.com/the-danger-of-naivete/
+#define SHUFFLE(arr, size, T) {\
+	for (int i = size; i > 0; i--) {\
+		int n = rand() % i;\
+		\
+		T old = arr[i-1];\
+		arr[i-1] = arr[n];\
+		arr[n] = old;\
 	}\
 }
 
@@ -4912,336 +4956,447 @@ static void ok_write_to_global_variable(void *on_fns, void *g, size_t resources_
 	assert(entity_types == NULL);
 }
 
-static void error_tests(void) {
-	TEST_ERROR(assign_to_unknown_variable);
-	TEST_ERROR(assignment_isnt_expression);
-	TEST_ERROR(bool_unary_minus);
-	TEST_ERROR(cant_add_strings);
-	TEST_ERROR(cant_call_define_fn_1);
-	TEST_ERROR(cant_call_define_fn_2);
-	TEST_ERROR(cant_declare_me_globally);
-	TEST_ERROR(cant_declare_me_locally);
-	TEST_ERROR(cant_redefine_global);
-	TEST_ERROR(comment_at_the_end_of_another_statement);
-	TEST_ERROR(comment_at_the_end_of_define);
-	TEST_ERROR(comment_lone_global_at_end);
-	TEST_ERROR(define_fn_calls_fn);
-	TEST_ERROR(define_fn_different_name);
-	TEST_ERROR(define_fn_different_type);
-	TEST_ERROR(define_fn_not_enough_arguments);
-	TEST_ERROR(define_fn_only_one_max);
-	TEST_ERROR(define_fn_uses_global_variable);
-	TEST_ERROR(define_fn_was_not_declared);
-	TEST_ERROR(empty_line_after_group);
-	TEST_ERROR(empty_line_at_start_of_file);
-	TEST_ERROR(empty_line_before_group);
-	TEST_ERROR(empty_line_fn_group);
-	TEST_ERROR(empty_line_twice_at_end_of_file);
-	TEST_ERROR(empty_line_twice_between_local_statements);
-	TEST_ERROR(empty_line_while_group);
-	TEST_ERROR(entity_cant_be_empty_string);
-	TEST_ERROR(entity_has_invalid_entity_name_colon);
-	TEST_ERROR(entity_has_invalid_entity_name_uppercase);
-	TEST_ERROR(entity_has_invalid_mod_name_uppercase);
-	TEST_ERROR(entity_mod_name_and_entity_name_is_missing);
-	TEST_ERROR(entity_mod_name_cant_be_current_mod);
-	TEST_ERROR(entity_mod_name_is_missing);
-	TEST_ERROR(entity_name_is_missing);
-	TEST_ERROR(f32_missing_digit_after_decimal_point);
-	TEST_ERROR(game_fn_does_not_exist);
-	TEST_ERROR(game_function_call_gets_wrong_arg_type);
-	TEST_ERROR(game_function_call_less_args_expected);
-	TEST_ERROR(game_function_call_more_args_expected);
-	TEST_ERROR(game_function_call_no_args_expected);
-	TEST_ERROR(global_variable_already_uses_local_variable_name);
-	TEST_ERROR(global_variable_before_define);
-	TEST_ERROR(global_variable_calls_fn);
-	TEST_ERROR(global_variable_definition_cant_use_itself);
-	TEST_ERROR(global_variable_definition_missing_type);
-	TEST_ERROR(global_variable_definition_requires_value_i32);
-	TEST_ERROR(global_variable_definition_requires_value_string);
-	TEST_ERROR(global_variable_uses_global_variable);
-	TEST_ERROR(helper_fn_does_not_exist);
-	TEST_ERROR(helper_fn_is_not_called);
-	TEST_ERROR(helper_function_call_gets_wrong_arg_type);
-	TEST_ERROR(helper_function_call_less_args_expected);
-	TEST_ERROR(helper_function_call_more_args_expected);
-	TEST_ERROR(helper_function_call_no_args_expected);
-	TEST_ERROR(helper_function_different_return_value_expected);
-	TEST_ERROR(helper_function_missing_return_statement);
-	TEST_ERROR(helper_function_no_return_value_expected);
-	TEST_ERROR(i32_logical_not);
-	TEST_ERROR(i32_too_big);
-	TEST_ERROR(i32_too_small);
-	TEST_ERROR(indentation_going_down_by_2);
-	TEST_ERROR(local_variable_already_exists);
-	TEST_ERROR(local_variable_definition_cant_use_itself);
-	TEST_ERROR(local_variable_definition_missing_type);
-	TEST_ERROR(me_cant_be_assigned_to_global);
-	TEST_ERROR(me_cant_be_written_to);
-	TEST_ERROR(me_plus_1);
-	TEST_ERROR(me_plus_me);
-	TEST_ERROR(missing_define_fn);
-	TEST_ERROR(missing_empty_line_between_define_fn_and_global);
-	TEST_ERROR(missing_empty_line_between_global_and_on_fn);
-	TEST_ERROR(missing_empty_line_between_on_fn_and_helper_fn);
-	TEST_ERROR(no_space_between_comment_character_and_comment);
-	TEST_ERROR(null_id_plus_1);
-	TEST_ERROR(null_id_plus_null_id);
-	TEST_ERROR(on_fn_before_define);
-	TEST_ERROR(on_fn_cant_be_called_by_helper_fn);
-	TEST_ERROR(on_fn_cant_be_called_by_on_fn);
-	TEST_ERROR(on_fn_duplicate);
-	TEST_ERROR(on_fn_was_not_declared_in_entity);
-	TEST_ERROR(on_fn_wrong_order);
-	TEST_ERROR(on_function_gets_wrong_arg_type);
-	TEST_ERROR(on_function_less_args_expected);
-	TEST_ERROR(on_function_more_args_expected);
-	TEST_ERROR(on_function_no_args_expected);
-	TEST_ERROR(on_function_no_return_value_expected);
-	TEST_ERROR(pass_bool_to_i32_game_param);
-	TEST_ERROR(pass_bool_to_i32_helper_param);
-	TEST_ERROR(resource_cant_be_empty_string);
-	TEST_ERROR(resource_cant_contain_backslash);
-	TEST_ERROR(resource_cant_contain_double_slash);
-	TEST_ERROR(resource_cant_go_up_to_parent_directory_1);
-	TEST_ERROR(resource_cant_go_up_to_parent_directory_2);
-	TEST_ERROR(resource_cant_go_up_to_parent_directory_3);
-	TEST_ERROR(resource_cant_go_up_to_parent_directory_4);
-	TEST_ERROR(resource_cant_have_leading_slash);
-	TEST_ERROR(resource_cant_have_trailing_slash);
-	TEST_ERROR(resource_cant_refer_to_current_directory_1);
-	TEST_ERROR(resource_cant_refer_to_current_directory_2);
-	TEST_ERROR(resource_cant_refer_to_current_directory_3);
-	TEST_ERROR(resource_cant_refer_to_current_directory_4);
-	TEST_ERROR(resource_type_for_global);
-	TEST_ERROR(resource_type_for_helper_fn_argument);
-	TEST_ERROR(resource_type_for_helper_fn_return_type);
-	TEST_ERROR(resource_type_for_local);
-	TEST_ERROR(resource_type_for_on_fn_argument);
-	TEST_ERROR(string_pointer_arithmetic);
-	TEST_ERROR(too_many_f32_arguments);
-	TEST_ERROR(too_many_i32_arguments);
-	TEST_ERROR(trailing_space_in_comment);
-	TEST_ERROR(unclosed_double_quote);
-	TEST_ERROR(unknown_variable);
-	TEST_ERROR(unused_result);
-	TEST_ERROR(variable_assignment_before_definition);
-	TEST_ERROR(variable_definition_requires_value_i32);
-	TEST_ERROR(variable_definition_requires_value_string);
-	TEST_ERROR(variable_statement_missing_assignment);
-	TEST_ERROR(variable_used_before_definition);
-	TEST_ERROR(wrong_type_global_assignment);
-	TEST_ERROR(wrong_type_global_reassignment);
-	TEST_ERROR(wrong_type_local_assignment);
-	TEST_ERROR(wrong_type_local_reassignment);
+static void add_error_tests(void) {
+	ADD_TEST_ERROR(assign_to_unknown_variable);
+	ADD_TEST_ERROR(assignment_isnt_expression);
+	ADD_TEST_ERROR(bool_unary_minus);
+	ADD_TEST_ERROR(cant_add_strings);
+	ADD_TEST_ERROR(cant_call_define_fn_1);
+	ADD_TEST_ERROR(cant_call_define_fn_2);
+	ADD_TEST_ERROR(cant_declare_me_globally);
+	ADD_TEST_ERROR(cant_declare_me_locally);
+	ADD_TEST_ERROR(cant_redefine_global);
+	ADD_TEST_ERROR(comment_at_the_end_of_another_statement);
+	ADD_TEST_ERROR(comment_at_the_end_of_define);
+	ADD_TEST_ERROR(comment_lone_global_at_end);
+	ADD_TEST_ERROR(define_fn_calls_fn);
+	ADD_TEST_ERROR(define_fn_different_name);
+	ADD_TEST_ERROR(define_fn_different_type);
+	ADD_TEST_ERROR(define_fn_not_enough_arguments);
+	ADD_TEST_ERROR(define_fn_only_one_max);
+	ADD_TEST_ERROR(define_fn_uses_global_variable);
+	ADD_TEST_ERROR(define_fn_was_not_declared);
+	ADD_TEST_ERROR(empty_line_after_group);
+	ADD_TEST_ERROR(empty_line_at_start_of_file);
+	ADD_TEST_ERROR(empty_line_before_group);
+	ADD_TEST_ERROR(empty_line_fn_group);
+	ADD_TEST_ERROR(empty_line_twice_at_end_of_file);
+	ADD_TEST_ERROR(empty_line_twice_between_local_statements);
+	ADD_TEST_ERROR(empty_line_while_group);
+	ADD_TEST_ERROR(entity_cant_be_empty_string);
+	ADD_TEST_ERROR(entity_has_invalid_entity_name_colon);
+	ADD_TEST_ERROR(entity_has_invalid_entity_name_uppercase);
+	ADD_TEST_ERROR(entity_has_invalid_mod_name_uppercase);
+	ADD_TEST_ERROR(entity_mod_name_and_entity_name_is_missing);
+	ADD_TEST_ERROR(entity_mod_name_cant_be_current_mod);
+	ADD_TEST_ERROR(entity_mod_name_is_missing);
+	ADD_TEST_ERROR(entity_name_is_missing);
+	ADD_TEST_ERROR(f32_missing_digit_after_decimal_point);
+	ADD_TEST_ERROR(game_fn_does_not_exist);
+	ADD_TEST_ERROR(game_function_call_gets_wrong_arg_type);
+	ADD_TEST_ERROR(game_function_call_less_args_expected);
+	ADD_TEST_ERROR(game_function_call_more_args_expected);
+	ADD_TEST_ERROR(game_function_call_no_args_expected);
+	ADD_TEST_ERROR(global_variable_already_uses_local_variable_name);
+	ADD_TEST_ERROR(global_variable_before_define);
+	ADD_TEST_ERROR(global_variable_calls_fn);
+	ADD_TEST_ERROR(global_variable_definition_cant_use_itself);
+	ADD_TEST_ERROR(global_variable_definition_missing_type);
+	ADD_TEST_ERROR(global_variable_definition_requires_value_i32);
+	ADD_TEST_ERROR(global_variable_definition_requires_value_string);
+	ADD_TEST_ERROR(global_variable_uses_global_variable);
+	ADD_TEST_ERROR(helper_fn_does_not_exist);
+	ADD_TEST_ERROR(helper_fn_is_not_called);
+	ADD_TEST_ERROR(helper_function_call_gets_wrong_arg_type);
+	ADD_TEST_ERROR(helper_function_call_less_args_expected);
+	ADD_TEST_ERROR(helper_function_call_more_args_expected);
+	ADD_TEST_ERROR(helper_function_call_no_args_expected);
+	ADD_TEST_ERROR(helper_function_different_return_value_expected);
+	ADD_TEST_ERROR(helper_function_missing_return_statement);
+	ADD_TEST_ERROR(helper_function_no_return_value_expected);
+	ADD_TEST_ERROR(i32_logical_not);
+	ADD_TEST_ERROR(i32_too_big);
+	ADD_TEST_ERROR(i32_too_small);
+	ADD_TEST_ERROR(indentation_going_down_by_2);
+	ADD_TEST_ERROR(local_variable_already_exists);
+	ADD_TEST_ERROR(local_variable_definition_cant_use_itself);
+	ADD_TEST_ERROR(local_variable_definition_missing_type);
+	ADD_TEST_ERROR(me_cant_be_assigned_to_global);
+	ADD_TEST_ERROR(me_cant_be_written_to);
+	ADD_TEST_ERROR(me_plus_1);
+	ADD_TEST_ERROR(me_plus_me);
+	ADD_TEST_ERROR(missing_define_fn);
+	ADD_TEST_ERROR(missing_empty_line_between_define_fn_and_global);
+	ADD_TEST_ERROR(missing_empty_line_between_global_and_on_fn);
+	ADD_TEST_ERROR(missing_empty_line_between_on_fn_and_helper_fn);
+	ADD_TEST_ERROR(no_space_between_comment_character_and_comment);
+	ADD_TEST_ERROR(null_id_plus_1);
+	ADD_TEST_ERROR(null_id_plus_null_id);
+	ADD_TEST_ERROR(on_fn_before_define);
+	ADD_TEST_ERROR(on_fn_cant_be_called_by_helper_fn);
+	ADD_TEST_ERROR(on_fn_cant_be_called_by_on_fn);
+	ADD_TEST_ERROR(on_fn_duplicate);
+	ADD_TEST_ERROR(on_fn_was_not_declared_in_entity);
+	ADD_TEST_ERROR(on_fn_wrong_order);
+	ADD_TEST_ERROR(on_function_gets_wrong_arg_type);
+	ADD_TEST_ERROR(on_function_less_args_expected);
+	ADD_TEST_ERROR(on_function_more_args_expected);
+	ADD_TEST_ERROR(on_function_no_args_expected);
+	ADD_TEST_ERROR(on_function_no_return_value_expected);
+	ADD_TEST_ERROR(pass_bool_to_i32_game_param);
+	ADD_TEST_ERROR(pass_bool_to_i32_helper_param);
+	ADD_TEST_ERROR(resource_cant_be_empty_string);
+	ADD_TEST_ERROR(resource_cant_contain_backslash);
+	ADD_TEST_ERROR(resource_cant_contain_double_slash);
+	ADD_TEST_ERROR(resource_cant_go_up_to_parent_directory_1);
+	ADD_TEST_ERROR(resource_cant_go_up_to_parent_directory_2);
+	ADD_TEST_ERROR(resource_cant_go_up_to_parent_directory_3);
+	ADD_TEST_ERROR(resource_cant_go_up_to_parent_directory_4);
+	ADD_TEST_ERROR(resource_cant_have_leading_slash);
+	ADD_TEST_ERROR(resource_cant_have_trailing_slash);
+	ADD_TEST_ERROR(resource_cant_refer_to_current_directory_1);
+	ADD_TEST_ERROR(resource_cant_refer_to_current_directory_2);
+	ADD_TEST_ERROR(resource_cant_refer_to_current_directory_3);
+	ADD_TEST_ERROR(resource_cant_refer_to_current_directory_4);
+	ADD_TEST_ERROR(resource_type_for_global);
+	ADD_TEST_ERROR(resource_type_for_helper_fn_argument);
+	ADD_TEST_ERROR(resource_type_for_helper_fn_return_type);
+	ADD_TEST_ERROR(resource_type_for_local);
+	ADD_TEST_ERROR(resource_type_for_on_fn_argument);
+	ADD_TEST_ERROR(string_pointer_arithmetic);
+	ADD_TEST_ERROR(too_many_f32_arguments);
+	ADD_TEST_ERROR(too_many_i32_arguments);
+	ADD_TEST_ERROR(trailing_space_in_comment);
+	ADD_TEST_ERROR(unclosed_double_quote);
+	ADD_TEST_ERROR(unknown_variable);
+	ADD_TEST_ERROR(unused_result);
+	ADD_TEST_ERROR(variable_assignment_before_definition);
+	ADD_TEST_ERROR(variable_definition_requires_value_i32);
+	ADD_TEST_ERROR(variable_definition_requires_value_string);
+	ADD_TEST_ERROR(variable_statement_missing_assignment);
+	ADD_TEST_ERROR(variable_used_before_definition);
+	ADD_TEST_ERROR(wrong_type_global_assignment);
+	ADD_TEST_ERROR(wrong_type_global_reassignment);
+	ADD_TEST_ERROR(wrong_type_local_assignment);
+	ADD_TEST_ERROR(wrong_type_local_reassignment);
 }
 
-static void runtime_error_tests(void) {
+static void add_runtime_error_tests(void) {
 	grug_set_runtime_error_handler(runtime_error_handler);
 
-	TEST_RUNTIME_ERROR(division_by_0, "d", 8);
-	TEST_RUNTIME_ERROR(stack_overflow, "d", 8);
-	TEST_RUNTIME_ERROR(time_limit_exceeded, "d", 8);
+	ADD_TEST_RUNTIME_ERROR(division_by_0, "d", 8);
+	ADD_TEST_RUNTIME_ERROR(stack_overflow, "d", 8);
+	ADD_TEST_RUNTIME_ERROR(time_limit_exceeded, "d", 8);
 }
 
-static void ok_tests(void) {
-	TEST_OK(addition_as_argument, "d", 8);
-	TEST_OK(addition_as_two_arguments, "d", 8);
-	TEST_OK(addition_i32_wraparound, "d", 8);
-	TEST_OK(addition_with_multiplication, "d", 8);
-	TEST_OK(addition_with_multiplication_2, "d", 8);
-	TEST_OK(and_false_1, "d", 8);
-	TEST_OK(and_false_2, "d", 8);
-	TEST_OK(and_false_3, "d", 8);
-	TEST_OK(and_short_circuit, "d", 8);
-	TEST_OK(and_true, "d", 8);
-	TEST_OK(blocked_alrm, "d", 8);
-	TEST_OK(bool_logical_not_false, "d", 8);
-	TEST_OK(bool_logical_not_true, "d", 8);
-	TEST_OK(bool_returned, "d", 8);
-	TEST_OK(break, "d", 8);
-	TEST_OK(calls_100, "d", 8);
-	TEST_OK(calls_1000, "d", 8);
-	TEST_OK(comment_above_block, "d", 8);
-	TEST_OK(comment_above_block_twice, "d", 8);
-	TEST_OK(comment_above_define_fn, "d", 8);
-	TEST_OK(comment_above_define_fn_twice, "d", 8);
-	TEST_OK(comment_above_globals, "d", 20);
-	TEST_OK(comment_above_helper_fn, "d", 8);
-	TEST_OK(comment_above_on_fn, "d", 8);
-	TEST_OK(comment_between_globals, "a", 16);
-	TEST_OK(comment_between_statements, "d", 8);
-	TEST_OK(comment_lone_block, "d", 8);
-	TEST_OK(comment_lone_block_at_end, "d", 8);
-	TEST_OK(comment_lone_global, "d", 8);
-	TEST_OK(continue, "d", 8);
-	TEST_OK(define, "h", 8);
-	TEST_OK(define_containing_addition, "b", 8);
-	TEST_OK(define_containing_string, "k", 8);
-	TEST_OK(define_with_eight_f32_fields, "t", 8);
-	TEST_OK(define_with_six_fields, "m", 8);
-	TEST_OK(define_with_six_i32_fields, "n", 8);
-	TEST_OK(define_with_six_string_fields, "o", 8);
-	TEST_OK(division_negative_result, "d", 8);
-	TEST_OK(division_positive_result, "d", 8);
-	TEST_OK(else_after_else_if_false, "d", 8);
-	TEST_OK(else_after_else_if_true, "d", 8);
-	TEST_OK(else_false, "d", 8);
-	TEST_OK(else_if_false, "d", 8);
-	TEST_OK(else_if_true, "d", 8);
-	TEST_OK(else_true, "d", 8);
-	TEST_OK(empty_line, "d", 8);
-	TEST_OK(entity_and_on_fn, "z", 8);
-	TEST_OK(entity_and_resource_as_subexpression, "d", 8);
-	TEST_OK(entity_duplicate, "y", 8);
-	TEST_OK(entity_in_define, "x", 8);
-	TEST_OK(entity_in_define_with_mod_specified, "x", 8);
-	TEST_OK(entity_twice, "y", 8);
-	TEST_OK(eq_false, "d", 8);
-	TEST_OK(eq_true, "d", 8);
-	TEST_OK(f32_addition, "d", 8);
-	TEST_OK(f32_argument, "d", 8);
-	TEST_OK(f32_division, "d", 8);
-	TEST_OK(f32_eq_false, "d", 8);
-	TEST_OK(f32_eq_true, "d", 8);
-	TEST_OK(f32_ge_false, "d", 8);
-	TEST_OK(f32_ge_true_1, "d", 8);
-	TEST_OK(f32_ge_true_2, "d", 8);
-	TEST_OK(f32_global_variable, "d", 12);
-	TEST_OK(f32_gt_false, "d", 8);
-	TEST_OK(f32_gt_true, "d", 8);
-	TEST_OK(f32_le_false, "d", 8);
-	TEST_OK(f32_le_true_1, "d", 8);
-	TEST_OK(f32_le_true_2, "d", 8);
-	TEST_OK(f32_local_variable, "d", 8);
-	TEST_OK(f32_lt_false, "d", 8);
-	TEST_OK(f32_lt_true, "d", 8);
-	TEST_OK(f32_multiplication, "d", 8);
-	TEST_OK(f32_ne_false, "d", 8);
-	TEST_OK(f32_negated, "d", 8);
-	TEST_OK(f32_ne_true, "d", 8);
-	TEST_OK(f32_passed_to_helper_fn, "d", 8);
-	TEST_OK(f32_passed_to_on_fn, "r", 8);
-	TEST_OK(f32_passing_sin_to_cos, "d", 8);
-	TEST_OK(f32_subtraction, "d", 8);
-	TEST_OK(fibonacci, "d", 8);
-	TEST_OK(ge_false, "d", 8);
-	TEST_OK(ge_true_1, "d", 8);
-	TEST_OK(ge_true_2, "d", 8);
-	TEST_OK(global_containing_addition, "a", 12);
-	TEST_OK(globals, "h", 16);
-	TEST_OK(globals_1000, "a", 4008);
-	TEST_OK(globals_32, "a", 136);
-	TEST_OK(globals_64, "a", 264);
-	TEST_OK(gt_false, "d", 8);
-	TEST_OK(gt_true, "d", 8);
-	TEST_OK(helper_fn, "d", 8);
-	TEST_OK(helper_fn_overwriting_param, "d", 8);
-	TEST_OK(helper_fn_returning_void_has_no_return, "d", 8);
-	TEST_OK(helper_fn_returning_void_returns_void, "d", 8);
-	TEST_OK(i32_max, "d", 8);
-	TEST_OK(i32_min, "d", 8);
-	TEST_OK(i32_negated, "d", 8);
-	TEST_OK(id_local_variable_get_and_set, "d", 8);
-	TEST_OK(identical_strings_are_shared, "q", 8);
-	TEST_OK(if_false, "d", 8);
-	TEST_OK(if_true, "d", 8);
-	TEST_OK(le_false, "d", 8);
-	TEST_OK(le_true_1, "d", 8);
-	TEST_OK(le_true_2, "d", 8);
-	TEST_OK(lt_false, "d", 8);
-	TEST_OK(lt_true, "d", 8);
-	TEST_OK(max_args, "d", 8);
-	TEST_OK(me, "d", 8);
-	TEST_OK(me_assigned_to_local_variable, "d", 8);
-	TEST_OK(me_passed_to_helper_fn, "d", 8);
-	TEST_OK(minimal, "a", 8);
-	TEST_OK(multiplication_as_two_arguments, "d", 8);
-	TEST_OK(ne_false, "d", 8);
-	TEST_OK(negate_parenthesized_expr, "d", 8);
-	TEST_OK(negative_literal, "d", 8);
-	TEST_OK(nested_break, "d", 8);
-	TEST_OK(nested_continue, "d", 8);
-	TEST_OK(ne_true, "d", 8);
-	TEST_OK(no_define_fields, "d", 8);
-	TEST_OK(no_on_fns, "a", 8);
-	TEST_OK(null_id_initializing_global, "d", 16);
-	TEST_OK(null_id_initializing_local, "d", 8);
-	TEST_OK(no_empty_line_between_globals, "a", 16);
-	TEST_OK(no_empty_line_between_statements, "d", 8);
-	TEST_OK(on_fn, "d", 8);
-	TEST_OK(on_fn_calling_game_fn_nothing, "d", 8);
-	TEST_OK(on_fn_calling_game_fn_nothing_twice, "d", 8);
-	TEST_OK(on_fn_calling_game_fn_plt_order, "d", 8);
-	TEST_OK(on_fn_calling_helper_fns, "d", 8);
-	TEST_OK(on_fn_overwriting_param, "s", 8);
-	TEST_OK(on_fn_passing_argument_to_helper_fn, "d", 8);
-	TEST_OK(on_fn_passing_magic_to_initialize, "d", 8);
-	TEST_OK(on_fn_three, "j", 8);
-	TEST_OK(on_fn_three_unused_first, "j", 8);
-	TEST_OK(on_fn_three_unused_second, "j", 8);
-	TEST_OK(on_fn_three_unused_third, "j", 8);
-	TEST_OK(on_fn_usage_is_optional, "d", 8);
-	TEST_OK(or_false, "d", 8);
-	TEST_OK(or_short_circuit, "d", 8);
-	TEST_OK(or_true_1, "d", 8);
-	TEST_OK(or_true_2, "d", 8);
-	TEST_OK(or_true_3, "d", 8);
-	TEST_OK(pass_string_argument_to_game_fn, "d", 8);
-	TEST_OK(pass_string_argument_to_helper_fn, "d", 8);
-	TEST_OK(remainder_negative_result, "d", 8);
-	TEST_OK(remainder_positive_result, "d", 8);
-	TEST_OK(resource_and_entity, "b2", 8);
-	TEST_OK(resource_and_entity_and_on_fn, "a2", 8);
-	TEST_OK(resource_and_on_fn, "w", 8);
-	TEST_OK(resource_can_contain_dot_1, "u", 8);
-	TEST_OK(resource_can_contain_dot_2, "u", 8);
-	TEST_OK(resource_can_contain_dot_3, "u", 8);
-	TEST_OK(resource_can_contain_dot_dot_1, "u", 8);
-	TEST_OK(resource_can_contain_dot_dot_2, "u", 8);
-	TEST_OK(resource_can_contain_dot_dot_3, "u", 8);
-	TEST_OK(resource_duplicate, "v", 8);
-	TEST_OK(resource_in_define, "u", 8);
-	TEST_OK(resource_in_define_and_entity_in_game_fn, "w", 8);
-	TEST_OK(resource_twice, "v", 8);
-	TEST_OK(return, "d", 8);
-	TEST_OK(return_from_on_fn, "d", 8);
-	TEST_OK(return_with_no_value, "d", 8);
-	TEST_OK(stack_16_byte_alignment, "d", 8);
-	TEST_OK(stack_16_byte_alignment_midway, "d", 8);
-	TEST_OK(string_and_on_fn, "p", 8);
-	TEST_OK(string_eq_false, "d", 8);
-	TEST_OK(string_eq_true, "d", 8);
-	TEST_OK(string_eq_true_empty, "d", 8);
-	TEST_OK(string_ne_false, "d", 8);
-	TEST_OK(string_ne_false_empty, "d", 8);
-	TEST_OK(string_ne_true, "d", 8);
-	TEST_OK(subtraction_negative_result, "d", 8);
-	TEST_OK(subtraction_positive_result, "d", 8);
-	TEST_OK(variable, "d", 8);
-	TEST_OK(variable_does_not_shadow_define_fn, "d", 8);
-	TEST_OK(variable_reassignment, "d", 8);
-	TEST_OK(variable_shadows_define_fn, "d", 8);
-	TEST_OK(variable_shadows_game_fn, "d", 8);
-	TEST_OK(variable_shadows_helper_fn, "d", 8);
-	TEST_OK(variable_shadows_on_fn_1, "d", 8);
-	TEST_OK(variable_shadows_on_fn_2, "j", 8);
-	TEST_OK(variable_string_global, "d", 16);
-	TEST_OK(variable_string_local, "d", 8);
-	TEST_OK(void_function_early_return, "d", 8);
-	TEST_OK(while_false, "d", 8);
-	TEST_OK(write_to_global_variable, "d", 16);
+static void add_ok_tests(void) {
+	ADD_TEST_OK(addition_as_argument, "d", 8);
+	ADD_TEST_OK(addition_as_two_arguments, "d", 8);
+	ADD_TEST_OK(addition_i32_wraparound, "d", 8);
+	ADD_TEST_OK(addition_with_multiplication, "d", 8);
+	ADD_TEST_OK(addition_with_multiplication_2, "d", 8);
+	ADD_TEST_OK(and_false_1, "d", 8);
+	ADD_TEST_OK(and_false_2, "d", 8);
+	ADD_TEST_OK(and_false_3, "d", 8);
+	ADD_TEST_OK(and_short_circuit, "d", 8);
+	ADD_TEST_OK(and_true, "d", 8);
+	ADD_TEST_OK(blocked_alrm, "d", 8);
+	ADD_TEST_OK(bool_logical_not_false, "d", 8);
+	ADD_TEST_OK(bool_logical_not_true, "d", 8);
+	ADD_TEST_OK(bool_returned, "d", 8);
+	ADD_TEST_OK(break, "d", 8);
+	ADD_TEST_OK(calls_100, "d", 8);
+	ADD_TEST_OK(calls_1000, "d", 8);
+	ADD_TEST_OK(comment_above_block, "d", 8);
+	ADD_TEST_OK(comment_above_block_twice, "d", 8);
+	ADD_TEST_OK(comment_above_define_fn, "d", 8);
+	ADD_TEST_OK(comment_above_define_fn_twice, "d", 8);
+	ADD_TEST_OK(comment_above_globals, "d", 20);
+	ADD_TEST_OK(comment_above_helper_fn, "d", 8);
+	ADD_TEST_OK(comment_above_on_fn, "d", 8);
+	ADD_TEST_OK(comment_between_globals, "a", 16);
+	ADD_TEST_OK(comment_between_statements, "d", 8);
+	ADD_TEST_OK(comment_lone_block, "d", 8);
+	ADD_TEST_OK(comment_lone_block_at_end, "d", 8);
+	ADD_TEST_OK(comment_lone_global, "d", 8);
+	ADD_TEST_OK(continue, "d", 8);
+	ADD_TEST_OK(define, "h", 8);
+	ADD_TEST_OK(define_containing_addition, "b", 8);
+	ADD_TEST_OK(define_containing_string, "k", 8);
+	ADD_TEST_OK(define_with_eight_f32_fields, "t", 8);
+	ADD_TEST_OK(define_with_six_fields, "m", 8);
+	ADD_TEST_OK(define_with_six_i32_fields, "n", 8);
+	ADD_TEST_OK(define_with_six_string_fields, "o", 8);
+	ADD_TEST_OK(division_negative_result, "d", 8);
+	ADD_TEST_OK(division_positive_result, "d", 8);
+	ADD_TEST_OK(else_after_else_if_false, "d", 8);
+	ADD_TEST_OK(else_after_else_if_true, "d", 8);
+	ADD_TEST_OK(else_false, "d", 8);
+	ADD_TEST_OK(else_if_false, "d", 8);
+	ADD_TEST_OK(else_if_true, "d", 8);
+	ADD_TEST_OK(else_true, "d", 8);
+	ADD_TEST_OK(empty_line, "d", 8);
+	ADD_TEST_OK(entity_and_on_fn, "z", 8);
+	ADD_TEST_OK(entity_and_resource_as_subexpression, "d", 8);
+	ADD_TEST_OK(entity_duplicate, "y", 8);
+	ADD_TEST_OK(entity_in_define, "x", 8);
+	ADD_TEST_OK(entity_in_define_with_mod_specified, "x", 8);
+	ADD_TEST_OK(entity_twice, "y", 8);
+	ADD_TEST_OK(eq_false, "d", 8);
+	ADD_TEST_OK(eq_true, "d", 8);
+	ADD_TEST_OK(f32_addition, "d", 8);
+	ADD_TEST_OK(f32_argument, "d", 8);
+	ADD_TEST_OK(f32_division, "d", 8);
+	ADD_TEST_OK(f32_eq_false, "d", 8);
+	ADD_TEST_OK(f32_eq_true, "d", 8);
+	ADD_TEST_OK(f32_ge_false, "d", 8);
+	ADD_TEST_OK(f32_ge_true_1, "d", 8);
+	ADD_TEST_OK(f32_ge_true_2, "d", 8);
+	ADD_TEST_OK(f32_global_variable, "d", 12);
+	ADD_TEST_OK(f32_gt_false, "d", 8);
+	ADD_TEST_OK(f32_gt_true, "d", 8);
+	ADD_TEST_OK(f32_le_false, "d", 8);
+	ADD_TEST_OK(f32_le_true_1, "d", 8);
+	ADD_TEST_OK(f32_le_true_2, "d", 8);
+	ADD_TEST_OK(f32_local_variable, "d", 8);
+	ADD_TEST_OK(f32_lt_false, "d", 8);
+	ADD_TEST_OK(f32_lt_true, "d", 8);
+	ADD_TEST_OK(f32_multiplication, "d", 8);
+	ADD_TEST_OK(f32_ne_false, "d", 8);
+	ADD_TEST_OK(f32_negated, "d", 8);
+	ADD_TEST_OK(f32_ne_true, "d", 8);
+	ADD_TEST_OK(f32_passed_to_helper_fn, "d", 8);
+	ADD_TEST_OK(f32_passed_to_on_fn, "r", 8);
+	ADD_TEST_OK(f32_passing_sin_to_cos, "d", 8);
+	ADD_TEST_OK(f32_subtraction, "d", 8);
+	ADD_TEST_OK(fibonacci, "d", 8);
+	ADD_TEST_OK(ge_false, "d", 8);
+	ADD_TEST_OK(ge_true_1, "d", 8);
+	ADD_TEST_OK(ge_true_2, "d", 8);
+	ADD_TEST_OK(global_containing_addition, "a", 12);
+	ADD_TEST_OK(globals, "h", 16);
+	ADD_TEST_OK(globals_1000, "a", 4008);
+	ADD_TEST_OK(globals_32, "a", 136);
+	ADD_TEST_OK(globals_64, "a", 264);
+	ADD_TEST_OK(gt_false, "d", 8);
+	ADD_TEST_OK(gt_true, "d", 8);
+	ADD_TEST_OK(helper_fn, "d", 8);
+	ADD_TEST_OK(helper_fn_overwriting_param, "d", 8);
+	ADD_TEST_OK(helper_fn_returning_void_has_no_return, "d", 8);
+	ADD_TEST_OK(helper_fn_returning_void_returns_void, "d", 8);
+	ADD_TEST_OK(i32_max, "d", 8);
+	ADD_TEST_OK(i32_min, "d", 8);
+	ADD_TEST_OK(i32_negated, "d", 8);
+	ADD_TEST_OK(id_local_variable_get_and_set, "d", 8);
+	ADD_TEST_OK(identical_strings_are_shared, "q", 8);
+	ADD_TEST_OK(if_false, "d", 8);
+	ADD_TEST_OK(if_true, "d", 8);
+	ADD_TEST_OK(le_false, "d", 8);
+	ADD_TEST_OK(le_true_1, "d", 8);
+	ADD_TEST_OK(le_true_2, "d", 8);
+	ADD_TEST_OK(lt_false, "d", 8);
+	ADD_TEST_OK(lt_true, "d", 8);
+	ADD_TEST_OK(max_args, "d", 8);
+	ADD_TEST_OK(me, "d", 8);
+	ADD_TEST_OK(me_assigned_to_local_variable, "d", 8);
+	ADD_TEST_OK(me_passed_to_helper_fn, "d", 8);
+	ADD_TEST_OK(minimal, "a", 8);
+	ADD_TEST_OK(multiplication_as_two_arguments, "d", 8);
+	ADD_TEST_OK(ne_false, "d", 8);
+	ADD_TEST_OK(negate_parenthesized_expr, "d", 8);
+	ADD_TEST_OK(negative_literal, "d", 8);
+	ADD_TEST_OK(nested_break, "d", 8);
+	ADD_TEST_OK(nested_continue, "d", 8);
+	ADD_TEST_OK(ne_true, "d", 8);
+	ADD_TEST_OK(no_define_fields, "d", 8);
+	ADD_TEST_OK(no_on_fns, "a", 8);
+	ADD_TEST_OK(null_id_initializing_global, "d", 16);
+	ADD_TEST_OK(null_id_initializing_local, "d", 8);
+	ADD_TEST_OK(no_empty_line_between_globals, "a", 16);
+	ADD_TEST_OK(no_empty_line_between_statements, "d", 8);
+	ADD_TEST_OK(on_fn, "d", 8);
+	ADD_TEST_OK(on_fn_calling_game_fn_nothing, "d", 8);
+	ADD_TEST_OK(on_fn_calling_game_fn_nothing_twice, "d", 8);
+	ADD_TEST_OK(on_fn_calling_game_fn_plt_order, "d", 8);
+	ADD_TEST_OK(on_fn_calling_helper_fns, "d", 8);
+	ADD_TEST_OK(on_fn_overwriting_param, "s", 8);
+	ADD_TEST_OK(on_fn_passing_argument_to_helper_fn, "d", 8);
+	ADD_TEST_OK(on_fn_passing_magic_to_initialize, "d", 8);
+	ADD_TEST_OK(on_fn_three, "j", 8);
+	ADD_TEST_OK(on_fn_three_unused_first, "j", 8);
+	ADD_TEST_OK(on_fn_three_unused_second, "j", 8);
+	ADD_TEST_OK(on_fn_three_unused_third, "j", 8);
+	ADD_TEST_OK(on_fn_usage_is_optional, "d", 8);
+	ADD_TEST_OK(or_false, "d", 8);
+	ADD_TEST_OK(or_short_circuit, "d", 8);
+	ADD_TEST_OK(or_true_1, "d", 8);
+	ADD_TEST_OK(or_true_2, "d", 8);
+	ADD_TEST_OK(or_true_3, "d", 8);
+	ADD_TEST_OK(pass_string_argument_to_game_fn, "d", 8);
+	ADD_TEST_OK(pass_string_argument_to_helper_fn, "d", 8);
+	ADD_TEST_OK(remainder_negative_result, "d", 8);
+	ADD_TEST_OK(remainder_positive_result, "d", 8);
+	ADD_TEST_OK(resource_and_entity, "b2", 8);
+	ADD_TEST_OK(resource_and_entity_and_on_fn, "a2", 8);
+	ADD_TEST_OK(resource_and_on_fn, "w", 8);
+	ADD_TEST_OK(resource_can_contain_dot_1, "u", 8);
+	ADD_TEST_OK(resource_can_contain_dot_2, "u", 8);
+	ADD_TEST_OK(resource_can_contain_dot_3, "u", 8);
+	ADD_TEST_OK(resource_can_contain_dot_dot_1, "u", 8);
+	ADD_TEST_OK(resource_can_contain_dot_dot_2, "u", 8);
+	ADD_TEST_OK(resource_can_contain_dot_dot_3, "u", 8);
+	ADD_TEST_OK(resource_duplicate, "v", 8);
+	ADD_TEST_OK(resource_in_define, "u", 8);
+	ADD_TEST_OK(resource_in_define_and_entity_in_game_fn, "w", 8);
+	ADD_TEST_OK(resource_twice, "v", 8);
+	ADD_TEST_OK(return, "d", 8);
+	ADD_TEST_OK(return_from_on_fn, "d", 8);
+	ADD_TEST_OK(return_with_no_value, "d", 8);
+	ADD_TEST_OK(stack_16_byte_alignment, "d", 8);
+	ADD_TEST_OK(stack_16_byte_alignment_midway, "d", 8);
+	ADD_TEST_OK(string_and_on_fn, "p", 8);
+	ADD_TEST_OK(string_eq_false, "d", 8);
+	ADD_TEST_OK(string_eq_true, "d", 8);
+	ADD_TEST_OK(string_eq_true_empty, "d", 8);
+	ADD_TEST_OK(string_ne_false, "d", 8);
+	ADD_TEST_OK(string_ne_false_empty, "d", 8);
+	ADD_TEST_OK(string_ne_true, "d", 8);
+	ADD_TEST_OK(subtraction_negative_result, "d", 8);
+	ADD_TEST_OK(subtraction_positive_result, "d", 8);
+	ADD_TEST_OK(variable, "d", 8);
+	ADD_TEST_OK(variable_does_not_shadow_define_fn, "d", 8);
+	ADD_TEST_OK(variable_reassignment, "d", 8);
+	ADD_TEST_OK(variable_shadows_define_fn, "d", 8);
+	ADD_TEST_OK(variable_shadows_game_fn, "d", 8);
+	ADD_TEST_OK(variable_shadows_helper_fn, "d", 8);
+	ADD_TEST_OK(variable_shadows_on_fn_1, "d", 8);
+	ADD_TEST_OK(variable_shadows_on_fn_2, "j", 8);
+	ADD_TEST_OK(variable_string_global, "d", 16);
+	ADD_TEST_OK(variable_string_local, "d", 8);
+	ADD_TEST_OK(void_function_early_return, "d", 8);
+	ADD_TEST_OK(while_false, "d", 8);
+	ADD_TEST_OK(write_to_global_variable, "d", 16);
 }
 
 int main(int argc, char *argv[]) {
+	// If a test failed, you can reproduce it
+	// by replacing `time(NULL)` with the failing test's seed
+	unsigned int seed = time(NULL);
+	printf("The seed is %u\n", seed);
+	srand(seed);
+
 	for (int i = 1; i < argc; i++) {
 		whitelisted_tests[whitelisted_tests_size++] = argv[i];
 	}
 
-	error_tests();
-	runtime_error_tests();
-	ok_tests();
+	add_error_tests();
+	SHUFFLE(error_test_datas, error_test_datas_size, struct error_test_data);
+	for (size_t i = 0; i < error_test_datas_size; i++) {
+		struct error_test_data data = error_test_datas[i];
+
+		test_error(
+			data.test_name_str,
+			data.grug_path,
+			data.expected_error_path,
+			data.results_path,
+			data.output_dll_path,
+			data.grug_output_path,
+			data.failed_file_path
+		);
+	}
+
+	add_runtime_error_tests();
+	SHUFFLE(runtime_error_test_datas, runtime_error_test_datas_size, struct runtime_error_test_data);
+	for (size_t i = 0; i < runtime_error_test_datas_size; i++) {
+		struct runtime_error_test_data fn_data = runtime_error_test_datas[i];
+
+		struct test_data data = runtime_error_prologue(
+			fn_data.test_name_str,
+			fn_data.grug_path,
+			fn_data.nasm_path,
+			fn_data.expected_error_path,
+			fn_data.results_path,
+			fn_data.output_dll_path,
+			fn_data.expected_dll_path,
+			fn_data.nasm_o_path,
+			fn_data.expected_xxd_path,
+			fn_data.expected_readelf_path,
+			fn_data.expected_objdump_path,
+			fn_data.failed_file_path,
+			fn_data.expected_define_type_str,
+			fn_data.expected_globals_size_value
+		);
+
+		if (data.run) {
+			runtime_error_reason = NULL;
+			signal_handler_called = false;
+			had_runtime_error = false;
+			runtime_error_type = -1;
+			runtime_error_on_fn_name = NULL;
+			runtime_error_on_fn_path = NULL;
+
+			fn_data.run(data.on_fns, data.g, data.resources_size, data.resources, data.entities_size, data.entities, data.entity_types);
+
+			runtime_error_epilogue(
+				fn_data.grug_path,
+				fn_data.expected_error_path,
+				fn_data.output_dll_path,
+				fn_data.expected_dll_path,
+				fn_data.output_xxd_path,
+				fn_data.output_readelf_path,
+				fn_data.output_objdump_path,
+				fn_data.dump_path,
+				fn_data.applied_path,
+				fn_data.failed_file_path
+			);
+		}
+
+		if (data.dll && dlclose(data.dll)) {
+			handle_dlerror("dlclose");
+		}
+	}
+
+	add_ok_tests();
+	SHUFFLE(ok_test_datas, ok_test_datas_size, struct ok_test_data);
+	for (size_t i = 0; i < ok_test_datas_size; i++) {
+		struct ok_test_data fn_data = ok_test_datas[i];
+
+		struct test_data data = ok_prologue(
+			fn_data.test_name_str,
+			fn_data.grug_path,
+			fn_data.nasm_path,
+			fn_data.results_path,
+			fn_data.output_dll_path,
+			fn_data.expected_dll_path,
+			fn_data.nasm_o_path,
+			fn_data.expected_xxd_path,
+			fn_data.expected_readelf_path,
+			fn_data.expected_objdump_path,
+			fn_data.failed_file_path,
+			fn_data.expected_define_type_str,
+			fn_data.expected_globals_size_value
+		);
+
+		if (data.run) {
+			fn_data.run(data.on_fns, data.g, data.resources_size, data.resources, data.entities_size, data.entities, data.entity_types);
+
+			ok_epilogue(
+				fn_data.grug_path,
+				fn_data.output_dll_path,
+				fn_data.expected_dll_path,
+				fn_data.output_xxd_path,
+				fn_data.output_readelf_path,
+				fn_data.output_objdump_path,
+				fn_data.dump_path,
+				fn_data.applied_path,
+				fn_data.failed_file_path
+			);
+		}
+
+		if (data.dll && dlclose(data.dll)) {
+			handle_dlerror("dlclose");
+		}
+	}
 
 	printf("\nAll tests passed! 🎉\n");
 }
