@@ -5280,7 +5280,7 @@ static void add_ok_tests(void) {
 
 int main(int argc, char *argv[]) {
 	// If a test failed, you can reproduce it
-	// by replacing `time(NULL)` with the failing test's seed
+	// by replacing `time(NULL)` with the failing test's printed seed
 	unsigned int seed = time(NULL);
 	printf("The seed is %u\n", seed);
 	srand(seed);

@@ -12,6 +12,8 @@ This is the test suite of [my programming language called grug](https://github.c
 
 Check the terminal or the generated `results` directory in tests to inspect any errors.
 
+If a test failed, you can reproduce it by replacing `time(NULL)` in `main()` with the failing test's printed seed.
+
 ### Troubleshooting
 
 If you're using a Debian-based distribution like Ubuntu 22.04, you might need to run `sudo sysctl vm.mmap_rnd_bits=28` to fix address sanitizer, which `tests.sh` uses. See [this GitHub thread](https://github.com/actions/runner-images/issues/9524#issuecomment-2002475952) for context.
