@@ -1,0 +1,10 @@
+define() g {
+    return {
+    }
+}
+
+on_a(
+    x: i32,
+    y: i32
+) {
+}

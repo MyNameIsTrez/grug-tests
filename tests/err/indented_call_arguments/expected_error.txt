@@ -1,0 +1,1 @@
+Expected a primary expression token, but got token type NEWLINE_TOKEN on line 7

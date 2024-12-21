@@ -5017,6 +5017,12 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(i32_logical_not);
 	ADD_TEST_ERROR(i32_too_big);
 	ADD_TEST_ERROR(i32_too_small);
+	ADD_TEST_ERROR(indented_call_argument);
+	ADD_TEST_ERROR(indented_call_arguments);
+	ADD_TEST_ERROR(indented_helper_fn_parameter);
+	ADD_TEST_ERROR(indented_helper_fn_parameters);
+	ADD_TEST_ERROR(indented_on_fn_parameter);
+	ADD_TEST_ERROR(indented_on_fn_parameters);
 	ADD_TEST_ERROR(indentation_going_down_by_2);
 	ADD_TEST_ERROR(local_variable_already_exists);
 	ADD_TEST_ERROR(local_variable_definition_cant_use_itself);
@@ -5279,18 +5285,22 @@ static void add_ok_tests(void) {
 }
 
 int main(int argc, char *argv[]) {
-	// If a test failed, you can reproduce it
-	// by replacing `time(NULL)` with the failing test's printed seed
-	unsigned int seed = time(NULL);
-	printf("The seed is %u\n", seed);
-	srand(seed);
+#ifdef SHUFFLING
+		// If a test failed, you can reproduce it
+		// by replacing `time(NULL)` with the failing test's printed seed
+		unsigned int seed = time(NULL);
+		printf("The seed is %u\n", seed);
+		srand(seed);
+#endif
 
 	for (int i = 1; i < argc; i++) {
 		whitelisted_tests[whitelisted_tests_size++] = argv[i];
 	}
 
 	add_error_tests();
-	SHUFFLE(error_test_datas, error_test_datas_size, struct error_test_data);
+#ifdef SHUFFLING
+		SHUFFLE(error_test_datas, error_test_datas_size, struct error_test_data);
+#endif
 	for (size_t i = 0; i < error_test_datas_size; i++) {
 		struct error_test_data data = error_test_datas[i];
 
@@ -5306,7 +5316,9 @@ int main(int argc, char *argv[]) {
 	}
 
 	add_runtime_error_tests();
-	SHUFFLE(runtime_error_test_datas, runtime_error_test_datas_size, struct runtime_error_test_data);
+#ifdef SHUFFLING
+		SHUFFLE(runtime_error_test_datas, runtime_error_test_datas_size, struct runtime_error_test_data);
+#endif
 	for (size_t i = 0; i < runtime_error_test_datas_size; i++) {
 		struct runtime_error_test_data fn_data = runtime_error_test_datas[i];
 
@@ -5357,7 +5369,9 @@ int main(int argc, char *argv[]) {
 	}
 
 	add_ok_tests();
-	SHUFFLE(ok_test_datas, ok_test_datas_size, struct ok_test_data);
+#ifdef SHUFFLING
+		SHUFFLE(ok_test_datas, ok_test_datas_size, struct ok_test_data);
+#endif
 	for (size_t i = 0; i < ok_test_datas_size; i++) {
 		struct ok_test_data fn_data = ok_test_datas[i];
 

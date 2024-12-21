@@ -31,6 +31,12 @@ then
     echo "- VALGRIND was turned on"
 fi
 
+if [[ ${SHUFFLING+x} ]]
+then
+    echo "- SHUFFLING was turned on"
+    compiler_flags+=' -DSHUFFLING'
+fi
+
 if [ "$(uname)" == "Darwin" ]; then # If Mac OS X
     echo "Detected macOS"
     compiler_flags+=' -I.' # For `#include <elf.h>`

@@ -1,0 +1,9 @@
+define() f {
+    return {
+    }
+}
+
+on_a(
+    x: i32
+) {
+}
