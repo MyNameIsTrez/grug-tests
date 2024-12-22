@@ -810,7 +810,7 @@ static void output_dll_info(char *dll_path, char *xxd_path, char *readelf_path, 
 
 	run_and_write((char *[]){"readelf", "--wide", "-a", dll_path, NULL}, readelf_path);
 
-	run_and_write((char *[]){"objdump", "-D", dll_path, "-Mintel", NULL}, objdump_path);
+	run_and_write((char *[]){"objdump", "-d", dll_path, "-Mintel", NULL}, objdump_path);
 }
 
 static bool newer(char *path1, char *path2) {
@@ -4459,6 +4459,22 @@ static void ok_return_from_on_fn(void *on_fns, void *g, size_t resources_size, c
 	assert(entity_types == NULL);
 }
 
+static void ok_return_from_on_fn_minimal(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	((struct j_on_fns *)on_fns)->a(g);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/return_from_on_fn_minimal/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_return_with_no_value(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
@@ -5255,6 +5271,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(resource_twice, "v", 8);
 	ADD_TEST_OK(return, "d", 8);
 	ADD_TEST_OK(return_from_on_fn, "d", 8);
+	ADD_TEST_OK(return_from_on_fn_minimal, "d", 8);
 	ADD_TEST_OK(return_with_no_value, "d", 8);
 	ADD_TEST_OK(stack_16_byte_alignment, "d", 8);
 	ADD_TEST_OK(stack_16_byte_alignment_midway, "d", 8);
