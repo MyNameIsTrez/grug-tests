@@ -5088,8 +5088,6 @@ static void add_error_tests(void) {
 }
 
 static void add_runtime_error_tests(void) {
-	grug_set_runtime_error_handler(runtime_error_handler);
-
 	ADD_TEST_RUNTIME_ERROR(division_by_0, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(stack_overflow, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(time_limit_exceeded, "d", 8);
@@ -5285,6 +5283,8 @@ static void add_ok_tests(void) {
 }
 
 int main(int argc, char *argv[]) {
+	grug_init(runtime_error_handler, "mod_api.json", "tests");
+
 #ifdef SHUFFLING
 		// If a test failed, you can reproduce it
 		// by replacing `time(NULL)` with the failing test's printed seed

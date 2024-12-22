@@ -12,8 +12,6 @@ then
     compiler_flags+=' -fsanitize=address,undefined'
 fi
 
-compiler_flags+=' -DMODS_DIR_PATH="tests"'
-
 if [[ ${OLD_LD+x} ]]
 then
     echo "- OLD_LD was turned on"
