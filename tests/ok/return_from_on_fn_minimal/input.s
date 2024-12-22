@@ -115,7 +115,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x89
+	je strict $+0x91
 
 	save_on_fn_name_and_path
 
@@ -124,7 +124,9 @@ on_a:
 	call grug_enable_on_fn_runtime_error_handling wrt ..plt
 
 	push rax
+	sub rsp, byte 0x8
 	call grug_disable_on_fn_runtime_error_handling wrt ..plt
+	add rsp, byte 0x8
 	pop rax
 
 	mov rsp, rbp
