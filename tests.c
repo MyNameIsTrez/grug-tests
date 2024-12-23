@@ -170,27 +170,32 @@ static bool streq(char *a, char *b) {
 }
 
 void game_fn_nothing(void) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_nothing_call_count++;
 }
 int32_t game_fn_magic(void) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_magic_call_count++;
 
 	return 42;
 }
 static int32_t game_fn_initialize_x;
 void game_fn_initialize(int32_t x) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_initialize_call_count++;
 
 	game_fn_initialize_x = x;
 }
 static bool game_fn_initialize_bool_b;
 void game_fn_initialize_bool(bool b) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_initialize_bool_call_count++;
 
 	game_fn_initialize_bool_b = b;
 }
 static int32_t game_fn_identity_x;
 int32_t game_fn_identity(int32_t x) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_identity_call_count++;
 
 	game_fn_identity_x = x;
@@ -200,6 +205,7 @@ int32_t game_fn_identity(int32_t x) {
 static int32_t game_fn_max_x;
 static int32_t game_fn_max_y;
 int32_t game_fn_max(int32_t x, int32_t y) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_max_call_count++;
 
 	game_fn_max_x = x;
@@ -209,12 +215,14 @@ int32_t game_fn_max(int32_t x, int32_t y) {
 }
 static char *game_fn_say_message;
 void game_fn_say(char *message) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_say_call_count++;
 
 	game_fn_say_message = message;
 }
 static float game_fn_sin_x;
 float game_fn_sin(float x) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_sin_call_count++;
 
 	game_fn_sin_x = x;
@@ -223,6 +231,7 @@ float game_fn_sin(float x) {
 }
 static float game_fn_cos_x;
 float game_fn_cos(float x) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_cos_call_count++;
 
 	game_fn_cos_x = x;
@@ -244,6 +253,7 @@ static float game_fn_mega_f8;
 static int32_t game_fn_mega_id;
 static char *game_fn_mega_str;
 void game_fn_mega(float f1, int32_t i1, bool b1, float f2, float f3, float f4, bool b2, int32_t i2, float f5, float f6, float f7, float f8, uint64_t id, char *str) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_mega_call_count++;
 
 	game_fn_mega_f1 = f1;
@@ -262,12 +272,14 @@ void game_fn_mega(float f1, int32_t i1, bool b1, float f2, float f3, float f4, b
 	game_fn_mega_str = str;
 }
 bool game_fn_is_friday(void) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_is_friday_call_count++;
 
 	return true;
 }
 static bool game_fn_set_is_happy_is_happy;
 void game_fn_set_is_happy(bool is_happy) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_set_is_happy_call_count++;
 
 	game_fn_set_is_happy_is_happy = is_happy;
@@ -282,6 +294,7 @@ static float game_fn_mega_f32_f7;
 static float game_fn_mega_f32_f8;
 static float game_fn_mega_f32_f9;
 void game_fn_mega_f32(float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_mega_f32_call_count++;
 
 	game_fn_mega_f32_f1 = f1;
@@ -302,6 +315,7 @@ static int32_t game_fn_mega_i32_i5;
 static int32_t game_fn_mega_i32_i6;
 static int32_t game_fn_mega_i32_i7;
 void game_fn_mega_i32(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_mega_i32_call_count++;
 
 	game_fn_mega_i32_i1 = i1;
@@ -313,6 +327,7 @@ void game_fn_mega_i32(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5
 	game_fn_mega_i32_i7 = i7;
 }
 void game_fn_blocked_alrm(void) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_blocked_alrm_call_count++;
 
 	sigset_t mask;
@@ -338,12 +353,14 @@ void game_fn_initialize_aligned(int32_t x) {
 }
 static char *game_fn_spawn_name;
 void game_fn_spawn(char *name) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_spawn_call_count++;
 
 	game_fn_spawn_name = name;
 }
 static char *game_fn_has_resource_path;
 bool game_fn_has_resource(char *path) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_has_resource_call_count++;
 
 	game_fn_has_resource_path = path;
@@ -352,6 +369,7 @@ bool game_fn_has_resource(char *path) {
 }
 static char *game_fn_has_entity_name;
 bool game_fn_has_entity(char *name) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_has_entity_call_count++;
 
 	game_fn_has_entity_name = name;
@@ -360,6 +378,7 @@ bool game_fn_has_entity(char *name) {
 }
 static char *game_fn_has_string_str;
 bool game_fn_has_string(char *str) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_has_string_call_count++;
 
 	game_fn_has_string_str = str;
@@ -367,12 +386,14 @@ bool game_fn_has_string(char *str) {
 	return true;
 }
 uint64_t game_fn_get_opponent(void) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_get_opponent_call_count++;
 
 	return 42;
 }
 static uint64_t game_fn_set_target_target;
 void game_fn_set_target(uint64_t target) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_set_target_call_count++;
 
 	game_fn_set_target_target = target;
