@@ -37,7 +37,7 @@ extern __sigsetjmp
 extern grug_get_runtime_error_reason
 extern grug_enable_on_fn_runtime_error_handling
 extern grug_disable_on_fn_runtime_error_handling
-extern sigprocmask
+extern pthread_sigmask
 extern game_fn_initialize
 extern game_fn_sin
 
@@ -92,7 +92,7 @@ init_globals:
 	xor edx, edx
 	mov rsi, [rel grug_block_mask wrt ..got]
 	xor edi, edi
-	call sigprocmask wrt ..plt
+	call pthread_sigmask wrt ..plt
 %endmacro
 
 %macro unblock 0
@@ -101,7 +101,7 @@ init_globals:
 	mov rsi, [rel grug_block_mask wrt ..got]
 	mov edi, 1
 	sub rsp, byte 0x8
-	call sigprocmask wrt ..plt
+	call pthread_sigmask wrt ..plt
 	add rsp, byte 0x8
 	pop rax
 %endmacro

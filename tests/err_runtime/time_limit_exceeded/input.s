@@ -36,7 +36,7 @@ extern game_fn_define_d
 extern __sigsetjmp
 extern grug_get_runtime_error_reason
 extern grug_enable_on_fn_runtime_error_handling
-extern sigprocmask
+extern pthread_sigmask
 extern grug_disable_on_fn_runtime_error_handling
 
 global define
