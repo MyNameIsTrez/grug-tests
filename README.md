@@ -12,6 +12,8 @@ This is the test suite of [my programming language called grug](https://github.c
 
 Check the terminal or the generated `results` directory in tests to inspect any errors.
 
+You can get more info in the results directory (from objdump, readelf and xxd) by running `OUTPUT_DLL_INFO= ./tests.sh`.
+
 If a test failed, you can reproduce it by replacing `time(NULL)` in `main()` with the failing test's printed seed.
 
 ### Troubleshooting

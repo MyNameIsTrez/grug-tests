@@ -774,6 +774,20 @@ static void wait_on_child(char *child_name) {
 	}
 }
 
+static void run(char *const *argv) {
+	pid_t pid = fork();
+	check(pid, "fork");
+
+	if (pid == 0) {
+		execvp(argv[0], argv);
+		printf("execvp: %s: %s\n", argv[0], strerror(errno));
+		exit(EXIT_FAILURE);
+	}
+
+	wait_on_child(argv[0]);
+}
+
+#ifdef OUTPUT_DLL_INFO
 static void run_and_write(char *const *argv, char *written_path) {
 	pid_t pid = fork();
 	check(pid, "fork");
@@ -786,19 +800,6 @@ static void run_and_write(char *const *argv, char *written_path) {
 
 		close(fd);
 
-		execvp(argv[0], argv);
-		printf("execvp: %s: %s\n", argv[0], strerror(errno));
-		exit(EXIT_FAILURE);
-	}
-
-	wait_on_child(argv[0]);
-}
-
-static void run(char *const *argv) {
-	pid_t pid = fork();
-	check(pid, "fork");
-
-	if (pid == 0) {
 		execvp(argv[0], argv);
 		printf("execvp: %s: %s\n", argv[0], strerror(errno));
 		exit(EXIT_FAILURE);
@@ -833,6 +834,7 @@ static void output_dll_info(char *dll_path, char *xxd_path, char *readelf_path, 
 
 	run_and_write((char *[]){"objdump", "-d", dll_path, "-Mintel", NULL}, objdump_path);
 }
+#endif
 
 static bool newer(char *path1, char *path2) {
 	struct stat s1;
@@ -1022,7 +1024,12 @@ static void generate_and_compare_output_dll(
 		exit(EXIT_FAILURE);
 	}
 
+	(void)output_xxd_path;
+	(void)output_readelf_path;
+	(void)output_objdump_path;
+#ifdef OUTPUT_DLL_INFO
 	output_dll_info(output_dll_path, output_xxd_path, output_readelf_path, output_objdump_path);
+#endif
 
 	diff_dump_and_apply(grug_path, dump_path, applied_path);
 
@@ -1127,7 +1134,12 @@ static void regenerate_expected_dll(
 
 	run((char *[]){"objcopy", expected_dll_path, "--redefine-sym", redefine_sym, NULL});
 
+	(void)expected_xxd_path;
+	(void)expected_readelf_path;
+	(void)expected_objdump_path;
+#ifdef OUTPUT_DLL_INFO
 	output_dll_info(expected_dll_path, expected_xxd_path, expected_readelf_path, expected_objdump_path);
+#endif
 }
 
 static struct test_data get_expected_test_data(

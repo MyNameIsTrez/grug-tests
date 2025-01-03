@@ -5,6 +5,12 @@ compiler_flags='-Igrug -g -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -
 # This makes compilation quite a bit slower
 # compiler_flags+=' -Og'
 
+if [[ ${OUTPUT_DLL_INFO+x} ]]
+then
+    echo "- OUTPUT_DLL_INFO was turned on"
+    compiler_flags+=' -DOUTPUT_DLL_INFO'
+fi
+
 if [[ ${ASAN+x} ]]
 then
     # This makes compilation quite a bit slower
