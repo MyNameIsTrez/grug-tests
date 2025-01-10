@@ -18,8 +18,6 @@ jobs:
 
       - name: Run the tests
         run: ./tests.sh
-        env:
-          OLD_LD:
 
   build-ubuntu-clang-asan:
     name: ubuntu-clang-asan
@@ -37,8 +35,7 @@ jobs:
       - name: Run the tests
         run: ./tests.sh
         env:
-          OLD_LD:
-          ASAN:
+          ASAN: 1
 
   build-ubuntu-clang-valgrind:
     name: ubuntu-clang-valgrind
@@ -59,8 +56,7 @@ jobs:
       - name: Run the tests
         run: ./tests.sh
         env:
-          OLD_LD:
-          VALGRIND:
+          VALGRIND: 1
 
   build-ubuntu-gcc:
     name: ubuntu-gcc
@@ -78,7 +74,6 @@ jobs:
       - name: Run the tests
         run: ./tests.sh
         env:
-          OLD_LD:
           CC: gcc
 
   build-ubuntu-gcc-asan:
@@ -97,9 +92,8 @@ jobs:
       - name: Run the tests
         run: ./tests.sh
         env:
-          OLD_LD:
           CC: gcc
-          ASAN:
+          ASAN: 1
 
   build-ubuntu-gcc-valgrind:
     name: ubuntu-gcc-valgrind
@@ -120,9 +114,8 @@ jobs:
       - name: Run the tests
         run: ./tests.sh
         env:
-          OLD_LD:
           CC: gcc
-          VALGRIND:
+          VALGRIND: 1
 
   # TODO: This is supposed to emulate Android, but I'm not sure whether it's working,
   # since the `script: lsb_release -a && uname -a` prints Ubuntu 22.04,
@@ -218,8 +211,6 @@ jobs:
   #     # TODO: Put this back!
   #     # - name: Run the tests
   #     #   run: ./tests.sh
-  #     #   env:
-  #     #     OLD_LD:
 
   # build-mac-clang-asan:
   #   name: mac-clang-asan
@@ -233,8 +224,7 @@ jobs:
   #     - name: Run the tests
   #       run: ./tests.sh
   #       env:
-  #         OLD_LD:
-  #         ASAN:
+  #         ASAN: 1
 
   # TODO: Add linux-arm64 once it is public to open-source projects:
   # https://github.com/orgs/community/discussions/19197#discussioncomment-10550689
