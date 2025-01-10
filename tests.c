@@ -48,15 +48,13 @@ bool grug_test_regenerate_dll(char *grug_file_path, char *dll_path, char *mod);
 	\
 	asm("mov %0, sp\n\t" : "=r" (rsp));\
 	\
-	_Pragma("GCC diagnostic pop")\
-	\
 	if ((rsp & 0xf) != 0) {\
 		static char msg[] = "The stack was not 16-byte aligned!\n";\
 		write(STDERR_FILENO, msg, sizeof(msg) - 1);\
 		abort();\
 	}\
 	\
-	assert((rsp & 0xf) == 0);\
+	_Pragma("GCC diagnostic pop")\
 }
 #else
 #error Unsupported or unrecognized architecture
