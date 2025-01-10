@@ -29,7 +29,7 @@ bool grug_test_regenerate_dll(char *grug_file_path, char *dll_path, char *mod);
 	_Pragma("GCC diagnostic push")\
 	_Pragma("GCC diagnostic ignored \"-Wlanguage-extension-token\"")\
 	\
-	asm("mov %%rsp, %0\n\t" : "=r" (rsp));\
+	__asm__ volatile("mov %%rsp, %0\n\t" : "=r" (rsp));\
 	\
 	_Pragma("GCC diagnostic pop")\
 	\
@@ -46,7 +46,7 @@ bool grug_test_regenerate_dll(char *grug_file_path, char *dll_path, char *mod);
 	_Pragma("GCC diagnostic push")\
 	_Pragma("GCC diagnostic ignored \"-Wlanguage-extension-token\"")\
 	\
-	asm("mov %0, sp\n\t" : "=r" (rsp));\
+	__asm__ volatile("mov %0, sp\n\t" : "=r" (rsp));\
 	\
 	_Pragma("GCC diagnostic pop")\
 	\
