@@ -1107,6 +1107,7 @@ static void regenerate_expected_dll(
 ) {
 #ifdef __x86_64__
 	run((char *[]){"nasm", nasm_path, "-felf64", "-O0", "-o", nasm_o_path, NULL});
+	// run((char *[]){"nasm", nasm_path, "-felf64", "-g", "-O0", "-o", nasm_o_path, NULL});
 	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-shared", "--hash-style=sysv", NULL});
 #elif __aarch64__
 	run((char *[]){"nasm", nasm_path, "-fmacho64", "-O0", "-o", nasm_o_path, NULL});
@@ -1251,12 +1252,6 @@ static struct test_data runtime_error_prologue(
 	return get_expected_test_data(grug_path, nasm_path, results_path, expected_dll_path, nasm_o_path, expected_xxd_path, expected_readelf_path, expected_objdump_path, failed_file_path, expected_define_type, expected_globals_size);
 }
 
-static bool signal_handler_called = false;
-static void signal_handler(int sig) {
-	(void)sig;
-	signal_handler_called = true;
-}
-
 static bool had_runtime_error = false;
 static enum grug_runtime_error_type runtime_error_type = -1;
 static char *runtime_error_on_fn_name = NULL;
@@ -1270,21 +1265,16 @@ static void runtime_error_handler(char *reason, enum grug_runtime_error_type typ
 	runtime_error_on_fn_path = on_fn_path;
 }
 
-char *grug_get_runtime_error_reason(void);
+char *grug_get_runtime_error_reason(enum grug_runtime_error_type type);
 
 static void runtime_error_time_limit_exceeded(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	signal(SIGALRM, signal_handler);
-
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
 
-	raise(SIGALRM);
-	assert(signal_handler_called);
-
 	free(g);
 
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason()));
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_TIME_LIMIT_EXCEEDED)));
 
 	assert(runtime_error_type == GRUG_ON_FN_TIME_LIMIT_EXCEEDED);
 
@@ -1303,18 +1293,13 @@ static void runtime_error_time_limit_exceeded(void *on_fns, void *g, size_t reso
 }
 
 static void runtime_error_division_by_0(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	signal(SIGFPE, signal_handler);
-
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
 
-	raise(SIGFPE);
-	assert(signal_handler_called);
-
 	free(g);
 
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason()));
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_DIVISION_BY_ZERO)));
 
 	assert(runtime_error_type == GRUG_ON_FN_DIVISION_BY_ZERO);
 
@@ -1333,18 +1318,13 @@ static void runtime_error_division_by_0(void *on_fns, void *g, size_t resources_
 }
 
 static void runtime_error_stack_overflow(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	signal(SIGSEGV, signal_handler);
-
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
 
-	raise(SIGSEGV);
-	assert(signal_handler_called);
-
 	free(g);
 
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason()));
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_STACK_OVERFLOW)));
 
 	assert(runtime_error_type == GRUG_ON_FN_STACK_OVERFLOW);
 
@@ -5389,7 +5369,6 @@ int main(int argc, char *argv[]) {
 
 		if (data.run) {
 			runtime_error_reason = NULL;
-			signal_handler_called = false;
 			had_runtime_error = false;
 			runtime_error_type = -1;
 			runtime_error_on_fn_name = NULL;

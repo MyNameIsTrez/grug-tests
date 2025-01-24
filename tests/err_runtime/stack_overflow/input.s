@@ -23,6 +23,8 @@ resources_size: dq 0
 global entities_size
 entities_size: dq 0
 
+max_rsp: dq 0
+
 section .text
 
 extern grug_runtime_error_handler
@@ -35,9 +37,10 @@ extern grug_runtime_error_type
 extern game_fn_define_d
 extern setjmp
 extern grug_get_runtime_error_reason
-extern grug_enable_on_fn_runtime_error_handling
+extern longjmp
 extern pthread_sigmask
-extern grug_disable_on_fn_runtime_error_handling
+
+%define GRUG_ON_FN_STACK_OVERFLOW 1
 
 global define
 define:
@@ -65,17 +68,21 @@ init_globals:
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call setjmp wrt ..plt
 	test eax, eax
-	je strict $+0x33
+	je strict $+0x38
 
+	dec eax
+	push rax
+	mov edi, eax
+	sub rsp, byte 0x8
 	call grug_get_runtime_error_reason wrt ..plt
+	add rsp, byte 0x8
 	mov rdi, rax
 
 	lea rcx, strings[rel 0]
 
 	lea rdx, strings[rel 44]
 
-	mov rsi, [rel grug_runtime_error_type wrt ..got]
-	mov esi, [rsi]
+	pop rsi
 
 	mov rax, [rel grug_runtime_error_handler wrt ..got]
 	call [rax]
@@ -83,6 +90,14 @@ init_globals:
 	mov rsp, rbp
 	pop rbp
 	ret
+%endmacro
+
+%macro check_stack_overflow 0
+	cmp rsp, [rel max_rsp]
+	jg strict $+0x17
+	mov esi, 1 + GRUG_ON_FN_STACK_OVERFLOW
+	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
+	call longjmp wrt ..plt
 %endmacro
 
 global on_a
@@ -99,17 +114,16 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	error_handling
+	mov [rel max_rsp], rsp
+	sub qword [rel max_rsp], 0x10000
 
-	call grug_enable_on_fn_runtime_error_handling wrt ..plt
+	error_handling
 
 	mov rax, rbp[-0x8]
 	push rax
 
 	pop rdi
 	call helper_foo
-
-	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
 	mov rsp, rbp
 	pop rbp
@@ -131,6 +145,7 @@ helper_foo:
 	mov rbp, rsp
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rdi
+	check_stack_overflow
 
 	mov rax, rbp[-0x8]
 	push rax
