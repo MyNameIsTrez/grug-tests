@@ -30,15 +30,14 @@ extern grug_on_fn_name
 extern grug_runtime_error_jmp_buffer
 extern grug_on_fn_path
 extern grug_on_fns_in_safe_mode
-extern grug_block_mask
 extern grug_runtime_error_type
 extern game_fn_define_d
-extern __sigsetjmp
+extern setjmp
 extern grug_get_runtime_error_reason
-extern grug_enable_on_fn_runtime_error_handling
-extern pthread_sigmask
+extern longjmp
 extern game_fn_initialize
-extern grug_disable_on_fn_runtime_error_handling
+
+%define GRUG_ON_FN_DIVISION_BY_ZERO 0
 
 global define
 define:
@@ -63,21 +62,24 @@ init_globals:
 %endmacro
 
 %macro error_handling 0
-	mov esi, 1
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call __sigsetjmp wrt ..plt
+	call setjmp wrt ..plt
 	test eax, eax
-	je strict $+0x33
+	je strict $+0x38
 
+	dec eax
+	push rax
+	mov edi, eax
+	sub rsp, byte 0x8
 	call grug_get_runtime_error_reason wrt ..plt
+	add rsp, byte 0x8
 	mov rdi, rax
 
 	lea rcx, strings[rel 0]
 
 	lea rdx, strings[rel 43]
 
-	mov rsi, [rel grug_runtime_error_type wrt ..got]
-	mov esi, [rsi]
+	pop rsi
 
 	mov rax, [rel grug_runtime_error_handler wrt ..got]
 	call [rax]
@@ -87,22 +89,12 @@ init_globals:
 	ret
 %endmacro
 
-%macro block 0
-	xor edx, edx
-	mov rsi, [rel grug_block_mask wrt ..got]
-	xor edi, edi
-	call pthread_sigmask wrt ..plt
-%endmacro
-
-%macro unblock 0
-	push rax
-	xor edx, edx
-	mov rsi, [rel grug_block_mask wrt ..got]
-	mov edi, 1
-	sub rsp, byte 0x8
-	call pthread_sigmask wrt ..plt
-	add rsp, byte 0x8
-	pop rax
+%macro check_division_by_0 0
+	test r11, r11
+	jne $+0x13
+	mov esi, 1 + GRUG_ON_FN_DIVISION_BY_ZERO
+	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
+	call longjmp wrt ..plt
 %endmacro
 
 global on_a
@@ -115,28 +107,23 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0xc0
+	je strict $+0x9f
 
 	save_on_fn_name_and_path
 
 	error_handling
 
-	call grug_enable_on_fn_runtime_error_handling wrt ..plt
-
-	block
 	xor eax, eax
 	push rax
 	mov eax, 1
 	pop r11
+	check_division_by_0
 	cqo
 	idiv r11
 	push rax
 
 	pop rdi
 	call game_fn_initialize wrt ..plt
-	unblock
-
-	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

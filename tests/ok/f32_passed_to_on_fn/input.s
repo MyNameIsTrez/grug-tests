@@ -33,7 +33,7 @@ extern grug_on_fns_in_safe_mode
 extern grug_block_mask
 extern grug_runtime_error_type
 extern game_fn_define_r
-extern __sigsetjmp
+extern setjmp
 extern grug_get_runtime_error_reason
 extern grug_enable_on_fn_runtime_error_handling
 extern pthread_sigmask
@@ -63,9 +63,8 @@ init_globals:
 %endmacro
 
 %macro error_handling 0
-	mov esi, 1
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call __sigsetjmp wrt ..plt
+	call setjmp wrt ..plt
 	test eax, eax
 	je strict $+0x33
 
