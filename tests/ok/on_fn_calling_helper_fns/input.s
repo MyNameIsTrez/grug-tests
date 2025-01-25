@@ -30,14 +30,9 @@ extern grug_on_fn_name
 extern grug_runtime_error_jmp_buffer
 extern grug_on_fn_path
 extern grug_on_fns_in_safe_mode
-extern grug_block_mask
-extern grug_runtime_error_type
 extern game_fn_define_d
 extern setjmp
 extern grug_get_runtime_error_reason
-extern grug_enable_on_fn_runtime_error_handling
-extern grug_disable_on_fn_runtime_error_handling
-extern pthread_sigmask
 extern game_fn_nothing
 extern game_fn_initialize
 

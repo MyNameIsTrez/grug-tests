@@ -23,7 +23,6 @@ entities_size: dq 0
 
 section .text
 
-extern grug_block_mask
 
 extern game_fn_define_d
 

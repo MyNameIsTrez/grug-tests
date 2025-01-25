@@ -23,23 +23,20 @@ resources_size: dq 0
 global entities_size
 entities_size: dq 0
 
-max_rsp: dq 0
-
 section .text
 
 extern grug_runtime_error_handler
+extern grug_max_rsp
 extern grug_on_fn_name
 extern grug_runtime_error_jmp_buffer
 extern grug_on_fn_path
 extern grug_on_fns_in_safe_mode
-extern grug_block_mask
-extern grug_runtime_error_type
 extern game_fn_define_d
 extern setjmp
 extern grug_get_runtime_error_reason
 extern longjmp
-extern pthread_sigmask
 
+%define GRUG_STACK_LIMIT 0x10000
 %define GRUG_ON_FN_STACK_OVERFLOW 1
 
 global define
@@ -62,6 +59,12 @@ init_globals:
 	mov rax, [rel grug_on_fn_name wrt ..got]
 	lea r11, strings[rel 44]
 	mov [rax], r11
+%endmacro
+
+%macro set_max_rsp 0
+	mov rax, [rel grug_max_rsp wrt ..got]
+	mov [rax], rsp
+	sub qword [rax], GRUG_STACK_LIMIT
 %endmacro
 
 %macro error_handling 0
@@ -93,8 +96,9 @@ init_globals:
 %endmacro
 
 %macro check_stack_overflow 0
-	cmp rsp, [rel max_rsp]
-	jg strict $+0x17
+	mov rax, [rel grug_max_rsp wrt ..got]
+	cmp rsp, [rax]
+	jg $+0x13
 	mov esi, 1 + GRUG_ON_FN_STACK_OVERFLOW
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call longjmp wrt ..plt
@@ -110,12 +114,11 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x88
+	je strict $+0x8f
 
 	save_on_fn_name_and_path
 
-	mov [rel max_rsp], rsp
-	sub qword [rel max_rsp], 0x10000
+	set_max_rsp
 
 	error_handling
 
