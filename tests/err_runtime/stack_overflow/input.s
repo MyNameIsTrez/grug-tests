@@ -71,7 +71,7 @@ init_globals:
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call setjmp wrt ..plt
 	test eax, eax
-	je strict $+0x38
+	je $+0x34
 
 	dec eax
 	push rax
@@ -114,7 +114,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x8f
+	je strict $+0x8b
 
 	save_on_fn_name_and_path
 
