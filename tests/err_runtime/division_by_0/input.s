@@ -26,7 +26,6 @@ entities_size: dq 0
 section .text
 
 extern grug_runtime_error_handler
-extern grug_max_rsp
 extern grug_on_fn_name
 extern grug_runtime_error_jmp_buffer
 extern grug_on_fn_path
@@ -37,7 +36,6 @@ extern grug_get_runtime_error_reason
 extern longjmp
 extern game_fn_initialize
 
-%define GRUG_STACK_LIMIT 0x10000
 %define GRUG_ON_FN_DIVISION_BY_ZERO 0
 
 global define
@@ -60,12 +58,6 @@ init_globals:
 	mov rax, [rel grug_on_fn_name wrt ..got]
 	lea r11, strings[rel 43]
 	mov [rax], r11
-%endmacro
-
-%macro set_max_rsp 0
-	mov rax, [rel grug_max_rsp wrt ..got]
-	mov [rax], rsp
-	sub qword [rax], GRUG_STACK_LIMIT
 %endmacro
 
 %macro error_handling 0
@@ -117,8 +109,6 @@ on_a:
 	je strict $+0xb0
 
 	save_on_fn_name_and_path
-
-	set_max_rsp
 
 	error_handling
 

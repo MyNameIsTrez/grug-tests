@@ -26,13 +26,25 @@ entities_size: dq 0
 section .text
 
 extern grug_runtime_error_handler
+extern grug_max_time
 extern grug_on_fn_name
 extern grug_runtime_error_jmp_buffer
 extern grug_on_fn_path
 extern grug_on_fns_in_safe_mode
+extern grug_current_time
 extern game_fn_define_d
+extern clock_gettime
 extern setjmp
 extern grug_get_runtime_error_reason
+extern longjmp
+
+%define GRUG_ON_FN_TIME_LIMIT_EXCEEDED 2
+%define CLOCK_PROCESS_CPUTIME_ID 2
+%define TV_SEC_OFFSET 0
+%define TV_NSEC_OFFSET 8
+%define GRUG_ON_FN_TIME_LIMIT_MS 10
+%define NS_PER_MS 1000000
+%define NS_PER_SEC 1000000000
 
 global define
 define:
@@ -56,21 +68,38 @@ init_globals:
 	mov [rax], r11
 %endmacro
 
+%macro set_time_limit 0
+	mov rsi, [rel grug_max_time wrt ..got]
+	push rsi
+	mov edi, CLOCK_PROCESS_CPUTIME_ID
+	call clock_gettime wrt ..plt
+	pop rax
+	add qword [byte rax + TV_NSEC_OFFSET], GRUG_ON_FN_TIME_LIMIT_MS * NS_PER_MS
+	cmp qword [byte rax + TV_NSEC_OFFSET], NS_PER_SEC
+	jl $+0xe
+	sub qword [byte rax + TV_NSEC_OFFSET], NS_PER_SEC
+	inc qword [byte rax + TV_SEC_OFFSET]
+%endmacro
+
 %macro error_handling 0
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call setjmp wrt ..plt
 	test eax, eax
-	je strict $+0x33
+	je $+0x34
 
+	dec eax
+	push rax
+	mov edi, eax
+	sub rsp, byte 0x8
 	call grug_get_runtime_error_reason wrt ..plt
+	add rsp, byte 0x8
 	mov rdi, rax
 
 	lea rcx, strings[rel 0]
 
 	lea rdx, strings[rel 49]
 
-	mov rsi, [rel grug_runtime_error_type wrt ..got]
-	mov esi, [rsi]
+	pop rsi
 
 	mov rax, [rel grug_runtime_error_handler wrt ..got]
 	call [rax]
@@ -78,6 +107,36 @@ init_globals:
 	mov rsp, rbp
 	pop rbp
 	ret
+%endmacro
+
+%macro check_time_limit_exceeded 0
+	mov rsi, [rel grug_current_time wrt ..got]
+	push rsi
+	mov edi, CLOCK_PROCESS_CPUTIME_ID
+	call clock_gettime wrt ..plt
+	pop rax
+	mov r11, [rel grug_max_time wrt ..got]
+
+	; This is what the below code does:
+	; cmp grug_current_time.sec, grug_max_time.sec
+	; jl skip
+	; jg jump
+	; cmp grug_current_time.nsec, grug_max_time.nsec
+	; jg jump
+	; jmp skip
+	; jump: longjmp()
+	; skip: ...
+	mov r10, [byte r11 + TV_SEC_OFFSET]
+	cmp [byte rax + TV_SEC_OFFSET], r10
+	jl $+0x21
+	jg $+0xe
+	mov r10, [byte r11 + TV_NSEC_OFFSET]
+	cmp [byte rax + TV_NSEC_OFFSET], r10
+	jg $+0x4
+	jmp short $+0x13
+	mov esi, 1 + GRUG_ON_FN_TIME_LIMIT_EXCEEDED
+	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
+	call longjmp wrt ..plt
 %endmacro
 
 global on_a
@@ -90,21 +149,20 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x8f
+	je strict $+0xf5
 
 	save_on_fn_name_and_path
 
-	error_handling
+	set_time_limit
 
-	call grug_enable_on_fn_runtime_error_handling wrt ..plt
+	error_handling
 
 	mov eax, 1
 	test eax, eax
-	je strict $+0xb
+	je strict $+0x4e
 
-	jmp strict $-0xd
-
-	call grug_disable_on_fn_runtime_error_handling wrt ..plt
+	check_time_limit_exceeded
+	jmp strict $-0x50
 
 	mov rsp, rbp
 	pop rbp
