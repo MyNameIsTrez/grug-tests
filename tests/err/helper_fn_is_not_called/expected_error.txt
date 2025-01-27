@@ -1,1 +1,0 @@
-The function 'helper_foo' is not being called anywhere

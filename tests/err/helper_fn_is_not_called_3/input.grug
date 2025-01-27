@@ -1,0 +1,11 @@
+define() d {
+    return {
+    }
+}
+
+helper_foo() {
+}
+
+helper_bar() {
+    helper_foo()
+}

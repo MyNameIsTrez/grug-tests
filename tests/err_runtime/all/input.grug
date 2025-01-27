@@ -1,0 +1,15 @@
+define() d {
+    return {
+    }
+}
+
+on_a() {
+    initialize(1 / 0)
+    helper_foo()
+    while true {
+    }
+}
+
+helper_foo() {
+    helper_foo()
+}

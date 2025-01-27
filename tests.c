@@ -1292,6 +1292,31 @@ static void runtime_error_time_limit_exceeded(void *on_fns, void *g, size_t reso
 	assert(entity_types == NULL);
 }
 
+static void runtime_error_all(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	((struct d_on_fns *)on_fns)->a(g);
+
+	assert(had_runtime_error);
+
+	free(g);
+
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_DIVISION_BY_ZERO)));
+
+	assert(runtime_error_type == GRUG_ON_FN_DIVISION_BY_ZERO);
+
+	assert(streq(runtime_error_on_fn_name, "on_a"));
+	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/all/input.grug"));
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/err_runtime/all/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void runtime_error_division_by_0(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
@@ -5033,7 +5058,11 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(global_variable_definition_requires_value_string);
 	ADD_TEST_ERROR(global_variable_uses_global_variable);
 	ADD_TEST_ERROR(helper_fn_does_not_exist);
-	ADD_TEST_ERROR(helper_fn_is_not_called);
+	ADD_TEST_ERROR(helper_fn_is_not_called_1);
+	ADD_TEST_ERROR(helper_fn_is_not_called_2);
+	ADD_TEST_ERROR(helper_fn_is_not_called_3);
+	ADD_TEST_ERROR(helper_fn_is_not_called_4);
+	ADD_TEST_ERROR(helper_fn_is_not_called_5);
 	ADD_TEST_ERROR(helper_function_call_gets_wrong_arg_type);
 	ADD_TEST_ERROR(helper_function_call_less_args_expected);
 	ADD_TEST_ERROR(helper_function_call_more_args_expected);
@@ -5115,6 +5144,7 @@ static void add_error_tests(void) {
 }
 
 static void add_runtime_error_tests(void) {
+	ADD_TEST_RUNTIME_ERROR(all, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(division_by_0, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(stack_overflow, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(time_limit_exceeded, "d", 8);
