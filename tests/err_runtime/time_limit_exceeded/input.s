@@ -39,6 +39,7 @@ extern grug_get_runtime_error_reason
 extern longjmp
 
 %define GRUG_ON_FN_TIME_LIMIT_EXCEEDED 2
+
 %define CLOCK_PROCESS_CPUTIME_ID 2
 %define TV_SEC_OFFSET 0
 %define TV_NSEC_OFFSET 8

@@ -36,8 +36,9 @@ extern setjmp
 extern grug_get_runtime_error_reason
 extern longjmp
 
-%define GRUG_STACK_LIMIT 0x10000
 %define GRUG_ON_FN_STACK_OVERFLOW 1
+
+%define GRUG_STACK_LIMIT 0x10000
 
 global define
 define:
