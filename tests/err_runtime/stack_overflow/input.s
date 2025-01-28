@@ -129,7 +129,7 @@ on_a:
 	push rax
 
 	pop rdi
-	call helper_foo
+	call helper_foo_safe
 
 	mov rsp, rbp
 	pop rbp
@@ -140,14 +140,14 @@ on_a:
 	push rax
 
 	pop rdi
-	call helper_foo
+	call helper_foo_fast
 
 	mov rsp, rbp
 	pop rbp
 	ret
 
-global helper_foo
-helper_foo:
+global helper_foo_safe
+helper_foo_safe:
 	push rbp
 	mov rbp, rsp
 	sub rsp, byte 0x10
@@ -158,7 +158,24 @@ helper_foo:
 	push rax
 
 	pop rdi
-	call helper_foo
+	call helper_foo_safe
+
+	mov rsp, rbp
+	pop rbp
+	ret
+
+global helper_foo_fast
+helper_foo_fast:
+	push rbp
+	mov rbp, rsp
+	sub rsp, byte 0x10
+	mov rbp[-0x8], rdi
+
+	mov rax, rbp[-0x8]
+	push rax
+
+	pop rdi
+	call helper_foo_fast
 
 	mov rsp, rbp
 	pop rbp
