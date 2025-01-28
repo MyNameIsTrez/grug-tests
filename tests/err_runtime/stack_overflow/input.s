@@ -72,7 +72,7 @@ init_globals:
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call setjmp wrt ..plt
 	test eax, eax
-	je $+0x34
+	je %%skip
 
 	dec eax
 	push rax
@@ -94,15 +94,17 @@ init_globals:
 	mov rsp, rbp
 	pop rbp
 	ret
+%%skip:
 %endmacro
 
 %macro check_stack_overflow 0
 	mov rax, [rel grug_max_rsp wrt ..got]
 	cmp rsp, [rax]
-	jg $+0x13
+	jg %%skip
 	mov esi, 1 + GRUG_ON_FN_STACK_OVERFLOW
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call longjmp wrt ..plt
+%%skip:
 %endmacro
 
 global on_a
@@ -115,7 +117,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x8b
+	je .fast
 
 	save_on_fn_name_and_path
 
@@ -133,6 +135,7 @@ on_a:
 	pop rbp
 	ret
 
+.fast:
 	mov rax, rbp[-0x8]
 	push rax
 

@@ -83,9 +83,10 @@ init_globals:
 	pop rax
 	add qword [byte rax + TV_NSEC_OFFSET], GRUG_ON_FN_TIME_LIMIT_MS * NS_PER_MS
 	cmp qword [byte rax + TV_NSEC_OFFSET], NS_PER_SEC
-	jl $+0xe
+	jl %%skip
 	sub qword [byte rax + TV_NSEC_OFFSET], NS_PER_SEC
 	inc qword [byte rax + TV_SEC_OFFSET]
+%%skip:
 %endmacro
 
 %macro set_max_rsp 0
@@ -98,7 +99,7 @@ init_globals:
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call setjmp wrt ..plt
 	test eax, eax
-	je $+0x34
+	je %%skip
 
 	dec eax
 	push rax
@@ -120,6 +121,7 @@ init_globals:
 	mov rsp, rbp
 	pop rbp
 	ret
+%%skip:
 %endmacro
 
 %macro check_time_limit_exceeded 0
@@ -130,43 +132,38 @@ init_globals:
 	pop rax
 	mov r11, [rel grug_max_time wrt ..got]
 
-	; This is what the below code does:
-	; cmp grug_current_time.sec, grug_max_time.sec
-	; jl skip
-	; jg jump
-	; cmp grug_current_time.nsec, grug_max_time.nsec
-	; jg jump
-	; jmp skip
-	; jump: longjmp()
-	; skip: ...
 	mov r10, [byte r11 + TV_SEC_OFFSET]
 	cmp [byte rax + TV_SEC_OFFSET], r10
-	jl $+0x21
-	jg $+0xe
+	jl %%skip
+	jg %%longjump
 	mov r10, [byte r11 + TV_NSEC_OFFSET]
 	cmp [byte rax + TV_NSEC_OFFSET], r10
-	jg $+0x4
-	jmp short $+0x13
+	jg %%longjump
+	jmp short %%skip
+%%longjump:
 	mov esi, 1 + GRUG_ON_FN_TIME_LIMIT_EXCEEDED
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call longjmp wrt ..plt
+%%skip:
 %endmacro
 
 %macro check_stack_overflow 0
 	mov rax, [rel grug_max_rsp wrt ..got]
 	cmp rsp, [rax]
-	jg $+0x13
+	jg %%skip
 	mov esi, 1 + GRUG_ON_FN_STACK_OVERFLOW
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call longjmp wrt ..plt
+%%skip:
 %endmacro
 
 %macro check_division_by_0 0
 	test r11, r11
-	jne $+0x13
+	jne %%skip
 	mov esi, 1 + GRUG_ON_FN_DIVISION_BY_ZERO
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call longjmp wrt ..plt
+%%skip:
 %endmacro
 
 global on_a
@@ -179,7 +176,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x13d
+	je .fast
 
 	save_on_fn_name_and_path
 
@@ -207,17 +204,20 @@ on_a:
 	pop rdi
 	call helper_foo
 
+.repeat:
 	mov eax, 1
 	test eax, eax
-	je strict $+0x4e
+	je strict .skip
 
 	check_time_limit_exceeded
-	jmp strict $-0x50
+	jmp strict .repeat
+.skip:
 
 	mov rsp, rbp
 	pop rbp
 	ret
 
+.fast:
 	xor eax, eax
 	push rax
 	mov eax, 1

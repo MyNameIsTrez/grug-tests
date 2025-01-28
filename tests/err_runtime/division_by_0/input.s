@@ -64,7 +64,7 @@ init_globals:
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call setjmp wrt ..plt
 	test eax, eax
-	je $+0x34
+	je %%skip
 
 	dec eax
 	push rax
@@ -86,14 +86,16 @@ init_globals:
 	mov rsp, rbp
 	pop rbp
 	ret
+%%skip:
 %endmacro
 
 %macro check_division_by_0 0
 	test r11, r11
-	jne $+0x13
+	jne %%skip
 	mov esi, 1 + GRUG_ON_FN_DIVISION_BY_ZERO
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call longjmp wrt ..plt
+%%skip:
 %endmacro
 
 global on_a
@@ -106,7 +108,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x9b
+	je .fast
 
 	save_on_fn_name_and_path
 
@@ -128,6 +130,7 @@ on_a:
 	pop rbp
 	ret
 
+.fast:
 	xor eax, eax
 	push rax
 	mov eax, 1

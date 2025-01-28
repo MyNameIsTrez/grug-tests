@@ -1108,10 +1108,10 @@ static void regenerate_expected_dll(
 #ifdef __x86_64__
 	run((char *[]){"nasm", nasm_path, "-felf64", "-O0", "-o", nasm_o_path, NULL});
 	// run((char *[]){"nasm", nasm_path, "-felf64", "-g", "-O0", "-o", nasm_o_path, NULL});
-	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-shared", "--hash-style=sysv", NULL});
+	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-x", "-shared", "--hash-style=sysv", NULL});
 #elif __aarch64__
 	run((char *[]){"nasm", nasm_path, "-fmacho64", "-O0", "-o", nasm_o_path, NULL});
-	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-dylib", NULL});
+	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-x", "-dylib", NULL});
 #else
 #error Unsupported or unrecognized architecture
 #endif
