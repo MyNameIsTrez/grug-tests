@@ -89,24 +89,6 @@ init_globals:
 %%skip:
 %endmacro
 
-%macro block 0
-	xor edx, edx
-	mov rsi, [rel grug_block_mask wrt ..got]
-	xor edi, edi
-	call pthread_sigmask wrt ..plt
-%endmacro
-
-%macro unblock 0
-	push rax
-	xor edx, edx
-	mov rsi, [rel grug_block_mask wrt ..got]
-	mov edi, 1
-	sub rsp, byte 0x8
-	call pthread_sigmask wrt ..plt
-	add rsp, byte 0x8
-	pop rax
-%endmacro
-
 global on_a
 on_a:
 	push rbp
@@ -117,7 +99,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0xd2
+	je strict .fast
 
 	save_on_fn_name_and_path
 
@@ -144,6 +126,7 @@ on_a:
 	pop rbp
 	ret
 
+.fast:
 	lea rax, strings[rel 41]
 	push rax
 

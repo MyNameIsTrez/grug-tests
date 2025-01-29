@@ -86,24 +86,6 @@ init_globals:
 %%skip:
 %endmacro
 
-%macro block 0
-	xor edx, edx
-	mov rsi, [rel grug_block_mask wrt ..got]
-	xor edi, edi
-	call pthread_sigmask wrt ..plt
-%endmacro
-
-%macro unblock 0
-	push rax
-	xor edx, edx
-	mov rsi, [rel grug_block_mask wrt ..got]
-	mov edi, 1
-	sub rsp, byte 0x8
-	call pthread_sigmask wrt ..plt
-	add rsp, byte 0x8
-	pop rax
-%endmacro
-
 global on_a
 on_a:
 	push rbp
@@ -114,7 +96,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x132
+	je strict .fast
 
 	save_on_fn_name_and_path
 
@@ -124,32 +106,37 @@ on_a:
 
 	mov eax, 1
 	test eax, eax
-	je strict $+0xb
-	jmp strict $+0x44
+	je strict .false
+	jmp strict .end
 
+.false:
 	mov eax, 1
 	test eax, eax
-	je strict $+0x38
+	je strict .end
 	call game_fn_nothing wrt ..plt
 
+.end:
 	call game_fn_nothing wrt ..plt
 
 	mov rsp, rbp
 	pop rbp
 	ret
 
+.fast:
 	call game_fn_nothing wrt ..plt
 
 	mov eax, 1
 	test eax, eax
-	je strict $+0xb
-	jmp strict $+0x17
+	je strict .false_fast
+	jmp strict .end_fast
 
+.false_fast:
 	mov eax, 1
 	test eax, eax
-	je strict $+0xb
+	je strict .end_fast
 	call game_fn_nothing wrt ..plt
 
+.end_fast:
 	call game_fn_nothing wrt ..plt
 
 	mov rsp, rbp

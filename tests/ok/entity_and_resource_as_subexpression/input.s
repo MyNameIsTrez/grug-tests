@@ -11,13 +11,17 @@ global on_fns
 on_fns:
 	dq on_a
 
-global strings
-strings:
+entity_type:
 	db 0
+on_fn_path:
 	db "tests/ok/entity_and_resource_as_subexpression/input.grug", 0
+on_fn_name:
 	db "on_a", 0
+resource:
 	db "tests/ok/entity_and_resource_as_subexpression/foo.txt", 0
+bar:
 	db "bar", 0
+entity:
 	db "ok:baz", 0
 
 align 8
@@ -26,18 +30,18 @@ resources_size: dq 1
 
 global resources
 resources:
-	dq strings + 63
+	dq resource
 
 global entities_size
 entities_size: dq 1
 
 global entities
 entities:
-	dq strings + 121
+	dq entity
 
 global entity_types
 entity_types:
-	dq strings + 0
+	dq entity_type
 
 section .text
 
@@ -68,7 +72,7 @@ init_globals:
 
 %macro save_on_fn_name_and_path 0
 	mov rax, [rel grug_on_fn_path wrt ..got]
-	lea r11, strings[rel 1]
+	lea r11, [rel on_fn_path]
 	mov [rax], r11
 
 	mov rax, [rel grug_on_fn_name wrt ..got]
@@ -105,24 +109,6 @@ init_globals:
 %%skip:
 %endmacro
 
-%macro block 0
-	xor edx, edx
-	mov rsi, [rel grug_block_mask wrt ..got]
-	xor edi, edi
-	call pthread_sigmask wrt ..plt
-%endmacro
-
-%macro unblock 0
-	push rax
-	xor edx, edx
-	mov rsi, [rel grug_block_mask wrt ..got]
-	mov edi, 1
-	sub rsp, byte 0x8
-	call pthread_sigmask wrt ..plt
-	add rsp, byte 0x8
-	pop rax
-%endmacro
-
 global on_a
 on_a:
 	push rbp
@@ -133,22 +119,22 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x186
+	je strict .fast
 
 	save_on_fn_name_and_path
 
 	error_handling
 
-	lea rax, strings[rel 63]
+	lea rax, [rel resource]
 	push rax
 	pop rdi
 	call game_fn_has_resource wrt ..plt
 
 	; AND 1, part 1
 	test eax, eax
-	je strict $+0x4b
+	je strict .false
 
-	lea rax, strings[rel 117]
+	lea rax, [rel bar]
 	push rax
 	pop rdi
 	call game_fn_has_string wrt ..plt
@@ -159,10 +145,11 @@ on_a:
 	setne al
 
 	; AND 2, part 1
+.false:
 	test eax, eax
-	je strict $+0x4b
+	je strict .false2
 
-	lea rax, strings[rel 121]
+	lea rax, [rel entity]
 	push rax
 	pop rdi
 	call game_fn_has_entity wrt ..plt
@@ -172,6 +159,7 @@ on_a:
 	mov eax, 0
 	setne al
 
+.false2:
 	push rax
 
 	pop rdi
@@ -181,16 +169,17 @@ on_a:
 	pop rbp
 	ret
 
-	lea rax, strings[rel 63]
+.fast:
+	lea rax, [rel resource]
 	push rax
 	pop rdi
 	call game_fn_has_resource wrt ..plt
 
 	; AND 1, part 1
 	test eax, eax
-	je strict $+0x1e
+	je strict .false_fast
 
-	lea rax, strings[rel 117]
+	lea rax, [rel bar]
 	push rax
 	pop rdi
 	call game_fn_has_string wrt ..plt
@@ -201,10 +190,11 @@ on_a:
 	setne al
 
 	; AND 2, part 1
+.false_fast:
 	test eax, eax
-	je strict $+0x1e
+	je strict .false2_fast
 
-	lea rax, strings[rel 121]
+	lea rax, [rel entity]
 	push rax
 	pop rdi
 	call game_fn_has_entity wrt ..plt
@@ -214,6 +204,7 @@ on_a:
 	mov eax, 0
 	setne al
 
+.false2_fast:
 	push rax
 
 	pop rdi

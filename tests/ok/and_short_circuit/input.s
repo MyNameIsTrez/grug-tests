@@ -33,7 +33,10 @@ extern grug_on_fns_in_safe_mode
 extern game_fn_define_d
 extern setjmp
 extern grug_get_runtime_error_reason
+extern longjmp
 extern game_fn_initialize_bool
+
+%define GRUG_ON_FN_DIVISION_BY_ZERO 0
 
 global define
 define:
@@ -86,22 +89,13 @@ init_globals:
 %%skip:
 %endmacro
 
-%macro block 0
-	xor edx, edx
-	mov rsi, [rel grug_block_mask wrt ..got]
-	xor edi, edi
-	call pthread_sigmask wrt ..plt
-%endmacro
-
-%macro unblock 0
-	push rax
-	xor edx, edx
-	mov rsi, [rel grug_block_mask wrt ..got]
-	mov edi, 1
-	sub rsp, byte 0x8
-	call pthread_sigmask wrt ..plt
-	add rsp, byte 0x8
-	pop rax
+%macro check_division_by_0 0
+	test r11, r11
+	jne %%skip
+	mov esi, 1 + GRUG_ON_FN_DIVISION_BY_ZERO
+	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
+	call longjmp wrt ..plt
+%%skip:
 %endmacro
 
 global on_a
@@ -114,7 +108,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0xe4
+	je strict .fast
 
 	save_on_fn_name_and_path
 
@@ -122,13 +116,14 @@ on_a:
 
 	xor eax, eax
 	test eax, eax
-	je strict $+0x2f
+	je strict .and_false
 	xor eax, eax
 	push rax
 	xor eax, eax
 	push rax
 	mov eax, 1
 	pop r11
+	check_division_by_0
 	cqo
 	idiv r11
 	pop r11
@@ -139,6 +134,7 @@ on_a:
 	mov eax, 0
 	setne al
 
+.and_false:
 	push rax
 
 	pop rdi
@@ -148,6 +144,7 @@ on_a:
 	pop rbp
 	ret
 
+.fast:
 	xor eax, eax
 	test eax, eax
 	je strict $+0x2f

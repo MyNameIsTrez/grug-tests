@@ -11,9 +11,6 @@ global on_fns
 on_fns:
 	dq 0
 
-global strings
-strings:
-
 align 8
 global resources_size
 resources_size: dq 0

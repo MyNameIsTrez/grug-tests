@@ -7,9 +7,9 @@ align 8
 global globals_size
 globals_size: dq 8
 
-global strings
-strings:
+entity_type:
 	db 0
+entity:
 	db "ok:foo", 0
 
 align 8
@@ -21,13 +21,13 @@ entities_size: dq 2
 
 global entities
 entities:
-	dq strings + 1
-	dq strings + 1
+	dq entity
+	dq entity
 
 global entity_types
 entity_types:
-	dq strings + 0
-	dq strings + 0
+	dq entity_type
+	dq entity_type
 
 section .text
 
@@ -36,9 +36,9 @@ extern game_fn_define_y
 global define
 define:
 	sub rsp, byte 0x8
-	lea rax, strings[rel 1]
+	lea rax, [rel entity]
 	mov rsi, rax
-	lea rax, strings[rel 1]
+	lea rax, [rel entity]
 	mov rdi, rax
 	call game_fn_define_y wrt ..plt
 	add rsp, byte 0x8

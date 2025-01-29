@@ -7,9 +7,6 @@ align 8
 global globals_size
 globals_size: dq 264
 
-global strings
-strings:
-
 align 8
 global resources_size
 resources_size: dq 0

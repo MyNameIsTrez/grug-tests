@@ -96,7 +96,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x7d
+	je strict .fast
 
 	save_on_fn_name_and_path_on_a
 
@@ -106,6 +106,7 @@ on_a:
 	pop rbp
 	ret
 
+.fast:
 	mov rsp, rbp
 	pop rbp
 	ret
@@ -155,7 +156,7 @@ on_b:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x7d
+	je strict .fast
 
 	save_on_fn_name_and_path_on_b
 
@@ -165,6 +166,7 @@ on_b:
 	pop rbp
 	ret
 
+.fast:
 	mov rsp, rbp
 	pop rbp
 	ret
@@ -214,7 +216,7 @@ on_c:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x7d
+	je strict .fast
 
 	save_on_fn_name_and_path_on_c
 
@@ -224,6 +226,7 @@ on_c:
 	pop rbp
 	ret
 
+.fast:
 	mov rsp, rbp
 	pop rbp
 	ret

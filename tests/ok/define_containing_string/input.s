@@ -7,8 +7,7 @@ align 8
 global globals_size
 globals_size: dq 8
 
-global strings
-strings:
+name:
 	db "foo", 0
 
 align 8
@@ -25,7 +24,7 @@ extern game_fn_define_k
 global define
 define:
 	sub rsp, byte 0x8
-	lea rax, strings[rel 0]
+	lea rax, [rel name]
 	mov rsi, rax
 	mov eax, 42
 	mov rdi, rax

@@ -6,9 +6,6 @@ define_type: db "u", 0
 align 8
 global globals_size
 globals_size: dq 8
-
-global strings
-strings:
 	db "tests/ok/resource_can_contain_dot_dot_2/foo..", 0
 
 align 8

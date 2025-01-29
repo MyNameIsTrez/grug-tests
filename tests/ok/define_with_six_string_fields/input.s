@@ -7,13 +7,17 @@ align 8
 global globals_size
 globals_size: dq 8
 
-on_fn_path:
+z:
 	db "z", 0
-on_fn_name:
+y:
 	db "y", 0
+x:
 	db "x", 0
+w:
 	db "w", 0
+v:
 	db "v", 0
+u:
 	db "u", 0
 
 align 8
@@ -30,17 +34,17 @@ extern game_fn_define_o
 global define
 define:
 	sub rsp, byte 0x8
-	lea rax, strings[rel 0]
+	lea rax, [rel z]
 	mov r9, rax
-	lea rax, strings[rel 2]
+	lea rax, [rel y]
 	mov r8, rax
-	lea rax, strings[rel 4]
+	lea rax, [rel x]
 	mov rcx, rax
-	lea rax, strings[rel 6]
+	lea rax, [rel w]
 	mov rdx, rax
-	lea rax, strings[rel 8]
+	lea rax, [rel v]
 	mov rsi, rax
-	lea rax, strings[rel 10]
+	lea rax, [rel u]
 	mov rdi, rax
 	call game_fn_define_o wrt ..plt
 	add rsp, byte 0x8

@@ -145,7 +145,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je .fast
+	je strict .fast
 
 	save_on_fn_name_and_path
 

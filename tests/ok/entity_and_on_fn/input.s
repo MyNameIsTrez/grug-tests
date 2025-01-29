@@ -11,11 +11,13 @@ global on_fns
 on_fns:
 	dq on_a
 
-global strings
-strings:
+entity_type:
 	db 0
+entity:
 	db "ok:foo", 0
+on_fn_path:
 	db "tests/ok/entity_and_on_fn/input.grug", 0
+on_fn_name:
 	db "on_a", 0
 
 align 8
@@ -27,11 +29,11 @@ entities_size: dq 1
 
 global entities
 entities:
-	dq strings + 1
+	dq entity
 
 global entity_types
 entity_types:
-	dq strings + 0
+	dq entity_type
 
 section .text
 
@@ -47,7 +49,7 @@ extern grug_get_runtime_error_reason
 global define
 define:
 	sub rsp, byte 0x8
-	lea rax, strings[rel 1]
+	lea rax, [rel entity]
 	mov rdi, rax
 	call game_fn_define_z wrt ..plt
 	add rsp, byte 0x8
@@ -60,7 +62,7 @@ init_globals:
 
 %macro save_on_fn_name_and_path 0
 	mov rax, [rel grug_on_fn_path wrt ..got]
-	lea r11, strings[rel 8]
+	lea r11, [rel on_fn_path]
 	mov [rax], r11
 
 	mov rax, [rel grug_on_fn_name wrt ..got]
@@ -108,7 +110,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x7d
+	je strict .fast
 
 	save_on_fn_name_and_path
 
@@ -118,6 +120,7 @@ on_a:
 	pop rbp
 	ret
 
+.fast:
 	mov rsp, rbp
 	pop rbp
 	ret

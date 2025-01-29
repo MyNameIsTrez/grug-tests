@@ -96,7 +96,7 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0x7d
+	je strict .fast
 
 	save_on_fn_name_and_path
 
@@ -106,6 +106,7 @@ on_a:
 	pop rbp
 	ret
 
+.fast:
 	mov rsp, rbp
 	pop rbp
 	ret

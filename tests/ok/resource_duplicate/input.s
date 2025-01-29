@@ -6,9 +6,6 @@ define_type: db "v", 0
 align 8
 global globals_size
 globals_size: dq 8
-
-global strings
-strings:
 	db "tests/ok/resource_duplicate/foo.txt", 0
 
 align 8

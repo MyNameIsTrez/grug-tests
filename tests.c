@@ -327,12 +327,6 @@ void game_fn_mega_i32(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5
 void game_fn_blocked_alrm(void) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_blocked_alrm_call_count++;
-
-	sigset_t mask;
-
-	sigprocmask(SIG_BLOCK, NULL, &mask);
-
-	assert(sigismember(&mask, SIGALRM));
 }
 void game_fn_nothing_aligned(void) {
 	ASSERT_16_BYTE_STACK_ALIGNED();

@@ -6,9 +6,6 @@ define_type: db "b2", 0
 align 8
 global globals_size
 globals_size: dq 8
-
-global strings
-strings:
 	db 0
 	db "ok:foo", 0
 	db "tests/ok/resource_and_entity/foo.txt", 0

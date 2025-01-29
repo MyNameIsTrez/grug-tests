@@ -7,9 +7,9 @@ align 8
 global globals_size
 globals_size: dq 8
 
-on_fn_path:
+name:
 	db "foobar", 0
-on_fn_name:
+group:
 	db "bar", 0
 
 align 8
@@ -32,13 +32,13 @@ define:
 	xor eax, eax
 	mov r8, rax
 
-	lea rax, strings[rel 0]
+	lea rax, [rel name]
 	mov rcx, rax
 
 	mov eax, 1
 	mov rdx, rax
 
-	lea rax, strings[rel 7]
+	lea rax, [rel group]
 	mov rsi, rax
 
 	mov eax, 42
