@@ -7,9 +7,9 @@ align 8
 global globals_size
 globals_size: dq 8
 
-global strings
-strings:
+on_fn_path:
 	db "tests/ok/resource_twice/bar.txt", 0
+on_fn_name:
 	db "tests/ok/resource_twice/foo.txt", 0
 
 align 8

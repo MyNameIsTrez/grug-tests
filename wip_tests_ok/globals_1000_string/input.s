@@ -7,9 +7,9 @@ align 8
 global globals_size
 globals_size: dq 11000
 
-global strings
-strings:
+on_fn_path:
 	db "tests/ok//input.grug", 0
+on_fn_name:
 	db "on_a", 0
 	db "global0001", 0
 	db "global0002", 0

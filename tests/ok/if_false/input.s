@@ -11,9 +11,9 @@ global on_fns
 on_fns:
 	dq on_a
 
-global strings
-strings:
+on_fn_path:
 	db "tests/ok/if_false/input.grug", 0
+on_fn_name:
 	db "on_a", 0
 
 align 8
@@ -49,11 +49,11 @@ init_globals:
 
 %macro save_on_fn_name_and_path 0
 	mov rax, [rel grug_on_fn_path wrt ..got]
-	lea r11, strings[rel 0]
+	lea r11, [rel on_fn_path]
 	mov [rax], r11
 
 	mov rax, [rel grug_on_fn_name wrt ..got]
-	lea r11, strings[rel 29]
+	lea r11, [rel on_fn_name]
 	mov [rax], r11
 %endmacro
 
@@ -61,17 +61,21 @@ init_globals:
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call setjmp wrt ..plt
 	test eax, eax
-	je strict $+0x33
+	je %%skip
 
+	dec eax
+	push rax
+	mov edi, eax
+	sub rsp, byte 0x8
 	call grug_get_runtime_error_reason wrt ..plt
+	add rsp, byte 0x8
 	mov rdi, rax
 
-	lea rcx, strings[rel 0]
+	lea rcx, [rel on_fn_path]
 
-	lea rdx, strings[rel 29]
+	lea rdx, [rel on_fn_name]
 
-	mov rsi, [rel grug_runtime_error_type wrt ..got]
-	mov esi, [rsi]
+	pop rsi
 
 	mov rax, [rel grug_runtime_error_handler wrt ..got]
 	call [rax]
@@ -79,6 +83,7 @@ init_globals:
 	mov rsp, rbp
 	pop rbp
 	ret
+%%skip:
 %endmacro
 
 %macro block 0
@@ -115,24 +120,14 @@ on_a:
 
 	error_handling
 
-	call grug_enable_on_fn_runtime_error_handling wrt ..plt
-
-	block
 	call game_fn_nothing wrt ..plt
-	unblock
 
 	xor eax, eax
 	test eax, eax
 	je strict $+0x38
-	block
 	call game_fn_nothing wrt ..plt
-	unblock
 
-	block
 	call game_fn_nothing wrt ..plt
-	unblock
-
-	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

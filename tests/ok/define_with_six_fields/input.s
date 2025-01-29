@@ -7,9 +7,9 @@ align 8
 global globals_size
 globals_size: dq 8
 
-global strings
-strings:
+on_fn_path:
 	db "foobar", 0
+on_fn_name:
 	db "bar", 0
 
 align 8

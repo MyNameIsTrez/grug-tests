@@ -11,9 +11,9 @@ global on_fns
 on_fns:
 	dq on_a
 
-global strings
-strings:
+on_fn_path:
 	db "tests/ok/addition_as_argument/input.grug", 0
+on_fn_name:
 	db "on_a", 0
 
 align 8
@@ -49,11 +49,11 @@ init_globals:
 
 %macro save_on_fn_name_and_path 0
 	mov rax, [rel grug_on_fn_path wrt ..got]
-	lea r11, strings[rel 0]
+	lea r11, [rel on_fn_path]
 	mov [rax], r11
 
 	mov rax, [rel grug_on_fn_name wrt ..got]
-	lea r11, strings[rel 41]
+	lea r11, [rel on_fn_name]
 	mov [rax], r11
 %endmacro
 
@@ -61,17 +61,21 @@ init_globals:
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call setjmp wrt ..plt
 	test eax, eax
-	je strict $+0x33
+	je %%skip
 
+	dec eax
+	push rax
+	mov edi, eax
+	sub rsp, byte 0x8
 	call grug_get_runtime_error_reason wrt ..plt
+	add rsp, byte 0x8
 	mov rdi, rax
 
-	lea rcx, strings[rel 0]
+	lea rcx, [rel on_fn_path]
 
-	lea rdx, strings[rel 41]
+	lea rdx, [rel on_fn_name]
 
-	mov rsi, [rel grug_runtime_error_type wrt ..got]
-	mov esi, [rsi]
+	pop rsi
 
 	mov rax, [rel grug_runtime_error_handler wrt ..got]
 	call [rax]
@@ -79,24 +83,7 @@ init_globals:
 	mov rsp, rbp
 	pop rbp
 	ret
-%endmacro
-
-%macro block 0
-	xor edx, edx
-	mov rsi, [rel grug_block_mask wrt ..got]
-	xor edi, edi
-	call pthread_sigmask wrt ..plt
-%endmacro
-
-%macro unblock 0
-	push rax
-	xor edx, edx
-	mov rsi, [rel grug_block_mask wrt ..got]
-	mov edi, 1
-	sub rsp, byte 0x8
-	call pthread_sigmask wrt ..plt
-	add rsp, byte 0x8
-	pop rax
+%%skip:
 %endmacro
 
 global on_a
@@ -109,15 +96,12 @@ on_a:
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
-	je strict $+0xc1
+	je .fast
 
 	save_on_fn_name_and_path
 
 	error_handling
 
-	call grug_enable_on_fn_runtime_error_handling wrt ..plt
-
-	block
 	mov eax, 2
 	push rax
 	mov eax, 1
@@ -127,14 +111,12 @@ on_a:
 
 	pop rdi
 	call game_fn_initialize wrt ..plt
-	unblock
-
-	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
 	mov rsp, rbp
 	pop rbp
 	ret
 
+.fast:
 	mov eax, 2
 	push rax
 	mov eax, 1

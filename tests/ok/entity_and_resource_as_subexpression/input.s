@@ -72,7 +72,7 @@ init_globals:
 	mov [rax], r11
 
 	mov rax, [rel grug_on_fn_name wrt ..got]
-	lea r11, strings[rel 58]
+	lea r11, [rel on_fn_name]
 	mov [rax], r11
 %endmacro
 
@@ -80,17 +80,21 @@ init_globals:
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call setjmp wrt ..plt
 	test eax, eax
-	je strict $+0x33
+	je %%skip
 
+	dec eax
+	push rax
+	mov edi, eax
+	sub rsp, byte 0x8
 	call grug_get_runtime_error_reason wrt ..plt
+	add rsp, byte 0x8
 	mov rdi, rax
 
-	lea rcx, strings[rel 1]
+	lea rcx, [rel on_fn_path]
 
-	lea rdx, strings[rel 58]
+	lea rdx, [rel on_fn_name]
 
-	mov rsi, [rel grug_runtime_error_type wrt ..got]
-	mov esi, [rsi]
+	pop rsi
 
 	mov rax, [rel grug_runtime_error_handler wrt ..got]
 	call [rax]
@@ -98,6 +102,7 @@ init_globals:
 	mov rsp, rbp
 	pop rbp
 	ret
+%%skip:
 %endmacro
 
 %macro block 0
@@ -134,26 +139,19 @@ on_a:
 
 	error_handling
 
-	call grug_enable_on_fn_runtime_error_handling wrt ..plt
-
-	block
-	block
 	lea rax, strings[rel 63]
 	push rax
 	pop rdi
 	call game_fn_has_resource wrt ..plt
-	unblock
 
 	; AND 1, part 1
 	test eax, eax
 	je strict $+0x4b
 
-	block
 	lea rax, strings[rel 117]
 	push rax
 	pop rdi
 	call game_fn_has_string wrt ..plt
-	unblock
 
 	; AND 1, part 2
 	test eax, eax
@@ -164,12 +162,10 @@ on_a:
 	test eax, eax
 	je strict $+0x4b
 
-	block
 	lea rax, strings[rel 121]
 	push rax
 	pop rdi
 	call game_fn_has_entity wrt ..plt
-	unblock
 
 	; AND 2, part 2
 	test eax, eax
@@ -180,9 +176,6 @@ on_a:
 
 	pop rdi
 	call game_fn_initialize_bool wrt ..plt
-	unblock
-
-	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

@@ -11,9 +11,9 @@ global on_fns
 on_fns:
 	dq on_a
 
-global strings
-strings:
+on_fn_path:
 	db "tests/err_runtime/division_by_0/input.grug", 0
+on_fn_name:
 	db "on_a", 0
 
 align 8

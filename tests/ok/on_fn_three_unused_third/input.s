@@ -13,9 +13,9 @@ on_fns:
 	dq on_b
 	dq 0
 
-global strings
-strings:
+on_fn_path:
 	db "tests/ok/on_fn_three_unused_third/input.grug", 0
+on_fn_name:
 	db "on_a", 0
 	db "on_b", 0
 
@@ -52,11 +52,11 @@ init_globals:
 
 %macro save_on_fn_name_and_path_on_a 0
 	mov rax, [rel grug_on_fn_path wrt ..got]
-	lea r11, strings[rel 0]
+	lea r11, [rel on_fn_path]
 	mov [rax], r11
 
 	mov rax, [rel grug_on_fn_name wrt ..got]
-	lea r11, strings[rel 45]
+	lea r11, [rel on_fn_name]
 	mov [rax], r11
 %endmacro
 
@@ -119,10 +119,6 @@ on_a:
 
 	error_handling_on_a
 
-	call grug_enable_on_fn_runtime_error_handling wrt ..plt
-
-	call grug_disable_on_fn_runtime_error_handling wrt ..plt
-
 	mov rsp, rbp
 	pop rbp
 	ret
@@ -133,11 +129,11 @@ on_a:
 
 %macro save_on_fn_name_and_path_on_b 0
 	mov rax, [rel grug_on_fn_path wrt ..got]
-	lea r11, strings[rel 0]
+	lea r11, [rel on_fn_path]
 	mov [rax], r11
 
 	mov rax, [rel grug_on_fn_name wrt ..got]
-	lea r11, strings[rel 50]
+	lea r11, [rel on_fn_name]
 	mov [rax], r11
 %endmacro
 
@@ -181,10 +177,6 @@ on_b:
 	save_on_fn_name_and_path_on_b
 
 	error_handling_on_b
-
-	call grug_enable_on_fn_runtime_error_handling wrt ..plt
-
-	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

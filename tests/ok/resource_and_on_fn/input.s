@@ -11,9 +11,9 @@ global on_fns
 on_fns:
 	dq on_a
 
-global strings
-strings:
+on_fn_path:
 	db "tests/ok/resource_and_on_fn/foo.txt", 0
+on_fn_name:
 	db "tests/ok/resource_and_on_fn/input.grug", 0
 	db "on_a", 0
 
@@ -60,7 +60,7 @@ init_globals:
 	mov [rax], r11
 
 	mov rax, [rel grug_on_fn_name wrt ..got]
-	lea r11, strings[rel 75]
+	lea r11, [rel on_fn_name]
 	mov [rax], r11
 %endmacro
 
@@ -68,17 +68,21 @@ init_globals:
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call setjmp wrt ..plt
 	test eax, eax
-	je strict $+0x33
+	je %%skip
 
+	dec eax
+	push rax
+	mov edi, eax
+	sub rsp, byte 0x8
 	call grug_get_runtime_error_reason wrt ..plt
+	add rsp, byte 0x8
 	mov rdi, rax
 
-	lea rcx, strings[rel 36]
+	lea rcx, [rel on_fn_path]
 
-	lea rdx, strings[rel 75]
+	lea rdx, [rel on_fn_name]
 
-	mov rsi, [rel grug_runtime_error_type wrt ..got]
-	mov esi, [rsi]
+	pop rsi
 
 	mov rax, [rel grug_runtime_error_handler wrt ..got]
 	call [rax]
@@ -86,6 +90,7 @@ init_globals:
 	mov rsp, rbp
 	pop rbp
 	ret
+%%skip:
 %endmacro
 
 global on_a
@@ -104,10 +109,6 @@ on_a:
 	save_on_fn_name_and_path
 
 	error_handling
-
-	call grug_enable_on_fn_runtime_error_handling wrt ..plt
-
-	call grug_disable_on_fn_runtime_error_handling wrt ..plt
 
 	mov rsp, rbp
 	pop rbp
