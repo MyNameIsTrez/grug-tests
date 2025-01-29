@@ -1097,7 +1097,6 @@ static void handle_dlerror(char *function_name) {
 }
 
 static void regenerate_expected_dll(
-	char *grug_path,
 	char *nasm_path,
 	char *expected_dll_path,
 	char *nasm_o_path,
@@ -1116,23 +1115,6 @@ static void regenerate_expected_dll(
 #error Unsupported or unrecognized architecture
 #endif
 
-	// redefine_sym = "<nasm_path>=<grug_path>"
-	static char redefine_sym[420420];
-
-	size_t nasm_path_len = strlen(nasm_path);
-	size_t grug_path_len = strlen(grug_path);
-
-	assert(nasm_path_len + 1 + grug_path_len + 1 <= sizeof(redefine_sym));
-
-	memcpy(redefine_sym, nasm_path, nasm_path_len);
-
-	redefine_sym[nasm_path_len] = '=';
-
-	// Null-terminates redefine_sym too
-	memcpy(redefine_sym + nasm_path_len + 1, grug_path, grug_path_len + 1);
-
-	run((char *[]){"objcopy", expected_dll_path, "--redefine-sym", redefine_sym, NULL});
-
 	(void)expected_xxd_path;
 	(void)expected_readelf_path;
 	(void)expected_objdump_path;
@@ -1142,7 +1124,6 @@ static void regenerate_expected_dll(
 }
 
 static struct test_data get_expected_test_data(
-	char *grug_path,
 	char *nasm_path,
 	char *results_path,
 	char *expected_dll_path,
@@ -1161,7 +1142,7 @@ static struct test_data get_expected_test_data(
 
 	create_failed_file(failed_file_path);
 
-	regenerate_expected_dll(grug_path, nasm_path, expected_dll_path, nasm_o_path, expected_xxd_path, expected_readelf_path, expected_objdump_path);
+	regenerate_expected_dll(nasm_path, expected_dll_path, nasm_o_path, expected_xxd_path, expected_readelf_path, expected_objdump_path);
 
 	void *dll = dlopen(expected_dll_path, RTLD_NOW);
 	if (!dll) {
@@ -1249,7 +1230,7 @@ static struct test_data runtime_error_prologue(
 
 	printf("Running tests/err_runtime/%s...\n", test_name);
 
-	return get_expected_test_data(grug_path, nasm_path, results_path, expected_dll_path, nasm_o_path, expected_xxd_path, expected_readelf_path, expected_objdump_path, failed_file_path, expected_define_type, expected_globals_size);
+	return get_expected_test_data(nasm_path, results_path, expected_dll_path, nasm_o_path, expected_xxd_path, expected_readelf_path, expected_objdump_path, failed_file_path, expected_define_type, expected_globals_size);
 }
 
 static bool had_runtime_error = false;
@@ -1411,7 +1392,7 @@ static struct test_data ok_prologue(
 
 	printf("Running tests/ok/%s...\n", test_name);
 
-	return get_expected_test_data(grug_path, nasm_path, results_path, expected_dll_path, nasm_o_path, expected_xxd_path, expected_readelf_path, expected_objdump_path, failed_file_path, expected_define_type, expected_globals_size);
+	return get_expected_test_data(nasm_path, results_path, expected_dll_path, nasm_o_path, expected_xxd_path, expected_readelf_path, expected_objdump_path, failed_file_path, expected_define_type, expected_globals_size);
 }
 
 static void ok_addition_as_argument(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
