@@ -11,9 +11,9 @@ global on_fns
 on_fns:
 	dq on_a
 
-global strings
-strings:
+on_fn_path:
 	db "tests/err_runtime/division_by_0/input.grug", 0
+on_fn_name:
 	db "on_a", 0
 
 align 8
@@ -52,11 +52,11 @@ init_globals:
 
 %macro save_on_fn_name_and_path 0
 	mov rax, [rel grug_on_fn_path wrt ..got]
-	lea r11, strings[rel 0]
+	lea r11, [rel on_fn_path]
 	mov [rax], r11
 
 	mov rax, [rel grug_on_fn_name wrt ..got]
-	lea r11, strings[rel 43]
+	lea r11, [rel on_fn_name]
 	mov [rax], r11
 %endmacro
 
@@ -74,9 +74,9 @@ init_globals:
 	add rsp, byte 0x8
 	mov rdi, rax
 
-	lea rcx, strings[rel 0]
+	lea rcx, [rel on_fn_path]
 
-	lea rdx, strings[rel 43]
+	lea rdx, [rel on_fn_name]
 
 	pop rsi
 
