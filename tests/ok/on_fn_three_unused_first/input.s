@@ -97,9 +97,7 @@ on_b:
 	test al, al
 	je strict .fast
 
-	save_on_fn_name_and_path_on_b
-
-	error_handling_on_b
+	save_on_fn_name_and_path_on_b_on_b
 
 	mov rsp, rbp
 	pop rbp
@@ -157,9 +155,7 @@ on_c:
 	test al, al
 	je strict .fast
 
-	save_on_fn_name_and_path_on_c
-
-	error_handling_on_c
+	save_on_fn_name_and_path_on_c_on_c
 
 	mov rsp, rbp
 	pop rbp

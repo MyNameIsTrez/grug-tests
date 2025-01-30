@@ -58,31 +58,31 @@ init_globals:
 %endmacro
 
 %macro error_handling 0
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call setjmp wrt ..plt
-	test eax, eax
-	je %%skip
+    mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
+    call setjmp wrt ..plt
+    test eax, eax
+    je %%skip
 
-	dec eax
-	push rax
-	mov edi, eax
-	sub rsp, byte 0x8
-	call grug_get_runtime_error_reason wrt ..plt
-	add rsp, byte 0x8
-	mov rdi, rax
+    dec eax
+    push rax
+    mov edi, eax
+    sub rsp, byte 0x8
+    call grug_get_runtime_error_reason wrt ..plt
+    add rsp, byte 0x8
+    mov rdi, rax
 
-	lea rcx, [rel on_fn_path]
+    lea rcx, [rel on_fn_path]
 
-	lea rdx, [rel on_fn_name]
+    lea rdx, [rel on_fn_name]
 
-	pop rsi
+    pop rsi
 
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
+    mov rax, [rel grug_runtime_error_handler wrt ..got]
+    call [rax]
 
-	mov rsp, rbp
-	pop rbp
-	ret
+    mov rsp, rbp
+    pop rbp
+    ret
 %%skip:
 %endmacro
 

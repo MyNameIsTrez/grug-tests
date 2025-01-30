@@ -57,35 +57,6 @@ init_globals:
 	mov [rax], r11
 %endmacro
 
-%macro error_handling 0
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call setjmp wrt ..plt
-	test eax, eax
-	je %%skip
-
-	dec eax
-	push rax
-	mov edi, eax
-	sub rsp, byte 0x8
-	call grug_get_runtime_error_reason wrt ..plt
-	add rsp, byte 0x8
-	mov rdi, rax
-
-	lea rcx, [rel on_fn_path]
-
-	lea rdx, [rel on_fn_name]
-
-	pop rsi
-
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
-
-	mov rsp, rbp
-	pop rbp
-	ret
-%%skip:
-%endmacro
-
 global on_a
 on_a:
 	push rbp
@@ -100,15 +71,14 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	error_handling
-
 	call game_fn_nothing wrt ..plt
 
 	mov eax, 1
 	test eax, eax
-	je strict $+0x38
+	je strict .false_safe
 	call game_fn_nothing wrt ..plt
 
+.false_safe:
 	call game_fn_nothing wrt ..plt
 
 	mov rsp, rbp
@@ -120,9 +90,10 @@ on_a:
 
 	mov eax, 1
 	test eax, eax
-	je strict $+0xb
+	je strict .false_fast
 	call game_fn_nothing wrt ..plt
 
+.false_fast:
 	call game_fn_nothing wrt ..plt
 
 	mov rsp, rbp
