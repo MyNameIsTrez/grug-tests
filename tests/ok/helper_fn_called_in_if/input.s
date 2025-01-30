@@ -12,7 +12,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/helper_fn_returning_void_has_no_return/input.grug", 0
+	db "tests/ok/helper_fn_called_in_if/input.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -34,8 +34,8 @@ extern grug_on_fns_in_safe_mode
 extern game_fn_define_d
 extern setjmp
 extern grug_get_runtime_error_reason
-extern game_fn_nothing
 extern longjmp
+extern game_fn_nothing
 
 %define GRUG_ON_FN_STACK_OVERFLOW 1
 
@@ -126,23 +126,31 @@ on_a:
 
 	error_handling
 
+	mov eax, 1
+	test eax, eax
+	je strict .false_safe
+
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_foo_safe
-	call game_fn_nothing wrt ..plt
 
+.false_safe:
 	mov rsp, rbp
 	pop rbp
 	ret
 
 .fast:
+	mov eax, 1
+	test eax, eax
+	je strict .false_fast
+
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_foo_fast
-	call game_fn_nothing wrt ..plt
 
+.false_fast:
 	mov rsp, rbp
 	pop rbp
 	ret

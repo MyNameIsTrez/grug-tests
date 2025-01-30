@@ -3136,6 +3136,24 @@ static void ok_helper_fn(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entity_types == NULL);
 }
 
+static void ok_helper_fn_called_in_if(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 1);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/helper_fn_called_in_if/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_helper_fn_overwriting_param(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	assert(game_fn_sin_call_count == 0);
@@ -5217,6 +5235,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(gt_false, "d", 8);
 	ADD_TEST_OK(gt_true, "d", 8);
 	ADD_TEST_OK(helper_fn, "d", 8);
+	ADD_TEST_OK(helper_fn_called_in_if, "d", 8);
 	ADD_TEST_OK(helper_fn_overwriting_param, "d", 8);
 	ADD_TEST_OK(helper_fn_returning_void_has_no_return, "d", 8);
 	ADD_TEST_OK(helper_fn_returning_void_returns_void, "d", 8);

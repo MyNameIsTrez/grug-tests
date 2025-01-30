@@ -106,9 +106,10 @@ on_a:
 
 	xor eax, eax
 	test eax, eax
-	je strict $+0x38
+	je strict .false_safe
 	call game_fn_nothing wrt ..plt
 
+.false_safe:
 	call game_fn_nothing wrt ..plt
 
 	mov rsp, rbp
@@ -120,9 +121,10 @@ on_a:
 
 	xor eax, eax
 	test eax, eax
-	je strict $+0xb
+	je strict .false_fast
 	call game_fn_nothing wrt ..plt
 
+.false_fast:
 	call game_fn_nothing wrt ..plt
 
 	mov rsp, rbp
