@@ -12,11 +12,9 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/pass_string_argument_to_helper_fn/input.grug", 0
+	db "tests/err_runtime/remainder_by_0/input.grug", 0
 on_fn_name:
 	db "on_a", 0
-foo:
-	db "foo", 0
 
 align 8
 global resources_size
@@ -28,7 +26,6 @@ entities_size: dq 0
 section .text
 
 extern grug_runtime_error_handler
-extern grug_max_rsp
 extern grug_on_fn_name
 extern grug_runtime_error_jmp_buffer
 extern grug_on_fn_path
@@ -37,11 +34,9 @@ extern game_fn_define_d
 extern setjmp
 extern grug_get_runtime_error_reason
 extern longjmp
-extern game_fn_say
+extern game_fn_initialize
 
-%define GRUG_ON_FN_STACK_OVERFLOW 1
-
-%define GRUG_STACK_LIMIT 0x10000
+%define GRUG_ON_FN_DIVISION_BY_ZERO 0
 
 global define
 define:
@@ -63,12 +58,6 @@ init_globals:
 	mov rax, [rel grug_on_fn_name wrt ..got]
 	lea r11, [rel on_fn_name]
 	mov [rax], r11
-%endmacro
-
-%macro set_max_rsp 0
-	mov rax, [rel grug_max_rsp wrt ..got]
-	mov [rax], rsp
-	sub qword [rax], GRUG_STACK_LIMIT
 %endmacro
 
 %macro error_handling 0
@@ -100,11 +89,10 @@ init_globals:
 %%skip:
 %endmacro
 
-%macro check_stack_overflow 0
-	mov rax, [rel grug_max_rsp wrt ..got]
-	cmp rsp, [rax]
-	jg %%skip
-	mov esi, 1 + GRUG_ON_FN_STACK_OVERFLOW
+%macro check_division_by_0 0
+	test r11, r11
+	jne %%skip
+	mov esi, 1 + GRUG_ON_FN_DIVISION_BY_ZERO
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call longjmp wrt ..plt
 %%skip:
@@ -124,71 +112,37 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	set_max_rsp
-
 	error_handling
 
-	mov rax, rbp[-0x8]
+	xor eax, eax
+	push rax
+	mov eax, 1
+	pop r11
+	check_division_by_0
+	cqo
+	idiv r11
+	mov rax, rdx
 	push rax
 
-	lea rax, [rel foo]
-	push rax
-
-	pop rsi
 	pop rdi
-	call helper_shout_safe
+	call game_fn_initialize wrt ..plt
 
 	mov rsp, rbp
 	pop rbp
 	ret
 
 .fast:
-	mov rax, rbp[-0x8]
+	xor eax, eax
 	push rax
-
-	lea rax, [rel foo]
-	push rax
-
-	pop rsi
-	pop rdi
-	call helper_shout_fast
-
-	mov rsp, rbp
-	pop rbp
-	ret
-
-global helper_shout_safe
-helper_shout_safe:
-	push rbp
-	mov rbp, rsp
-	sub rsp, byte 0x10
-	mov rbp[-0x8], rdi
-	mov rbp[-0x10], rsi
-	check_stack_overflow
-
-	mov rax, rbp[-0x10]
+	mov eax, 1
+	pop r11
+	cqo
+	idiv r11
+	mov rax, rdx
 	push rax
 
 	pop rdi
-	call game_fn_say wrt ..plt
-
-	mov rsp, rbp
-	pop rbp
-	ret
-
-global helper_shout_fast
-helper_shout_fast:
-	push rbp
-	mov rbp, rsp
-	sub rsp, byte 0x10
-	mov rbp[-0x8], rdi
-	mov rbp[-0x10], rsi
-
-	mov rax, rbp[-0x10]
-	push rax
-
-	pop rdi
-	call game_fn_say wrt ..plt
+	call game_fn_initialize wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

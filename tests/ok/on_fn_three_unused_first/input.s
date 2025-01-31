@@ -15,8 +15,9 @@ on_fns:
 
 on_fn_path:
 	db "tests/ok/on_fn_three_unused_first/input.grug", 0
-on_fn_name:
+on_fn_name_b:
 	db "on_b", 0
+on_fn_name_c:
 	db "on_c", 0
 
 align 8
@@ -56,7 +57,7 @@ init_globals:
 	mov [rax], r11
 
 	mov rax, [rel grug_on_fn_name wrt ..got]
-	lea r11, [rel on_fn_name]
+	lea r11, [rel on_fn_name_b]
 	mov [rax], r11
 %endmacro
 
@@ -70,9 +71,9 @@ init_globals:
 	call grug_get_runtime_error_reason wrt ..plt
 	mov rdi, rax
 
-	lea rcx, strings[rel 0]
+	lea rcx, [rel on_fn_path]
 
-	lea rdx, strings[rel 45]
+	lea rdx, [rel on_fn_name_b]
 
 	mov rsi, [rel grug_runtime_error_type wrt ..got]
 	mov esi, [rsi]
@@ -97,7 +98,7 @@ on_b:
 	test al, al
 	je strict .fast
 
-	save_on_fn_name_and_path_on_b_on_b
+	save_on_fn_name_and_path_on_b
 
 	mov rsp, rbp
 	pop rbp
@@ -114,7 +115,7 @@ on_b:
 	mov [rax], r11
 
 	mov rax, [rel grug_on_fn_name wrt ..got]
-	lea r11, [rel on_fn_name]
+	lea r11, [rel on_fn_name_c]
 	mov [rax], r11
 %endmacro
 
@@ -128,9 +129,9 @@ on_b:
 	call grug_get_runtime_error_reason wrt ..plt
 	mov rdi, rax
 
-	lea rcx, strings[rel 0]
+	lea rcx, [rel on_fn_path]
 
-	lea rdx, strings[rel 50]
+	lea rdx, [rel on_fn_name_c]
 
 	mov rsi, [rel grug_runtime_error_type wrt ..got]
 	mov esi, [rsi]
@@ -155,7 +156,7 @@ on_c:
 	test al, al
 	je strict .fast
 
-	save_on_fn_name_and_path_on_c_on_c
+	save_on_fn_name_and_path_on_c
 
 	mov rsp, rbp
 	pop rbp

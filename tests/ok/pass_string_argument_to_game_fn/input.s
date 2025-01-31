@@ -15,6 +15,7 @@ on_fn_path:
 	db "tests/ok/pass_string_argument_to_game_fn/input.grug", 0
 on_fn_name:
 	db "on_a", 0
+foo:
 	db "foo", 0
 
 align 8
@@ -72,7 +73,7 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	lea rax, strings[rel 57]
+	lea rax, [rel foo]
 	push rax
 
 	pop rdi
@@ -83,7 +84,7 @@ on_a:
 	ret
 
 .fast:
-	lea rax, strings[rel 57]
+	lea rax, [rel foo]
 	push rax
 
 	pop rdi
