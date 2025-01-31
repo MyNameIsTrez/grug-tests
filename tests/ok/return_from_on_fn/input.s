@@ -73,12 +73,6 @@ on_a:
 
 	call game_fn_nothing wrt ..plt
 
-	push rax
-	sub rsp, byte 0x8
-	call grug_disable_on_fn_runtime_error_handling wrt ..plt
-	add rsp, byte 0x8
-	pop rax
-
 	mov rsp, rbp
 	pop rbp
 	ret

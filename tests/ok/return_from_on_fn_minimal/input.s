@@ -71,16 +71,6 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	push rax
-	sub rsp, byte 0x8
-	call grug_disable_on_fn_runtime_error_handling wrt ..plt
-	add rsp, byte 0x8
-	pop rax
-
-	mov rsp, rbp
-	pop rbp
-	ret
-
 	mov rsp, rbp
 	pop rbp
 	ret
@@ -90,6 +80,10 @@ on_a:
 	ret
 
 .fast:
+	mov rsp, rbp
+	pop rbp
+	ret
+
 	mov rsp, rbp
 	pop rbp
 	ret

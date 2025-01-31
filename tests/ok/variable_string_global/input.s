@@ -11,11 +11,13 @@ global on_fns
 on_fns:
 	dq on_a
 
-on_fn_path:
+temp:
 	db "temp", 0
-on_fn_name:
+on_fn_path:
 	db "tests/ok/variable_string_global/input.grug", 0
+on_fn_name:
 	db "on_a", 0
+foo:
 	db "foo", 0
 
 align 8
@@ -47,13 +49,13 @@ define:
 global init_globals
 init_globals:
 	mov rdi[0x0], rsi
-	lea rax, strings[rel 0]
+	lea rax, [rel temp]
 	mov rdi[0x8], rax
 	ret
 
 %macro save_on_fn_name_and_path 0
 	mov rax, [rel grug_on_fn_path wrt ..got]
-	lea r11, strings[rel 5]
+	lea r11, [rel on_fn_path]
 	mov [rax], r11
 
 	mov rax, [rel grug_on_fn_name wrt ..got]
@@ -75,7 +77,7 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	lea rax, strings[rel 53]
+	lea rax, [rel foo]
 	mov r11, rbp[-0x8]
 	mov r11[byte 0x8], rax
 
@@ -91,7 +93,7 @@ on_a:
 	ret
 
 .fast:
-	lea rax, strings[rel 53]
+	lea rax, [rel foo]
 	mov r11, rbp[-0x8]
 	mov r11[byte 0x8], rax
 

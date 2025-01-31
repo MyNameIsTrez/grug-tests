@@ -15,6 +15,7 @@ on_fn_path:
 	db "tests/ok/string_ne_false/input.grug", 0
 on_fn_name:
 	db "on_a", 0
+foo:
 	db "foo", 0
 
 align 8
@@ -73,10 +74,10 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	lea rax, strings[rel 41]
+	lea rax, [rel foo]
 	push rax
 
-	lea rax, strings[rel 41]
+	lea rax, [rel foo]
 	pop r11
 
 	mov rsi, r11
@@ -95,10 +96,10 @@ on_a:
 	ret
 
 .fast:
-	lea rax, strings[rel 41]
+	lea rax, [rel foo]
 	push rax
 
-	lea rax, strings[rel 41]
+	lea rax, [rel foo]
 	pop r11
 
 	mov rsi, r11

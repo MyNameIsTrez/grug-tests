@@ -6,6 +6,8 @@ define_type: db "u", 0
 align 8
 global globals_size
 globals_size: dq 8
+
+resource:
 	db "tests/ok/resource_can_contain_dot_dot_1/..foo", 0
 
 align 8
@@ -14,7 +16,7 @@ resources_size: dq 1
 
 global resources
 resources:
-	dq strings + 0
+	dq resource
 
 global entities_size
 entities_size: dq 0
@@ -26,7 +28,7 @@ extern game_fn_define_u
 global define
 define:
 	sub rsp, byte 0x8
-	lea rax, strings[rel 0]
+	lea rax, [rel resource]
 	mov rdi, rax
 	call game_fn_define_u wrt ..plt
 	add rsp, byte 0x8

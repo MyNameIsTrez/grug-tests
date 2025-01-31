@@ -10,10 +10,16 @@ globals_size: dq 8
 global on_fns
 on_fns:
 	dq on_a
+
+entity_type:
 	db 0
+entity:
 	db "ok:foo", 0
+resource:
 	db "tests/ok/resource_and_entity_and_on_fn/foo.txt", 0
+on_fn_path:
 	db "tests/ok/resource_and_entity_and_on_fn/input.grug", 0
+on_fn_name:
 	db "on_a", 0
 
 align 8
@@ -22,18 +28,18 @@ resources_size: dq 1
 
 global resources
 resources:
-	dq strings + 8
+	dq resource
 
 global entities_size
 entities_size: dq 1
 
 global entities
 entities:
-	dq strings + 1
+	dq entity
 
 global entity_types
 entity_types:
-	dq strings + 0
+	dq entity_type
 
 section .text
 
@@ -50,9 +56,9 @@ extern game_fn_initialize_bool
 global define
 define:
 	sub rsp, byte 0x8
-	lea rax, strings[rel 1]
+	lea rax, [rel entity]
 	mov rsi, rax
-	lea rax, strings[rel 8]
+	lea rax, [rel resource]
 	mov rdi, rax
 	call game_fn_define_a2 wrt ..plt
 	add rsp, byte 0x8
@@ -65,7 +71,7 @@ init_globals:
 
 %macro save_on_fn_name_and_path 0
 	mov rax, [rel grug_on_fn_path wrt ..got]
-	lea r11, strings[rel 55]
+	lea r11, [rel on_fn_path]
 	mov [rax], r11
 
 	mov rax, [rel grug_on_fn_name wrt ..got]

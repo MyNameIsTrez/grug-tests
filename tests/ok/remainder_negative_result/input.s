@@ -33,7 +33,10 @@ extern grug_on_fns_in_safe_mode
 extern game_fn_define_d
 extern setjmp
 extern grug_get_runtime_error_reason
+extern longjmp
 extern game_fn_initialize
+
+%define GRUG_ON_FN_DIVISION_BY_ZERO 0
 
 global define
 define:
@@ -86,6 +89,15 @@ init_globals:
 %%skip:
 %endmacro
 
+%macro check_division_by_0 0
+	test r11, r11
+	jne %%skip
+	mov esi, 1 + GRUG_ON_FN_DIVISION_BY_ZERO
+	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
+	call longjmp wrt ..plt
+%%skip:
+%endmacro
+
 global on_a
 on_a:
 	push rbp
@@ -107,6 +119,7 @@ on_a:
 	mov eax, 5
 	neg rax
 	pop r11
+	check_division_by_0
 	cqo
 	idiv r11
 	mov rax, rdx
