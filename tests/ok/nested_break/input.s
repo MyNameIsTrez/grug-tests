@@ -26,14 +26,27 @@ entities_size: dq 0
 section .text
 
 extern grug_runtime_error_handler
+extern grug_max_time
 extern grug_on_fn_name
 extern grug_runtime_error_jmp_buffer
 extern grug_on_fn_path
 extern grug_on_fns_in_safe_mode
+extern grug_current_time
 extern game_fn_define_d
+extern clock_gettime
 extern setjmp
 extern grug_get_runtime_error_reason
 extern game_fn_nothing
+extern longjmp
+
+%define GRUG_ON_FN_TIME_LIMIT_EXCEEDED 2
+
+%define CLOCK_PROCESS_CPUTIME_ID 2
+%define TV_SEC_OFFSET 0
+%define TV_NSEC_OFFSET 8
+%define GRUG_ON_FN_TIME_LIMIT_MS 10
+%define NS_PER_MS 1000000
+%define NS_PER_SEC 1000000000
 
 global define
 define:
@@ -55,6 +68,20 @@ init_globals:
 	mov rax, [rel grug_on_fn_name wrt ..got]
 	lea r11, [rel on_fn_name]
 	mov [rax], r11
+%endmacro
+
+%macro set_time_limit 0
+	mov rsi, [rel grug_max_time wrt ..got]
+	push rsi
+	mov edi, CLOCK_PROCESS_CPUTIME_ID
+	call clock_gettime wrt ..plt
+	pop rax
+	add qword [byte rax + TV_NSEC_OFFSET], GRUG_ON_FN_TIME_LIMIT_MS * NS_PER_MS
+	cmp qword [byte rax + TV_NSEC_OFFSET], NS_PER_SEC
+	jl %%skip
+	sub qword [byte rax + TV_NSEC_OFFSET], NS_PER_SEC
+	inc qword [byte rax + TV_SEC_OFFSET]
+%%skip:
 %endmacro
 
 %macro error_handling 0
@@ -86,6 +113,29 @@ init_globals:
 %%skip:
 %endmacro
 
+%macro check_time_limit_exceeded 0
+	mov rsi, [rel grug_current_time wrt ..got]
+	push rsi
+	mov edi, CLOCK_PROCESS_CPUTIME_ID
+	call clock_gettime wrt ..plt
+	pop rax
+	mov r11, [rel grug_max_time wrt ..got]
+
+	mov r10, [byte r11 + TV_SEC_OFFSET]
+	cmp [byte rax + TV_SEC_OFFSET], r10
+	jl %%skip
+	jg %%longjump
+	mov r10, [byte r11 + TV_NSEC_OFFSET]
+	cmp [byte rax + TV_NSEC_OFFSET], r10
+	jg %%longjump
+	jmp short %%skip
+%%longjump:
+	mov esi, 1 + GRUG_ON_FN_TIME_LIMIT_EXCEEDED
+	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
+	call longjmp wrt ..plt
+%%skip:
+%endmacro
+
 global on_a
 on_a:
 	push rbp
@@ -100,20 +150,28 @@ on_a:
 
 	save_on_fn_name_and_path
 
+	set_time_limit
+
 	error_handling
 
 	call game_fn_nothing wrt ..plt
+.repeat_outer:
 	mov eax, 1
 	test eax, eax
-	je strict $+0x59
+	je strict .skip_outer
+.repeat_inner:
 	mov eax, 1
 	test eax, eax
-	je strict $+0x10
-	jmp strict $+0xa
-	jmp strict $-0x12
+	je strict .skip_inner
+	jmp strict .skip_inner
+	check_time_limit_exceeded
+	jmp strict .repeat_inner
+.skip_inner:
 	call game_fn_nothing wrt ..plt
-	jmp strict $+0xa
-	jmp strict $-0x5b
+	jmp strict .skip_outer
+	check_time_limit_exceeded
+	jmp strict .repeat_outer
+.skip_outer:
 	call game_fn_nothing wrt ..plt
 
 	mov rsp, rbp
@@ -122,17 +180,21 @@ on_a:
 
 .fast:
 	call game_fn_nothing wrt ..plt
+.repeat_outer_fast:
 	mov eax, 1
 	test eax, eax
-	je strict $+0x2c
+	je strict .skip_outer_fast
+.repeat_inner_fast:
 	mov eax, 1
 	test eax, eax
-	je strict $+0x10
-	jmp strict $+0xa
-	jmp strict $-0x12
+	je strict .skip_inner_fast
+	jmp strict .skip_inner_fast
+	jmp strict .repeat_inner_fast
+.skip_inner_fast:
 	call game_fn_nothing wrt ..plt
-	jmp strict $+0xa
-	jmp strict $-0x2e
+	jmp strict .skip_outer_fast
+	jmp strict .repeat_outer_fast
+.skip_outer_fast:
 	call game_fn_nothing wrt ..plt
 
 	mov rsp, rbp

@@ -15,6 +15,7 @@ on_fn_path:
 	db "tests/ok/max_args/input.grug", 0
 on_fn_name:
 	db "on_a", 0
+foo:
 	db "foo", 0
 
 align 8
@@ -114,7 +115,7 @@ on_a:
 	mov rax, rax[byte 0x0]
 	push rax
 
-	lea rax, strings[rel 34]
+	lea rax, [rel foo]
 	push rax
 
 	; Popping arguments
@@ -206,7 +207,7 @@ on_a:
 	mov rax, rax[byte 0x0]
 	push rax
 
-	lea rax, strings[rel 34]
+	lea rax, [rel foo]
 	push rax
 
 	; Popping arguments
