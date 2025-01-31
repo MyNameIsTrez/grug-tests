@@ -161,7 +161,6 @@ on_a:
 	test eax, eax
 	je strict .skip
 
-	; loop body
 	call game_fn_nothing wrt ..plt
 
 	jmp strict .skip
@@ -172,7 +171,6 @@ on_a:
 	jmp strict .repeat
 .skip:
 
-	; after loop
 	call game_fn_nothing wrt ..plt
 
 	mov rsp, rbp
@@ -182,21 +180,20 @@ on_a:
 .fast:
 	call game_fn_nothing wrt ..plt
 
-	; while (condition)
+.repeat_fast:
 	mov eax, 1
 	test eax, eax
-	je strict $+0x1a
-
-	; loop body
-	call game_fn_nothing wrt ..plt
-
-	jmp strict $+0xf
+	je strict .skip_fast
 
 	call game_fn_nothing wrt ..plt
 
-	jmp strict $-0x1c
+	jmp strict .skip_fast
 
-	; after loop
+	call game_fn_nothing wrt ..plt
+
+	jmp strict .repeat_fast
+.skip_fast:
+
 	call game_fn_nothing wrt ..plt
 
 	mov rsp, rbp

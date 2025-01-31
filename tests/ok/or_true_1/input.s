@@ -73,14 +73,16 @@ on_a:
 
 	mov eax, 1
 	test eax, eax
-	je $+0xc
+	je .or_false
 	mov eax, 1
-	jmp strict $+0x11
+	jmp strict .or_true
+.or_false:
 	xor eax, eax
 	test eax, eax
 	mov eax, 0
 	setne al
 
+.or_true:
 	push rax
 
 	pop rdi
@@ -93,14 +95,16 @@ on_a:
 .fast:
 	mov eax, 1
 	test eax, eax
-	je $+0xc
+	je .or_false_fast
 	mov eax, 1
-	jmp strict $+0x11
+	jmp strict .or_true_fast
+.or_false_fast:
 	xor eax, eax
 	test eax, eax
 	mov eax, 0
 	setne al
 
+.or_true_fast:
 	push rax
 
 	pop rdi

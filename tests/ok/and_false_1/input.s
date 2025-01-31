@@ -73,12 +73,13 @@ on_a:
 
 	mov eax, 1
 	test eax, eax
-	je strict $+0x12
+	je strict .and_false
 	xor eax, eax
 	test eax, eax
 	mov eax, 0
 	setne al
 
+.and_false:
 	push rax
 
 	pop rdi
@@ -91,13 +92,13 @@ on_a:
 .fast:
 	mov eax, 1
 	test eax, eax
-	je strict .and_false
+	je strict .and_false_fast
 	xor eax, eax
 	test eax, eax
 	mov eax, 0
 	setne al
 
-.and_false:
+.and_false_fast:
 	push rax
 
 	pop rdi

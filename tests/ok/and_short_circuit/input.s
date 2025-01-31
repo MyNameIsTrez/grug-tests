@@ -147,7 +147,7 @@ on_a:
 .fast:
 	xor eax, eax
 	test eax, eax
-	je strict $+0x2f
+	je strict .and_false_fast
 	xor eax, eax
 	push rax
 	xor eax, eax
@@ -164,6 +164,7 @@ on_a:
 	mov eax, 0
 	setne al
 
+.and_false_fast:
 	push rax
 
 	pop rdi

@@ -61,31 +61,6 @@ init_globals:
 	mov [rax], r11
 %endmacro
 
-%macro error_handling_on_b 0
-	mov esi, 1
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call setjmp wrt ..plt
-	test eax, eax
-	je strict $+0x33
-
-	call grug_get_runtime_error_reason wrt ..plt
-	mov rdi, rax
-
-	lea rcx, [rel on_fn_path]
-
-	lea rdx, [rel on_fn_name_b]
-
-	mov rsi, [rel grug_runtime_error_type wrt ..got]
-	mov esi, [rsi]
-
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
-
-	mov rsp, rbp
-	pop rbp
-	ret
-%endmacro
-
 global on_b
 on_b:
 	push rbp
@@ -117,31 +92,6 @@ on_b:
 	mov rax, [rel grug_on_fn_name wrt ..got]
 	lea r11, [rel on_fn_name_c]
 	mov [rax], r11
-%endmacro
-
-%macro error_handling_on_c 0
-	mov esi, 1
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call setjmp wrt ..plt
-	test eax, eax
-	je strict $+0x33
-
-	call grug_get_runtime_error_reason wrt ..plt
-	mov rdi, rax
-
-	lea rcx, [rel on_fn_path]
-
-	lea rdx, [rel on_fn_name_c]
-
-	mov rsi, [rel grug_runtime_error_type wrt ..got]
-	mov esi, [rsi]
-
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
-
-	mov rsp, rbp
-	pop rbp
-	ret
 %endmacro
 
 global on_c

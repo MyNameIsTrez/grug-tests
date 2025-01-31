@@ -176,11 +176,12 @@ helper_fib_safe:
 	mov eax, 0
 	sete al
 	test eax, eax
-	je $+0xc
+	je .or_false
 
 	; or n == 1
 	mov eax, 1
-	jmp strict $+0x25
+	jmp strict .early_return
+.or_false:
 	mov eax, 1
 	push rax
 	mov eax, rbp[-0xc]
@@ -191,8 +192,9 @@ helper_fib_safe:
 	test eax, eax
 	mov eax, 0
 	setne al
+.early_return:
 	test eax, eax
-	je strict $+0xe
+	je strict .dont_early_return
 
 	; return n
 	mov eax, rbp[-0xc]
@@ -200,6 +202,7 @@ helper_fib_safe:
 	pop rbp
 	ret
 
+.dont_early_return:
 	; helper_fib_safe(n - 2)
 	mov rax, rbp[-0x8]
 	push rax
@@ -261,11 +264,12 @@ helper_fib_fast:
 	mov eax, 0
 	sete al
 	test eax, eax
-	je $+0xc
+	je .or_false_fast
 
 	; or n == 1
 	mov eax, 1
-	jmp strict $+0x25
+	jmp strict .early_return_fast
+.or_false_fast:
 	mov eax, 1
 	push rax
 	mov eax, rbp[-0xc]
@@ -276,8 +280,9 @@ helper_fib_fast:
 	test eax, eax
 	mov eax, 0
 	setne al
+.early_return_fast:
 	test eax, eax
-	je strict $+0xe
+	je strict .dont_early_return
 
 	; return n
 	mov eax, rbp[-0xc]
@@ -285,6 +290,7 @@ helper_fib_fast:
 	pop rbp
 	ret
 
+.dont_early_return:
 	; helper_fib_fast(n - 2)
 	mov rax, rbp[-0x8]
 	push rax

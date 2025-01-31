@@ -235,11 +235,13 @@ on_a:
 	pop rdi
 	call helper_foo_fast
 
+.repeat_fast:
 	mov eax, 1
 	test eax, eax
-	je strict $+0xb
+	je strict .skip_fast
 
-	jmp strict $-0xd
+	jmp strict .repeat_fast
+.skip_fast:
 
 	mov rsp, rbp
 	pop rbp
