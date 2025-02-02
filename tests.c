@@ -3044,11 +3044,36 @@ static void ok_globals_1000(void *on_fns, void *g, size_t resources_size, char *
 	(void)on_fns;
 
 	char *globals = g;
-	assert(*((uint64_t*)globals) == 42);
+	assert(*((uint64_t *)globals) == 42);
 	globals += sizeof(uint64_t);
 
 	for (int32_t i = 0; i < 1000; i++) {
-		assert(((int32_t*)globals)[i] == i + 1);
+		assert(((int32_t *)globals)[i] == i + 1);
+	}
+
+	free(g);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_globals_1000_string(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	(void)on_fns;
+
+	char *globals = g;
+	assert(*((uint64_t *)globals) == 42);
+	globals += sizeof(uint64_t);
+
+	static char expected[sizeof("global0001")];
+	memcpy(expected, "global", 6);
+
+	for (int32_t i = 0; i < 1000; i++) {
+		snprintf(expected + sizeof("global") - 1, sizeof("0001"), "%.4d", i + 1);
+		assert(streq(((char **)globals)[i], expected));
 	}
 
 	free(g);
@@ -5191,7 +5216,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(trailing_space_in_comment);
 	ADD_TEST_ERROR(unclosed_double_quote);
 	ADD_TEST_ERROR(unknown_variable);
-	ADD_TEST_ERROR(unused_result);
+	ADD_TEST_ERROR(unused_expr_result);
 	ADD_TEST_ERROR(variable_assignment_before_definition);
 	ADD_TEST_ERROR(variable_definition_requires_value_i32);
 	ADD_TEST_ERROR(variable_definition_requires_value_string);
@@ -5298,6 +5323,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(global_containing_addition, "a", 12);
 	ADD_TEST_OK(globals, "h", 16);
 	ADD_TEST_OK(globals_1000, "a", 4008);
+	ADD_TEST_OK(globals_1000_string, "a", 8008);
 	ADD_TEST_OK(globals_32, "a", 136);
 	ADD_TEST_OK(globals_64, "a", 264);
 	ADD_TEST_OK(gt_false, "d", 8);
