@@ -7,5 +7,9 @@ on_a() {
     helper_foo()
 }
 
-helper_foo() resource {
+helper_bar() {
+}
+
+helper_foo() {
+    helper_bar()
 }

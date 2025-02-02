@@ -3179,6 +3179,24 @@ static void ok_helper_fn_called_in_if(void *on_fns, void *g, size_t resources_si
 	assert(entity_types == NULL);
 }
 
+static void ok_helper_fn_called_indirectly(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 1);
+
+	free(g);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/helper_fn_called_indirectly/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_helper_fn_overwriting_param(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	assert(game_fn_sin_call_count == 0);
@@ -4547,6 +4565,26 @@ static void ok_return_with_no_value(void *on_fns, void *g, size_t resources_size
 	assert(entity_types == NULL);
 }
 
+static void ok_same_variable_name_in_different_functions(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_initialize_call_count == 0);
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 2);
+
+	free(g);
+
+	assert(game_fn_initialize_x == 69);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/same_variable_name_in_different_functions/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_stack_16_byte_alignment(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_nothing_aligned_call_count == 0);
 	assert(game_fn_initialize_aligned_call_count == 0);
@@ -5075,6 +5113,8 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(global_variable_definition_requires_value_i32);
 	ADD_TEST_ERROR(global_variable_definition_requires_value_string);
 	ADD_TEST_ERROR(global_variable_uses_global_variable);
+	ADD_TEST_ERROR(helper_fn_defined_before_first_helper_fn_usage);
+	ADD_TEST_ERROR(helper_fn_defined_between_on_fns);
 	ADD_TEST_ERROR(helper_fn_does_not_exist);
 	ADD_TEST_ERROR(helper_fn_is_not_called_1);
 	ADD_TEST_ERROR(helper_fn_is_not_called_2);
@@ -5115,6 +5155,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(on_fn_before_define);
 	ADD_TEST_ERROR(on_fn_cant_be_called_by_helper_fn);
 	ADD_TEST_ERROR(on_fn_cant_be_called_by_on_fn);
+	ADD_TEST_ERROR(on_fn_defined_after_helper_fn);
 	ADD_TEST_ERROR(on_fn_duplicate);
 	ADD_TEST_ERROR(on_fn_was_not_declared_in_entity);
 	ADD_TEST_ERROR(on_fn_wrong_order);
@@ -5263,6 +5304,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(gt_true, "d", 8);
 	ADD_TEST_OK(helper_fn, "d", 8);
 	ADD_TEST_OK(helper_fn_called_in_if, "d", 8);
+	ADD_TEST_OK(helper_fn_called_indirectly, "d", 8);
 	ADD_TEST_OK(helper_fn_overwriting_param, "d", 8);
 	ADD_TEST_OK(helper_fn_returning_void_has_no_return, "d", 8);
 	ADD_TEST_OK(helper_fn_returning_void_returns_void, "d", 8);
@@ -5335,6 +5377,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(return_from_on_fn, "d", 8);
 	ADD_TEST_OK(return_from_on_fn_minimal, "d", 8);
 	ADD_TEST_OK(return_with_no_value, "d", 8);
+	ADD_TEST_OK(same_variable_name_in_different_functions, "e", 8);
 	ADD_TEST_OK(stack_16_byte_alignment, "d", 8);
 	ADD_TEST_OK(stack_16_byte_alignment_midway, "d", 8);
 	ADD_TEST_OK(string_and_on_fn, "p", 8);

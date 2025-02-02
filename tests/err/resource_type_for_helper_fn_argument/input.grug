@@ -3,5 +3,9 @@ define() d {
     }
 }
 
-helper_calc(foo: resource) {
+on_a() {
+    helper_foo("bar.txt")
+}
+
+helper_foo(bar: resource) {
 }

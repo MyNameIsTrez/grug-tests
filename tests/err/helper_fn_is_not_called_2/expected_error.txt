@@ -1,1 +1,1 @@
-helper_foo() is not used by any on_ function
+helper_foo() is defined before the first time it gets called

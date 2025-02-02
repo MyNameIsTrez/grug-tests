@@ -4,7 +4,6 @@ define() d {
 }
 
 on_a() {
-    v0: i32
     v1: i32
     v2: i32
     v3: i32
@@ -67,8 +66,9 @@ on_a() {
     v61: i32
     v62: i32
     v63: i32
+    v64: i32
 
     # This causes SUB_RSP_32_BITS to be used in the function prologue,
     # instead of SUB_RSP_8_BITS, since there are now over 256 variable bytes
-    v64: i32
+    v65: i32
 }

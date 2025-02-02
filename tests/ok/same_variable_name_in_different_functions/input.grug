@@ -7,15 +7,15 @@ on_a() {
     foo: i32 = 42
     initialize(foo)
 
-    bar()
-}
-
-bar() {
-    foo: i32 = 42
-    initialize(foo)
+    helper_bar()
 }
 
 on_b() {
-    foo: i32 = 42
+    foo: i32 = 1337
+    initialize(foo)
+}
+
+helper_bar() {
+    foo: i32 = 69
     initialize(foo)
 }

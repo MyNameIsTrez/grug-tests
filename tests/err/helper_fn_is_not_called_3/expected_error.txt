@@ -1,1 +1,1 @@
-helper_bar() is not used by any on_ nor helper_ function
+helper_foo() is defined before the first time it gets called

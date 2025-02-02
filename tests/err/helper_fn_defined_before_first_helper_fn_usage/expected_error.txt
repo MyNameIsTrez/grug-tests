@@ -1,0 +1,1 @@
+helper_bar() is defined before the first time it gets called

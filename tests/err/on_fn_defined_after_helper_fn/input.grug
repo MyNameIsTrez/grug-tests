@@ -3,6 +3,9 @@ define() d {
     }
 }
 
+helper_foo() {
+}
+
 on_a() {
-    draw("foo.png")
+    helper_foo()
 }
