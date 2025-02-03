@@ -4672,6 +4672,26 @@ static void ok_string_and_on_fn(void *on_fns, void *g, size_t resources_size, ch
 	assert(entity_types == NULL);
 }
 
+static void ok_string_can_be_passed_to_helper_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_say_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_say_call_count == 1);
+
+	free(g);
+
+	assert(streq(game_fn_say_message, "foo"));
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/string_can_be_passed_to_helper_fn/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_string_eq_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -5181,6 +5201,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(cant_continue_outside_of_loop);
 	ADD_TEST_ERROR(cant_declare_me_globally);
 	ADD_TEST_ERROR(cant_declare_me_locally);
+	ADD_TEST_ERROR(cant_declare_variable_in_fn_call);
 	ADD_TEST_ERROR(cant_redefine_global);
 	ADD_TEST_ERROR(comment_at_the_end_of_another_statement);
 	ADD_TEST_ERROR(comment_at_the_end_of_define);
@@ -5200,6 +5221,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(empty_line_twice_between_local_statements);
 	ADD_TEST_ERROR(empty_line_while_group);
 	ADD_TEST_ERROR(entity_cant_be_empty_string);
+	ADD_TEST_ERROR(entity_cant_be_passed_to_helper_fn);
 	ADD_TEST_ERROR(entity_has_invalid_entity_name_colon);
 	ADD_TEST_ERROR(entity_has_invalid_entity_name_uppercase);
 	ADD_TEST_ERROR(entity_has_invalid_mod_name_uppercase);
@@ -5276,6 +5298,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(pass_bool_to_i32_helper_param);
 	ADD_TEST_ERROR(remainder_by_float);
 	ADD_TEST_ERROR(resource_cant_be_empty_string);
+	ADD_TEST_ERROR(resource_cant_be_passed_to_helper_fn);
 	ADD_TEST_ERROR(resource_cant_contain_backslash);
 	ADD_TEST_ERROR(resource_cant_contain_double_slash);
 	ADD_TEST_ERROR(resource_cant_go_up_to_parent_directory_1);
@@ -5490,6 +5513,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(stack_16_byte_alignment, "d", 8);
 	ADD_TEST_OK(stack_16_byte_alignment_midway, "d", 8);
 	ADD_TEST_OK(string_and_on_fn, "p", 8);
+	ADD_TEST_OK(string_can_be_passed_to_helper_fn, "d", 8);
 	ADD_TEST_OK(string_eq_false, "d", 8);
 	ADD_TEST_OK(string_eq_true, "d", 8);
 	ADD_TEST_OK(string_eq_true_empty, "d", 8);

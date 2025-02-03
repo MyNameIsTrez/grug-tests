@@ -4,5 +4,5 @@ define() d {
 }
 
 on_a() {
-    initialize(a: i32)
+    initialize(a: i32 = 42)
 }
