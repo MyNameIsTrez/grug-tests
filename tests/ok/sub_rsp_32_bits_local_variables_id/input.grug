@@ -1,0 +1,140 @@
+define() d {
+    return {
+    }
+}
+
+on_a() {
+    v1: id = null_id
+    set_target(v1)
+    v2: id = null_id
+    set_target(v2)
+    v3: id = null_id
+    set_target(v3)
+    v4: id = null_id
+    set_target(v4)
+    v5: id = null_id
+    set_target(v5)
+    v6: id = null_id
+    set_target(v6)
+    v7: id = null_id
+    set_target(v7)
+    v8: id = null_id
+    set_target(v8)
+    v9: id = null_id
+    set_target(v9)
+    v10: id = null_id
+    set_target(v10)
+    v11: id = null_id
+    set_target(v11)
+    v12: id = null_id
+    set_target(v12)
+    v13: id = null_id
+    set_target(v13)
+    v14: id = null_id
+    set_target(v14)
+    v15: id = null_id
+    set_target(v15)
+    v16: id = null_id
+    set_target(v16)
+    v17: id = null_id
+    set_target(v17)
+    v18: id = null_id
+    set_target(v18)
+    v19: id = null_id
+    set_target(v19)
+    v20: id = null_id
+    set_target(v20)
+    v21: id = null_id
+    set_target(v21)
+    v22: id = null_id
+    set_target(v22)
+    v23: id = null_id
+    set_target(v23)
+    v24: id = null_id
+    set_target(v24)
+    v25: id = null_id
+    set_target(v25)
+    v26: id = null_id
+    set_target(v26)
+    v27: id = null_id
+    set_target(v27)
+    v28: id = null_id
+    set_target(v28)
+    v29: id = null_id
+    set_target(v29)
+    v30: id = null_id
+    set_target(v30)
+    v31: id = null_id
+    set_target(v31)
+    v32: id = null_id
+    set_target(v32)
+    v33: id = null_id
+    set_target(v33)
+    v34: id = null_id
+    set_target(v34)
+    v35: id = null_id
+    set_target(v35)
+    v36: id = null_id
+    set_target(v36)
+    v37: id = null_id
+    set_target(v37)
+    v38: id = null_id
+    set_target(v38)
+    v39: id = null_id
+    set_target(v39)
+    v40: id = null_id
+    set_target(v40)
+    v41: id = null_id
+    set_target(v41)
+    v42: id = null_id
+    set_target(v42)
+    v43: id = null_id
+    set_target(v43)
+    v44: id = null_id
+    set_target(v44)
+    v45: id = null_id
+    set_target(v45)
+    v46: id = null_id
+    set_target(v46)
+    v47: id = null_id
+    set_target(v47)
+    v48: id = null_id
+    set_target(v48)
+    v49: id = null_id
+    set_target(v49)
+    v50: id = null_id
+    set_target(v50)
+    v51: id = null_id
+    set_target(v51)
+    v52: id = null_id
+    set_target(v52)
+    v53: id = null_id
+    set_target(v53)
+    v54: id = null_id
+    set_target(v54)
+    v55: id = null_id
+    set_target(v55)
+    v56: id = null_id
+    set_target(v56)
+    v57: id = null_id
+    set_target(v57)
+    v58: id = null_id
+    set_target(v58)
+    v59: id = null_id
+    set_target(v59)
+    v60: id = null_id
+    set_target(v60)
+    v61: id = null_id
+    set_target(v61)
+    v62: id = null_id
+    set_target(v62)
+    v63: id = null_id
+    set_target(v63)
+    v64: id = null_id
+    set_target(v64)
+
+    # This causes SUB_RSP_32_BITS to be used in the function prologue,
+    # instead of SUB_RSP_8_BITS, since there are now over 256 variable bytes
+    v65: id = null_id
+    set_target(v65)
+}

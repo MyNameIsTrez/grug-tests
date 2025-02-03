@@ -1,0 +1,206 @@
+define() d {
+    return {
+    }
+}
+
+v1: id = null_id
+v2: id = null_id
+v3: id = null_id
+v4: id = null_id
+v5: id = null_id
+v6: id = null_id
+v7: id = null_id
+v8: id = null_id
+v9: id = null_id
+v10: id = null_id
+v11: id = null_id
+v12: id = null_id
+v13: id = null_id
+v14: id = null_id
+v15: id = null_id
+v16: id = null_id
+v17: id = null_id
+v18: id = null_id
+v19: id = null_id
+v20: id = null_id
+v21: id = null_id
+v22: id = null_id
+v23: id = null_id
+v24: id = null_id
+v25: id = null_id
+v26: id = null_id
+v27: id = null_id
+v28: id = null_id
+v29: id = null_id
+v30: id = null_id
+v31: id = null_id
+v32: id = null_id
+v33: id = null_id
+v34: id = null_id
+v35: id = null_id
+v36: id = null_id
+v37: id = null_id
+v38: id = null_id
+v39: id = null_id
+v40: id = null_id
+v41: id = null_id
+v42: id = null_id
+v43: id = null_id
+v44: id = null_id
+v45: id = null_id
+v46: id = null_id
+v47: id = null_id
+v48: id = null_id
+v49: id = null_id
+v50: id = null_id
+v51: id = null_id
+v52: id = null_id
+v53: id = null_id
+v54: id = null_id
+v55: id = null_id
+v56: id = null_id
+v57: id = null_id
+v58: id = null_id
+v59: id = null_id
+v60: id = null_id
+v61: id = null_id
+v62: id = null_id
+v63: id = null_id
+v64: id = null_id
+v65: id = null_id
+
+on_a() {
+    v1 = null_id
+    set_target(v1)
+    v2 = null_id
+    set_target(v2)
+    v3 = null_id
+    set_target(v3)
+    v4 = null_id
+    set_target(v4)
+    v5 = null_id
+    set_target(v5)
+    v6 = null_id
+    set_target(v6)
+    v7 = null_id
+    set_target(v7)
+    v8 = null_id
+    set_target(v8)
+    v9 = null_id
+    set_target(v9)
+    v10 = null_id
+    set_target(v10)
+    v11 = null_id
+    set_target(v11)
+    v12 = null_id
+    set_target(v12)
+    v13 = null_id
+    set_target(v13)
+    v14 = null_id
+    set_target(v14)
+    v15 = null_id
+    set_target(v15)
+    v16 = null_id
+    set_target(v16)
+    v17 = null_id
+    set_target(v17)
+    v18 = null_id
+    set_target(v18)
+    v19 = null_id
+    set_target(v19)
+    v20 = null_id
+    set_target(v20)
+    v21 = null_id
+    set_target(v21)
+    v22 = null_id
+    set_target(v22)
+    v23 = null_id
+    set_target(v23)
+    v24 = null_id
+    set_target(v24)
+    v25 = null_id
+    set_target(v25)
+    v26 = null_id
+    set_target(v26)
+    v27 = null_id
+    set_target(v27)
+    v28 = null_id
+    set_target(v28)
+    v29 = null_id
+    set_target(v29)
+    v30 = null_id
+    set_target(v30)
+    v31 = null_id
+    set_target(v31)
+    v32 = null_id
+    set_target(v32)
+    v33 = null_id
+    set_target(v33)
+    v34 = null_id
+    set_target(v34)
+    v35 = null_id
+    set_target(v35)
+    v36 = null_id
+    set_target(v36)
+    v37 = null_id
+    set_target(v37)
+    v38 = null_id
+    set_target(v38)
+    v39 = null_id
+    set_target(v39)
+    v40 = null_id
+    set_target(v40)
+    v41 = null_id
+    set_target(v41)
+    v42 = null_id
+    set_target(v42)
+    v43 = null_id
+    set_target(v43)
+    v44 = null_id
+    set_target(v44)
+    v45 = null_id
+    set_target(v45)
+    v46 = null_id
+    set_target(v46)
+    v47 = null_id
+    set_target(v47)
+    v48 = null_id
+    set_target(v48)
+    v49 = null_id
+    set_target(v49)
+    v50 = null_id
+    set_target(v50)
+    v51 = null_id
+    set_target(v51)
+    v52 = null_id
+    set_target(v52)
+    v53 = null_id
+    set_target(v53)
+    v54 = null_id
+    set_target(v54)
+    v55 = null_id
+    set_target(v55)
+    v56 = null_id
+    set_target(v56)
+    v57 = null_id
+    set_target(v57)
+    v58 = null_id
+    set_target(v58)
+    v59 = null_id
+    set_target(v59)
+    v60 = null_id
+    set_target(v60)
+    v61 = null_id
+    set_target(v61)
+    v62 = null_id
+    set_target(v62)
+    v63 = null_id
+    set_target(v63)
+    v64 = null_id
+    set_target(v64)
+
+    # This causes SUB_RSP_32_BITS to be used in the function prologue,
+    # instead of SUB_RSP_8_BITS, since there are now over 256 variable bytes
+    v65 = null_id
+    set_target(v65)
+}
