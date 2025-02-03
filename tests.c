@@ -5172,10 +5172,13 @@ static void ok_write_to_global_variable(void *on_fns, void *g, size_t resources_
 static void add_error_tests(void) {
 	ADD_TEST_ERROR(assign_to_unknown_variable);
 	ADD_TEST_ERROR(assignment_isnt_expression);
+	ADD_TEST_ERROR(bool_cant_be_initialized_with_1);
 	ADD_TEST_ERROR(bool_unary_minus);
 	ADD_TEST_ERROR(cant_add_strings);
+	ADD_TEST_ERROR(cant_break_outside_of_loop);
 	ADD_TEST_ERROR(cant_call_define_fn_1);
 	ADD_TEST_ERROR(cant_call_define_fn_2);
+	ADD_TEST_ERROR(cant_continue_outside_of_loop);
 	ADD_TEST_ERROR(cant_declare_me_globally);
 	ADD_TEST_ERROR(cant_declare_me_locally);
 	ADD_TEST_ERROR(cant_redefine_global);
