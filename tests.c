@@ -4792,6 +4792,26 @@ static void ok_string_ne_true(void *on_fns, void *g, size_t resources_size, char
 	assert(entity_types == NULL);
 }
 
+static void ok_sub_rsp_32_bits_global_overwritten_variables_i32(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_initialize_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 65);
+
+	free(g);
+
+	assert(game_fn_initialize_x == 65);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/sub_rsp_32_bits_global_overwritten_variables_i32/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_sub_rsp_32_bits_global_variables_i32(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -5453,6 +5473,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(string_ne_false, "d", 8);
 	ADD_TEST_OK(string_ne_false_empty, "d", 8);
 	ADD_TEST_OK(string_ne_true, "d", 8);
+	ADD_TEST_OK(sub_rsp_32_bits_global_overwritten_variables_i32, "d", 268);
 	ADD_TEST_OK(sub_rsp_32_bits_global_variables_i32, "d", 268);
 	ADD_TEST_OK(sub_rsp_32_bits_local_variables_i32, "d", 8);
 	ADD_TEST_OK(subtraction_negative_result, "d", 8);
