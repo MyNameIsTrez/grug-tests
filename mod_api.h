@@ -30,6 +30,7 @@ void game_fn_define_y(char *foo, char *bar);
 void game_fn_define_z(char *projectile);
 void game_fn_define_a2(char *sprite_path, char *projectile);
 void game_fn_define_b2(char *sprite_path, char *projectile);
+void game_fn_define_c2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, int32_t i8, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, float f10);
 
 struct d_on_fns {
     void (*a)(void *globals);

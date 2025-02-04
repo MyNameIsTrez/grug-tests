@@ -492,6 +492,83 @@
 					"entity_type": ""
 				}
 			]
+		},
+		"c2": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "i1",
+					"type": "i32"
+				},
+				{
+					"name": "i2",
+					"type": "i32"
+				},
+				{
+					"name": "i3",
+					"type": "i32"
+				},
+				{
+					"name": "i4",
+					"type": "i32"
+				},
+				{
+					"name": "i5",
+					"type": "i32"
+				},
+				{
+					"name": "i6",
+					"type": "i32"
+				},
+				{
+					"name": "i7",
+					"type": "i32"
+				},
+				{
+					"name": "i8",
+					"type": "i32"
+				},
+				{
+					"name": "f1",
+					"type": "f32"
+				},
+				{
+					"name": "f2",
+					"type": "f32"
+				},
+				{
+					"name": "f3",
+					"type": "f32"
+				},
+				{
+					"name": "f4",
+					"type": "f32"
+				},
+				{
+					"name": "f5",
+					"type": "f32"
+				},
+				{
+					"name": "f6",
+					"type": "f32"
+				},
+				{
+					"name": "f7",
+					"type": "f32"
+				},
+				{
+					"name": "f8",
+					"type": "f32"
+				},
+				{
+					"name": "f9",
+					"type": "f32"
+				},
+				{
+					"name": "f10",
+					"type": "f32"
+				}
+			]
 		}
 	},
 	"game_functions": {
