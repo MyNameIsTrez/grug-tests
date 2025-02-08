@@ -87,18 +87,18 @@ on_a:
 	mov r11, rbp[-0x8]
 	mov r11[0x8], eax
 
-	; push foo
-	mov rax, rbp[-0x8]
-	mov eax, rax[0x8]
-	push rax
-
 	; push bar
 	mov rax, rbp[-0x8]
 	mov eax, rax[0xc]
 	push rax
 
-	pop rsi
+	; push foo
+	mov rax, rbp[-0x8]
+	mov eax, rax[0x8]
+	push rax
+
 	pop rdi
+	pop rsi
 	call game_fn_max wrt ..plt
 
 	mov rsp, rbp
@@ -118,18 +118,18 @@ on_a:
 	mov r11, rbp[-0x8]
 	mov r11[0x8], eax
 
-	; push foo
-	mov rax, rbp[-0x8]
-	mov eax, rax[0x8]
-	push rax
-
 	; push bar
 	mov rax, rbp[-0x8]
 	mov eax, rax[0xc]
 	push rax
 
-	pop rsi
+	; push foo
+	mov rax, rbp[-0x8]
+	mov eax, rax[0x8]
+	push rax
+
 	pop rdi
+	pop rsi
 	call game_fn_max wrt ..plt
 
 	mov rsp, rbp

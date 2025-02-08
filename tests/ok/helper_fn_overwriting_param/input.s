@@ -128,16 +128,16 @@ on_a:
 	error_handling
 
 	; helper_foo_safe(2, 3.0)
-	mov rax, rbp[-0x8]
+	mov eax, __?float32?__(3.0)
 	push rax
 	mov eax, 2
 	push rax
-	mov eax, __?float32?__(3.0)
+	mov rax, rbp[-0x8]
 	push rax
+	pop rdi
+	pop rsi
 	pop rax
 	movd xmm0, eax
-	pop rsi
-	pop rdi
 	call helper_foo_safe
 
 	mov rsp, rbp
@@ -146,16 +146,16 @@ on_a:
 
 .fast:
 	; helper_foo_fast(2, 3.0)
-	mov rax, rbp[-0x8]
+	mov eax, __?float32?__(3.0)
 	push rax
 	mov eax, 2
 	push rax
-	mov eax, __?float32?__(3.0)
+	mov rax, rbp[-0x8]
 	push rax
+	pop rdi
+	pop rsi
 	pop rax
 	movd xmm0, eax
-	pop rsi
-	pop rdi
 	call helper_foo_fast
 
 	mov rsp, rbp

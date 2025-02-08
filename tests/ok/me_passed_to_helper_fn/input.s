@@ -127,14 +127,14 @@ on_a:
 	error_handling
 
 	mov rax, rbp[-0x8]
-	push rax
-
-	mov rax, rbp[-0x8]
 	mov rax, rax[byte 0x0]
 	push rax
 
-	pop rsi
+	mov rax, rbp[-0x8]
+	push rax
+
 	pop rdi
+	pop rsi
 	call helper_foo_safe
 
 	mov rsp, rbp
@@ -143,14 +143,14 @@ on_a:
 
 .fast:
 	mov rax, rbp[-0x8]
-	push rax
-
-	mov rax, rbp[-0x8]
 	mov rax, rax[byte 0x0]
 	push rax
 
-	pop rsi
+	mov rax, rbp[-0x8]
+	push rax
+
 	pop rdi
+	pop rsi
 	call helper_foo_fast
 
 	mov rsp, rbp

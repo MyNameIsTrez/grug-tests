@@ -128,12 +128,12 @@ on_a:
 
 	error_handling
 
-	mov rax, rbp[-0x8]
-	push rax
 	lea rax, [rel foo]
 	push rax
-	pop rsi
+	mov rax, rbp[-0x8]
+	push rax
 	pop rdi
+	pop rsi
 	call helper_foo_safe
 
 	mov rsp, rbp
@@ -141,12 +141,12 @@ on_a:
 	ret
 
 .fast:
-	mov rax, rbp[-0x8]
-	push rax
 	lea rax, [rel foo]
 	push rax
-	pop rsi
+	mov rax, rbp[-0x8]
+	push rax
 	pop rdi
+	pop rsi
 	call helper_foo_fast
 
 	mov rsp, rbp

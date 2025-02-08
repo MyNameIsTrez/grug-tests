@@ -12,11 +12,9 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/max_args/input.grug", 0
+	db "tests/ok/stack_pass_args_to_game_fn/input.grug", 0
 on_fn_name:
 	db "on_a", 0
-foo:
-	db "foo", 0
 
 align 8
 global resources_size
@@ -27,15 +25,11 @@ entities_size: dq 0
 
 section .text
 
-extern grug_runtime_error_handler
 extern grug_on_fn_name
-extern grug_runtime_error_jmp_buffer
 extern grug_on_fn_path
 extern grug_on_fns_in_safe_mode
 extern game_fn_define_d
-extern setjmp
-extern grug_get_runtime_error_reason
-extern game_fn_mega
+extern game_fn_motherload
 
 global define
 define:
@@ -73,65 +67,58 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	; Pushing arguments
-
-	lea rax, [rel foo]
-	push rax
-
-	mov rax, rbp[-0x8]
-	mov rax, rax[byte 0x0]
-	push rax
+	mov eax, __?float32?__(10.0)
+    push rax
+	mov eax, 8
+    push rax
+	mov eax, __?float32?__(9.0)
+    push rax
+	mov eax, 7
+    push rax
 
 	mov eax, __?float32?__(8.0)
-	push rax
-
+    push rax
 	mov eax, __?float32?__(7.0)
-	push rax
-
+    push rax
 	mov eax, __?float32?__(6.0)
-	push rax
-
+    push rax
 	mov eax, __?float32?__(5.0)
-	push rax
-
-	mov eax, 1337
-	push rax
-
-	xor eax, eax
-	push rax
-
+    push rax
 	mov eax, __?float32?__(4.0)
-	push rax
-
+    push rax
 	mov eax, __?float32?__(3.0)
-	push rax
-
+    push rax
 	mov eax, __?float32?__(2.0)
-	push rax
-
-	mov eax, 1
-	push rax
-
-	mov eax, 21
-	push rax
-
+    push rax
 	mov eax, __?float32?__(1.0)
-	push rax
+    push rax
+	mov eax, 6
+    push rax
+	mov eax, 5
+    push rax
+	mov eax, 4
+    push rax
+	mov eax, 3
+    push rax
+	mov eax, 2
+    push rax
+	mov eax, 1
+    push rax
 
-	; Popping arguments
-
+	pop rdi ; 1
+	pop rsi ; 2
+	pop rdx ; 3
+	pop rcx ; 4
+	pop r8 ; 5
+	pop r9 ; 6
 	pop rax ; 1.0
 	movd xmm0, eax
-	pop rdi ; 21
-	pop rsi ; true
 	pop rax ; 2.0
 	movd xmm1, eax
 	pop rax ; 3.0
 	movd xmm2, eax
 	pop rax ; 4.0
 	movd xmm3, eax
-	pop rdx ; false
-	pop rcx ; 1337
 	pop rax ; 5.0
 	movd xmm4, eax
 	pop rax ; 6.0
@@ -140,77 +127,66 @@ on_a:
 	movd xmm6, eax
 	pop rax ; 8.0
 	movd xmm7, eax
-	pop r8 ; me
-	pop r9 ; "foo"
-
-	; Calling function
-
-	call game_fn_mega wrt ..plt
+	call game_fn_motherload wrt ..plt
+	add rsp, byte 0x20
 
 	mov rsp, rbp
 	pop rbp
 	ret
 
 .fast:
-	; Pushing arguments
-
-	lea rax, [rel foo]
-	push rax
-
-	mov rax, rbp[-0x8]
-	mov rax, rax[byte 0x0]
-	push rax
+	mov eax, __?float32?__(10.0)
+    push rax
+	mov eax, 8
+    push rax
+	mov eax, __?float32?__(9.0)
+    push rax
+	mov eax, 7
+    push rax
 
 	mov eax, __?float32?__(8.0)
-	push rax
-
+    push rax
 	mov eax, __?float32?__(7.0)
-	push rax
-
+    push rax
 	mov eax, __?float32?__(6.0)
-	push rax
-
+    push rax
 	mov eax, __?float32?__(5.0)
-	push rax
-
-	mov eax, 1337
-	push rax
-
-	xor eax, eax
-	push rax
-
+    push rax
 	mov eax, __?float32?__(4.0)
-	push rax
-
+    push rax
 	mov eax, __?float32?__(3.0)
-	push rax
-
+    push rax
 	mov eax, __?float32?__(2.0)
-	push rax
-
-	mov eax, 1
-	push rax
-
-	mov eax, 21
-	push rax
-
+    push rax
 	mov eax, __?float32?__(1.0)
-	push rax
+    push rax
+	mov eax, 6
+    push rax
+	mov eax, 5
+    push rax
+	mov eax, 4
+    push rax
+	mov eax, 3
+    push rax
+	mov eax, 2
+    push rax
+	mov eax, 1
+    push rax
 
-	; Popping arguments
-
+	pop rdi ; 1
+	pop rsi ; 2
+	pop rdx ; 3
+	pop rcx ; 4
+	pop r8 ; 5
+	pop r9 ; 6
 	pop rax ; 1.0
 	movd xmm0, eax
-	pop rdi ; 21
-	pop rsi ; true
 	pop rax ; 2.0
 	movd xmm1, eax
 	pop rax ; 3.0
 	movd xmm2, eax
 	pop rax ; 4.0
 	movd xmm3, eax
-	pop rdx ; false
-	pop rcx ; 1337
 	pop rax ; 5.0
 	movd xmm4, eax
 	pop rax ; 6.0
@@ -219,12 +195,8 @@ on_a:
 	movd xmm6, eax
 	pop rax ; 8.0
 	movd xmm7, eax
-	pop r8 ; me
-	pop r9 ; "foo"
-
-	; Calling function
-
-	call game_fn_mega wrt ..plt
+	call game_fn_motherload wrt ..plt
+	add rsp, byte 0x20
 
 	mov rsp, rbp
 	pop rbp

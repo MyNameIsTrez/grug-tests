@@ -22,6 +22,8 @@ global define
 define:
 	mov eax, __?float32?__(9.0)
     push rax
+	mov eax, 8
+    push rax
 	mov eax, __?float32?__(8.0)
 	movd xmm7, eax
 	mov eax, __?float32?__(7.0)
@@ -38,8 +40,6 @@ define:
 	movd xmm1, eax
 	mov eax, __?float32?__(1.0)
 	movd xmm0, eax
-	mov eax, 8
-    push rax
 	mov eax, 7
     push rax
 	mov eax, 6

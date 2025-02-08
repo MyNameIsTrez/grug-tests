@@ -71,13 +71,6 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	mov eax, 2
-	push rax
-	mov eax, 1
-	pop r11
-	add rax, r11
-	push rax
-
 	mov eax, 5
 	push rax
 	mov eax, 4
@@ -85,8 +78,15 @@ on_a:
 	add rax, r11
 	push rax
 
-	pop rsi
+	mov eax, 2
+	push rax
+	mov eax, 1
+	pop r11
+	add rax, r11
+	push rax
+
 	pop rdi
+	pop rsi
 	call game_fn_max wrt ..plt
 
 	mov rsp, rbp
@@ -94,13 +94,6 @@ on_a:
 	ret
 
 .fast:
-	mov eax, 2
-	push rax
-	mov eax, 1
-	pop r11
-	add rax, r11
-	push rax
-
 	mov eax, 5
 	push rax
 	mov eax, 4
@@ -108,8 +101,15 @@ on_a:
 	add rax, r11
 	push rax
 
-	pop rsi
+	mov eax, 2
+	push rax
+	mov eax, 1
+	pop r11
+	add rax, r11
+	push rax
+
 	pop rdi
+	pop rsi
 	call game_fn_max wrt ..plt
 
 	mov rsp, rbp

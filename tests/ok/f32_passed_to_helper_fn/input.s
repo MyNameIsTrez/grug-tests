@@ -126,15 +126,15 @@ on_a:
 
 	error_handling
 
-	mov rax, rbp[-0x8]
-	push rax
-
 	mov eax, __?float32?__(42.0)
 	push rax
 
+	mov rax, rbp[-0x8]
+	push rax
+
+	pop rdi
 	pop rax
 	movd xmm0, eax
-	pop rdi
 	call helper_foo_safe
 
 	mov rsp, rbp
@@ -142,15 +142,15 @@ on_a:
 	ret
 
 .fast:
-	mov rax, rbp[-0x8]
-	push rax
-
 	mov eax, __?float32?__(42.0)
 	push rax
 
+	mov rax, rbp[-0x8]
+	push rax
+
+	pop rdi
 	pop rax
 	movd xmm0, eax
-	pop rdi
 	call helper_foo_fast
 
 	mov rsp, rbp

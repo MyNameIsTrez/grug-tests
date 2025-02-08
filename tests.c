@@ -398,7 +398,6 @@ static int32_t game_fn_motherload_i4;
 static int32_t game_fn_motherload_i5;
 static int32_t game_fn_motherload_i6;
 static int32_t game_fn_motherload_i7;
-static int32_t game_fn_motherload_i8;
 static float game_fn_motherload_f1;
 static float game_fn_motherload_f2;
 static float game_fn_motherload_f3;
@@ -408,8 +407,9 @@ static float game_fn_motherload_f6;
 static float game_fn_motherload_f7;
 static float game_fn_motherload_f8;
 static float game_fn_motherload_f9;
+static int32_t game_fn_motherload_i8;
 static float game_fn_motherload_f10;
-void game_fn_motherload(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, int32_t i8, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, float f10) {
+void game_fn_motherload(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, int32_t i8, float f10) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_motherload_call_count++;
 
@@ -420,7 +420,6 @@ void game_fn_motherload(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t 
 	game_fn_motherload_i5 = i5;
 	game_fn_motherload_i6 = i6;
 	game_fn_motherload_i7 = i7;
-	game_fn_motherload_i8 = i8;
 	game_fn_motherload_f1 = f1;
 	game_fn_motherload_f2 = f2;
 	game_fn_motherload_f3 = f3;
@@ -430,6 +429,7 @@ void game_fn_motherload(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t 
 	game_fn_motherload_f7 = f7;
 	game_fn_motherload_f8 = f8;
 	game_fn_motherload_f9 = f9;
+	game_fn_motherload_i8 = i8;
 	game_fn_motherload_f10 = f10;
 }
 
@@ -628,7 +628,6 @@ static int32_t game_fn_define_c2_i4;
 static int32_t game_fn_define_c2_i5;
 static int32_t game_fn_define_c2_i6;
 static int32_t game_fn_define_c2_i7;
-static int32_t game_fn_define_c2_i8;
 static float game_fn_define_c2_f1;
 static float game_fn_define_c2_f2;
 static float game_fn_define_c2_f3;
@@ -638,8 +637,9 @@ static float game_fn_define_c2_f6;
 static float game_fn_define_c2_f7;
 static float game_fn_define_c2_f8;
 static float game_fn_define_c2_f9;
+static int32_t game_fn_define_c2_i8;
 static float game_fn_define_c2_f10;
-void game_fn_define_c2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, int32_t i8, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, float f10) {
+void game_fn_define_c2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, int32_t i8, float f10) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_c2_i1 = i1;
 	game_fn_define_c2_i2 = i2;
@@ -648,7 +648,6 @@ void game_fn_define_c2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i
 	game_fn_define_c2_i5 = i5;
 	game_fn_define_c2_i6 = i6;
 	game_fn_define_c2_i7 = i7;
-	game_fn_define_c2_i8 = i8;
 	game_fn_define_c2_f1 = f1;
 	game_fn_define_c2_f2 = f2;
 	game_fn_define_c2_f3 = f3;
@@ -658,6 +657,7 @@ void game_fn_define_c2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i
 	game_fn_define_c2_f7 = f7;
 	game_fn_define_c2_f8 = f8;
 	game_fn_define_c2_f9 = f9;
+	game_fn_define_c2_i8 = i8;
 	game_fn_define_c2_f10 = f10;
 }
 static int32_t game_fn_define_d2_i1;
@@ -667,7 +667,6 @@ static int32_t game_fn_define_d2_i4;
 static int32_t game_fn_define_d2_i5;
 static int32_t game_fn_define_d2_i6;
 static int32_t game_fn_define_d2_i7;
-static int32_t game_fn_define_d2_i8;
 static float game_fn_define_d2_f1;
 static float game_fn_define_d2_f2;
 static float game_fn_define_d2_f3;
@@ -676,8 +675,9 @@ static float game_fn_define_d2_f5;
 static float game_fn_define_d2_f6;
 static float game_fn_define_d2_f7;
 static float game_fn_define_d2_f8;
+static int32_t game_fn_define_d2_i8;
 static float game_fn_define_d2_f9;
-void game_fn_define_d2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, int32_t i8, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9) {
+void game_fn_define_d2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, int32_t i8, float f9) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_define_d2_i1 = i1;
 	game_fn_define_d2_i2 = i2;
@@ -686,7 +686,6 @@ void game_fn_define_d2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i
 	game_fn_define_d2_i5 = i5;
 	game_fn_define_d2_i6 = i6;
 	game_fn_define_d2_i7 = i7;
-	game_fn_define_d2_i8 = i8;
 	game_fn_define_d2_f1 = f1;
 	game_fn_define_d2_f2 = f2;
 	game_fn_define_d2_f3 = f3;
@@ -695,6 +694,7 @@ void game_fn_define_d2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i
 	game_fn_define_d2_f6 = f6;
 	game_fn_define_d2_f7 = f7;
 	game_fn_define_d2_f8 = f8;
+	game_fn_define_d2_i8 = i8;
 	game_fn_define_d2_f9 = f9;
 }
 
@@ -4783,7 +4783,6 @@ static void ok_stack_pass_args_to_define_fn(void *on_fns, void *g, size_t resour
 	assert(game_fn_define_c2_i5 == 5);
 	assert(game_fn_define_c2_i6 == 6);
 	assert(game_fn_define_c2_i7 == 7);
-	assert(game_fn_define_c2_i8 == 8);
 	assert(game_fn_define_c2_f1 == 1.0f);
 	assert(game_fn_define_c2_f2 == 2.0f);
 	assert(game_fn_define_c2_f3 == 3.0f);
@@ -4793,6 +4792,7 @@ static void ok_stack_pass_args_to_define_fn(void *on_fns, void *g, size_t resour
 	assert(game_fn_define_c2_f7 == 7.0f);
 	assert(game_fn_define_c2_f8 == 8.0f);
 	assert(game_fn_define_c2_f9 == 9.0f);
+	assert(game_fn_define_c2_i8 == 8);
 	assert(game_fn_define_c2_f10 == 10.0f);
 
 	free(g);
@@ -4815,7 +4815,6 @@ static void ok_stack_pass_args_to_define_fn_subless(void *on_fns, void *g, size_
 	assert(game_fn_define_d2_i5 == 5);
 	assert(game_fn_define_d2_i6 == 6);
 	assert(game_fn_define_d2_i7 == 7);
-	assert(game_fn_define_d2_i8 == 8);
 	assert(game_fn_define_d2_f1 == 1.0f);
 	assert(game_fn_define_d2_f2 == 2.0f);
 	assert(game_fn_define_d2_f3 == 3.0f);
@@ -4824,6 +4823,7 @@ static void ok_stack_pass_args_to_define_fn_subless(void *on_fns, void *g, size_
 	assert(game_fn_define_d2_f6 == 6.0f);
 	assert(game_fn_define_d2_f7 == 7.0f);
 	assert(game_fn_define_d2_f8 == 8.0f);
+	assert(game_fn_define_d2_i8 == 8);
 	assert(game_fn_define_d2_f9 == 9.0f);
 
 	free(g);
@@ -4850,7 +4850,6 @@ static void ok_stack_pass_args_to_game_fn(void *on_fns, void *g, size_t resource
 	assert(game_fn_motherload_i5 == 5);
 	assert(game_fn_motherload_i6 == 6);
 	assert(game_fn_motherload_i7 == 7);
-	assert(game_fn_motherload_i8 == 8);
 	assert(game_fn_motherload_f1 == 1.0f);
 	assert(game_fn_motherload_f2 == 2.0f);
 	assert(game_fn_motherload_f3 == 3.0f);
@@ -4860,6 +4859,7 @@ static void ok_stack_pass_args_to_game_fn(void *on_fns, void *g, size_t resource
 	assert(game_fn_motherload_f7 == 7.0f);
 	assert(game_fn_motherload_f8 == 8.0f);
 	assert(game_fn_motherload_f9 == 9.0f);
+	assert(game_fn_motherload_i8 == 8);
 	assert(game_fn_motherload_f10 == 10.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
@@ -5536,8 +5536,6 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(resource_type_for_local);
 	ADD_TEST_ERROR(resource_type_for_on_fn_argument);
 	ADD_TEST_ERROR(string_pointer_arithmetic);
-	ADD_TEST_ERROR(too_many_f32_arguments);
-	ADD_TEST_ERROR(too_many_i32_arguments);
 	ADD_TEST_ERROR(trailing_space_in_comment);
 	ADD_TEST_ERROR(unclosed_double_quote);
 	ADD_TEST_ERROR(unknown_variable);

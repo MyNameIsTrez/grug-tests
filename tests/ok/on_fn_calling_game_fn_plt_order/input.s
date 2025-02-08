@@ -88,12 +88,12 @@ on_a:
 	pop rdi
 	call game_fn_identity wrt ..plt
 
-	mov eax, 1337
-	push rax
 	mov eax, 8192
 	push rax
-	pop rsi
+	mov eax, 1337
+	push rax
 	pop rdi
+	pop rsi
 	call game_fn_max wrt ..plt
 
 	mov rsp, rbp
@@ -114,12 +114,12 @@ on_a:
 	pop rdi
 	call game_fn_identity wrt ..plt
 
-	mov eax, 1337
-	push rax
 	mov eax, 8192
 	push rax
-	pop rsi
+	mov eax, 1337
+	push rax
 	pop rdi
+	pop rsi
 	call game_fn_max wrt ..plt
 
 	mov rsp, rbp

@@ -23,6 +23,8 @@ define:
 	sub rsp, byte 0x8
 	mov eax, __?float32?__(10.0)
     push rax
+	mov eax, 8
+    push rax
 	mov eax, __?float32?__(9.0)
     push rax
 	mov eax, __?float32?__(8.0)
@@ -41,8 +43,6 @@ define:
 	movd xmm1, eax
 	mov eax, __?float32?__(1.0)
 	movd xmm0, eax
-	mov eax, 8
-    push rax
 	mov eax, 7
     push rax
 	mov eax, 6

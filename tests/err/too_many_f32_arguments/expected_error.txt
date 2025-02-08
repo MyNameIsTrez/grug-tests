@@ -1,1 +1,0 @@
-Currently grug only supports up to eight f32 arguments

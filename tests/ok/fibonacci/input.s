@@ -126,12 +126,12 @@ on_a:
 
 	error_handling
 
-	mov rax, rbp[-0x8]
-	push rax
 	mov eax, 10
 	push rax
-	pop rsi
+	mov rax, rbp[-0x8]
+	push rax
 	pop rdi
+	pop rsi
 	call helper_fib_safe
 	push rax
 	pop rdi
@@ -142,12 +142,12 @@ on_a:
 	ret
 
 .fast:
-	mov rax, rbp[-0x8]
-	push rax
 	mov eax, 10
 	push rax
-	pop rsi
+	mov rax, rbp[-0x8]
+	push rax
 	pop rdi
+	pop rsi
 	call helper_fib_fast
 	push rax
 	pop rdi
@@ -204,31 +204,31 @@ helper_fib_safe:
 
 .dont_early_return:
 	; helper_fib_safe(n - 2)
-	mov rax, rbp[-0x8]
-	push rax
 	mov eax, 2
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11
 	sub rax, r11
 	push rax
-	pop rsi
+	mov rax, rbp[-0x8]
+	push rax
 	pop rdi
+	pop rsi
 	call helper_fib_safe
 	push rax
 
 	; helper_fib_safe(n - 1)
-	mov rax, rbp[-0x8]
-	push rax
+	sub rsp, byte 0x8
 	mov eax, 1
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11
 	sub rax, r11
 	push rax
-	pop rsi
+	mov rax, rbp[-0x8]
+	push rax
 	pop rdi
-	sub rsp, byte 0x8
+	pop rsi
 	call helper_fib_safe
 	add rsp, byte 0x8
 	pop r11
@@ -292,31 +292,31 @@ helper_fib_fast:
 
 .dont_early_return:
 	; helper_fib_fast(n - 2)
-	mov rax, rbp[-0x8]
-	push rax
 	mov eax, 2
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11
 	sub rax, r11
 	push rax
-	pop rsi
+	mov rax, rbp[-0x8]
+	push rax
 	pop rdi
+	pop rsi
 	call helper_fib_fast
 	push rax
 
 	; helper_fib_fast(n - 1)
-	mov rax, rbp[-0x8]
-	push rax
+	sub rsp, byte 0x8
 	mov eax, 1
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11
 	sub rax, r11
 	push rax
-	pop rsi
+	mov rax, rbp[-0x8]
+	push rax
 	pop rdi
-	sub rsp, byte 0x8
+	pop rsi
 	call helper_fib_fast
 	add rsp, byte 0x8
 	pop r11
