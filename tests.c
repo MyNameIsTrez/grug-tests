@@ -163,6 +163,7 @@ static size_t game_fn_has_string_call_count;
 static size_t game_fn_get_opponent_call_count;
 static size_t game_fn_set_target_call_count;
 static size_t game_fn_motherload_call_count;
+static size_t game_fn_motherload_subless_call_count;
 
 static bool streq(char *a, char *b) {
 	return strcmp(a, b) == 0;
@@ -406,10 +407,9 @@ static float game_fn_motherload_f5;
 static float game_fn_motherload_f6;
 static float game_fn_motherload_f7;
 static float game_fn_motherload_f8;
-static float game_fn_motherload_f9;
 static int32_t game_fn_motherload_i8;
-static float game_fn_motherload_f10;
-void game_fn_motherload(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, int32_t i8, float f10) {
+static float game_fn_motherload_f9;
+void game_fn_motherload(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, int32_t i8, float f9) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_motherload_call_count++;
 
@@ -428,9 +428,49 @@ void game_fn_motherload(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t 
 	game_fn_motherload_f6 = f6;
 	game_fn_motherload_f7 = f7;
 	game_fn_motherload_f8 = f8;
-	game_fn_motherload_f9 = f9;
 	game_fn_motherload_i8 = i8;
-	game_fn_motherload_f10 = f10;
+	game_fn_motherload_f9 = f9;
+}
+static int32_t game_fn_motherload_subless_i1;
+static int32_t game_fn_motherload_subless_i2;
+static int32_t game_fn_motherload_subless_i3;
+static int32_t game_fn_motherload_subless_i4;
+static int32_t game_fn_motherload_subless_i5;
+static int32_t game_fn_motherload_subless_i6;
+static int32_t game_fn_motherload_subless_i7;
+static float game_fn_motherload_subless_f1;
+static float game_fn_motherload_subless_f2;
+static float game_fn_motherload_subless_f3;
+static float game_fn_motherload_subless_f4;
+static float game_fn_motherload_subless_f5;
+static float game_fn_motherload_subless_f6;
+static float game_fn_motherload_subless_f7;
+static float game_fn_motherload_subless_f8;
+static float game_fn_motherload_subless_f9;
+static int32_t game_fn_motherload_subless_i8;
+static float game_fn_motherload_subless_f10;
+void game_fn_motherload_subless(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, int32_t i8, float f10) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
+	game_fn_motherload_subless_call_count++;
+
+	game_fn_motherload_subless_i1 = i1;
+	game_fn_motherload_subless_i2 = i2;
+	game_fn_motherload_subless_i3 = i3;
+	game_fn_motherload_subless_i4 = i4;
+	game_fn_motherload_subless_i5 = i5;
+	game_fn_motherload_subless_i6 = i6;
+	game_fn_motherload_subless_i7 = i7;
+	game_fn_motherload_subless_f1 = f1;
+	game_fn_motherload_subless_f2 = f2;
+	game_fn_motherload_subless_f3 = f3;
+	game_fn_motherload_subless_f4 = f4;
+	game_fn_motherload_subless_f5 = f5;
+	game_fn_motherload_subless_f6 = f6;
+	game_fn_motherload_subless_f7 = f7;
+	game_fn_motherload_subless_f8 = f8;
+	game_fn_motherload_subless_f9 = f9;
+	game_fn_motherload_subless_i8 = i8;
+	game_fn_motherload_subless_f10 = f10;
 }
 
 void game_fn_define_a(void) {
@@ -724,6 +764,7 @@ static void reset_call_counts(void) {
 	game_fn_get_opponent_call_count = 0;
 	game_fn_set_target_call_count = 0;
 	game_fn_motherload_call_count = 0;
+	game_fn_motherload_subless_call_count = 0;
 }
 
 static void check(int status, char *fn_name) {
@@ -4858,12 +4899,48 @@ static void ok_stack_pass_args_to_game_fn(void *on_fns, void *g, size_t resource
 	assert(game_fn_motherload_f6 == 6.0f);
 	assert(game_fn_motherload_f7 == 7.0f);
 	assert(game_fn_motherload_f8 == 8.0f);
-	assert(game_fn_motherload_f9 == 9.0f);
 	assert(game_fn_motherload_i8 == 8);
-	assert(game_fn_motherload_f10 == 10.0f);
+	assert(game_fn_motherload_f9 == 9.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
 	assert(streq(grug_on_fn_path, "tests/ok/stack_pass_args_to_game_fn/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_stack_pass_args_to_game_fn_subless(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_motherload_subless_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_motherload_subless_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_motherload_subless_i1 == 1);
+	assert(game_fn_motherload_subless_i2 == 2);
+	assert(game_fn_motherload_subless_i3 == 3);
+	assert(game_fn_motherload_subless_i4 == 4);
+	assert(game_fn_motherload_subless_i5 == 5);
+	assert(game_fn_motherload_subless_i6 == 6);
+	assert(game_fn_motherload_subless_i7 == 7);
+	assert(game_fn_motherload_subless_f1 == 1.0f);
+	assert(game_fn_motherload_subless_f2 == 2.0f);
+	assert(game_fn_motherload_subless_f3 == 3.0f);
+	assert(game_fn_motherload_subless_f4 == 4.0f);
+	assert(game_fn_motherload_subless_f5 == 5.0f);
+	assert(game_fn_motherload_subless_f6 == 6.0f);
+	assert(game_fn_motherload_subless_f7 == 7.0f);
+	assert(game_fn_motherload_subless_f8 == 8.0f);
+	assert(game_fn_motherload_subless_f9 == 9.0f);
+	assert(game_fn_motherload_subless_i8 == 8);
+	assert(game_fn_motherload_subless_f10 == 10.0f);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/stack_pass_args_to_game_fn_subless/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5732,6 +5809,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(stack_pass_args_to_define_fn, "c2", 8);
 	ADD_TEST_OK(stack_pass_args_to_define_fn_subless, "d2", 8);
 	ADD_TEST_OK(stack_pass_args_to_game_fn, "d", 8);
+	ADD_TEST_OK(stack_pass_args_to_game_fn_subless, "d", 8);
 	ADD_TEST_OK(string_and_on_fn, "p", 8);
 	ADD_TEST_OK(string_can_be_passed_to_helper_fn, "d", 8);
 	ADD_TEST_OK(string_eq_false, "d", 8);
