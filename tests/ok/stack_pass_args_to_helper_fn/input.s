@@ -5,7 +5,7 @@ define_type: db "d", 0
 
 align 8
 global globals_size
-globals_size: dq 8
+globals_size: dq 12
 
 global on_fns
 on_fns:
@@ -188,7 +188,7 @@ on_a:
 	pop rax ; 8.0
 	movd xmm7, eax
 	call helper_foo_safe
-	add rsp, 0x20
+	add rsp, byte 0x20
 
 	mov rsp, rbp
 	pop rbp
@@ -254,8 +254,8 @@ on_a:
 	movd xmm6, eax
 	pop rax ; 8.0
 	movd xmm7, eax
-	call helper_foo_safe
-	add rsp, 0x20
+	call helper_foo_fast
+	add rsp, byte 0x20
 
 	mov rsp, rbp
 	pop rbp
@@ -265,49 +265,55 @@ global helper_foo_safe
 helper_foo_safe:
 	push rbp
 	mov rbp, rsp
-	sub rsp, byte 0x40
+	sub rsp, byte 0x50
 	mov rbp[-0x8], rdi ; globals pointer
 	mov rbp[-0xc], esi ; 1
 	mov rbp[-0x10], edx ; 2
 	mov rbp[-0x14], ecx ; 3
 	mov rbp[-0x18], r8d ; 4
 	mov rbp[-0x1c], r9d ; 5
-	movss rbp[-0x20], xmm0 ; 1.0
-	movss rbp[-0x24], xmm1 ; 2.0
-	movss rbp[-0x28], xmm2 ; 3.0
-	movss rbp[-0x2c], xmm3 ; 4.0
-	movss rbp[-0x30], xmm4 ; 5.0
-	movss rbp[-0x34], xmm5 ; 6.0
-	movss rbp[-0x38], xmm6 ; 7.0
-	movss rbp[-0x3c], xmm7 ; 8.0
+	mov eax, rbp[+0x10] ; 6
+	mov rbp[-0x20], eax
+	movss rbp[-0x24], xmm0 ; 1.0
+	movss rbp[-0x28], xmm1 ; 2.0
+	movss rbp[-0x2c], xmm2 ; 3.0
+	movss rbp[-0x30], xmm3 ; 4.0
+	movss rbp[-0x34], xmm4 ; 5.0
+	movss rbp[-0x38], xmm5 ; 6.0
+	movss rbp[-0x3c], xmm6 ; 7.0
+	movss rbp[-0x40], xmm7 ; 8.0
+	mov eax, rbp[+0x18] ; 8
+	mov rbp[-0x44], eax
+	mov eax, rbp[+0x20] ; 9.0
+	mov rbp[-0x48], eax
 	check_stack_overflow
 
 	sub rsp, byte 0x8
-	mov eax, rbp[+0x20] ; 9.0
+	mov eax, rbp[-0x48] ; 9.0
     push rax
-	mov eax, rbp[+0x18] ; 8
+	mov eax, rbp[-0x44] ; 8
     push rax
 	mov rax, rbp[-0x8]
 	mov eax, rax[byte 0x8] ; global variable "g"
 	push rax
 
-	mov eax, rbp[-0x3c] ; 8.0
+	mov eax, rbp[-0x40] ; 8.0
     push rax
-	mov eax, rbp[-0x38] ; 7.0
+	mov eax, rbp[-0x3c] ; 7.0
     push rax
-	mov eax, rbp[-0x34] ; 6.0
+	mov eax, rbp[-0x38] ; 6.0
     push rax
-	mov eax, rbp[-0x30] ; 5.0
+	mov eax, rbp[-0x34] ; 5.0
     push rax
-	mov eax, rbp[-0x2c] ; 4.0
+	mov eax, rbp[-0x30] ; 4.0
     push rax
-	mov eax, rbp[-0x28] ; 3.0
+	mov eax, rbp[-0x2c] ; 3.0
     push rax
-	mov eax, rbp[-0x24] ; 2.0
+	mov eax, rbp[-0x28] ; 2.0
     push rax
-	mov eax, rbp[-0x20] ; 1.0
+	mov eax, rbp[-0x24] ; 1.0
     push rax
-	mov eax, rbp[+0x10] ; 6
+	mov eax, rbp[-0x20] ; 6
     push rax
 	mov eax, rbp[-0x1c] ; 5
     push rax
@@ -343,7 +349,7 @@ helper_foo_safe:
 	pop rax ; 8.0
 	movd xmm7, eax
 	call game_fn_motherload wrt ..plt
-	add rsp, 0x20
+	add rsp, byte 0x20
 
 	mov rsp, rbp
 	pop rbp
@@ -353,48 +359,54 @@ global helper_foo_fast
 helper_foo_fast:
 	push rbp
 	mov rbp, rsp
-	sub rsp, byte 0x40
+	sub rsp, byte 0x50
 	mov rbp[-0x8], rdi ; globals pointer
 	mov rbp[-0xc], esi ; 1
 	mov rbp[-0x10], edx ; 2
 	mov rbp[-0x14], ecx ; 3
 	mov rbp[-0x18], r8d ; 4
 	mov rbp[-0x1c], r9d ; 5
-	movss rbp[-0x20], xmm0 ; 1.0
-	movss rbp[-0x24], xmm1 ; 2.0
-	movss rbp[-0x28], xmm2 ; 3.0
-	movss rbp[-0x2c], xmm3 ; 4.0
-	movss rbp[-0x30], xmm4 ; 5.0
-	movss rbp[-0x34], xmm5 ; 6.0
-	movss rbp[-0x38], xmm6 ; 7.0
-	movss rbp[-0x3c], xmm7 ; 8.0
+	mov eax, rbp[+0x10] ; 6
+	mov rbp[-0x20], eax
+	movss rbp[-0x24], xmm0 ; 1.0
+	movss rbp[-0x28], xmm1 ; 2.0
+	movss rbp[-0x2c], xmm2 ; 3.0
+	movss rbp[-0x30], xmm3 ; 4.0
+	movss rbp[-0x34], xmm4 ; 5.0
+	movss rbp[-0x38], xmm5 ; 6.0
+	movss rbp[-0x3c], xmm6 ; 7.0
+	movss rbp[-0x40], xmm7 ; 8.0
+	mov eax, rbp[+0x18] ; 8
+	mov rbp[-0x44], eax
+	mov eax, rbp[+0x20] ; 9.0
+	mov rbp[-0x48], eax
 
 	sub rsp, byte 0x8
-	mov eax, rbp[+0x20] ; 9.0
+	mov eax, rbp[-0x48] ; 9.0
     push rax
-	mov eax, rbp[+0x18] ; 8
+	mov eax, rbp[-0x44] ; 8
     push rax
 	mov rax, rbp[-0x8]
 	mov eax, rax[byte 0x8] ; global variable "g"
 	push rax
 
-	mov eax, rbp[-0x3c] ; 8.0
+	mov eax, rbp[-0x40] ; 8.0
     push rax
-	mov eax, rbp[-0x38] ; 7.0
+	mov eax, rbp[-0x3c] ; 7.0
     push rax
-	mov eax, rbp[-0x34] ; 6.0
+	mov eax, rbp[-0x38] ; 6.0
     push rax
-	mov eax, rbp[-0x30] ; 5.0
+	mov eax, rbp[-0x34] ; 5.0
     push rax
-	mov eax, rbp[-0x2c] ; 4.0
+	mov eax, rbp[-0x30] ; 4.0
     push rax
-	mov eax, rbp[-0x28] ; 3.0
+	mov eax, rbp[-0x2c] ; 3.0
     push rax
-	mov eax, rbp[-0x24] ; 2.0
+	mov eax, rbp[-0x28] ; 2.0
     push rax
-	mov eax, rbp[-0x20] ; 1.0
+	mov eax, rbp[-0x24] ; 1.0
     push rax
-	mov eax, rbp[+0x10] ; 6
+	mov eax, rbp[-0x20] ; 6
     push rax
 	mov eax, rbp[-0x1c] ; 5
     push rax
@@ -430,7 +442,7 @@ helper_foo_fast:
 	pop rax ; 8.0
 	movd xmm7, eax
 	call game_fn_motherload wrt ..plt
-	add rsp, 0x20
+	add rsp, byte 0x20
 
 	mov rsp, rbp
 	pop rbp

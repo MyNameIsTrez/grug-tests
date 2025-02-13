@@ -1,0 +1,1 @@
+This is for compile_on_or_helper_fn(), since its `grug_assert(offset < 256` should be removed

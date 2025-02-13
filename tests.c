@@ -5846,7 +5846,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(stack_pass_args_to_define_fn_subless, "d2", 8);
 	ADD_TEST_OK(stack_pass_args_to_game_fn, "d", 8);
 	ADD_TEST_OK(stack_pass_args_to_game_fn_subless, "d", 8);
-	ADD_TEST_OK(stack_pass_args_to_helper_fn, "d", 8);
+	ADD_TEST_OK(stack_pass_args_to_helper_fn, "d", 12);
 	ADD_TEST_OK(string_and_on_fn, "p", 8);
 	ADD_TEST_OK(string_can_be_passed_to_helper_fn, "d", 8);
 	ADD_TEST_OK(string_eq_false, "d", 8);
