@@ -1019,8 +1019,8 @@
 					"type": "f32"
 				},
 				{
-					"name": "i8",
-					"type": "i32"
+					"name": "id",
+					"type": "id"
 				},
 				{
 					"name": "f9",
@@ -1096,8 +1096,8 @@
 					"type": "f32"
 				},
 				{
-					"name": "i8",
-					"type": "i32"
+					"name": "id",
+					"type": "id"
 				},
 				{
 					"name": "f10",

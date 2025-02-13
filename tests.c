@@ -407,9 +407,9 @@ static float game_fn_motherload_f5;
 static float game_fn_motherload_f6;
 static float game_fn_motherload_f7;
 static float game_fn_motherload_f8;
-static int32_t game_fn_motherload_i8;
+static uint64_t game_fn_motherload_id;
 static float game_fn_motherload_f9;
-void game_fn_motherload(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, int32_t i8, float f9) {
+void game_fn_motherload(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, uint64_t id, float f9) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_motherload_call_count++;
 
@@ -428,7 +428,7 @@ void game_fn_motherload(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t 
 	game_fn_motherload_f6 = f6;
 	game_fn_motherload_f7 = f7;
 	game_fn_motherload_f8 = f8;
-	game_fn_motherload_i8 = i8;
+	game_fn_motherload_id = id;
 	game_fn_motherload_f9 = f9;
 }
 static int32_t game_fn_motherload_subless_i1;
@@ -447,9 +447,9 @@ static float game_fn_motherload_subless_f6;
 static float game_fn_motherload_subless_f7;
 static float game_fn_motherload_subless_f8;
 static float game_fn_motherload_subless_f9;
-static int32_t game_fn_motherload_subless_i8;
+static uint64_t game_fn_motherload_subless_id;
 static float game_fn_motherload_subless_f10;
-void game_fn_motherload_subless(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, int32_t i8, float f10) {
+void game_fn_motherload_subless(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, uint64_t id, float f10) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_motherload_subless_call_count++;
 
@@ -469,7 +469,7 @@ void game_fn_motherload_subless(int32_t i1, int32_t i2, int32_t i3, int32_t i4, 
 	game_fn_motherload_subless_f7 = f7;
 	game_fn_motherload_subless_f8 = f8;
 	game_fn_motherload_subless_f9 = f9;
-	game_fn_motherload_subless_i8 = i8;
+	game_fn_motherload_subless_id = id;
 	game_fn_motherload_subless_f10 = f10;
 }
 
@@ -4899,7 +4899,7 @@ static void ok_stack_pass_args_to_game_fn(void *on_fns, void *g, size_t resource
 	assert(game_fn_motherload_f6 == 6.0f);
 	assert(game_fn_motherload_f7 == 7.0f);
 	assert(game_fn_motherload_f8 == 8.0f);
-	assert(game_fn_motherload_i8 == 8);
+	assert(game_fn_motherload_id == 42);
 	assert(game_fn_motherload_f9 == 9.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
@@ -4936,7 +4936,7 @@ static void ok_stack_pass_args_to_game_fn_subless(void *on_fns, void *g, size_t 
 	assert(game_fn_motherload_subless_f7 == 7.0f);
 	assert(game_fn_motherload_subless_f8 == 8.0f);
 	assert(game_fn_motherload_subless_f9 == 9.0f);
-	assert(game_fn_motherload_subless_i8 == 8);
+	assert(game_fn_motherload_subless_id == 42);
 	assert(game_fn_motherload_subless_f10 == 10.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
@@ -4972,7 +4972,7 @@ static void ok_stack_pass_args_to_helper_fn(void *on_fns, void *g, size_t resour
 	assert(game_fn_motherload_f6 == 6.0f);
 	assert(game_fn_motherload_f7 == 7.0f);
 	assert(game_fn_motherload_f8 == 8.0f);
-	assert(game_fn_motherload_i8 == 8);
+	assert(game_fn_motherload_id == 42);
 	assert(game_fn_motherload_f9 == 9.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));

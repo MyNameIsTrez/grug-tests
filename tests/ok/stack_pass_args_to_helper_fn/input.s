@@ -131,7 +131,8 @@ on_a:
 	sub rsp, byte 0x8
 	mov eax, __?float32?__(9.0)
     push rax
-	mov eax, 8
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
     push rax
 	mov eax, 6
     push rax
@@ -198,7 +199,8 @@ on_a:
 	sub rsp, byte 0x8
 	mov eax, __?float32?__(9.0)
     push rax
-	mov eax, 8
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
     push rax
 	mov eax, 6
     push rax
@@ -282,16 +284,16 @@ helper_foo_safe:
 	movss rbp[-0x38], xmm5 ; 6.0
 	movss rbp[-0x3c], xmm6 ; 7.0
 	movss rbp[-0x40], xmm7 ; 8.0
-	mov eax, rbp[+0x18] ; 8
-	mov rbp[-0x44], eax
+	mov rax, rbp[+0x18] ; me
+	mov rbp[-0x48], rax
 	mov eax, rbp[+0x20] ; 9.0
-	mov rbp[-0x48], eax
+	mov rbp[-0x4c], eax
 	check_stack_overflow
 
 	sub rsp, byte 0x8
-	mov eax, rbp[-0x48] ; 9.0
+	mov eax, rbp[-0x4c] ; 9.0
     push rax
-	mov eax, rbp[-0x44] ; 8
+	mov rax, rbp[-0x48] ; me
     push rax
 	mov rax, rbp[-0x8]
 	mov eax, rax[byte 0x8] ; global variable "g"
@@ -376,15 +378,15 @@ helper_foo_fast:
 	movss rbp[-0x38], xmm5 ; 6.0
 	movss rbp[-0x3c], xmm6 ; 7.0
 	movss rbp[-0x40], xmm7 ; 8.0
-	mov eax, rbp[+0x18] ; 8
-	mov rbp[-0x44], eax
+	mov rax, rbp[+0x18] ; me
+	mov rbp[-0x48], rax
 	mov eax, rbp[+0x20] ; 9.0
-	mov rbp[-0x48], eax
+	mov rbp[-0x4c], eax
 
 	sub rsp, byte 0x8
-	mov eax, rbp[-0x48] ; 9.0
+	mov eax, rbp[-0x4c] ; 9.0
     push rax
-	mov eax, rbp[-0x44] ; 8
+	mov rax, rbp[-0x48] ; me
     push rax
 	mov rax, rbp[-0x8]
 	mov eax, rax[byte 0x8] ; global variable "g"

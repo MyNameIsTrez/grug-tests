@@ -69,7 +69,8 @@ on_a:
 
 	mov eax, __?float32?__(10.0)
     push rax
-	mov eax, 8
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
     push rax
 	mov eax, __?float32?__(9.0)
     push rax
@@ -137,7 +138,8 @@ on_a:
 .fast:
 	mov eax, __?float32?__(10.0)
     push rax
-	mov eax, 8
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
     push rax
 	mov eax, __?float32?__(9.0)
     push rax
