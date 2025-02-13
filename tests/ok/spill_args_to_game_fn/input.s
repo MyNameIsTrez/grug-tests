@@ -12,7 +12,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/stack_pass_args_to_game_fn_subless/input.grug", 0
+	db "tests/ok/spill_args_to_game_fn/input.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -29,7 +29,7 @@ extern grug_on_fn_name
 extern grug_on_fn_path
 extern grug_on_fns_in_safe_mode
 extern game_fn_define_d
-extern game_fn_motherload_subless
+extern game_fn_motherload
 
 global define
 define:
@@ -67,12 +67,11 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	mov eax, __?float32?__(10.0)
+	sub rsp, byte 0x8
+	mov eax, __?float32?__(9.0)
     push rax
 	mov rax, rbp[-0x8]
 	mov rax, rax[byte 0x0]
-    push rax
-	mov eax, __?float32?__(9.0)
     push rax
 	mov eax, 7
     push rax
@@ -128,7 +127,7 @@ on_a:
 	movd xmm6, eax
 	pop rax ; 8.0
 	movd xmm7, eax
-	call game_fn_motherload_subless wrt ..plt
+	call game_fn_motherload wrt ..plt
 	add rsp, byte 0x20
 
 	mov rsp, rbp
@@ -136,12 +135,11 @@ on_a:
 	ret
 
 .fast:
-	mov eax, __?float32?__(10.0)
+	sub rsp, byte 0x8
+	mov eax, __?float32?__(9.0)
     push rax
 	mov rax, rbp[-0x8]
 	mov rax, rax[byte 0x0]
-    push rax
-	mov eax, __?float32?__(9.0)
     push rax
 	mov eax, 7
     push rax
@@ -197,7 +195,7 @@ on_a:
 	movd xmm6, eax
 	pop rax ; 8.0
 	movd xmm7, eax
-	call game_fn_motherload_subless wrt ..plt
+	call game_fn_motherload wrt ..plt
 	add rsp, byte 0x20
 
 	mov rsp, rbp

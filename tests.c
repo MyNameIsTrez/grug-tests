@@ -4814,7 +4814,7 @@ static void ok_stack_16_byte_alignment_midway(void *on_fns, void *g, size_t reso
 	assert(entity_types == NULL);
 }
 
-static void ok_stack_pass_args_to_define_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_spill_args_to_define_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	(void)on_fns;
 
 	assert(game_fn_define_c2_i1 == 1);
@@ -4846,7 +4846,7 @@ static void ok_stack_pass_args_to_define_fn(void *on_fns, void *g, size_t resour
 	assert(entity_types == NULL);
 }
 
-static void ok_stack_pass_args_to_define_fn_subless(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_spill_args_to_define_fn_subless(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	(void)on_fns;
 
 	assert(game_fn_define_d2_i1 == 1);
@@ -4877,7 +4877,7 @@ static void ok_stack_pass_args_to_define_fn_subless(void *on_fns, void *g, size_
 	assert(entity_types == NULL);
 }
 
-static void ok_stack_pass_args_to_game_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_spill_args_to_game_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_motherload_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_motherload_call_count == 1);
@@ -4903,7 +4903,7 @@ static void ok_stack_pass_args_to_game_fn(void *on_fns, void *g, size_t resource
 	assert(game_fn_motherload_f9 == 9.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/stack_pass_args_to_game_fn/input.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/spill_args_to_game_fn/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4913,7 +4913,7 @@ static void ok_stack_pass_args_to_game_fn(void *on_fns, void *g, size_t resource
 	assert(entity_types == NULL);
 }
 
-static void ok_stack_pass_args_to_game_fn_subless(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_spill_args_to_game_fn_subless(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_motherload_subless_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_motherload_subless_call_count == 1);
@@ -4940,7 +4940,7 @@ static void ok_stack_pass_args_to_game_fn_subless(void *on_fns, void *g, size_t 
 	assert(game_fn_motherload_subless_f10 == 10.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/stack_pass_args_to_game_fn_subless/input.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/spill_args_to_game_fn_subless/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4950,7 +4950,7 @@ static void ok_stack_pass_args_to_game_fn_subless(void *on_fns, void *g, size_t 
 	assert(entity_types == NULL);
 }
 
-static void ok_stack_pass_args_to_helper_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_spill_args_to_helper_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_motherload_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_motherload_call_count == 1);
@@ -4976,7 +4976,7 @@ static void ok_stack_pass_args_to_helper_fn(void *on_fns, void *g, size_t resour
 	assert(game_fn_motherload_f9 == 9.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/stack_pass_args_to_helper_fn/input.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/spill_args_to_helper_fn/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4986,7 +4986,7 @@ static void ok_stack_pass_args_to_helper_fn(void *on_fns, void *g, size_t resour
 	assert(entity_types == NULL);
 }
 
-static void ok_stack_pass_args_to_helper_fn_subless(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_spill_args_to_helper_fn_subless(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_motherload_subless_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_motherload_subless_call_count == 1);
@@ -5013,7 +5013,7 @@ static void ok_stack_pass_args_to_helper_fn_subless(void *on_fns, void *g, size_
 	assert(game_fn_motherload_subless_f10 == 10.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/stack_pass_args_to_helper_fn_subless/input.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/spill_args_to_helper_fn_subless/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5879,12 +5879,12 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(same_variable_name_in_different_functions, "e", 8);
 	ADD_TEST_OK(stack_16_byte_alignment, "d", 8);
 	ADD_TEST_OK(stack_16_byte_alignment_midway, "d", 8);
-	ADD_TEST_OK(stack_pass_args_to_define_fn, "c2", 8);
-	ADD_TEST_OK(stack_pass_args_to_define_fn_subless, "d2", 8);
-	ADD_TEST_OK(stack_pass_args_to_game_fn, "d", 8);
-	ADD_TEST_OK(stack_pass_args_to_game_fn_subless, "d", 8);
-	ADD_TEST_OK(stack_pass_args_to_helper_fn, "d", 12);
-	ADD_TEST_OK(stack_pass_args_to_helper_fn_subless, "d", 12);
+	ADD_TEST_OK(spill_args_to_define_fn, "c2", 8);
+	ADD_TEST_OK(spill_args_to_define_fn_subless, "d2", 8);
+	ADD_TEST_OK(spill_args_to_game_fn, "d", 8);
+	ADD_TEST_OK(spill_args_to_game_fn_subless, "d", 8);
+	ADD_TEST_OK(spill_args_to_helper_fn, "d", 12);
+	ADD_TEST_OK(spill_args_to_helper_fn_subless, "d", 12);
 	ADD_TEST_OK(string_and_on_fn, "p", 8);
 	ADD_TEST_OK(string_can_be_passed_to_helper_fn, "d", 8);
 	ADD_TEST_OK(string_eq_false, "d", 8);

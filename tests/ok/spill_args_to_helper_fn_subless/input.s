@@ -5,14 +5,14 @@ define_type: db "d", 0
 
 align 8
 global globals_size
-globals_size: dq 8
+globals_size: dq 12
 
 global on_fns
 on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/stack_pass_args_to_helper_fn/input.grug", 0
+	db "tests/ok/spill_args_to_helper_fn_subless/input.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -35,7 +35,7 @@ extern game_fn_define_d
 extern setjmp
 extern grug_get_runtime_error_reason
 extern longjmp
-extern game_fn_omega
+extern game_fn_motherload_subless
 
 %define GRUG_ON_FN_STACK_OVERFLOW 1
 
@@ -51,6 +51,8 @@ define:
 global init_globals
 init_globals:
 	mov rdi[0x0], rsi
+	mov eax, 7
+	mov rdi[0x8], eax
 	ret
 
 %macro save_on_fn_name_and_path 0
@@ -126,66 +128,12 @@ on_a:
 
 	error_handling
 
-	sub rsp, byte 0x8
-	mov eax, 34
-    push rax
-	mov eax, 33
-    push rax
-	mov eax, 32
-    push rax
-	mov eax, 31
-    push rax
-	mov eax, 30
-    push rax
-	mov eax, 29
-    push rax
-	mov eax, 28
-    push rax
-	mov eax, 27
-    push rax
-	mov eax, 26
-    push rax
-	mov eax, 25
-    push rax
-	mov eax, 24
-    push rax
-	mov eax, 23
-    push rax
-	mov eax, 22
-    push rax
-	mov eax, 21
-    push rax
-	mov eax, 20
-    push rax
-	mov eax, 19
-    push rax
-	mov eax, 18
-    push rax
-	mov eax, 17
-    push rax
-	mov eax, 16
-    push rax
-	mov eax, 15
-    push rax
-	mov eax, 14
-    push rax
-	mov eax, 13
-    push rax
-	mov eax, 12
-    push rax
-	mov eax, 11
-    push rax
-	mov eax, 10
-    push rax
-	mov eax, 9
-    push rax
 	mov eax, __?float32?__(10.0)
     push rax
-	mov eax, 8
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
     push rax
 	mov eax, __?float32?__(9.0)
-    push rax
-	mov eax, 7
     push rax
 	mov eax, 6
     push rax
@@ -242,73 +190,19 @@ on_a:
 	pop rax ; 8.0
 	movd xmm7, eax
 	call helper_foo_safe
-	add rsp, 0x100
+	add rsp, byte 0x20
 
 	mov rsp, rbp
 	pop rbp
 	ret
 
 .fast:
-	sub rsp, byte 0x8
-	mov eax, 34
-    push rax
-	mov eax, 33
-    push rax
-	mov eax, 32
-    push rax
-	mov eax, 31
-    push rax
-	mov eax, 30
-    push rax
-	mov eax, 29
-    push rax
-	mov eax, 28
-    push rax
-	mov eax, 27
-    push rax
-	mov eax, 26
-    push rax
-	mov eax, 25
-    push rax
-	mov eax, 24
-    push rax
-	mov eax, 23
-    push rax
-	mov eax, 22
-    push rax
-	mov eax, 21
-    push rax
-	mov eax, 20
-    push rax
-	mov eax, 19
-    push rax
-	mov eax, 18
-    push rax
-	mov eax, 17
-    push rax
-	mov eax, 16
-    push rax
-	mov eax, 15
-    push rax
-	mov eax, 14
-    push rax
-	mov eax, 13
-    push rax
-	mov eax, 12
-    push rax
-	mov eax, 11
-    push rax
-	mov eax, 10
-    push rax
-	mov eax, 9
-    push rax
 	mov eax, __?float32?__(10.0)
     push rax
-	mov eax, 8
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
     push rax
 	mov eax, __?float32?__(9.0)
-    push rax
-	mov eax, 7
     push rax
 	mov eax, 6
     push rax
@@ -364,8 +258,8 @@ on_a:
 	movd xmm6, eax
 	pop rax ; 8.0
 	movd xmm7, eax
-	call helper_foo_safe
-	add rsp, 0x100
+	call helper_foo_fast
+	add rsp, byte 0x20
 
 	mov rsp, rbp
 	pop rbp
@@ -375,11 +269,94 @@ global helper_foo_safe
 helper_foo_safe:
 	push rbp
 	mov rbp, rsp
-	sub rsp, byte 0x10
-	mov rbp[-0x8], rdi
+	sub rsp, byte 0x50
+	mov rbp[-0x8], rdi ; globals pointer
+	mov rbp[-0xc], esi ; 1
+	mov rbp[-0x10], edx ; 2
+	mov rbp[-0x14], ecx ; 3
+	mov rbp[-0x18], r8d ; 4
+	mov rbp[-0x1c], r9d ; 5
+	mov eax, rbp[+0x10] ; 6
+	mov rbp[-0x20], eax
+	movss rbp[-0x24], xmm0 ; 1.0
+	movss rbp[-0x28], xmm1 ; 2.0
+	movss rbp[-0x2c], xmm2 ; 3.0
+	movss rbp[-0x30], xmm3 ; 4.0
+	movss rbp[-0x34], xmm4 ; 5.0
+	movss rbp[-0x38], xmm5 ; 6.0
+	movss rbp[-0x3c], xmm6 ; 7.0
+	movss rbp[-0x40], xmm7 ; 8.0
+	mov eax, rbp[+0x18] ; 9.0
+	mov rbp[-0x44], eax
+	mov rax, rbp[+0x20] ; me
+	mov rbp[-0x4c], rax
+	mov eax, rbp[+0x28] ; 10.0
+	mov rbp[-0x50], eax
 	check_stack_overflow
 
-	call game_fn_omega wrt ..plt
+	mov eax, rbp[-0x50] ; 10.0
+    push rax
+	mov rax, rbp[-0x4c] ; me
+    push rax
+	mov eax, rbp[-0x44] ; 9.0
+    push rax
+	mov rax, rbp[-0x8]
+	mov eax, rax[byte 0x8] ; global variable "g"
+	push rax
+
+	mov eax, rbp[-0x40] ; 8.0
+    push rax
+	mov eax, rbp[-0x3c] ; 7.0
+    push rax
+	mov eax, rbp[-0x38] ; 6.0
+    push rax
+	mov eax, rbp[-0x34] ; 5.0
+    push rax
+	mov eax, rbp[-0x30] ; 4.0
+    push rax
+	mov eax, rbp[-0x2c] ; 3.0
+    push rax
+	mov eax, rbp[-0x28] ; 2.0
+    push rax
+	mov eax, rbp[-0x24] ; 1.0
+    push rax
+	mov eax, rbp[-0x20] ; 6
+    push rax
+	mov eax, rbp[-0x1c] ; 5
+    push rax
+	mov eax, rbp[-0x18] ; 4
+    push rax
+	mov eax, rbp[-0x14] ; 3
+    push rax
+	mov eax, rbp[-0x10] ; 2
+    push rax
+	mov eax, rbp[-0xc] ; 1
+    push rax
+
+	pop rdi ; 1
+	pop rsi ; 2
+	pop rdx ; 3
+	pop rcx ; 4
+	pop r8 ; 5
+	pop r9 ; 6
+	pop rax ; 1.0
+	movd xmm0, eax
+	pop rax ; 2.0
+	movd xmm1, eax
+	pop rax ; 3.0
+	movd xmm2, eax
+	pop rax ; 4.0
+	movd xmm3, eax
+	pop rax ; 5.0
+	movd xmm4, eax
+	pop rax ; 6.0
+	movd xmm5, eax
+	pop rax ; 7.0
+	movd xmm6, eax
+	pop rax ; 8.0
+	movd xmm7, eax
+	call game_fn_motherload_subless wrt ..plt
+	add rsp, byte 0x20
 
 	mov rsp, rbp
 	pop rbp
@@ -389,10 +366,93 @@ global helper_foo_fast
 helper_foo_fast:
 	push rbp
 	mov rbp, rsp
-	sub rsp, byte 0x10
-	mov rbp[-0x8], rdi
+	sub rsp, byte 0x50
+	mov rbp[-0x8], rdi ; globals pointer
+	mov rbp[-0xc], esi ; 1
+	mov rbp[-0x10], edx ; 2
+	mov rbp[-0x14], ecx ; 3
+	mov rbp[-0x18], r8d ; 4
+	mov rbp[-0x1c], r9d ; 5
+	mov eax, rbp[+0x10] ; 6
+	mov rbp[-0x20], eax
+	movss rbp[-0x24], xmm0 ; 1.0
+	movss rbp[-0x28], xmm1 ; 2.0
+	movss rbp[-0x2c], xmm2 ; 3.0
+	movss rbp[-0x30], xmm3 ; 4.0
+	movss rbp[-0x34], xmm4 ; 5.0
+	movss rbp[-0x38], xmm5 ; 6.0
+	movss rbp[-0x3c], xmm6 ; 7.0
+	movss rbp[-0x40], xmm7 ; 8.0
+	mov eax, rbp[+0x18] ; 9.0
+	mov rbp[-0x44], eax
+	mov rax, rbp[+0x20] ; me
+	mov rbp[-0x4c], rax
+	mov eax, rbp[+0x28] ; 10.0
+	mov rbp[-0x50], eax
 
-	call game_fn_omega wrt ..plt
+	mov eax, rbp[-0x50] ; 10.0
+    push rax
+	mov rax, rbp[-0x4c] ; me
+    push rax
+	mov eax, rbp[-0x44] ; 9.0
+    push rax
+	mov rax, rbp[-0x8]
+	mov eax, rax[byte 0x8] ; global variable "g"
+	push rax
+
+	mov eax, rbp[-0x40] ; 8.0
+    push rax
+	mov eax, rbp[-0x3c] ; 7.0
+    push rax
+	mov eax, rbp[-0x38] ; 6.0
+    push rax
+	mov eax, rbp[-0x34] ; 5.0
+    push rax
+	mov eax, rbp[-0x30] ; 4.0
+    push rax
+	mov eax, rbp[-0x2c] ; 3.0
+    push rax
+	mov eax, rbp[-0x28] ; 2.0
+    push rax
+	mov eax, rbp[-0x24] ; 1.0
+    push rax
+	mov eax, rbp[-0x20] ; 6
+    push rax
+	mov eax, rbp[-0x1c] ; 5
+    push rax
+	mov eax, rbp[-0x18] ; 4
+    push rax
+	mov eax, rbp[-0x14] ; 3
+    push rax
+	mov eax, rbp[-0x10] ; 2
+    push rax
+	mov eax, rbp[-0xc] ; 1
+    push rax
+
+	pop rdi ; 1
+	pop rsi ; 2
+	pop rdx ; 3
+	pop rcx ; 4
+	pop r8 ; 5
+	pop r9 ; 6
+	pop rax ; 1.0
+	movd xmm0, eax
+	pop rax ; 2.0
+	movd xmm1, eax
+	pop rax ; 3.0
+	movd xmm2, eax
+	pop rax ; 4.0
+	movd xmm3, eax
+	pop rax ; 5.0
+	movd xmm4, eax
+	pop rax ; 6.0
+	movd xmm5, eax
+	pop rax ; 7.0
+	movd xmm6, eax
+	pop rax ; 8.0
+	movd xmm7, eax
+	call game_fn_motherload_subless wrt ..plt
+	add rsp, byte 0x20
 
 	mov rsp, rbp
 	pop rbp

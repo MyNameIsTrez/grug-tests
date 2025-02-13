@@ -12,7 +12,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/stack_pass_args_to_helper_fn_subless/input.grug", 0
+	db "tests/ok/spill_args_to_helper_fn/input.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -35,7 +35,7 @@ extern game_fn_define_d
 extern setjmp
 extern grug_get_runtime_error_reason
 extern longjmp
-extern game_fn_motherload_subless
+extern game_fn_motherload
 
 %define GRUG_ON_FN_STACK_OVERFLOW 1
 
@@ -128,12 +128,11 @@ on_a:
 
 	error_handling
 
-	mov eax, __?float32?__(10.0)
+	sub rsp, byte 0x8
+	mov eax, __?float32?__(9.0)
     push rax
 	mov rax, rbp[-0x8]
 	mov rax, rax[byte 0x0]
-    push rax
-	mov eax, __?float32?__(9.0)
     push rax
 	mov eax, 6
     push rax
@@ -197,12 +196,11 @@ on_a:
 	ret
 
 .fast:
-	mov eax, __?float32?__(10.0)
+	sub rsp, byte 0x8
+	mov eax, __?float32?__(9.0)
     push rax
 	mov rax, rbp[-0x8]
 	mov rax, rax[byte 0x0]
-    push rax
-	mov eax, __?float32?__(9.0)
     push rax
 	mov eax, 6
     push rax
@@ -286,19 +284,16 @@ helper_foo_safe:
 	movss rbp[-0x38], xmm5 ; 6.0
 	movss rbp[-0x3c], xmm6 ; 7.0
 	movss rbp[-0x40], xmm7 ; 8.0
-	mov eax, rbp[+0x18] ; 9.0
-	mov rbp[-0x44], eax
-	mov rax, rbp[+0x20] ; me
-	mov rbp[-0x4c], rax
-	mov eax, rbp[+0x28] ; 10.0
-	mov rbp[-0x50], eax
+	mov rax, rbp[+0x18] ; me
+	mov rbp[-0x48], rax
+	mov eax, rbp[+0x20] ; 9.0
+	mov rbp[-0x4c], eax
 	check_stack_overflow
 
-	mov eax, rbp[-0x50] ; 10.0
+	sub rsp, byte 0x8
+	mov eax, rbp[-0x4c] ; 9.0
     push rax
-	mov rax, rbp[-0x4c] ; me
-    push rax
-	mov eax, rbp[-0x44] ; 9.0
+	mov rax, rbp[-0x48] ; me
     push rax
 	mov rax, rbp[-0x8]
 	mov eax, rax[byte 0x8] ; global variable "g"
@@ -355,7 +350,7 @@ helper_foo_safe:
 	movd xmm6, eax
 	pop rax ; 8.0
 	movd xmm7, eax
-	call game_fn_motherload_subless wrt ..plt
+	call game_fn_motherload wrt ..plt
 	add rsp, byte 0x20
 
 	mov rsp, rbp
@@ -383,18 +378,15 @@ helper_foo_fast:
 	movss rbp[-0x38], xmm5 ; 6.0
 	movss rbp[-0x3c], xmm6 ; 7.0
 	movss rbp[-0x40], xmm7 ; 8.0
-	mov eax, rbp[+0x18] ; 9.0
-	mov rbp[-0x44], eax
-	mov rax, rbp[+0x20] ; me
-	mov rbp[-0x4c], rax
-	mov eax, rbp[+0x28] ; 10.0
-	mov rbp[-0x50], eax
+	mov rax, rbp[+0x18] ; me
+	mov rbp[-0x48], rax
+	mov eax, rbp[+0x20] ; 9.0
+	mov rbp[-0x4c], eax
 
-	mov eax, rbp[-0x50] ; 10.0
+	sub rsp, byte 0x8
+	mov eax, rbp[-0x4c] ; 9.0
     push rax
-	mov rax, rbp[-0x4c] ; me
-    push rax
-	mov eax, rbp[-0x44] ; 9.0
+	mov rax, rbp[-0x48] ; me
     push rax
 	mov rax, rbp[-0x8]
 	mov eax, rax[byte 0x8] ; global variable "g"
@@ -451,7 +443,7 @@ helper_foo_fast:
 	movd xmm6, eax
 	pop rax ; 8.0
 	movd xmm7, eax
-	call game_fn_motherload_subless wrt ..plt
+	call game_fn_motherload wrt ..plt
 	add rsp, byte 0x20
 
 	mov rsp, rbp
