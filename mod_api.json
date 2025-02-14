@@ -1104,6 +1104,216 @@
 					"type": "f32"
 				}
 			]
+		},
+		"offset_32_bit_f32": {
+			"description": "foo",
+			"arguments": [
+				{
+					"name": "s1",
+					"type": "string"
+				},
+				{
+					"name": "s2",
+					"type": "string"
+				},
+				{
+					"name": "s3",
+					"type": "string"
+				},
+				{
+					"name": "s4",
+					"type": "string"
+				},
+				{
+					"name": "s5",
+					"type": "string"
+				},
+				{
+					"name": "s6",
+					"type": "string"
+				},
+				{
+					"name": "s7",
+					"type": "string"
+				},
+				{
+					"name": "s8",
+					"type": "string"
+				},
+				{
+					"name": "s9",
+					"type": "string"
+				},
+				{
+					"name": "s10",
+					"type": "string"
+				},
+				{
+					"name": "s11",
+					"type": "string"
+				},
+				{
+					"name": "s12",
+					"type": "string"
+				},
+				{
+					"name": "s13",
+					"type": "string"
+				},
+				{
+					"name": "s14",
+					"type": "string"
+				},
+				{
+					"name": "s15",
+					"type": "string"
+				},
+				{
+					"name": "f1",
+					"type": "f32"
+				},
+				{
+					"name": "g",
+					"type": "i32"
+				}
+			]
+		},
+		"offset_32_bit_i32_and_string": {
+			"description": "foo",
+			"arguments": [
+				{
+					"name": "f1",
+					"type": "f32"
+				},
+				{
+					"name": "f2",
+					"type": "f32"
+				},
+				{
+					"name": "f3",
+					"type": "f32"
+				},
+				{
+					"name": "f4",
+					"type": "f32"
+				},
+				{
+					"name": "f5",
+					"type": "f32"
+				},
+				{
+					"name": "f6",
+					"type": "f32"
+				},
+				{
+					"name": "f7",
+					"type": "f32"
+				},
+				{
+					"name": "f8",
+					"type": "f32"
+				},
+				{
+					"name": "f9",
+					"type": "f32"
+				},
+				{
+					"name": "f10",
+					"type": "f32"
+				},
+				{
+					"name": "f11",
+					"type": "f32"
+				},
+				{
+					"name": "f12",
+					"type": "f32"
+				},
+				{
+					"name": "f13",
+					"type": "f32"
+				},
+				{
+					"name": "f14",
+					"type": "f32"
+				},
+				{
+					"name": "f15",
+					"type": "f32"
+				},
+				{
+					"name": "f16",
+					"type": "f32"
+				},
+				{
+					"name": "f17",
+					"type": "f32"
+				},
+				{
+					"name": "f18",
+					"type": "f32"
+				},
+				{
+					"name": "f19",
+					"type": "f32"
+				},
+				{
+					"name": "f20",
+					"type": "f32"
+				},
+				{
+					"name": "f21",
+					"type": "f32"
+				},
+				{
+					"name": "f22",
+					"type": "f32"
+				},
+				{
+					"name": "f23",
+					"type": "f32"
+				},
+				{
+					"name": "f24",
+					"type": "f32"
+				},
+				{
+					"name": "f25",
+					"type": "f32"
+				},
+				{
+					"name": "f26",
+					"type": "f32"
+				},
+				{
+					"name": "f27",
+					"type": "f32"
+				},
+				{
+					"name": "f28",
+					"type": "f32"
+				},
+				{
+					"name": "f29",
+					"type": "f32"
+				},
+				{
+					"name": "f30",
+					"type": "f32"
+				},
+				{
+					"name": "i1",
+					"type": "i32"
+				},
+				{
+					"name": "s1",
+					"type": "string"
+				},
+				{
+					"name": "g",
+					"type": "i32"
+				}
+			]
 		}
 	}
 }
