@@ -274,8 +274,8 @@ helper_foo_safe:
 	mov rbp[-0x14], ecx ; 3
 	mov rbp[-0x18], r8d ; 4
 	mov rbp[-0x1c], r9d ; 5
-	mov eax, rbp[+0x10] ; 6
-	mov rbp[-0x20], eax
+	mov eax, rbp[dword +0x10] ; 6
+	mov rbp[dword -0x20], eax
 	movss rbp[-0x24], xmm0 ; 1.0
 	movss rbp[-0x28], xmm1 ; 2.0
 	movss rbp[-0x2c], xmm2 ; 3.0
@@ -284,10 +284,10 @@ helper_foo_safe:
 	movss rbp[-0x38], xmm5 ; 6.0
 	movss rbp[-0x3c], xmm6 ; 7.0
 	movss rbp[-0x40], xmm7 ; 8.0
-	mov rax, rbp[+0x18] ; me
-	mov rbp[-0x48], rax
-	mov eax, rbp[+0x20] ; 9.0
-	mov rbp[-0x4c], eax
+	mov rax, rbp[dword +0x18] ; me
+	mov rbp[dword -0x48], rax
+	mov eax, rbp[dword +0x20] ; 9.0
+	mov rbp[dword -0x4c], eax
 	check_stack_overflow
 
 	sub rsp, byte 0x8
@@ -368,8 +368,8 @@ helper_foo_fast:
 	mov rbp[-0x14], ecx ; 3
 	mov rbp[-0x18], r8d ; 4
 	mov rbp[-0x1c], r9d ; 5
-	mov eax, rbp[+0x10] ; 6
-	mov rbp[-0x20], eax
+	mov eax, rbp[dword +0x10] ; 6
+	mov rbp[dword -0x20], eax
 	movss rbp[-0x24], xmm0 ; 1.0
 	movss rbp[-0x28], xmm1 ; 2.0
 	movss rbp[-0x2c], xmm2 ; 3.0
@@ -378,10 +378,10 @@ helper_foo_fast:
 	movss rbp[-0x38], xmm5 ; 6.0
 	movss rbp[-0x3c], xmm6 ; 7.0
 	movss rbp[-0x40], xmm7 ; 8.0
-	mov rax, rbp[+0x18] ; me
-	mov rbp[-0x48], rax
-	mov eax, rbp[+0x20] ; 9.0
-	mov rbp[-0x4c], eax
+	mov rax, rbp[dword +0x18] ; me
+	mov rbp[dword -0x48], rax
+	mov eax, rbp[dword +0x20] ; 9.0
+	mov rbp[dword -0x4c], eax
 
 	sub rsp, byte 0x8
 	mov eax, rbp[-0x4c] ; 9.0
