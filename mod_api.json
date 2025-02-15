@@ -1350,10 +1350,6 @@
 					"type": "i32"
 				},
 				{
-					"name": "i6",
-					"type": "i32"
-				},
-				{
 					"name": "g",
 					"type": "i32"
 				}
@@ -1500,10 +1496,6 @@
 				},
 				{
 					"name": "s5",
-					"type": "string"
-				},
-				{
-					"name": "s6",
 					"type": "string"
 				},
 				{
