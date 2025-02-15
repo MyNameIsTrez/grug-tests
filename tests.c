@@ -5339,7 +5339,7 @@ static void ok_spill_args_to_helper_fn_32_bit_string(void *on_fns, void *g, size
 	assert(streq(game_fn_offset_32_bit_string_s3, "3"));
 	assert(streq(game_fn_offset_32_bit_string_s4, "4"));
 	assert(streq(game_fn_offset_32_bit_string_s5, "5"));
-	assert(game_fn_offset_32_bit_string_g == 2);
+	assert(game_fn_offset_32_bit_string_g == 1);
 
 	assert(streq(grug_on_fn_name, "on_a"));
 	assert(streq(grug_on_fn_path, "tests/ok/spill_args_to_helper_fn_32_bit_string/input.grug"));
