@@ -179,6 +179,20 @@ on_a:
 	lea rax, [rel s6]
 	push rax
 
+	mov eax, __?float32?__(8.0)
+    push rax
+	mov eax, __?float32?__(7.0)
+    push rax
+	mov eax, __?float32?__(6.0)
+    push rax
+	mov eax, __?float32?__(5.0)
+    push rax
+	mov eax, __?float32?__(4.0)
+    push rax
+	mov eax, __?float32?__(3.0)
+    push rax
+	mov eax, __?float32?__(2.0)
+    push rax
 	mov eax, __?float32?__(1.0)
     push rax
 	lea rax, [rel s5]
@@ -202,6 +216,20 @@ on_a:
 	pop r9 ; s5
 	pop rax ; f1
 	movd xmm0, eax
+	pop rax ; f2
+	movd xmm1, eax
+	pop rax ; f3
+	movd xmm2, eax
+	pop rax ; f4
+	movd xmm3, eax
+	pop rax ; f5
+	movd xmm4, eax
+	pop rax ; f6
+	movd xmm5, eax
+	pop rax ; f7
+	movd xmm6, eax
+	pop rax ; f8
+	movd xmm7, eax
 	call helper_foo_safe
 	add rsp, byte 0x50
 
@@ -231,6 +259,20 @@ on_a:
 	lea rax, [rel s6]
 	push rax
 
+	mov eax, __?float32?__(8.0)
+    push rax
+	mov eax, __?float32?__(7.0)
+    push rax
+	mov eax, __?float32?__(6.0)
+    push rax
+	mov eax, __?float32?__(5.0)
+    push rax
+	mov eax, __?float32?__(4.0)
+    push rax
+	mov eax, __?float32?__(3.0)
+    push rax
+	mov eax, __?float32?__(2.0)
+    push rax
 	mov eax, __?float32?__(1.0)
     push rax
 	lea rax, [rel s5]
@@ -254,6 +296,20 @@ on_a:
 	pop r9 ; s5
 	pop rax ; f1
 	movd xmm0, eax
+	pop rax ; f2
+	movd xmm1, eax
+	pop rax ; f3
+	movd xmm2, eax
+	pop rax ; f4
+	movd xmm3, eax
+	pop rax ; f5
+	movd xmm4, eax
+	pop rax ; f6
+	movd xmm5, eax
+	pop rax ; f7
+	movd xmm6, eax
+	pop rax ; f8
+	movd xmm7, eax
 	call helper_foo_fast
 	add rsp, byte 0x50
 
@@ -265,7 +321,7 @@ global helper_foo_safe
 helper_foo_safe:
 	push rbp
 	mov rbp, rsp
-	sub rsp, 0x90
+	sub rsp, 0xa0
 	mov rbp[-0x8], rdi ; globals pointer
 	mov rbp[-0x10], rsi ; s1
 	mov rbp[-0x18], rdx ; s2
@@ -293,6 +349,13 @@ helper_foo_safe:
 	mov rax, rbp[dword +0x58] ; s15
 	mov rbp[dword -0x80], rax
 	movss rbp[-0x84], xmm0 ; f1
+	movss rbp[-0x88], xmm1 ; f2
+	movss rbp[-0x8c], xmm2 ; f3
+	movss rbp[-0x90], xmm3 ; f4
+	movss rbp[-0x94], xmm4 ; f5
+	movss rbp[-0x98], xmm5 ; f6
+	movss rbp[-0x9c], xmm6 ; f7
+	movss rbp[-0xa0], xmm7 ; f8
 	check_stack_overflow
 
 	mov rax, rbp[-0x8]
@@ -317,6 +380,20 @@ helper_foo_safe:
 	mov rax, rbp[-0x40] ; s7
     push rax
 
+	mov eax, rbp[-0xa0] ; f8
+    push rax
+	mov eax, rbp[-0x9c] ; f7
+    push rax
+	mov eax, rbp[-0x98] ; f6
+    push rax
+	mov eax, rbp[-0x94] ; f5
+    push rax
+	mov eax, rbp[-0x90] ; f4
+    push rax
+	mov eax, rbp[-0x8c] ; f3
+    push rax
+	mov eax, rbp[-0x88] ; f2
+    push rax
 	mov eax, rbp[-0x84] ; f1
     push rax
 	mov rax, rbp[-0x38] ; s6
@@ -340,6 +417,20 @@ helper_foo_safe:
 	pop r9 ; s6
 	pop rax ; f1
 	movd xmm0, eax
+	pop rax ; f2
+	movd xmm1, eax
+	pop rax ; f3
+	movd xmm2, eax
+	pop rax ; f4
+	movd xmm3, eax
+	pop rax ; f5
+	movd xmm4, eax
+	pop rax ; f6
+	movd xmm5, eax
+	pop rax ; f7
+	movd xmm6, eax
+	pop rax ; f8
+	movd xmm7, eax
 	call game_fn_offset_32_bit_f32 wrt ..plt
 	add rsp, byte 0x50
 
@@ -351,7 +442,7 @@ global helper_foo_fast
 helper_foo_fast:
 	push rbp
 	mov rbp, rsp
-	sub rsp, 0x90
+	sub rsp, 0xa0
 	mov rbp[-0x8], rdi ; globals pointer
 	mov rbp[-0x10], rsi ; s1
 	mov rbp[-0x18], rdx ; s2
@@ -379,6 +470,13 @@ helper_foo_fast:
 	mov rax, rbp[dword +0x58] ; s15
 	mov rbp[dword -0x80], rax
 	movss rbp[-0x84], xmm0 ; f1
+	movss rbp[-0x88], xmm1 ; f2
+	movss rbp[-0x8c], xmm2 ; f3
+	movss rbp[-0x90], xmm3 ; f4
+	movss rbp[-0x94], xmm4 ; f5
+	movss rbp[-0x98], xmm5 ; f6
+	movss rbp[-0x9c], xmm6 ; f7
+	movss rbp[-0xa0], xmm7 ; f8
 
 	mov rax, rbp[-0x8]
 	mov eax, rax[byte 0x8] ; global variable "g"
@@ -402,6 +500,20 @@ helper_foo_fast:
 	mov rax, rbp[-0x40] ; s7
     push rax
 
+	mov eax, rbp[-0xa0] ; f8
+    push rax
+	mov eax, rbp[-0x9c] ; f7
+    push rax
+	mov eax, rbp[-0x98] ; f6
+    push rax
+	mov eax, rbp[-0x94] ; f5
+    push rax
+	mov eax, rbp[-0x90] ; f4
+    push rax
+	mov eax, rbp[-0x8c] ; f3
+    push rax
+	mov eax, rbp[-0x88] ; f2
+    push rax
 	mov eax, rbp[-0x84] ; f1
     push rax
 	mov rax, rbp[-0x38] ; s6
@@ -425,6 +537,20 @@ helper_foo_fast:
 	pop r9 ; s6
 	pop rax ; f1
 	movd xmm0, eax
+	pop rax ; f2
+	movd xmm1, eax
+	pop rax ; f3
+	movd xmm2, eax
+	pop rax ; f4
+	movd xmm3, eax
+	pop rax ; f5
+	movd xmm4, eax
+	pop rax ; f6
+	movd xmm5, eax
+	pop rax ; f7
+	movd xmm6, eax
+	pop rax ; f8
+	movd xmm7, eax
 	call game_fn_offset_32_bit_f32 wrt ..plt
 	add rsp, byte 0x50
 
