@@ -947,6 +947,53 @@ void game_fn_define_d2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i
 	game_fn_define_d2_i8 = i8;
 	game_fn_define_d2_f9 = f9;
 }
+static int32_t game_fn_define_e2_i1;
+static int32_t game_fn_define_e2_i2;
+static int32_t game_fn_define_e2_i3;
+static int32_t game_fn_define_e2_i4;
+static int32_t game_fn_define_e2_i5;
+static int32_t game_fn_define_e2_i6;
+static int32_t game_fn_define_e2_i7;
+static int32_t game_fn_define_e2_i8;
+static int32_t game_fn_define_e2_i9;
+static int32_t game_fn_define_e2_i10;
+static int32_t game_fn_define_e2_i11;
+static int32_t game_fn_define_e2_i12;
+static int32_t game_fn_define_e2_i13;
+static int32_t game_fn_define_e2_i14;
+static int32_t game_fn_define_e2_i15;
+static int32_t game_fn_define_e2_i16;
+static int32_t game_fn_define_e2_i17;
+static int32_t game_fn_define_e2_i18;
+static int32_t game_fn_define_e2_i19;
+static int32_t game_fn_define_e2_i20;
+static int32_t game_fn_define_e2_i21;
+static int32_t game_fn_define_e2_i22;
+void game_fn_define_e2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, int32_t i8, int32_t i9, int32_t i10, int32_t i11, int32_t i12, int32_t i13, int32_t i14, int32_t i15, int32_t i16, int32_t i17, int32_t i18, int32_t i19, int32_t i20, int32_t i21, int32_t i22) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
+	game_fn_define_e2_i1 = i1;
+	game_fn_define_e2_i2 = i2;
+	game_fn_define_e2_i3 = i3;
+	game_fn_define_e2_i4 = i4;
+	game_fn_define_e2_i5 = i5;
+	game_fn_define_e2_i6 = i6;
+	game_fn_define_e2_i7 = i7;
+	game_fn_define_e2_i8 = i8;
+	game_fn_define_e2_i9 = i9;
+	game_fn_define_e2_i10 = i10;
+	game_fn_define_e2_i11 = i11;
+	game_fn_define_e2_i12 = i12;
+	game_fn_define_e2_i13 = i13;
+	game_fn_define_e2_i14 = i14;
+	game_fn_define_e2_i15 = i15;
+	game_fn_define_e2_i16 = i16;
+	game_fn_define_e2_i17 = i17;
+	game_fn_define_e2_i18 = i18;
+	game_fn_define_e2_i19 = i19;
+	game_fn_define_e2_i20 = i20;
+	game_fn_define_e2_i21 = i21;
+	game_fn_define_e2_i22 = i22;
+}
 
 static void reset_call_counts(void) {
 	game_fn_nothing_call_count = 0;
@@ -5059,6 +5106,42 @@ static void ok_spill_args_to_define_fn(void *on_fns, void *g, size_t resources_s
 	assert(entity_types == NULL);
 }
 
+static void ok_spill_args_to_define_fn_32_bit_add(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	(void)on_fns;
+
+	assert(game_fn_define_e2_i1 == 1);
+	assert(game_fn_define_e2_i2 == 2);
+	assert(game_fn_define_e2_i3 == 3);
+	assert(game_fn_define_e2_i4 == 4);
+	assert(game_fn_define_e2_i5 == 5);
+	assert(game_fn_define_e2_i6 == 6);
+	assert(game_fn_define_e2_i7 == 7);
+	assert(game_fn_define_e2_i8 == 8);
+	assert(game_fn_define_e2_i9 == 9);
+	assert(game_fn_define_e2_i10 == 10);
+	assert(game_fn_define_e2_i11 == 11);
+	assert(game_fn_define_e2_i12 == 12);
+	assert(game_fn_define_e2_i13 == 13);
+	assert(game_fn_define_e2_i14 == 14);
+	assert(game_fn_define_e2_i15 == 15);
+	assert(game_fn_define_e2_i16 == 16);
+	assert(game_fn_define_e2_i17 == 17);
+	assert(game_fn_define_e2_i18 == 18);
+	assert(game_fn_define_e2_i19 == 19);
+	assert(game_fn_define_e2_i20 == 20);
+	assert(game_fn_define_e2_i21 == 21);
+	assert(game_fn_define_e2_i22 == 22);
+
+	free(g);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_spill_args_to_define_fn_subless(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	(void)on_fns;
 
@@ -6246,6 +6329,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(stack_16_byte_alignment, "d", 8);
 	ADD_TEST_OK(stack_16_byte_alignment_midway, "d", 8);
 	ADD_TEST_OK(spill_args_to_define_fn, "c2", 8);
+	ADD_TEST_OK(spill_args_to_define_fn_32_bit_add, "e2", 8);
 	ADD_TEST_OK(spill_args_to_define_fn_subless, "d2", 8);
 	ADD_TEST_OK(spill_args_to_game_fn, "d", 8);
 	ADD_TEST_OK(spill_args_to_game_fn_subless, "d", 8);

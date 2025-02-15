@@ -21,12 +21,14 @@ extern game_fn_define_c2
 global define
 define:
 	sub rsp, byte 0x8
+
 	mov eax, __?float32?__(10.0)
     push rax
 	mov eax, 8
     push rax
 	mov eax, __?float32?__(9.0)
     push rax
+
 	mov eax, __?float32?__(8.0)
 	movd xmm7, eax
 	mov eax, __?float32?__(7.0)
@@ -43,8 +45,10 @@ define:
 	movd xmm1, eax
 	mov eax, __?float32?__(1.0)
 	movd xmm0, eax
+
 	mov eax, 7
     push rax
+
 	mov eax, 6
 	mov r9, rax
 	mov eax, 5
@@ -57,6 +61,7 @@ define:
 	mov rsi, rax
 	mov eax, 1
 	mov rdi, rax
+
 	call game_fn_define_c2 wrt ..plt
 	add rsp, byte 0x28
 	ret

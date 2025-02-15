@@ -642,6 +642,99 @@
 					"type": "f32"
 				}
 			]
+		},
+		"e2": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "i1",
+					"type": "i32"
+				},
+				{
+					"name": "i2",
+					"type": "i32"
+				},
+				{
+					"name": "i3",
+					"type": "i32"
+				},
+				{
+					"name": "i4",
+					"type": "i32"
+				},
+				{
+					"name": "i5",
+					"type": "i32"
+				},
+				{
+					"name": "i6",
+					"type": "i32"
+				},
+				{
+					"name": "i7",
+					"type": "i32"
+				},
+				{
+					"name": "i8",
+					"type": "i32"
+				},
+				{
+					"name": "i9",
+					"type": "i32"
+				},
+				{
+					"name": "i10",
+					"type": "i32"
+				},
+				{
+					"name": "i11",
+					"type": "i32"
+				},
+				{
+					"name": "i12",
+					"type": "i32"
+				},
+				{
+					"name": "i13",
+					"type": "i32"
+				},
+				{
+					"name": "i14",
+					"type": "i32"
+				},
+				{
+					"name": "i15",
+					"type": "i32"
+				},
+				{
+					"name": "i16",
+					"type": "i32"
+				},
+				{
+					"name": "i17",
+					"type": "i32"
+				},
+				{
+					"name": "i18",
+					"type": "i32"
+				},
+				{
+					"name": "i19",
+					"type": "i32"
+				},
+				{
+					"name": "i20",
+					"type": "i32"
+				},
+				{
+					"name": "i21",
+					"type": "i32"
+				},
+				{
+					"name": "i22",
+					"type": "i32"
+				}
+			]
 		}
 	},
 	"game_functions": {
