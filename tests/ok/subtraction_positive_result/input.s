@@ -123,7 +123,8 @@ on_a:
 	push rax
 	mov eax, 5
 	pop r11
-	sub rax, r11
+	sub eax, r11d
+	check_overflow_and_underflow
 	push rax
 
 	pop rdi
@@ -138,7 +139,7 @@ on_a:
 	push rax
 	mov eax, 5
 	pop r11
-	sub rax, r11
+	sub eax, r11d
 	push rax
 
 	pop rdi

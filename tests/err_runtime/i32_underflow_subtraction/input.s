@@ -12,7 +12,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/subtraction_negative_result/input.grug", 0
+	db "tests/err_runtime/i32_underflow_subtraction/input.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -119,9 +119,10 @@ on_a:
 
 	error_handling
 
-	mov eax, 5
-	push rax
 	mov eax, 2
+	push rax
+	mov eax, 2147483647
+	neg rax
 	pop r11
 	sub eax, r11d
 	check_overflow_and_underflow
@@ -135,9 +136,10 @@ on_a:
 	ret
 
 .fast:
-	mov eax, 5
-	push rax
 	mov eax, 2
+	push rax
+	mov eax, 2147483647
+	neg rax
 	pop r11
 	sub eax, r11d
 	push rax

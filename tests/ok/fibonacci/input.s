@@ -223,7 +223,8 @@ helper_fib_safe:
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11
-	sub rax, r11
+	sub eax, r11d
+	check_overflow_and_underflow
 	push rax
 	mov rax, rbp[-0x8]
 	push rax
@@ -238,7 +239,8 @@ helper_fib_safe:
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11
-	sub rax, r11
+	sub eax, r11d
+	check_overflow_and_underflow
 	push rax
 	mov rax, rbp[-0x8]
 	push rax
@@ -312,7 +314,7 @@ helper_fib_fast:
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11
-	sub rax, r11
+	sub eax, r11d
 	push rax
 	mov rax, rbp[-0x8]
 	push rax
@@ -327,7 +329,7 @@ helper_fib_fast:
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11
-	sub rax, r11
+	sub eax, r11d
 	push rax
 	mov rax, rbp[-0x8]
 	push rax
