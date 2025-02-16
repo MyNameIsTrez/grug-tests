@@ -39,7 +39,6 @@ extern longjmp
 
 %define GRUG_ON_FN_STACK_OVERFLOW 1
 %define GRUG_ON_FN_OVERFLOW 3
-%define GRUG_ON_FN_UNDERFLOW 4
 
 %define GRUG_STACK_LIMIT 0x10000
 
@@ -110,14 +109,9 @@ init_globals:
 %%skip:
 %endmacro
 
-%macro check_overflow_and_underflow 0
+%macro check_overflow 0
 	jno %%skip
-	js %%signed ; 2147483647 + 1 is signed, since it overflows to -2147483648
-	mov esi, 1 + GRUG_ON_FN_UNDERFLOW
-	jmp short %%skip_signed
-%%signed:
 	mov esi, 1 + GRUG_ON_FN_OVERFLOW
-%%skip_signed:
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call longjmp wrt ..plt
 %%skip:
@@ -224,7 +218,7 @@ helper_fib_safe:
 	mov eax, rbp[-0xc]
 	pop r11
 	sub eax, r11d
-	check_overflow_and_underflow
+	check_overflow
 	push rax
 	mov rax, rbp[-0x8]
 	push rax
@@ -240,7 +234,7 @@ helper_fib_safe:
 	mov eax, rbp[-0xc]
 	pop r11
 	sub eax, r11d
-	check_overflow_and_underflow
+	check_overflow
 	push rax
 	mov rax, rbp[-0x8]
 	push rax
@@ -252,7 +246,7 @@ helper_fib_safe:
 
 	; helper_fib_safe(n - 1) + helper_fib_safe(n - 2)
 	add eax, r11d
-	check_overflow_and_underflow
+	check_overflow
 
 	; return helper_fib_safe(n - 1) + helper_fib_safe(n - 2)
 	mov rsp, rbp

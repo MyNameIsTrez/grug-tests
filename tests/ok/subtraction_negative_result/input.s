@@ -37,7 +37,6 @@ extern longjmp
 extern game_fn_initialize
 
 %define GRUG_ON_FN_OVERFLOW 3
-%define GRUG_ON_FN_UNDERFLOW 4
 
 global define
 define:
@@ -90,14 +89,9 @@ init_globals:
 %%skip:
 %endmacro
 
-%macro check_overflow_and_underflow 0
+%macro check_overflow 0
 	jno %%skip
-	js %%signed ; 2147483647 + 1 is signed, since it overflows to -2147483648
-	mov esi, 1 + GRUG_ON_FN_UNDERFLOW
-	jmp short %%skip_signed
-%%signed:
 	mov esi, 1 + GRUG_ON_FN_OVERFLOW
-%%skip_signed:
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call longjmp wrt ..plt
 %%skip:
@@ -124,7 +118,7 @@ on_a:
 	mov eax, 2
 	pop r11
 	sub eax, r11d
-	check_overflow_and_underflow
+	check_overflow
 	push rax
 
 	pop rdi

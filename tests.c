@@ -1787,6 +1787,30 @@ static void runtime_error_i32_overflow_division(void *on_fns, void *g, size_t re
 	assert(entity_types == NULL);
 }
 
+static void runtime_error_i32_overflow_multiplication(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	((struct d_on_fns *)on_fns)->a(g);
+
+	assert(had_runtime_error);
+
+	free(g);
+
+	assert(runtime_error_type == GRUG_ON_FN_OVERFLOW);
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_OVERFLOW)));
+
+	assert(streq(runtime_error_on_fn_name, "on_a"));
+	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_overflow_multiplication/input.grug"));
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/err_runtime/i32_overflow_multiplication/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void runtime_error_i32_overflow_negation(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
@@ -1866,14 +1890,38 @@ static void runtime_error_i32_underflow_addition(void *on_fns, void *g, size_t r
 
 	free(g);
 
-	assert(runtime_error_type == GRUG_ON_FN_UNDERFLOW);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_UNDERFLOW)));
+	assert(runtime_error_type == GRUG_ON_FN_OVERFLOW);
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_OVERFLOW)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_underflow_addition/input.grug"));
 
 	assert(streq(grug_on_fn_name, "on_a"));
 	assert(streq(grug_on_fn_path, "tests/err_runtime/i32_underflow_addition/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void runtime_error_i32_underflow_multiplication(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	((struct d_on_fns *)on_fns)->a(g);
+
+	assert(had_runtime_error);
+
+	free(g);
+
+	assert(runtime_error_type == GRUG_ON_FN_OVERFLOW);
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_OVERFLOW)));
+
+	assert(streq(runtime_error_on_fn_name, "on_a"));
+	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_underflow_multiplication/input.grug"));
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/err_runtime/i32_underflow_multiplication/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1890,8 +1938,8 @@ static void runtime_error_i32_underflow_subtraction(void *on_fns, void *g, size_
 
 	free(g);
 
-	assert(runtime_error_type == GRUG_ON_FN_UNDERFLOW);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_UNDERFLOW)));
+	assert(runtime_error_type == GRUG_ON_FN_OVERFLOW);
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_OVERFLOW)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_underflow_subtraction/input.grug"));
@@ -6360,10 +6408,12 @@ static void add_runtime_error_tests(void) {
 	ADD_TEST_RUNTIME_ERROR(division_by_0, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(i32_overflow_addition, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(i32_overflow_division, "d", 8);
+	ADD_TEST_RUNTIME_ERROR(i32_overflow_multiplication, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(i32_overflow_negation, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(i32_overflow_remainder, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(i32_overflow_subtraction, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(i32_underflow_addition, "d", 8);
+	ADD_TEST_RUNTIME_ERROR(i32_underflow_multiplication, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(i32_underflow_subtraction, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(remainder_by_0, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(stack_overflow, "d", 8);

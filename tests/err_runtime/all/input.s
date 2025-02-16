@@ -44,7 +44,6 @@ extern game_fn_initialize
 %define GRUG_ON_FN_STACK_OVERFLOW 1
 %define GRUG_ON_FN_TIME_LIMIT_EXCEEDED 2
 %define GRUG_ON_FN_OVERFLOW 3
-%define GRUG_ON_FN_UNDERFLOW 4
 
 %define GRUG_STACK_LIMIT 0x10000
 
@@ -179,14 +178,9 @@ init_globals:
 %%skip:
 %endmacro
 
-%macro check_overflow_and_underflow 0
+%macro check_overflow 0
 	jno %%skip
-	js %%signed ; 2147483647 + 1 is signed, since it overflows to -2147483648
-	mov esi, 1 + GRUG_ON_FN_UNDERFLOW
-	jmp short %%skip_signed
-%%signed:
 	mov esi, 1 + GRUG_ON_FN_OVERFLOW
-%%skip_signed:
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call longjmp wrt ..plt
 %%skip:
@@ -245,7 +239,7 @@ on_a:
 	mov eax, 1
 	pop r11
 	add eax, r11d
-	check_overflow_and_underflow
+	check_overflow
 	mov rbp[-0xc], eax
 
 	mov rsp, rbp

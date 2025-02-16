@@ -12,7 +12,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/err_runtime/i32_overflow_subtraction/input.grug", 0
+	db "tests/err_runtime/i32_overflow_multiplication/input.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -113,13 +113,13 @@ on_a:
 
 	error_handling
 
-	mov eax, 1
-	neg eax
-	check_overflow
+	mov eax, 2
 	push rax
 	mov eax, 2147483647
+	neg eax
+	check_overflow
 	pop r11
-	sub eax, r11d
+	imul r11d
 	check_overflow
 	push rax
 
@@ -131,12 +131,12 @@ on_a:
 	ret
 
 .fast:
-	mov eax, 1
-	neg eax
+	mov eax, 2
 	push rax
 	mov eax, 2147483647
+	neg eax
 	pop r11
-	sub eax, r11d
+	imul r11d
 	push rax
 
 	pop rdi
