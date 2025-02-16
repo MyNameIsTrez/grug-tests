@@ -12,7 +12,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/negate_parenthesized_expr/input.grug", 0
+	db "tests/err_runtime/i32_overflow_negation/input.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -119,11 +119,13 @@ on_a:
 
 	error_handling
 
-	mov eax, 3
+	mov eax, 1
 	push rax
-	mov eax, 2
+	mov eax, 2147483647
+	neg eax
+	check_overflow_and_underflow
 	pop r11
-	add eax, r11d
+	sub eax, r11d
 	check_overflow_and_underflow
 	neg eax
 	check_overflow_and_underflow
@@ -137,11 +139,12 @@ on_a:
 	ret
 
 .fast:
-	mov eax, 3
+	mov eax, 1
 	push rax
-	mov eax, 2
+	mov eax, 2147483647
+	neg eax
 	pop r11
-	add eax, r11d
+	sub eax, r11d
 	neg eax
 	push rax
 

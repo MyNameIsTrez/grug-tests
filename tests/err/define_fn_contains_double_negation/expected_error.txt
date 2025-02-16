@@ -1,0 +1,1 @@
+Found 'MINUS_TOKEN' directly next to another 'MINUS_TOKEN', which can be simplified by just removing both of them

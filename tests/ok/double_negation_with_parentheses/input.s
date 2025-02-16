@@ -12,7 +12,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/negate_parenthesized_expr/input.grug", 0
+	db "tests/ok/double_negation_with_parentheses/input.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -119,11 +119,8 @@ on_a:
 
 	error_handling
 
-	mov eax, 3
-	push rax
 	mov eax, 2
-	pop r11
-	add eax, r11d
+	neg eax
 	check_overflow_and_underflow
 	neg eax
 	check_overflow_and_underflow
@@ -137,11 +134,8 @@ on_a:
 	ret
 
 .fast:
-	mov eax, 3
-	push rax
 	mov eax, 2
-	pop r11
-	add eax, r11d
+	neg eax
 	neg eax
 	push rax
 

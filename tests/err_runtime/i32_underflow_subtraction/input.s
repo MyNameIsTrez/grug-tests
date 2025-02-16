@@ -122,7 +122,8 @@ on_a:
 	mov eax, 2
 	push rax
 	mov eax, 2147483647
-	neg rax
+	neg eax
+	check_overflow_and_underflow
 	pop r11
 	sub eax, r11d
 	check_overflow_and_underflow
@@ -139,7 +140,7 @@ on_a:
 	mov eax, 2
 	push rax
 	mov eax, 2147483647
-	neg rax
+	neg eax
 	pop r11
 	sub eax, r11d
 	push rax

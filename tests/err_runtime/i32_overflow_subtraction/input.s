@@ -120,7 +120,8 @@ on_a:
 	error_handling
 
 	mov eax, 1
-	neg rax
+	neg eax
+	check_overflow_and_underflow
 	push rax
 	mov eax, 2147483647
 	pop r11
@@ -137,7 +138,7 @@ on_a:
 
 .fast:
 	mov eax, 1
-	neg rax
+	neg eax
 	push rax
 	mov eax, 2147483647
 	pop r11

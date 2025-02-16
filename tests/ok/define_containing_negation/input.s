@@ -22,7 +22,7 @@ global define
 define:
 	sub rsp, byte 0x8
 	mov eax, 2
-	neg rax
+	neg eax
 	mov rdi, rax
 	call game_fn_define_b wrt ..plt
 	add rsp, byte 0x8

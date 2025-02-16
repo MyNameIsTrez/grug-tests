@@ -127,8 +127,8 @@ on_a:
 	mov eax, 1
 	pop r11
 	check_division_by_0
-	cqo
-	idiv r11
+	cdq
+	idiv r11d
 	pop r11
 	cmp rax, r11
 	mov eax, 0
@@ -160,8 +160,8 @@ on_a:
 	push rax
 	mov eax, 1
 	pop r11
-	cqo
-	idiv r11
+	cdq
+	idiv r11d
 	pop r11
 	cmp rax, r11
 	mov eax, 0

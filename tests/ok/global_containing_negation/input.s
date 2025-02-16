@@ -29,6 +29,6 @@ global init_globals
 init_globals:
 	mov rdi[0x0], rsi
 	mov eax, 2
-	neg rax
+	neg eax
 	mov rdi[0x8], eax
 	ret

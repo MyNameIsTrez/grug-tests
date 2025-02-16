@@ -1763,6 +1763,30 @@ static void runtime_error_i32_overflow_addition(void *on_fns, void *g, size_t re
 	assert(entity_types == NULL);
 }
 
+static void runtime_error_i32_overflow_negation(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	((struct d_on_fns *)on_fns)->a(g);
+
+	assert(had_runtime_error);
+
+	free(g);
+
+	assert(runtime_error_type == GRUG_ON_FN_OVERFLOW);
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_OVERFLOW)));
+
+	assert(streq(runtime_error_on_fn_name, "on_a"));
+	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_overflow_negation/input.grug"));
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/err_runtime/i32_overflow_negation/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void runtime_error_i32_overflow_subtraction(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
@@ -2627,6 +2651,46 @@ static void ok_division_positive_result(void *on_fns, void *g, size_t resources_
 
 	assert(streq(grug_on_fn_name, "on_a"));
 	assert(streq(grug_on_fn_path, "tests/ok/division_positive_result/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_double_negation_with_parentheses(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_initialize_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == 2);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/double_negation_with_parentheses/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_double_not_with_parentheses(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/double_not_with_parentheses/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4179,6 +4243,26 @@ static void ok_ne_false(void *on_fns, void *g, size_t resources_size, char **res
 	assert(entity_types == NULL);
 }
 
+static void ok_ne_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/ne_true/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_negate_parenthesized_expr(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -4246,26 +4330,6 @@ static void ok_nested_continue(void *on_fns, void *g, size_t resources_size, cha
 
 	assert(streq(grug_on_fn_name, "on_a"));
 	assert(streq(grug_on_fn_path, "tests/ok/nested_continue/input.grug"));
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_ne_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_initialize_bool_call_count == 0);
-	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_initialize_bool_call_count == 1);
-
-	free(g);
-
-	assert(game_fn_initialize_bool_b == true);
-
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/ne_true/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -6102,6 +6166,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(comment_lone_global_at_end);
 	ADD_TEST_ERROR(define_fn_calls_fn);
 	ADD_TEST_ERROR(define_fn_contains_addition);
+	ADD_TEST_ERROR(define_fn_contains_double_negation);
 	ADD_TEST_ERROR(define_fn_contains_not);
 	ADD_TEST_ERROR(define_fn_contains_parentheses);
 	ADD_TEST_ERROR(define_fn_contains_subtraction);
@@ -6111,6 +6176,8 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(define_fn_only_one_max);
 	ADD_TEST_ERROR(define_fn_uses_global_variable);
 	ADD_TEST_ERROR(define_fn_was_not_declared);
+	ADD_TEST_ERROR(double_negation);
+	ADD_TEST_ERROR(double_not);
 	ADD_TEST_ERROR(empty_line_after_group);
 	ADD_TEST_ERROR(empty_line_at_start_of_file);
 	ADD_TEST_ERROR(empty_line_before_group);
@@ -6137,6 +6204,8 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(global_variable_before_define);
 	ADD_TEST_ERROR(global_variable_calls_fn);
 	ADD_TEST_ERROR(global_variable_contains_addition);
+	ADD_TEST_ERROR(global_variable_contains_double_negation);
+	ADD_TEST_ERROR(global_variable_contains_double_not);
 	ADD_TEST_ERROR(global_variable_contains_entity);
 	ADD_TEST_ERROR(global_variable_contains_not);
 	ADD_TEST_ERROR(global_variable_contains_parentheses);
@@ -6184,6 +6253,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(missing_empty_line_between_global_and_on_fn);
 	ADD_TEST_ERROR(missing_empty_line_between_on_fn_and_helper_fn);
 	ADD_TEST_ERROR(no_space_between_comment_character_and_comment);
+	ADD_TEST_ERROR(not_followed_by_negation);
 	ADD_TEST_ERROR(null_id_plus_1);
 	ADD_TEST_ERROR(null_id_plus_null_id);
 	ADD_TEST_ERROR(on_fn_before_define);
@@ -6222,6 +6292,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(resource_type_for_on_fn_argument);
 	ADD_TEST_ERROR(string_pointer_arithmetic);
 	ADD_TEST_ERROR(trailing_space_in_comment);
+	ADD_TEST_ERROR(unary_plus_does_not_exist);
 	ADD_TEST_ERROR(unclosed_double_quote);
 	ADD_TEST_ERROR(unknown_variable);
 	ADD_TEST_ERROR(unused_expr_result);
@@ -6240,6 +6311,7 @@ static void add_runtime_error_tests(void) {
 	ADD_TEST_RUNTIME_ERROR(all, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(division_by_0, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(i32_overflow_addition, "d", 8);
+	ADD_TEST_RUNTIME_ERROR(i32_overflow_negation, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(i32_overflow_subtraction, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(i32_underflow_addition, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(i32_underflow_subtraction, "d", 8);
@@ -6287,6 +6359,8 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(define_with_six_string_fields, "o", 8);
 	ADD_TEST_OK(division_negative_result, "d", 8);
 	ADD_TEST_OK(division_positive_result, "d", 8);
+	ADD_TEST_OK(double_negation_with_parentheses, "d", 8);
+	ADD_TEST_OK(double_not_with_parentheses, "d", 8);
 	ADD_TEST_OK(else_after_else_if_false, "d", 8);
 	ADD_TEST_OK(else_after_else_if_true, "d", 8);
 	ADD_TEST_OK(else_false, "d", 8);
@@ -6365,11 +6439,11 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(minimal, "a", 8);
 	ADD_TEST_OK(multiplication_as_two_arguments, "d", 8);
 	ADD_TEST_OK(ne_false, "d", 8);
+	ADD_TEST_OK(ne_true, "d", 8);
 	ADD_TEST_OK(negate_parenthesized_expr, "d", 8);
 	ADD_TEST_OK(negative_literal, "d", 8);
 	ADD_TEST_OK(nested_break, "d", 8);
 	ADD_TEST_OK(nested_continue, "d", 8);
-	ADD_TEST_OK(ne_true, "d", 8);
 	ADD_TEST_OK(no_define_fields, "d", 8);
 	ADD_TEST_OK(no_on_fns, "a", 8);
 	ADD_TEST_OK(null_id_initializing_local, "d", 8);
