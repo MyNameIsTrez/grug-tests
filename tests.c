@@ -994,6 +994,11 @@ void game_fn_define_e2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i
 	game_fn_define_e2_i21 = i21;
 	game_fn_define_e2_i22 = i22;
 }
+static bool game_fn_define_f2_b;
+void game_fn_define_f2(bool b) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
+	game_fn_define_f2_b = b;
+}
 
 static void reset_call_counts(void) {
 	game_fn_nothing_call_count = 0;
@@ -1669,9 +1674,8 @@ static void runtime_error_time_limit_exceeded(void *on_fns, void *g, size_t reso
 
 	free(g);
 
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_TIME_LIMIT_EXCEEDED)));
-
 	assert(runtime_error_type == GRUG_ON_FN_TIME_LIMIT_EXCEEDED);
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_TIME_LIMIT_EXCEEDED)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/time_limit_exceeded/input.grug"));
@@ -1694,9 +1698,8 @@ static void runtime_error_all(void *on_fns, void *g, size_t resources_size, char
 
 	free(g);
 
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_DIVISION_BY_ZERO)));
-
 	assert(runtime_error_type == GRUG_ON_FN_DIVISION_BY_ZERO);
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_DIVISION_BY_ZERO)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/all/input.grug"));
@@ -1719,15 +1722,62 @@ static void runtime_error_division_by_0(void *on_fns, void *g, size_t resources_
 
 	free(g);
 
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_DIVISION_BY_ZERO)));
-
 	assert(runtime_error_type == GRUG_ON_FN_DIVISION_BY_ZERO);
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_DIVISION_BY_ZERO)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/division_by_0/input.grug"));
 
 	assert(streq(grug_on_fn_name, "on_a"));
 	assert(streq(grug_on_fn_path, "tests/err_runtime/division_by_0/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void runtime_error_i32_overflow_addition(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	((struct d_on_fns *)on_fns)->a(g);
+
+	assert(had_runtime_error);
+
+	free(g);
+
+	assert(runtime_error_type == GRUG_ON_FN_OVERFLOW);
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_OVERFLOW)));
+
+	assert(streq(runtime_error_on_fn_name, "on_a"));
+	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_overflow_addition/input.grug"));
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/err_runtime/i32_overflow_addition/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void runtime_error_i32_underflow_addition(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	((struct d_on_fns *)on_fns)->a(g);
+
+	assert(had_runtime_error);
+
+	free(g);
+
+	assert(runtime_error_type == GRUG_ON_FN_UNDERFLOW);
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_UNDERFLOW)));
+
+	assert(streq(runtime_error_on_fn_name, "on_a"));
+	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_underflow_addition/input.grug"));
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/err_runtime/i32_underflow_addition/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1744,9 +1794,8 @@ static void runtime_error_remainder_by_0(void *on_fns, void *g, size_t resources
 
 	free(g);
 
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_DIVISION_BY_ZERO)));
-
 	assert(runtime_error_type == GRUG_ON_FN_DIVISION_BY_ZERO);
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_DIVISION_BY_ZERO)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/remainder_by_0/input.grug"));
@@ -1769,9 +1818,8 @@ static void runtime_error_stack_overflow(void *on_fns, void *g, size_t resources
 
 	free(g);
 
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_STACK_OVERFLOW)));
-
 	assert(runtime_error_type == GRUG_ON_FN_STACK_OVERFLOW);
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_STACK_OVERFLOW)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/stack_overflow/input.grug"));
@@ -1866,26 +1914,6 @@ static void ok_addition_as_two_arguments(void *on_fns, void *g, size_t resources
 
 	assert(streq(grug_on_fn_name, "on_a"));
 	assert(streq(grug_on_fn_path, "tests/ok/addition_as_two_arguments/input.grug"));
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_addition_i32_wraparound(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_initialize_call_count == 0);
-	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_initialize_call_count == 1);
-
-	free(g);
-
-	assert(game_fn_initialize_x == INT32_MIN);
-
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/addition_i32_wraparound/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2407,10 +2435,10 @@ static void ok_define(void *on_fns, void *g, size_t resources_size, char **resou
 	assert(entity_types == NULL);
 }
 
-static void ok_define_containing_addition(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_define_containing_negation(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	(void)on_fns;
 
-	assert(game_fn_define_b_x == 3);
+	assert(game_fn_define_b_x == -2);
 
 	free(g);
 
@@ -3419,16 +3447,36 @@ static void ok_ge_true_2(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entity_types == NULL);
 }
 
-static void ok_global_containing_addition(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_global_containing_negation(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	(void)on_fns;
 
 	char *globals = g;
 	assert(*((uint64_t*)globals) == 42);
 	globals += sizeof(uint64_t);
 
-	assert(((int32_t*)globals)[0] == 5);
+	assert(((int32_t*)globals)[0] == -2);
 
 	free(g);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_global_containing_null_id(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_set_target_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_set_target_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_set_target_target == UINT64_MAX);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/global_containing_null_id/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4196,26 +4244,6 @@ static void ok_no_on_fns(void *on_fns, void *g, size_t resources_size, char **re
 	(void)on_fns;
 
 	free(g);
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_null_id_initializing_global(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_set_target_call_count == 0);
-	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_set_target_call_count == 1);
-
-	free(g);
-
-	assert(game_fn_set_target_target == UINT64_MAX);
-
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/null_id_initializing_global/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -6025,6 +6053,10 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(comment_at_the_end_of_define);
 	ADD_TEST_ERROR(comment_lone_global_at_end);
 	ADD_TEST_ERROR(define_fn_calls_fn);
+	ADD_TEST_ERROR(define_fn_contains_addition);
+	ADD_TEST_ERROR(define_fn_contains_not);
+	ADD_TEST_ERROR(define_fn_contains_parentheses);
+	ADD_TEST_ERROR(define_fn_contains_subtraction);
 	ADD_TEST_ERROR(define_fn_different_name);
 	ADD_TEST_ERROR(define_fn_different_type);
 	ADD_TEST_ERROR(define_fn_not_enough_arguments);
@@ -6056,6 +6088,12 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(global_variable_already_uses_local_variable_name);
 	ADD_TEST_ERROR(global_variable_before_define);
 	ADD_TEST_ERROR(global_variable_calls_fn);
+	ADD_TEST_ERROR(global_variable_contains_addition);
+	ADD_TEST_ERROR(global_variable_contains_entity);
+	ADD_TEST_ERROR(global_variable_contains_not);
+	ADD_TEST_ERROR(global_variable_contains_parentheses);
+	ADD_TEST_ERROR(global_variable_contains_resource);
+	ADD_TEST_ERROR(global_variable_contains_subtraction);
 	ADD_TEST_ERROR(global_variable_definition_cant_use_itself);
 	ADD_TEST_ERROR(global_variable_definition_missing_type);
 	ADD_TEST_ERROR(global_variable_definition_requires_value_i32);
@@ -6153,6 +6191,8 @@ static void add_error_tests(void) {
 static void add_runtime_error_tests(void) {
 	ADD_TEST_RUNTIME_ERROR(all, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(division_by_0, "d", 8);
+	ADD_TEST_RUNTIME_ERROR(i32_overflow_addition, "d", 8);
+	ADD_TEST_RUNTIME_ERROR(i32_underflow_addition, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(remainder_by_0, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(stack_overflow, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(time_limit_exceeded, "d", 8);
@@ -6161,7 +6201,6 @@ static void add_runtime_error_tests(void) {
 static void add_ok_tests(void) {
 	ADD_TEST_OK(addition_as_argument, "d", 8);
 	ADD_TEST_OK(addition_as_two_arguments, "d", 8);
-	ADD_TEST_OK(addition_i32_wraparound, "d", 8);
 	ADD_TEST_OK(addition_with_multiplication, "d", 8);
 	ADD_TEST_OK(addition_with_multiplication_2, "d", 8);
 	ADD_TEST_OK(and_false_1, "d", 8);
@@ -6190,7 +6229,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(comment_lone_global, "d", 8);
 	ADD_TEST_OK(continue, "d", 8);
 	ADD_TEST_OK(define, "h", 8);
-	ADD_TEST_OK(define_containing_addition, "b", 8);
+	ADD_TEST_OK(define_containing_negation, "b", 8);
 	ADD_TEST_OK(define_containing_string, "k", 8);
 	ADD_TEST_OK(define_with_eight_f32_fields, "t", 8);
 	ADD_TEST_OK(define_with_six_fields, "m", 8);
@@ -6242,7 +6281,8 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(ge_false, "d", 8);
 	ADD_TEST_OK(ge_true_1, "d", 8);
 	ADD_TEST_OK(ge_true_2, "d", 8);
-	ADD_TEST_OK(global_containing_addition, "a", 12);
+	ADD_TEST_OK(global_containing_negation, "a", 12);
+	ADD_TEST_OK(global_containing_null_id, "d", 16);
 	ADD_TEST_OK(globals, "h", 16);
 	ADD_TEST_OK(globals_1000, "a", 4008);
 	ADD_TEST_OK(globals_1000_string, "a", 8008);
@@ -6282,7 +6322,6 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(ne_true, "d", 8);
 	ADD_TEST_OK(no_define_fields, "d", 8);
 	ADD_TEST_OK(no_on_fns, "a", 8);
-	ADD_TEST_OK(null_id_initializing_global, "d", 16);
 	ADD_TEST_OK(null_id_initializing_local, "d", 8);
 	ADD_TEST_OK(no_empty_line_between_globals, "a", 16);
 	ADD_TEST_OK(no_empty_line_between_statements, "d", 8);

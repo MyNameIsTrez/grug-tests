@@ -1,0 +1,5 @@
+define() f2 {
+    return {
+        .b = not false,
+    }
+}

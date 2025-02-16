@@ -735,6 +735,15 @@
 					"type": "i32"
 				}
 			]
+		},
+		"f2": {
+			"description": "foo",
+			"fields": [
+				{
+					"name": "b",
+					"type": "bool"
+				}
+			]
 		}
 	},
 	"game_functions": {

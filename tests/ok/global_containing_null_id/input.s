@@ -5,14 +5,14 @@ define_type: db "d", 0
 
 align 8
 global globals_size
-globals_size: dq 8
+globals_size: dq 16
 
 global on_fns
 on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/addition_i32_wraparound/input.grug", 0
+	db "tests/ok/global_containing_null_id/input.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -33,7 +33,7 @@ extern grug_on_fns_in_safe_mode
 extern game_fn_define_d
 extern setjmp
 extern grug_get_runtime_error_reason
-extern game_fn_initialize
+extern game_fn_set_target
 
 global define
 define:
@@ -45,6 +45,8 @@ define:
 global init_globals
 init_globals:
 	mov rdi[0x0], rsi
+	mov rax, -1
+	mov rdi[0x8], rax
 	ret
 
 %macro save_on_fn_name_and_path 0
@@ -71,30 +73,22 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	mov eax, 1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x8]
 	push rax
-	mov eax, 2147483647
-	pop r11
-	add rax, r11
-	push rax
-
 	pop rdi
-	call game_fn_initialize wrt ..plt
+	call game_fn_set_target wrt ..plt
 
 	mov rsp, rbp
 	pop rbp
 	ret
 
 .fast:
-	mov eax, 1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x8]
 	push rax
-	mov eax, 2147483647
-	pop r11
-	add rax, r11
-	push rax
-
 	pop rdi
-	call game_fn_initialize wrt ..plt
+	call game_fn_set_target wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

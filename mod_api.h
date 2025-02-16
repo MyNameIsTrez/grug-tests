@@ -33,6 +33,7 @@ void game_fn_define_b2(char *sprite_path, char *projectile);
 void game_fn_define_c2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, int32_t i8, float f10);
 void game_fn_define_d2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, int32_t i8, float f9);
 void game_fn_define_e2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, int32_t i8, int32_t i9, int32_t i10, int32_t i11, int32_t i12, int32_t i13, int32_t i14, int32_t i15, int32_t i16, int32_t i17, int32_t i18, int32_t i19, int32_t i20, int32_t i21, int32_t i22);
+void game_fn_define_f2(bool b);
 
 struct d_on_fns {
     void (*a)(void *globals);

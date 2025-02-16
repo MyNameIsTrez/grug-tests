@@ -12,7 +12,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/continue/input.grug", 0
+	db "tests/err_runtime/i32_underflow_addition/input.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -26,29 +26,18 @@ entities_size: dq 0
 section .text
 
 extern grug_runtime_error_handler
-extern grug_max_time
 extern grug_on_fn_name
 extern grug_runtime_error_jmp_buffer
 extern grug_on_fn_path
 extern grug_on_fns_in_safe_mode
-extern grug_current_time
 extern game_fn_define_d
-extern clock_gettime
 extern setjmp
 extern grug_get_runtime_error_reason
-extern game_fn_nothing
 extern longjmp
+extern game_fn_initialize
 
-%define GRUG_ON_FN_TIME_LIMIT_EXCEEDED 2
 %define GRUG_ON_FN_OVERFLOW 3
 %define GRUG_ON_FN_UNDERFLOW 4
-
-%define CLOCK_PROCESS_CPUTIME_ID 2
-%define TV_SEC_OFFSET 0
-%define TV_NSEC_OFFSET 8
-%define GRUG_ON_FN_TIME_LIMIT_MS 10
-%define NS_PER_MS 1000000
-%define NS_PER_SEC 1000000000
 
 global define
 define:
@@ -70,20 +59,6 @@ init_globals:
 	mov rax, [rel grug_on_fn_name wrt ..got]
 	lea r11, [rel on_fn_name]
 	mov [rax], r11
-%endmacro
-
-%macro set_time_limit 0
-	mov rsi, [rel grug_max_time wrt ..got]
-	push rsi
-	mov edi, CLOCK_PROCESS_CPUTIME_ID
-	call clock_gettime wrt ..plt
-	pop rax
-	add qword [byte rax + TV_NSEC_OFFSET], GRUG_ON_FN_TIME_LIMIT_MS * NS_PER_MS
-	cmp qword [byte rax + TV_NSEC_OFFSET], NS_PER_SEC
-	jl %%skip
-	sub qword [byte rax + TV_NSEC_OFFSET], NS_PER_SEC
-	inc qword [byte rax + TV_SEC_OFFSET]
-%%skip:
 %endmacro
 
 %macro error_handling 0
@@ -115,29 +90,6 @@ init_globals:
 %%skip:
 %endmacro
 
-%macro check_time_limit_exceeded 0
-	mov rsi, [rel grug_current_time wrt ..got]
-	push rsi
-	mov edi, CLOCK_PROCESS_CPUTIME_ID
-	call clock_gettime wrt ..plt
-	pop rax
-	mov r11, [rel grug_max_time wrt ..got]
-
-	mov r10, [byte r11 + TV_SEC_OFFSET]
-	cmp [byte rax + TV_SEC_OFFSET], r10
-	jl %%skip
-	jg %%longjump
-	mov r10, [byte r11 + TV_NSEC_OFFSET]
-	cmp [byte rax + TV_NSEC_OFFSET], r10
-	jg %%longjump
-	jmp short %%skip
-%%longjump:
-	mov esi, 1 + GRUG_ON_FN_TIME_LIMIT_EXCEEDED
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call longjmp wrt ..plt
-%%skip:
-%endmacro
-
 %macro check_overflow_and_underflow 0
 	jno %%skip
 	js %%signed ; 2147483647 + 1 is signed, since it overflows to -2147483648
@@ -165,85 +117,37 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	set_time_limit
-
 	error_handling
 
-	xor eax, eax
-	mov rbp[-0xc], eax
-
-.repeat:
 	mov eax, 2
+	neg rax
 	push rax
-
-	mov eax, rbp[-0xc]
-	pop r11
-	cmp rax, r11
-
-	mov eax, 0x0
-	setl al
-
-	test eax, eax
-	je strict .skip
-
-	call game_fn_nothing wrt ..plt
-
-	; i++
-	mov eax, 1
-	push rax
-	mov eax, rbp[-0xc]
+	mov eax, 2147483647
+	neg rax
 	pop r11
 	add eax, r11d
 	check_overflow_and_underflow
-	mov rbp[-0xc], eax
+	push rax
 
-	check_time_limit_exceeded
-	jmp strict .repeat
-
-	call game_fn_nothing wrt ..plt
-
-	check_time_limit_exceeded
-	jmp strict .repeat
-.skip:
+	pop rdi
+	call game_fn_initialize wrt ..plt
 
 	mov rsp, rbp
 	pop rbp
 	ret
 
 .fast:
-	xor eax, eax
-	mov rbp[-0xc], eax
-
-.repeat_fast:
 	mov eax, 2
+	neg rax
 	push rax
-
-	mov eax, rbp[-0xc]
-	pop r11
-	cmp rax, r11
-
-	mov eax, 0x0
-	setl al
-
-	test eax, eax
-	je strict .skip_fast
-
-	call game_fn_nothing wrt ..plt
-
-	; i++
-	mov eax, 1
-	push rax
-	mov eax, rbp[-0xc]
+	mov eax, 2147483647
+	neg rax
 	pop r11
 	add eax, r11d
-	mov rbp[-0xc], eax
+	push rax
 
-	jmp strict .repeat_fast
-
-	call game_fn_nothing wrt ..plt
-
-	jmp strict .repeat_fast
-.skip_fast:
+	pop rdi
+	call game_fn_initialize wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

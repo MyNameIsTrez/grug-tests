@@ -38,6 +38,8 @@ extern game_fn_initialize
 extern longjmp
 
 %define GRUG_ON_FN_STACK_OVERFLOW 1
+%define GRUG_ON_FN_OVERFLOW 3
+%define GRUG_ON_FN_UNDERFLOW 4
 
 %define GRUG_STACK_LIMIT 0x10000
 
@@ -103,6 +105,19 @@ init_globals:
 	cmp rsp, [rax]
 	jg %%skip
 	mov esi, 1 + GRUG_ON_FN_STACK_OVERFLOW
+	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
+	call longjmp wrt ..plt
+%%skip:
+%endmacro
+
+%macro check_overflow_and_underflow 0
+	jno %%skip
+	js %%signed ; 2147483647 + 1 is signed, since it overflows to -2147483648
+	mov esi, 1 + GRUG_ON_FN_UNDERFLOW
+	jmp short %%skip_signed
+%%signed:
+	mov esi, 1 + GRUG_ON_FN_OVERFLOW
+%%skip_signed:
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call longjmp wrt ..plt
 %%skip:
@@ -234,7 +249,8 @@ helper_fib_safe:
 	pop r11
 
 	; helper_fib_safe(n - 1) + helper_fib_safe(n - 2)
-	add rax, r11
+	add eax, r11d
+	check_overflow_and_underflow
 
 	; return helper_fib_safe(n - 1) + helper_fib_safe(n - 2)
 	mov rsp, rbp
@@ -322,7 +338,7 @@ helper_fib_fast:
 	pop r11
 
 	; helper_fib_fast(n - 1) + helper_fib_fast(n - 2)
-	add rax, r11
+	add eax, r11d
 
 	; return helper_fib_fast(n - 1) + helper_fib_fast(n - 2)
 	mov rsp, rbp
