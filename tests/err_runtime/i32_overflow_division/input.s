@@ -12,7 +12,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/division_negative_result/input.grug", 0
+	db "tests/err_runtime/i32_overflow_division/input.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -140,10 +140,17 @@ on_a:
 
 	error_handling
 
-	mov eax, 2
-	push rax
-	mov eax, 5
+	mov eax, 1
 	neg eax
+	check_overflow_and_underflow
+	push rax
+	mov eax, 1
+	push rax
+	mov eax, 2147483647
+	neg eax
+	check_overflow_and_underflow
+	pop r11
+	sub eax, r11d
 	check_overflow_and_underflow
 	pop r11
 	check_division_by_0
@@ -160,10 +167,15 @@ on_a:
 	ret
 
 .fast:
-	mov eax, 2
-	push rax
-	mov eax, 5
+	mov eax, 1
 	neg eax
+	push rax
+	mov eax, 1
+	push rax
+	mov eax, 2147483647
+	neg eax
+	pop r11
+	sub eax, r11d
 	pop r11
 	cdq
 	idiv r11d

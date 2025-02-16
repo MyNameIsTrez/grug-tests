@@ -4,4 +4,8 @@
 
 global main
 main:
+	mov eax, -2147483648
+	mov r11, -1
+	cdq
+	idiv r11d
 	ret

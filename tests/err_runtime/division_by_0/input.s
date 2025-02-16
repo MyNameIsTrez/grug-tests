@@ -37,6 +37,7 @@ extern longjmp
 extern game_fn_initialize
 
 %define GRUG_ON_FN_DIVISION_BY_ZERO 0
+%define GRUG_ON_FN_OVERFLOW 3
 
 global define
 define:
@@ -89,6 +90,17 @@ init_globals:
 %%skip:
 %endmacro
 
+%macro check_division_overflow 0
+	cmp eax, -2147483648
+	jne %%skip
+	cmp r11d, -1
+	jne %%skip
+	mov esi, 1 + GRUG_ON_FN_OVERFLOW
+	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
+	call longjmp wrt ..plt
+%%skip:
+%endmacro
+
 %macro check_division_by_0 0
 	test r11, r11
 	jne %%skip
@@ -119,6 +131,7 @@ on_a:
 	mov eax, 1
 	pop r11
 	check_division_by_0
+	check_division_overflow
 	cdq
 	idiv r11d
 	push rax
