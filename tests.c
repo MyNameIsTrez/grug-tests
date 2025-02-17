@@ -6274,6 +6274,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(define_fn_was_not_declared);
 	ADD_TEST_ERROR(double_negation);
 	ADD_TEST_ERROR(double_not);
+	ADD_TEST_ERROR(empty_helper_fn);
 	ADD_TEST_ERROR(empty_line_after_group);
 	ADD_TEST_ERROR(empty_line_at_start_of_file);
 	ADD_TEST_ERROR(empty_line_before_group);
@@ -6281,6 +6282,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(empty_line_twice_at_end_of_file);
 	ADD_TEST_ERROR(empty_line_twice_between_local_statements);
 	ADD_TEST_ERROR(empty_line_while_group);
+	ADD_TEST_ERROR(empty_on_fn);
 	ADD_TEST_ERROR(entity_cant_be_empty_string);
 	ADD_TEST_ERROR(entity_cant_be_passed_to_helper_fn);
 	ADD_TEST_ERROR(entity_has_invalid_entity_name_colon);

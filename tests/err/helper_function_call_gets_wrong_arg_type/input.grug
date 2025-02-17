@@ -8,4 +8,5 @@ on_a() {
 }
 
 helper_foo(x: i32) {
+    nothing()
 }

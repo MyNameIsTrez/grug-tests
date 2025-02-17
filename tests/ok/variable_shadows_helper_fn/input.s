@@ -36,6 +36,7 @@ extern setjmp
 extern grug_get_runtime_error_reason
 extern game_fn_initialize
 extern longjmp
+extern game_fn_nothing
 
 %define GRUG_ON_FN_STACK_OVERFLOW 1
 
@@ -171,6 +172,8 @@ helper_foo_safe:
 	mov rbp[-0x8], rdi
 	check_stack_overflow
 
+	call game_fn_nothing wrt ..plt
+
 	mov rsp, rbp
 	pop rbp
 	ret
@@ -181,6 +184,8 @@ helper_foo_fast:
 	mov rbp, rsp
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rdi
+
+	call game_fn_nothing wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

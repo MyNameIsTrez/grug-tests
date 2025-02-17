@@ -6,4 +6,5 @@ define() a2 {
 }
 
 on_a(x: i32) {
+    nothing()
 }

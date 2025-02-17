@@ -1,4 +1,5 @@
 on_a(x: i32) {
+    nothing()
 }
 
 define() h {

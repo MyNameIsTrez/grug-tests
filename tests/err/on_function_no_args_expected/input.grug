@@ -4,4 +4,5 @@ define() d {
 }
 
 on_a(foo: i32) {
+    nothing()
 }

@@ -6,4 +6,5 @@ define() d {
 foo: i32 = foo
 
 on_a() {
+    nothing()
 }

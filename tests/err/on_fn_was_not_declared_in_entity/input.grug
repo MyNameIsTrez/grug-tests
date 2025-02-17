@@ -5,4 +5,5 @@ define() b {
 }
 
 on_z(x: i32) {
+    nothing()
 }

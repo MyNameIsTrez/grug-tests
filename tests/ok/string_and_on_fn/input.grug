@@ -5,4 +5,5 @@ define() p {
 }
 
 on_a() {
+    nothing()
 }

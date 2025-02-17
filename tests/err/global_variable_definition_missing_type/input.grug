@@ -6,4 +6,5 @@ define() d {
 foo = 42
 
 on_a() {
+    nothing()
 }

@@ -38,6 +38,7 @@ extern game_fn_define_j
 extern setjmp
 extern grug_get_runtime_error_reason
 extern game_fn_initialize_bool
+extern game_fn_nothing
 
 global define
 define:
@@ -75,11 +76,15 @@ on_a:
 
 	save_on_fn_name_and_path_on_a
 
+	call game_fn_nothing wrt ..plt
+
 	mov rsp, rbp
 	pop rbp
 	ret
 
 .fast:
+	call game_fn_nothing wrt ..plt
+
 	mov rsp, rbp
 	pop rbp
 	ret
@@ -108,11 +113,15 @@ on_c:
 
 	save_on_fn_name_and_path_on_c
 
+	call game_fn_nothing wrt ..plt
+
 	mov rsp, rbp
 	pop rbp
 	ret
 
 .fast:
+	call game_fn_nothing wrt ..plt
+
 	mov rsp, rbp
 	pop rbp
 	ret

@@ -4,7 +4,9 @@ define() j {
 }
 
 on_b() {
+    nothing()
 }
 
 on_c() {
+    nothing()
 }

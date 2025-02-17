@@ -4,4 +4,5 @@ define() f {
 }
 
 on_a(x: i32, y: i32) {
+    nothing()
 }

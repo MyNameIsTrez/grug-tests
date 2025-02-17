@@ -6,7 +6,9 @@ define() i {
 }
 
 on_b(x: i32, y: i32) {
+    nothing()
 }
 
 on_a(x: i32) {
+    nothing()
 }

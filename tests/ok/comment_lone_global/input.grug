@@ -6,4 +6,5 @@ define() d {
 # foo
 
 on_a() {
+    nothing()
 }

@@ -4,10 +4,13 @@ define() j {
 }
 
 on_a() {
+    nothing()
 }
 
 on_b() {
+    nothing()
 }
 
 on_c() {
+    nothing()
 }

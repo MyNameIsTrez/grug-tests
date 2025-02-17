@@ -5,4 +5,5 @@ define() w {
 }
 
 on_a(x: i32) {
+    nothing()
 }
