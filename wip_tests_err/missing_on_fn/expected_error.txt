@@ -1,2 +1,0 @@
-Make sure to remove the `on_function_count > 0` checks in grug.c,
-and add checks that make sure that mod_api.json does not contain entities that have no on fns

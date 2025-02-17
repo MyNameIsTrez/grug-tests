@@ -4,5 +4,6 @@ define() d {
 }
 
 on_a() {
-    foo: entity = "mymod:foo"
 }
+
+foo: i32 = 42
