@@ -1,0 +1,14 @@
+define() d {
+    return {
+    }
+}
+
+on_a() {
+    helper_foo()
+}
+
+helper_foo() {
+}
+
+helper_foo() {
+}

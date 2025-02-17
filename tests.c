@@ -6315,6 +6315,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(helper_fn_defined_before_first_helper_fn_usage);
 	ADD_TEST_ERROR(helper_fn_defined_between_on_fns);
 	ADD_TEST_ERROR(helper_fn_does_not_exist);
+	ADD_TEST_ERROR(helper_fn_duplicate);
 	ADD_TEST_ERROR(helper_fn_is_not_called_1);
 	ADD_TEST_ERROR(helper_fn_is_not_called_2);
 	ADD_TEST_ERROR(helper_fn_is_not_called_3);
