@@ -1,1 +1,1 @@
-Move the global variable 'foo' below the define function
+Move the global variable 'foo' so it is below the define function
