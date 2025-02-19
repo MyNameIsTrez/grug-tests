@@ -1,1 +1,0 @@
-main at foo.c:3:5
