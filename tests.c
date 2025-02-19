@@ -6344,6 +6344,8 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(local_variable_already_exists);
 	ADD_TEST_ERROR(local_variable_definition_cant_use_itself);
 	ADD_TEST_ERROR(local_variable_definition_missing_type);
+	ADD_TEST_ERROR(max_expr_recursion_depth_exceeded);
+	ADD_TEST_ERROR(max_statement_recursion_depth_exceeded);
 	ADD_TEST_ERROR(me_cant_be_assigned_to_global);
 	ADD_TEST_ERROR(me_cant_be_written_to);
 	ADD_TEST_ERROR(me_plus_1);
