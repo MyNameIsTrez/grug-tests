@@ -8,4 +8,10 @@ int main() {
 
 int foo() {
     printf("c\n");
+    foo();
+}
+
+int bar() {
+    printf("c\n");
+    foo();
 }
