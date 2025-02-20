@@ -1,17 +1,29 @@
 #include <stdio.h>
 
-int main() {
-    foo();
-    printf("a\n");
-    printf("b\n");
+// int A() {
+//     B();
+// }
+
+// int B() {
+//     A();
+// }
+
+int C() {
+    C();
 }
 
-int foo() {
-    printf("c\n");
-    foo();
-}
+// int main() {
+//     foo();
+//     printf("a\n");
+//     printf("b\n");
+// }
 
-int bar() {
-    printf("c\n");
-    foo();
-}
+// int foo() {
+//     printf("c\n");
+//     foo();
+// }
+
+// int bar() {
+//     printf("c\n");
+//     foo();
+// }
