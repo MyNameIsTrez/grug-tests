@@ -57,7 +57,8 @@ def run():
     for fn in graph.keys():
         walk(fn, set())
 
-    print(recursive_fns)
+    print(sorted(recursive_fns))
+    print(len(recursive_fns))
 
 
 if __name__ == "__main__":
