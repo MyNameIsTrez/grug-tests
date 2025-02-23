@@ -6382,6 +6382,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(missing_empty_line_between_define_fn_and_global);
 	ADD_TEST_ERROR(missing_empty_line_between_global_and_on_fn);
 	ADD_TEST_ERROR(missing_empty_line_between_on_fn_and_helper_fn);
+	ADD_TEST_ERROR(newline_statement);
 	ADD_TEST_ERROR(no_space_between_comment_character_and_comment);
 	ADD_TEST_ERROR(not_followed_by_negation);
 	ADD_TEST_ERROR(null_id_plus_1);
