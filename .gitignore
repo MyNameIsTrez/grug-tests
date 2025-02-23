@@ -5,6 +5,7 @@ test_corpus
 results
 *.gcda
 *.gcno
+*.gcov
 a.out
 ast.json
 coverage.css

@@ -6293,6 +6293,10 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(entity_mod_name_is_missing);
 	ADD_TEST_ERROR(entity_name_is_missing);
 	ADD_TEST_ERROR(f32_missing_digit_after_decimal_point);
+	ADD_TEST_ERROR(f32_too_big);
+	ADD_TEST_ERROR(f32_too_close_to_zero_negative);
+	ADD_TEST_ERROR(f32_too_close_to_zero_positive);
+	ADD_TEST_ERROR(f32_too_small);
 	ADD_TEST_ERROR(game_fn_does_not_exist);
 	ADD_TEST_ERROR(game_function_call_gets_wrong_arg_type);
 	ADD_TEST_ERROR(game_function_call_less_args_expected);
