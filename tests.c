@@ -2365,6 +2365,30 @@ static void ok_calls_1000(void *on_fns, void *g, size_t resources_size, char **r
 	assert(entity_types == NULL);
 }
 
+static void ok_calls_in_call(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_max_call_count == 0);
+	assert(game_fn_initialize_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_max_call_count == 3);
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_max_x == 2);
+	assert(game_fn_max_y == 4);
+	assert(game_fn_initialize_x == 4);
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/calls_in_call/input.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_comment_above_block(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -6447,6 +6471,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(break, "d", 8);
 	ADD_TEST_OK(calls_100, "d", 8);
 	ADD_TEST_OK(calls_1000, "d", 8);
+	ADD_TEST_OK(calls_in_call, "d", 8);
 	ADD_TEST_OK(comment_above_block, "d", 8);
 	ADD_TEST_OK(comment_above_block_twice, "d", 8);
 	ADD_TEST_OK(comment_above_define_fn, "d", 8);

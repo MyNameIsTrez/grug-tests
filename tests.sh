@@ -22,6 +22,9 @@ if [[ ${COVERAGE+x} ]]
 then
     echo "- COVERAGE was turned on"
     compiler_flags+=' --coverage'
+
+    # Prevents the error "cannot merge previous GCDA file: corrupt arc tag"
+    rm -f *.gcda
 fi
 
 if [[ ${OLD_LD+x} ]]
@@ -51,6 +54,8 @@ if [ "$(uname)" == "Darwin" ]; then # If Mac OS X
     echo "Detected macOS"
     compiler_flags+=' -I.' # For `#include <elf.h>`
 fi
+
+compiler_flags+=' -DCRASH_ON_UNREACHABLE'
 
 # -rdynamic allows the .so to call functions from test.c
 linker_flags='-rdynamic -lm'

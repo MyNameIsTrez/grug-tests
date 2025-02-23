@@ -5,9 +5,12 @@ define() d {
 
 on_a() {
     initialize(1 / 0)
+
     helper_foo()
+
     while true {
     }
+
     foo: i32 = 1 + 1
 }
 

@@ -12,7 +12,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/else_after_else_if_false/input.grug", 0
+	db "tests/ok/calls_in_call/input.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -33,7 +33,8 @@ extern grug_on_fns_in_safe_mode
 extern game_fn_define_d
 extern setjmp
 extern grug_get_runtime_error_reason
-extern game_fn_nothing
+extern game_fn_max
+extern game_fn_initialize
 
 global define
 define:
@@ -71,50 +72,70 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	call game_fn_nothing wrt ..plt
+	mov eax, 4
+	push rax
+	mov eax, 3
+	push rax
 
-	xor eax, eax
-	test eax, eax
-	je strict .false
-	call game_fn_nothing wrt ..plt
-	jmp strict .end
+	pop rdi
+	pop rsi
+	call game_fn_max wrt ..plt
+	push rax
 
-.false:
+	sub rsp, byte 8
+	mov eax, 2
+	push rax
 	mov eax, 1
-	test eax, eax
-	je strict .false2
-	jmp strict .end
+	push rax
 
-.false2:
-	call game_fn_nothing wrt ..plt
+	pop rdi
+	pop rsi
+	call game_fn_max wrt ..plt
+	add rsp, byte 8
+	push rax
 
-.end:
-	call game_fn_nothing wrt ..plt
+	pop rdi
+	pop rsi
+	call game_fn_max wrt ..plt
+	push rax
+
+	pop rdi
+	call game_fn_initialize wrt ..plt
 
 	mov rsp, rbp
 	pop rbp
 	ret
 
 .fast:
-	call game_fn_nothing wrt ..plt
+	mov eax, 4
+	push rax
+	mov eax, 3
+	push rax
 
-	xor eax, eax
-	test eax, eax
-	je strict .false_fast
-	call game_fn_nothing wrt ..plt
-	jmp strict .end_fast
+	pop rdi
+	pop rsi
+	call game_fn_max wrt ..plt
+	push rax
 
-.false_fast:
+	sub rsp, byte 8
+	mov eax, 2
+	push rax
 	mov eax, 1
-	test eax, eax
-	je strict .false2_fast
-	jmp strict .end_fast
+	push rax
 
-.false2_fast:
-	call game_fn_nothing wrt ..plt
+	pop rdi
+	pop rsi
+	call game_fn_max wrt ..plt
+	add rsp, byte 8
+	push rax
 
-.end_fast:
-	call game_fn_nothing wrt ..plt
+	pop rdi
+	pop rsi
+	call game_fn_max wrt ..plt
+	push rax
+
+	pop rdi
+	call game_fn_initialize wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

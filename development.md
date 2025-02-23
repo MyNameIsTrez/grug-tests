@@ -5,8 +5,6 @@
 - If you want to see the detailed logs of `grug.c`, run `LOGGING= ./tests.sh`.
 - If you want the tests to be run in a shuffled order, run `SHUFFLED= ./tests.sh`.
 - If you want to allow your compiler to optimize `grug.c` hard, run `OPTIMIZED= ./tests.sh`.
-- If you want to allow your compiler to optimize `grug.c` extra hard, run `OPTIMIZED= CRASH_ON_UNREACHABLE= ./tests.sh`.
-- Use `objdump --section=.text -d optimized.out > optimized.s` with `diff optimized.s optimized_crash_on_unreachable.s > diff.s` if you want to compare the generated sections.
 
 ## Run tests.sh on save
 
@@ -30,7 +28,7 @@ If you replace `-fsanitize=address,undefined,fuzzer -Og` with `-fsanitize=fuzzer
 
 ```bash
 clear && \
-clang grug/grug.c fuzz.c -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -Wno-language-extension-token -Wno-unused-parameter -g -rdynamic -fsanitize=address,undefined,fuzzer -Og && \
+clang grug/grug.c fuzz.c -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -Wno-language-extension-token -Wno-unused-parameter -g -rdynamic -fsanitize=address,undefined,fuzzer -Og -DCRASH_ON_UNREACHABLE && \
 mkdir -p test_corpus && \
 for d in tests/err/* tests/err_runtime/* tests/ok/*; do name=${d##*/}; cp $d/input.grug test_corpus/$name.grug; done && \
 mkdir -p corpus && \
