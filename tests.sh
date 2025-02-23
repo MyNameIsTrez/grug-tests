@@ -18,6 +18,12 @@ then
     compiler_flags+=' -fsanitize=address,undefined'
 fi
 
+if [[ ${COVERAGE+x} ]]
+then
+    echo "- COVERAGE was turned on"
+    compiler_flags+=' --coverage'
+fi
+
 if [[ ${OLD_LD+x} ]]
 then
     echo "- OLD_LD was turned on"
@@ -88,4 +94,9 @@ then
     valgrind --quiet ./tests.out "$@"
 else
     ./tests.out "$@"
+fi
+
+if [[ -v COVERAGE ]]
+then
+	gcovr --gcov-executable "llvm-cov gcov" --html-details coverage.html
 fi

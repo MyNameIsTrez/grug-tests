@@ -11,7 +11,7 @@ coverage.css
 coverage.functions.html
 coverage.grug.c.*.html
 coverage.html
-coverage.run.c.*.html
+coverage.tests.c.*.html
 crash-*
 experiments.o
 fuzz.dll
