@@ -12,7 +12,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/err_runtime/stack_overflow/input.grug", 0
+	db "tests/err_runtime/time_limit_exceeded_fibonacci/input.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -37,18 +37,20 @@ extern game_fn_define_d
 extern clock_gettime
 extern setjmp
 extern grug_get_runtime_error_reason
+extern game_fn_initialize
 extern longjmp
 
 %define GRUG_ON_FN_STACK_OVERFLOW 1
 %define GRUG_ON_FN_TIME_LIMIT_EXCEEDED 2
+%define GRUG_ON_FN_OVERFLOW 3
 
-%define GRUG_STACK_LIMIT 0x10000
 %define CLOCK_PROCESS_CPUTIME_ID 2
 %define TV_SEC_OFFSET 0
 %define TV_NSEC_OFFSET 8
 %define GRUG_ON_FN_TIME_LIMIT_MS 10
 %define NS_PER_MS 1000000
 %define NS_PER_SEC 1000000000
+%define GRUG_STACK_LIMIT 0x10000
 
 global define
 define:
@@ -154,7 +156,15 @@ init_globals:
 %%skip:
 %endmacro
 
-global on_a
+%macro check_overflow 0
+	jno %%skip
+	mov esi, 1 + GRUG_ON_FN_OVERFLOW
+	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
+	call longjmp wrt ..plt
+%%skip:
+%endmacro
+
+global on_a:
 on_a:
 	push rbp
 	mov rbp, rsp
@@ -174,56 +184,214 @@ on_a:
 
 	error_handling
 
+	mov eax, 100
+	push rax
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
-	call helper_foo_safe
+	pop rsi
+	call helper_fib_safe
+	push rax
+	pop rdi
+	call game_fn_initialize wrt ..plt
 
 	mov rsp, rbp
 	pop rbp
 	ret
 
 .fast:
+	mov eax, 100
+	push rax
 	mov rax, rbp[-0x8]
 	push rax
-
 	pop rdi
-	call helper_foo_fast
+	pop rsi
+	call helper_fib_fast
+	push rax
+	pop rdi
+	call game_fn_initialize wrt ..plt
 
 	mov rsp, rbp
 	pop rbp
 	ret
 
-global helper_foo_safe
-helper_foo_safe:
+global helper_fib_safe:
+helper_fib_safe:
+	; Function prologue
 	push rbp
 	mov rbp, rsp
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rdi
+	mov rbp[-0xc], esi
 	check_stack_overflow
 	check_time_limit_exceeded
 
-	mov rax, rbp[-0x8]
+	; if n == 0
+	xor eax, eax
 	push rax
-	pop rdi
-	call helper_foo_safe
+	mov eax, rbp[-0xc]
+	pop r11
+	cmp rax, r11
+	mov eax, 0
+	sete al
+	test eax, eax
+	je .or_false
 
+	; or n == 1
+	mov eax, 1
+	jmp strict .early_return
+.or_false:
+	mov eax, 1
+	push rax
+	mov eax, rbp[-0xc]
+	pop r11
+	cmp rax, r11
+	mov eax, 0
+	sete al
+	test eax, eax
+	mov eax, 0
+	setne al
+.early_return:
+	test eax, eax
+	je strict .dont_early_return
+
+	; return n
+	mov eax, rbp[-0xc]
 	mov rsp, rbp
 	pop rbp
 	ret
 
-global helper_foo_fast
-helper_foo_fast:
+.dont_early_return:
+	; helper_fib_safe(n - 2)
+	mov eax, 2
+	push rax
+	mov eax, rbp[-0xc]
+	pop r11
+	sub eax, r11d
+	check_overflow
+	push rax
+	mov rax, rbp[-0x8]
+	push rax
+	pop rdi
+	pop rsi
+	call helper_fib_safe
+	push rax
+
+	; helper_fib_safe(n - 1)
+	sub rsp, byte 0x8
+	mov eax, 1
+	push rax
+	mov eax, rbp[-0xc]
+	pop r11
+	sub eax, r11d
+	check_overflow
+	push rax
+	mov rax, rbp[-0x8]
+	push rax
+	pop rdi
+	pop rsi
+	call helper_fib_safe
+	add rsp, byte 0x8
+	pop r11
+
+	; helper_fib_safe(n - 1) + helper_fib_safe(n - 2)
+	add eax, r11d
+	check_overflow
+
+	; return helper_fib_safe(n - 1) + helper_fib_safe(n - 2)
+	mov rsp, rbp
+	pop rbp
+	ret
+
+	; Function epilogue
+	mov rsp, rbp
+	pop rbp
+	ret
+
+global helper_fib_fast:
+helper_fib_fast:
+	; Function prologue
 	push rbp
 	mov rbp, rsp
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rdi
+	mov rbp[-0xc], esi
 
+	; if n == 0
+	xor eax, eax
+	push rax
+	mov eax, rbp[-0xc]
+	pop r11
+	cmp rax, r11
+	mov eax, 0
+	sete al
+	test eax, eax
+	je .or_false_fast
+
+	; or n == 1
+	mov eax, 1
+	jmp strict .early_return_fast
+.or_false_fast:
+	mov eax, 1
+	push rax
+	mov eax, rbp[-0xc]
+	pop r11
+	cmp rax, r11
+	mov eax, 0
+	sete al
+	test eax, eax
+	mov eax, 0
+	setne al
+.early_return_fast:
+	test eax, eax
+	je strict .dont_early_return
+
+	; return n
+	mov eax, rbp[-0xc]
+	mov rsp, rbp
+	pop rbp
+	ret
+
+.dont_early_return:
+	; helper_fib_fast(n - 2)
+	mov eax, 2
+	push rax
+	mov eax, rbp[-0xc]
+	pop r11
+	sub eax, r11d
+	push rax
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
-	call helper_foo_fast
+	pop rsi
+	call helper_fib_fast
+	push rax
 
+	; helper_fib_fast(n - 1)
+	sub rsp, byte 0x8
+	mov eax, 1
+	push rax
+	mov eax, rbp[-0xc]
+	pop r11
+	sub eax, r11d
+	push rax
+	mov rax, rbp[-0x8]
+	push rax
+	pop rdi
+	pop rsi
+	call helper_fib_fast
+	add rsp, byte 0x8
+	pop r11
+
+	; helper_fib_fast(n - 1) + helper_fib_fast(n - 2)
+	add eax, r11d
+
+	; return helper_fib_fast(n - 1) + helper_fib_fast(n - 2)
+	mov rsp, rbp
+	pop rbp
+	ret
+
+	; Function epilogue
 	mov rsp, rbp
 	pop rbp
 	ret

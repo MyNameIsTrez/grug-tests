@@ -290,6 +290,7 @@ helper_foo_safe:
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rdi
 	check_stack_overflow
+	check_time_limit_exceeded
 
 	mov rax, rbp[-0x8]
 	push rax
