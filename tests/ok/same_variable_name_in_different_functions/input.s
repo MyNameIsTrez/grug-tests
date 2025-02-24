@@ -30,11 +30,14 @@ section .text
 
 extern grug_runtime_error_handler
 extern grug_max_rsp
+extern grug_max_time
 extern grug_on_fn_name
 extern grug_runtime_error_jmp_buffer
 extern grug_on_fn_path
 extern grug_on_fns_in_safe_mode
+extern grug_current_time
 extern game_fn_define_e
+extern clock_gettime
 extern setjmp
 extern grug_get_runtime_error_reason
 extern game_fn_initialize
@@ -42,8 +45,15 @@ extern longjmp
 extern game_fn_sin
 
 %define GRUG_ON_FN_STACK_OVERFLOW 1
+%define GRUG_ON_FN_TIME_LIMIT_EXCEEDED 2
 
 %define GRUG_STACK_LIMIT 0x10000
+%define CLOCK_PROCESS_CPUTIME_ID 2
+%define TV_SEC_OFFSET 0
+%define TV_NSEC_OFFSET 8
+%define GRUG_ON_FN_TIME_LIMIT_MS 10
+%define NS_PER_MS 1000000
+%define NS_PER_SEC 1000000000
 
 global define
 define:
@@ -71,6 +81,20 @@ init_globals:
 	mov rax, [rel grug_max_rsp wrt ..got]
 	mov [rax], rsp
 	sub qword [rax], GRUG_STACK_LIMIT
+%endmacro
+
+%macro set_time_limit 0
+	mov rsi, [rel grug_max_time wrt ..got]
+	push rsi
+	mov edi, CLOCK_PROCESS_CPUTIME_ID
+	call clock_gettime wrt ..plt
+	pop rax
+	add qword [byte rax + TV_NSEC_OFFSET], GRUG_ON_FN_TIME_LIMIT_MS * NS_PER_MS
+	cmp qword [byte rax + TV_NSEC_OFFSET], NS_PER_SEC
+	jl %%skip
+	sub qword [byte rax + TV_NSEC_OFFSET], NS_PER_SEC
+	inc qword [byte rax + TV_SEC_OFFSET]
+%%skip:
 %endmacro
 
 %macro error_handling 0
@@ -112,6 +136,29 @@ init_globals:
 %%skip:
 %endmacro
 
+%macro check_time_limit_exceeded 0
+	mov rsi, [rel grug_current_time wrt ..got]
+	push rsi
+	mov edi, CLOCK_PROCESS_CPUTIME_ID
+	call clock_gettime wrt ..plt
+	pop rax
+	mov r11, [rel grug_max_time wrt ..got]
+
+	mov r10, [byte r11 + TV_SEC_OFFSET]
+	cmp [byte rax + TV_SEC_OFFSET], r10
+	jl %%skip
+	jg %%longjump
+	mov r10, [byte r11 + TV_NSEC_OFFSET]
+	cmp [byte rax + TV_NSEC_OFFSET], r10
+	jg %%longjump
+	jmp short %%skip
+%%longjump:
+	mov esi, 1 + GRUG_ON_FN_TIME_LIMIT_EXCEEDED
+	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
+	call longjmp wrt ..plt
+%%skip:
+%endmacro
+
 global on_a
 on_a:
 	push rbp
@@ -127,6 +174,8 @@ on_a:
 	save_on_fn_name_and_path_on_a
 
 	set_max_rsp
+
+	set_time_limit
 
 	error_handling
 
@@ -231,6 +280,7 @@ helper_bar_safe:
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rdi
 	check_stack_overflow
+	check_time_limit_exceeded
 
 	; foo: i32 = 69
 	mov eax, 69
