@@ -20,6 +20,9 @@ entities_size: dq 0
 
 section .text
 
+%include "tests/utils/defines.s"
+%include "tests/utils/macros.s"
+
 extern game_fn_define_h
 
 global define

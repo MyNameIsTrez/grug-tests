@@ -20,6 +20,9 @@ entities_size: dq 0
 
 section .text
 
+%include "tests/utils/defines.s"
+%include "tests/utils/macros.s"
+
 extern grug_runtime_error_handler
 extern grug_on_fn_name
 extern grug_runtime_error_jmp_buffer

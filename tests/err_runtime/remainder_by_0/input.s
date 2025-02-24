@@ -25,6 +25,9 @@ entities_size: dq 0
 
 section .text
 
+%include "tests/utils/defines.s"
+%include "tests/utils/macros.s"
+
 extern grug_runtime_error_handler
 extern grug_on_fn_name
 extern grug_runtime_error_jmp_buffer
@@ -35,9 +38,6 @@ extern setjmp
 extern grug_get_runtime_error_reason
 extern longjmp
 extern game_fn_initialize
-
-%define GRUG_ON_FN_DIVISION_BY_ZERO 0
-%define GRUG_ON_FN_OVERFLOW 3
 
 global define
 define:
@@ -50,65 +50,6 @@ global init_globals
 init_globals:
 	mov rdi[0x0], rsi
 	ret
-
-%macro save_on_fn_name_and_path 0
-	mov rax, [rel grug_on_fn_path wrt ..got]
-	lea r11, [rel on_fn_path]
-	mov [rax], r11
-
-	mov rax, [rel grug_on_fn_name wrt ..got]
-	lea r11, [rel on_fn_name]
-	mov [rax], r11
-%endmacro
-
-%macro error_handling 0
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call setjmp wrt ..plt
-	test eax, eax
-	je %%skip
-
-	dec eax
-	push rax
-	mov edi, eax
-	sub rsp, byte 0x8
-	call grug_get_runtime_error_reason wrt ..plt
-	add rsp, byte 0x8
-	mov rdi, rax
-
-	lea rcx, [rel on_fn_path]
-
-	lea rdx, [rel on_fn_name]
-
-	pop rsi
-
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
-
-	mov rsp, rbp
-	pop rbp
-	ret
-%%skip:
-%endmacro
-
-%macro check_division_overflow 0
-	cmp eax, -2147483648
-	jne %%skip
-	cmp r11d, -1
-	jne %%skip
-	mov esi, 1 + GRUG_ON_FN_OVERFLOW
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call longjmp wrt ..plt
-%%skip:
-%endmacro
-
-%macro check_division_by_0 0
-	test r11, r11
-	jne %%skip
-	mov esi, 1 + GRUG_ON_FN_DIVISION_BY_ZERO
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call longjmp wrt ..plt
-%%skip:
-%endmacro
 
 global on_a
 on_a:

@@ -1340,6 +1340,8 @@ static void test_error(
 	 && newer(grug_output_path, "mod_api.json")
 	 && newer(grug_output_path, "tests.sh")
 	 && newer(grug_output_path, "tests.out")
+	 && newer(grug_output_path, "tests/utils/defines.s")
+	 && newer(grug_output_path, "tests/utils/macros.s")
 	) {
 		printf("Skipping tests/err/%s...\n", test_name);
 		return;
@@ -1642,6 +1644,8 @@ static struct test_data runtime_error_prologue(
 	 && newer(output_dll_path, "mod_api.json")
 	 && newer(output_dll_path, "tests.sh")
 	 && newer(output_dll_path, "tests.out")
+	 && newer(output_dll_path, "tests/utils/defines.s")
+	 && newer(output_dll_path, "tests/utils/macros.s")
 	) {
 		printf("Skipping tests/err_runtime/%s...\n", test_name);
 		return (struct test_data){.run=false};
@@ -2088,6 +2092,8 @@ static struct test_data ok_prologue(
 	 && newer(output_dll_path, "mod_api.json")
 	 && newer(output_dll_path, "tests.sh")
 	 && newer(output_dll_path, "tests.out")
+	 && newer(output_dll_path, "tests/utils/defines.s")
+	 && newer(output_dll_path, "tests/utils/macros.s")
 	) {
 		printf("Skipping tests/ok/%s...\n", test_name);
 		return (struct test_data){.run=false};

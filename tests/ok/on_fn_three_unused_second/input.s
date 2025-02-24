@@ -29,6 +29,29 @@ entities_size: dq 0
 
 section .text
 
+%include "tests/utils/defines.s"
+%include "tests/utils/macros.s"
+
+%macro save_on_fn_name_and_path_on_a 0
+	mov rax, [rel grug_on_fn_path wrt ..got]
+	lea r11, [rel on_fn_path]
+	mov [rax], r11
+
+	mov rax, [rel grug_on_fn_name wrt ..got]
+	lea r11, [rel on_fn_name_a]
+	mov [rax], r11
+%endmacro
+
+%macro save_on_fn_name_and_path_on_c 0
+	mov rax, [rel grug_on_fn_path wrt ..got]
+	lea r11, [rel on_fn_path]
+	mov [rax], r11
+
+	mov rax, [rel grug_on_fn_name wrt ..got]
+	lea r11, [rel on_fn_name_c]
+	mov [rax], r11
+%endmacro
+
 extern grug_runtime_error_handler
 extern grug_on_fn_name
 extern grug_runtime_error_jmp_buffer
@@ -51,16 +74,6 @@ global init_globals
 init_globals:
 	mov rdi[0x0], rsi
 	ret
-
-%macro save_on_fn_name_and_path_on_a 0
-	mov rax, [rel grug_on_fn_path wrt ..got]
-	lea r11, [rel on_fn_path]
-	mov [rax], r11
-
-	mov rax, [rel grug_on_fn_name wrt ..got]
-	lea r11, [rel on_fn_name_a]
-	mov [rax], r11
-%endmacro
 
 global on_a
 on_a:
@@ -88,16 +101,6 @@ on_a:
 	mov rsp, rbp
 	pop rbp
 	ret
-
-%macro save_on_fn_name_and_path_on_c 0
-	mov rax, [rel grug_on_fn_path wrt ..got]
-	lea r11, [rel on_fn_path]
-	mov [rax], r11
-
-	mov rax, [rel grug_on_fn_name wrt ..got]
-	lea r11, [rel on_fn_name_c]
-	mov [rax], r11
-%endmacro
 
 global on_c
 on_c:

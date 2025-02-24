@@ -25,6 +25,9 @@ entities_size: dq 0
 
 section .text
 
+%include "tests/utils/defines.s"
+%include "tests/utils/macros.s"
+
 extern grug_runtime_error_handler
 extern grug_on_fn_name
 extern grug_runtime_error_jmp_buffer
@@ -46,30 +49,6 @@ global init_globals
 init_globals:
 	mov rdi[0x0], rsi
 	ret
-
-%macro error_handling 0
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call setjmp wrt ..plt
-	test eax, eax
-	je strict $+0x33
-
-	call grug_get_runtime_error_reason wrt ..plt
-	mov rdi, rax
-
-	lea rcx, strings[rel 0]
-
-	lea rdx, strings[rel ]
-
-	mov rsi, [rel grug_runtime_error_type wrt ..got]
-	mov esi, [rsi]
-
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
-
-	mov rsp, rbp
-	pop rbp
-	ret
-%endmacro
 
 global on_a
 on_a:

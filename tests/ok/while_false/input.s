@@ -25,6 +25,9 @@ entities_size: dq 0
 
 section .text
 
+%include "tests/utils/defines.s"
+%include "tests/utils/macros.s"
+
 extern grug_runtime_error_handler
 extern grug_max_time
 extern grug_on_fn_name
@@ -39,15 +42,6 @@ extern grug_get_runtime_error_reason
 extern game_fn_nothing
 extern longjmp
 
-%define GRUG_ON_FN_TIME_LIMIT_EXCEEDED 2
-
-%define CLOCK_PROCESS_CPUTIME_ID 2
-%define TV_SEC_OFFSET 0
-%define TV_NSEC_OFFSET 8
-%define GRUG_ON_FN_TIME_LIMIT_MS 10
-%define NS_PER_MS 1000000
-%define NS_PER_SEC 1000000000
-
 global define
 define:
 	sub rsp, byte 0x8
@@ -59,82 +53,6 @@ global init_globals
 init_globals:
 	mov rdi[0x0], rsi
 	ret
-
-%macro save_on_fn_name_and_path 0
-	mov rax, [rel grug_on_fn_path wrt ..got]
-	lea r11, [rel on_fn_path]
-	mov [rax], r11
-
-	mov rax, [rel grug_on_fn_name wrt ..got]
-	lea r11, [rel on_fn_name]
-	mov [rax], r11
-%endmacro
-
-%macro set_time_limit 0
-	mov rsi, [rel grug_max_time wrt ..got]
-	push rsi
-	mov edi, CLOCK_PROCESS_CPUTIME_ID
-	call clock_gettime wrt ..plt
-	pop rax
-	add qword [byte rax + TV_NSEC_OFFSET], GRUG_ON_FN_TIME_LIMIT_MS * NS_PER_MS
-	cmp qword [byte rax + TV_NSEC_OFFSET], NS_PER_SEC
-	jl %%skip
-	sub qword [byte rax + TV_NSEC_OFFSET], NS_PER_SEC
-	inc qword [byte rax + TV_SEC_OFFSET]
-%%skip:
-%endmacro
-
-%macro error_handling 0
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call setjmp wrt ..plt
-	test eax, eax
-	je %%skip
-
-	dec eax
-	push rax
-	mov edi, eax
-	sub rsp, byte 0x8
-	call grug_get_runtime_error_reason wrt ..plt
-	add rsp, byte 0x8
-	mov rdi, rax
-
-	lea rcx, [rel on_fn_path]
-
-	lea rdx, [rel on_fn_name]
-
-	pop rsi
-
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
-
-	mov rsp, rbp
-	pop rbp
-	ret
-%%skip:
-%endmacro
-
-%macro check_time_limit_exceeded 0
-	mov rsi, [rel grug_current_time wrt ..got]
-	push rsi
-	mov edi, CLOCK_PROCESS_CPUTIME_ID
-	call clock_gettime wrt ..plt
-	pop rax
-	mov r11, [rel grug_max_time wrt ..got]
-
-	mov r10, [byte r11 + TV_SEC_OFFSET]
-	cmp [byte rax + TV_SEC_OFFSET], r10
-	jl %%skip
-	jg %%longjump
-	mov r10, [byte r11 + TV_NSEC_OFFSET]
-	cmp [byte rax + TV_NSEC_OFFSET], r10
-	jg %%longjump
-	jmp short %%skip
-%%longjump:
-	mov esi, 1 + GRUG_ON_FN_TIME_LIMIT_EXCEEDED
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call longjmp wrt ..plt
-%%skip:
-%endmacro
 
 global on_a
 on_a:

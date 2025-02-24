@@ -28,44 +28,8 @@ entities_size: dq 0
 
 section .text
 
-extern grug_runtime_error_handler
-extern grug_max_rsp
-extern grug_max_time
-extern grug_on_fn_name
-extern grug_runtime_error_jmp_buffer
-extern grug_on_fn_path
-extern grug_on_fns_in_safe_mode
-extern grug_current_time
-extern game_fn_define_e
-extern clock_gettime
-extern setjmp
-extern grug_get_runtime_error_reason
-extern game_fn_initialize
-extern longjmp
-extern game_fn_sin
-
-%define GRUG_ON_FN_STACK_OVERFLOW 1
-%define GRUG_ON_FN_TIME_LIMIT_EXCEEDED 2
-
-%define GRUG_STACK_LIMIT 0x10000
-%define CLOCK_PROCESS_CPUTIME_ID 2
-%define TV_SEC_OFFSET 0
-%define TV_NSEC_OFFSET 8
-%define GRUG_ON_FN_TIME_LIMIT_MS 10
-%define NS_PER_MS 1000000
-%define NS_PER_SEC 1000000000
-
-global define
-define:
-	sub rsp, byte 0x8
-	call game_fn_define_e wrt ..plt
-	add rsp, byte 0x8
-	ret
-
-global init_globals
-init_globals:
-	mov rdi[0x0], rsi
-	ret
+%include "tests/utils/defines.s"
+%include "tests/utils/macros.s"
 
 %macro save_on_fn_name_and_path_on_a 0
 	mov rax, [rel grug_on_fn_path wrt ..got]
@@ -77,27 +41,17 @@ init_globals:
 	mov [rax], r11
 %endmacro
 
-%macro set_max_rsp 0
-	mov rax, [rel grug_max_rsp wrt ..got]
-	mov [rax], rsp
-	sub qword [rax], GRUG_STACK_LIMIT
+%macro save_on_fn_name_and_path_on_b 0
+	mov rax, [rel grug_on_fn_path wrt ..got]
+	lea r11, [rel on_fn_path]
+	mov [rax], r11
+
+	mov rax, [rel grug_on_fn_name wrt ..got]
+	lea r11, [rel on_fn_name_b]
+	mov [rax], r11
 %endmacro
 
-%macro set_time_limit 0
-	mov rsi, [rel grug_max_time wrt ..got]
-	push rsi
-	mov edi, CLOCK_PROCESS_CPUTIME_ID
-	call clock_gettime wrt ..plt
-	pop rax
-	add qword [byte rax + TV_NSEC_OFFSET], GRUG_ON_FN_TIME_LIMIT_MS * NS_PER_MS
-	cmp qword [byte rax + TV_NSEC_OFFSET], NS_PER_SEC
-	jl %%skip
-	sub qword [byte rax + TV_NSEC_OFFSET], NS_PER_SEC
-	inc qword [byte rax + TV_SEC_OFFSET]
-%%skip:
-%endmacro
-
-%macro error_handling 0
+%macro error_handling_on_a 0
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call setjmp wrt ..plt
 	test eax, eax
@@ -126,38 +80,33 @@ init_globals:
 %%skip:
 %endmacro
 
-%macro check_stack_overflow 0
-	mov rax, [rel grug_max_rsp wrt ..got]
-	cmp rsp, [rax]
-	jg %%skip
-	mov esi, 1 + GRUG_ON_FN_STACK_OVERFLOW
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call longjmp wrt ..plt
-%%skip:
-%endmacro
+extern grug_runtime_error_handler
+extern grug_max_rsp
+extern grug_max_time
+extern grug_on_fn_name
+extern grug_runtime_error_jmp_buffer
+extern grug_on_fn_path
+extern grug_on_fns_in_safe_mode
+extern grug_current_time
+extern game_fn_define_e
+extern clock_gettime
+extern setjmp
+extern grug_get_runtime_error_reason
+extern game_fn_initialize
+extern longjmp
+extern game_fn_sin
 
-%macro check_time_limit_exceeded 0
-	mov rsi, [rel grug_current_time wrt ..got]
-	push rsi
-	mov edi, CLOCK_PROCESS_CPUTIME_ID
-	call clock_gettime wrt ..plt
-	pop rax
-	mov r11, [rel grug_max_time wrt ..got]
+global define
+define:
+	sub rsp, byte 0x8
+	call game_fn_define_e wrt ..plt
+	add rsp, byte 0x8
+	ret
 
-	mov r10, [byte r11 + TV_SEC_OFFSET]
-	cmp [byte rax + TV_SEC_OFFSET], r10
-	jl %%skip
-	jg %%longjump
-	mov r10, [byte r11 + TV_NSEC_OFFSET]
-	cmp [byte rax + TV_NSEC_OFFSET], r10
-	jg %%longjump
-	jmp short %%skip
-%%longjump:
-	mov esi, 1 + GRUG_ON_FN_TIME_LIMIT_EXCEEDED
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call longjmp wrt ..plt
-%%skip:
-%endmacro
+global init_globals
+init_globals:
+	mov rdi[0x0], rsi
+	ret
 
 global on_a
 on_a:
@@ -177,7 +126,7 @@ on_a:
 
 	set_time_limit
 
-	error_handling
+	error_handling_on_a
 
 	; foo: i32 = 42
 	mov eax, 42
@@ -219,16 +168,6 @@ on_a:
 	mov rsp, rbp
 	pop rbp
 	ret
-
-%macro save_on_fn_name_and_path_on_b 0
-	mov rax, [rel grug_on_fn_path wrt ..got]
-	lea r11, [rel on_fn_path]
-	mov [rax], r11
-
-	mov rax, [rel grug_on_fn_name wrt ..got]
-	lea r11, [rel on_fn_name_b]
-	mov [rax], r11
-%endmacro
 
 global on_b
 on_b:
