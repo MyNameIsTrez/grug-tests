@@ -50,6 +50,17 @@ then
     compiler_flags+=' -DSHUFFLING'
 fi
 
+if [[ ${ANALYZE+x} ]]
+then
+    echo "- ANALYZE was turned on"
+    if [[ "$CC" = "gcc" ]]
+    then
+        compiler_flags+=' --analyzer'
+    else
+        compiler_flags+=' --analyze'
+    fi
+fi
+
 if [ "$(uname)" == "Darwin" ]; then # If Mac OS X
     echo "Detected macOS"
     compiler_flags+=' -I.' # For `#include <elf.h>`
