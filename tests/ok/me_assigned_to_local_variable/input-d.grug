@@ -1,0 +1,4 @@
+on_a() {
+    foo: id = me
+    set_target(foo)
+}

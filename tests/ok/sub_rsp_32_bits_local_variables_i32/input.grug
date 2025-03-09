@@ -1,8 +1,3 @@
-define() d {
-    return {
-    }
-}
-
 on_a() {
     v1: i32 = 1
     initialize(v1)

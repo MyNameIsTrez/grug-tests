@@ -1,6 +1,0 @@
-# foo
-# bar
-define() d {
-    return {
-    }
-}

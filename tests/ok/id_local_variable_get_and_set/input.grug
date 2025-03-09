@@ -1,9 +1,0 @@
-define() d {
-    return {
-    }
-}
-
-on_a() {
-    opponent: id = get_opponent()
-    set_target(opponent)
-}

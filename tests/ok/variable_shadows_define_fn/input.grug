@@ -1,9 +1,0 @@
-define() d {
-    return {
-    }
-}
-
-on_a() {
-    define: i32 = 42
-    initialize(define)
-}

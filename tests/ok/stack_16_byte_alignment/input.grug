@@ -1,8 +1,3 @@
-define() d {
-    return {
-    }
-}
-
 on_a() {
     nothing_aligned()
     initialize_aligned(42)
