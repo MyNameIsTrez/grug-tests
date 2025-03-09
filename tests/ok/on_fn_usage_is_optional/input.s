@@ -1,8 +1,5 @@
 section .data
 
-global define_type
-define_type: db "d", 0
-
 align 8
 global globals_size
 globals_size: dq 8
@@ -23,14 +20,6 @@ section .text
 %include "tests/utils/defines.s"
 %include "tests/utils/macros.s"
 
-extern game_fn_define_d
-
-global define
-define:
-	sub rsp, byte 0x8
-	call game_fn_define_d wrt ..plt
-	add rsp, byte 0x8
-	ret
 
 global init_globals
 init_globals:

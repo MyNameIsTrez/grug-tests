@@ -14,7 +14,7 @@ on_fns:
 	dq 0
 
 on_fn_path:
-	db "tests/ok/on_fn_three_unused_third/input.grug", 0
+	db "tests/ok/on_fn_three_unused_third/input-d.grug", 0
 on_fn_name_a:
 	db "on_a", 0
 on_fn_name_b:

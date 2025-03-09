@@ -14,7 +14,7 @@ on_fns:
 foo:
 	db "foo", 0
 on_fn_path:
-	db "tests/ok/string_and_on_fn/input.grug", 0
+	db "tests/ok/string_and_on_fn/input-d.grug", 0
 on_fn_name:
 	db "on_a", 0
 

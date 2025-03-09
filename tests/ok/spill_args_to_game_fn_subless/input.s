@@ -1,8 +1,5 @@
 section .data
 
-global define_type
-define_type: db "d", 0
-
 align 8
 global globals_size
 globals_size: dq 8
@@ -12,7 +9,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/spill_args_to_game_fn_subless/input.grug", 0
+	db "tests/ok/spill_args_to_game_fn_subless/input-d.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -31,15 +28,7 @@ section .text
 extern grug_on_fn_name
 extern grug_on_fn_path
 extern grug_on_fns_in_safe_mode
-extern game_fn_define_d
 extern game_fn_motherload_subless
-
-global define
-define:
-	sub rsp, byte 0x8
-	call game_fn_define_d wrt ..plt
-	add rsp, byte 0x8
-	ret
 
 global init_globals
 init_globals:

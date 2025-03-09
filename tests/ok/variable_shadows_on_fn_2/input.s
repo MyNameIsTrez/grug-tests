@@ -14,7 +14,7 @@ on_fns:
 	dq 0
 
 on_fn_path:
-	db "tests/ok/variable_shadows_on_fn_2/input.grug", 0
+	db "tests/ok/variable_shadows_on_fn_2/input-d.grug", 0
 on_fn_name:
 	db "on_a", 0
 
