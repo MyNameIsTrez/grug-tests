@@ -65,53 +65,8 @@ In order to visualize what grug.c contains when linked, follow these steps:
 4. Click the `File` button in the top-left corner, and then `Open file`
 5. Select the generated `output.map` using the file explorer popup
 
-## Inspecting the tokens and AST
-
-```bash
-clang run.c grug/grug.c -Wall -Wextra -Werror -Wpedantic -Wshadow -Wfatal-errors -g -Igrug -fsanitize=address,undefined -DLOGGING && \
-./a.out tests/ok/helper_fn/input.grug tests/ok/helper_fn/results/expected.so
-```
-
 ## gdb
 
 ```bash
-gdb --args a.out tests/ok/helper_fn/input.grug tests/ok/helper_fn/results/expected.so
-```
-
-## gdbgui
-
-Use [gdbgui](https://www.gdbgui.com/) to step through the code:
-
-```bash
-gdbgui "a.out tests/ok/helper_fn/input.grug tests/ok/helper_fn/results/expected.so"
-```
-
-## readelf
-
-```bash
-clear && ./tests.sh tests/ok/helper_fn
-```
-
-## gdb on a test
-
-```bash
-nasm tests/ok/write_to_global_variable/input.s -f elf64 -o tests/ok/write_to_global_variable/results/expected.o &&\
-ld -shared --hash-style=sysv tests/ok/write_to_global_variable/results/expected.o -o tests/ok/write_to_global_variable/results/expected.so &&\
-rm tests/ok/write_to_global_variable/results/expected.o &&\
-clang tests/ok/write_to_global_variable/test.c -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wuninitialized -Wfatal-errors -g -Og -rdynamic -o tests/ok/write_to_global_variable/results/test &&\
-gdb --args tests/ok/write_to_global_variable/results/test tests/ok/write_to_global_variable/results/expected.so
-```
-
-## Manually doing call address calculations
-
-Getting the address of a CALL instruction:
-
-```bash
-echo 'obase=16;ibase=16;FFFFFFFB-(call_insn_line-plt_fn_line)' | bc
-```
-
-so:
-
-```bash
-echo 'obase=16;ibase=16;FFFFFFFB-(1055-1020)' | bc
+gdb --args tests.out and_false_1
 ```
