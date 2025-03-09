@@ -1,6 +1,0 @@
-define() y {
-    return {
-        .foo = "foo",
-        .bar = "foo",
-    }
-}

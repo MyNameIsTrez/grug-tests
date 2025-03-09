@@ -1,8 +1,5 @@
 section .data
 
-global define_type
-define_type: db "w", 0
-
 align 8
 global globals_size
 globals_size: dq 8
@@ -51,19 +48,9 @@ extern grug_on_fn_name
 extern grug_runtime_error_jmp_buffer
 extern grug_on_fn_path
 extern grug_on_fns_in_safe_mode
-extern game_fn_define_w
 extern setjmp
 extern grug_get_runtime_error_reason
 extern game_fn_spawn
-
-global define
-define:
-	sub rsp, byte 0x8
-	lea rax, [rel resource]
-	mov rdi, rax
-	call game_fn_define_w wrt ..plt
-	add rsp, byte 0x8
-	ret
 
 global init_globals
 init_globals:

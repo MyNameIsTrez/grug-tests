@@ -1,9 +1,0 @@
-define() z {
-    return {
-        .projectile = "foo",
-    }
-}
-
-on_a(x: i32) {
-    nothing()
-}

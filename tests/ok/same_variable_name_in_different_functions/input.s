@@ -1,8 +1,5 @@
 section .data
 
-global define_type
-define_type: db "e", 0
-
 align 8
 global globals_size
 globals_size: dq 8
@@ -88,20 +85,12 @@ extern grug_runtime_error_jmp_buffer
 extern grug_on_fn_path
 extern grug_on_fns_in_safe_mode
 extern grug_current_time
-extern game_fn_define_e
 extern clock_gettime
 extern setjmp
 extern grug_get_runtime_error_reason
 extern game_fn_initialize
 extern longjmp
 extern game_fn_sin
-
-global define
-define:
-	sub rsp, byte 0x8
-	call game_fn_define_e wrt ..plt
-	add rsp, byte 0x8
-	ret
 
 global init_globals
 init_globals:

@@ -681,323 +681,6 @@ void game_fn_offset_32_bit_string(float f1, float f2, float f3, float f4, float 
 	game_fn_offset_32_bit_string_g = g;
 }
 
-void game_fn_define_a(void) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-}
-static int32_t game_fn_define_b_x;
-void game_fn_define_b(int32_t x) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_b_x = x;
-}
-static int32_t game_fn_define_c_x;
-static int32_t game_fn_define_c_y;
-void game_fn_define_c(int32_t x, int32_t y) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_c_x = x;
-	game_fn_define_c_y = y;
-}
-void game_fn_define_d(void) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-}
-void game_fn_define_e(void) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-}
-void game_fn_define_f(void) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-}
-void game_fn_define_g(void) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-}
-static int32_t game_fn_define_h_x;
-void game_fn_define_h(int32_t x) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_h_x = x;
-}
-static int32_t game_fn_define_i_x;
-static int32_t game_fn_define_i_y;
-void game_fn_define_i(int32_t x, int32_t y) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_i_x = x;
-	game_fn_define_i_y = y;
-}
-void game_fn_define_j(void) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-}
-static int32_t game_fn_define_k_age;
-static char *game_fn_define_k_name;
-void game_fn_define_k(int32_t age, char *name) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_k_age = age;
-	game_fn_define_k_name = name;
-}
-static char *game_fn_define_l_group;
-static char *game_fn_define_l_name;
-void game_fn_define_l(char *group, char *name) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_l_group = group;
-	game_fn_define_l_name = name;
-}
-static int32_t game_fn_define_m_w;
-static char *game_fn_define_m_group;
-static bool game_fn_define_m_b1;
-static char *game_fn_define_m_name;
-static bool game_fn_define_m_b2;
-static int32_t game_fn_define_m_z;
-void game_fn_define_m(int32_t w, char *group, bool b1, char *name, bool b2, int32_t z) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_m_w = w;
-	game_fn_define_m_group = group;
-	game_fn_define_m_b1 = b1;
-	game_fn_define_m_name = name;
-	game_fn_define_m_b2 = b2;
-	game_fn_define_m_z = z;
-}
-static int32_t game_fn_define_n_u;
-static int32_t game_fn_define_n_v;
-static int32_t game_fn_define_n_w;
-static int32_t game_fn_define_n_x;
-static int32_t game_fn_define_n_y;
-static int32_t game_fn_define_n_z;
-void game_fn_define_n(int32_t u, int32_t v, int32_t w, int32_t x, int32_t y, int32_t z) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_n_u = u;
-	game_fn_define_n_v = v;
-	game_fn_define_n_w = w;
-	game_fn_define_n_x = x;
-	game_fn_define_n_y = y;
-	game_fn_define_n_z = z;
-}
-static char *game_fn_define_o_u;
-static char *game_fn_define_o_v;
-static char *game_fn_define_o_w;
-static char *game_fn_define_o_x;
-static char *game_fn_define_o_y;
-static char *game_fn_define_o_z;
-void game_fn_define_o(char *u, char *v, char *w, char *x, char *y, char *z) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_o_u = u;
-	game_fn_define_o_v = v;
-	game_fn_define_o_w = w;
-	game_fn_define_o_x = x;
-	game_fn_define_o_y = y;
-	game_fn_define_o_z = z;
-}
-static char *game_fn_define_p_x;
-void game_fn_define_p(char *x) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_p_x = x;
-}
-static char *game_fn_define_q_a;
-static char *game_fn_define_q_b;
-static char *game_fn_define_q_c;
-void game_fn_define_q(char *a, char *b, char *c) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_q_a = a;
-	game_fn_define_q_b = b;
-	game_fn_define_q_c = c;
-}
-void game_fn_define_r(void) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-}
-void game_fn_define_s(void) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-}
-static float game_fn_define_t_f1;
-static float game_fn_define_t_f2;
-static float game_fn_define_t_f3;
-static float game_fn_define_t_f4;
-static float game_fn_define_t_f5;
-static float game_fn_define_t_f6;
-static float game_fn_define_t_f7;
-static float game_fn_define_t_f8;
-void game_fn_define_t(float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_t_f1 = f1;
-	game_fn_define_t_f2 = f2;
-	game_fn_define_t_f3 = f3;
-	game_fn_define_t_f4 = f4;
-	game_fn_define_t_f5 = f5;
-	game_fn_define_t_f6 = f6;
-	game_fn_define_t_f7 = f7;
-	game_fn_define_t_f8 = f8;
-}
-static char *game_fn_define_u_sprite_path;
-void game_fn_define_u(char *sprite_path) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_u_sprite_path = sprite_path;
-}
-static char *game_fn_define_v_foo;
-static char *game_fn_define_v_bar;
-void game_fn_define_v(char *foo, char *bar) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_v_foo = foo;
-	game_fn_define_v_bar = bar;
-}
-static char *game_fn_define_w_sprite_path;
-void game_fn_define_w(char *sprite_path) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_w_sprite_path = sprite_path;
-}
-static char *game_fn_define_x_projectile;
-void game_fn_define_x(char *projectile) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_x_projectile = projectile;
-}
-static char *game_fn_define_y_foo;
-static char *game_fn_define_y_bar;
-void game_fn_define_y(char *foo, char *bar) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_y_foo = foo;
-	game_fn_define_y_bar = bar;
-}
-static char *game_fn_define_z_projectile;
-void game_fn_define_z(char *projectile) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_z_projectile = projectile;
-}
-static char *game_fn_define_a2_sprite_path;
-static char *game_fn_define_a2_projectile;
-void game_fn_define_a2(char *sprite_path, char *projectile) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_a2_sprite_path = sprite_path;
-	game_fn_define_a2_projectile = projectile;
-}
-static char *game_fn_define_b2_sprite_path;
-static char *game_fn_define_b2_projectile;
-void game_fn_define_b2(char *sprite_path, char *projectile) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_b2_sprite_path = sprite_path;
-	game_fn_define_b2_projectile = projectile;
-}
-static int32_t game_fn_define_c2_i1;
-static int32_t game_fn_define_c2_i2;
-static int32_t game_fn_define_c2_i3;
-static int32_t game_fn_define_c2_i4;
-static int32_t game_fn_define_c2_i5;
-static int32_t game_fn_define_c2_i6;
-static int32_t game_fn_define_c2_i7;
-static float game_fn_define_c2_f1;
-static float game_fn_define_c2_f2;
-static float game_fn_define_c2_f3;
-static float game_fn_define_c2_f4;
-static float game_fn_define_c2_f5;
-static float game_fn_define_c2_f6;
-static float game_fn_define_c2_f7;
-static float game_fn_define_c2_f8;
-static float game_fn_define_c2_f9;
-static int32_t game_fn_define_c2_i8;
-static float game_fn_define_c2_f10;
-void game_fn_define_c2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, int32_t i8, float f10) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_c2_i1 = i1;
-	game_fn_define_c2_i2 = i2;
-	game_fn_define_c2_i3 = i3;
-	game_fn_define_c2_i4 = i4;
-	game_fn_define_c2_i5 = i5;
-	game_fn_define_c2_i6 = i6;
-	game_fn_define_c2_i7 = i7;
-	game_fn_define_c2_f1 = f1;
-	game_fn_define_c2_f2 = f2;
-	game_fn_define_c2_f3 = f3;
-	game_fn_define_c2_f4 = f4;
-	game_fn_define_c2_f5 = f5;
-	game_fn_define_c2_f6 = f6;
-	game_fn_define_c2_f7 = f7;
-	game_fn_define_c2_f8 = f8;
-	game_fn_define_c2_f9 = f9;
-	game_fn_define_c2_i8 = i8;
-	game_fn_define_c2_f10 = f10;
-}
-static int32_t game_fn_define_d2_i1;
-static int32_t game_fn_define_d2_i2;
-static int32_t game_fn_define_d2_i3;
-static int32_t game_fn_define_d2_i4;
-static int32_t game_fn_define_d2_i5;
-static int32_t game_fn_define_d2_i6;
-static int32_t game_fn_define_d2_i7;
-static float game_fn_define_d2_f1;
-static float game_fn_define_d2_f2;
-static float game_fn_define_d2_f3;
-static float game_fn_define_d2_f4;
-static float game_fn_define_d2_f5;
-static float game_fn_define_d2_f6;
-static float game_fn_define_d2_f7;
-static float game_fn_define_d2_f8;
-static int32_t game_fn_define_d2_i8;
-static float game_fn_define_d2_f9;
-void game_fn_define_d2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, int32_t i8, float f9) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_d2_i1 = i1;
-	game_fn_define_d2_i2 = i2;
-	game_fn_define_d2_i3 = i3;
-	game_fn_define_d2_i4 = i4;
-	game_fn_define_d2_i5 = i5;
-	game_fn_define_d2_i6 = i6;
-	game_fn_define_d2_i7 = i7;
-	game_fn_define_d2_f1 = f1;
-	game_fn_define_d2_f2 = f2;
-	game_fn_define_d2_f3 = f3;
-	game_fn_define_d2_f4 = f4;
-	game_fn_define_d2_f5 = f5;
-	game_fn_define_d2_f6 = f6;
-	game_fn_define_d2_f7 = f7;
-	game_fn_define_d2_f8 = f8;
-	game_fn_define_d2_i8 = i8;
-	game_fn_define_d2_f9 = f9;
-}
-static int32_t game_fn_define_e2_i1;
-static int32_t game_fn_define_e2_i2;
-static int32_t game_fn_define_e2_i3;
-static int32_t game_fn_define_e2_i4;
-static int32_t game_fn_define_e2_i5;
-static int32_t game_fn_define_e2_i6;
-static int32_t game_fn_define_e2_i7;
-static int32_t game_fn_define_e2_i8;
-static int32_t game_fn_define_e2_i9;
-static int32_t game_fn_define_e2_i10;
-static int32_t game_fn_define_e2_i11;
-static int32_t game_fn_define_e2_i12;
-static int32_t game_fn_define_e2_i13;
-static int32_t game_fn_define_e2_i14;
-static int32_t game_fn_define_e2_i15;
-static int32_t game_fn_define_e2_i16;
-static int32_t game_fn_define_e2_i17;
-static int32_t game_fn_define_e2_i18;
-static int32_t game_fn_define_e2_i19;
-static int32_t game_fn_define_e2_i20;
-static int32_t game_fn_define_e2_i21;
-static int32_t game_fn_define_e2_i22;
-void game_fn_define_e2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, int32_t i8, int32_t i9, int32_t i10, int32_t i11, int32_t i12, int32_t i13, int32_t i14, int32_t i15, int32_t i16, int32_t i17, int32_t i18, int32_t i19, int32_t i20, int32_t i21, int32_t i22) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_e2_i1 = i1;
-	game_fn_define_e2_i2 = i2;
-	game_fn_define_e2_i3 = i3;
-	game_fn_define_e2_i4 = i4;
-	game_fn_define_e2_i5 = i5;
-	game_fn_define_e2_i6 = i6;
-	game_fn_define_e2_i7 = i7;
-	game_fn_define_e2_i8 = i8;
-	game_fn_define_e2_i9 = i9;
-	game_fn_define_e2_i10 = i10;
-	game_fn_define_e2_i11 = i11;
-	game_fn_define_e2_i12 = i12;
-	game_fn_define_e2_i13 = i13;
-	game_fn_define_e2_i14 = i14;
-	game_fn_define_e2_i15 = i15;
-	game_fn_define_e2_i16 = i16;
-	game_fn_define_e2_i17 = i17;
-	game_fn_define_e2_i18 = i18;
-	game_fn_define_e2_i19 = i19;
-	game_fn_define_e2_i20 = i20;
-	game_fn_define_e2_i21 = i21;
-	game_fn_define_e2_i22 = i22;
-}
-static bool game_fn_define_f2_b;
-void game_fn_define_f2(bool b) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_define_f2_b = b;
-}
-
 static void reset_call_counts(void) {
 	game_fn_nothing_call_count = 0;
 	game_fn_magic_call_count = 0;
@@ -1332,7 +1015,6 @@ static void test_error(
 	if (failed_file_doesnt_exist(failed_file_path)
 	 && newer(grug_output_path, grug_path)
 	 && newer(grug_output_path, expected_error_path)
-	 && newer(grug_output_path, "mod_api.h")
 	 && newer(grug_output_path, "mod_api.json")
 	 && newer(grug_output_path, "tests.sh")
 	 && newer(grug_output_path, "tests.out")
@@ -1631,7 +1313,6 @@ static struct test_data runtime_error_prologue(
 	 && newer(output_dll_path, grug_path)
 	 && newer(output_dll_path, expected_error_path)
 	 && newer(output_dll_path, expected_dll_path)
-	 && newer(output_dll_path, "mod_api.h")
 	 && newer(output_dll_path, "mod_api.json")
 	 && newer(output_dll_path, "tests.sh")
 	 && newer(output_dll_path, "tests.out")
@@ -2078,7 +1759,6 @@ static struct test_data ok_prologue(
 	 && newer(output_dll_path, nasm_path)
 	 && newer(output_dll_path, grug_path)
 	 && newer(output_dll_path, expected_dll_path)
-	 && newer(output_dll_path, "mod_api.h")
 	 && newer(output_dll_path, "mod_api.json")
 	 && newer(output_dll_path, "tests.sh")
 	 && newer(output_dll_path, "tests.out")
@@ -2630,134 +2310,6 @@ static void ok_continue(void *on_fns, void *g, size_t resources_size, char **res
 	assert(entity_types == NULL);
 }
 
-static void ok_define(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	assert(game_fn_define_h_x == 42);
-
-	free(g);
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_define_containing_negation(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	assert(game_fn_define_b_x == -2);
-
-	free(g);
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_define_containing_string(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	assert(game_fn_define_k_age == 42);
-	assert(streq(game_fn_define_k_name, "foo"));
-
-	free(g);
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_define_with_eight_f32_fields(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	assert(game_fn_define_t_f1 == 1.0f);
-	assert(game_fn_define_t_f2 == 2.0f);
-	assert(game_fn_define_t_f3 == 3.0f);
-	assert(game_fn_define_t_f4 == 4.0f);
-	assert(game_fn_define_t_f5 == 5.0f);
-	assert(game_fn_define_t_f6 == 6.0f);
-	assert(game_fn_define_t_f7 == 7.0f);
-	assert(game_fn_define_t_f8 == 8.0f);
-
-	free(g);
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_define_with_six_fields(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	assert(game_fn_define_m_w == 42);
-	assert(streq(game_fn_define_m_group, "bar"));
-	assert(game_fn_define_m_b1 == true);
-	assert(streq(game_fn_define_m_name, "foobar"));
-	assert(game_fn_define_m_b2 == false);
-	assert(game_fn_define_m_z == 1337);
-
-	free(g);
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_define_with_six_i32_fields(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	assert(game_fn_define_n_u == 1);
-	assert(game_fn_define_n_v == 2);
-	assert(game_fn_define_n_w == 3);
-	assert(game_fn_define_n_x == 4);
-	assert(game_fn_define_n_y == 5);
-	assert(game_fn_define_n_z == 6);
-
-	free(g);
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_define_with_six_string_fields(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	assert(streq(game_fn_define_o_u, "u"));
-	assert(streq(game_fn_define_o_v, "v"));
-	assert(streq(game_fn_define_o_w, "w"));
-	assert(streq(game_fn_define_o_x, "x"));
-	assert(streq(game_fn_define_o_y, "y"));
-	assert(streq(game_fn_define_o_z, "z"));
-
-	free(g);
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
 static void ok_division_negative_result(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -2977,24 +2529,6 @@ static void ok_empty_line(void *on_fns, void *g, size_t resources_size, char **r
 	assert(entity_types == NULL);
 }
 
-static void ok_entity_and_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(streq(game_fn_define_z_projectile, "ok:foo"));
-
-	((struct z_on_fns *)on_fns)->a(g, 42);
-
-	free(g);
-
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/entity_and_on_fn/input-d.grug"));
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 1);
-	assert(streq(entities[0], "ok:foo"));
-	assert(streq(entity_types[0], ""));
-}
-
 static void ok_entity_and_resource_as_subexpression(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_has_resource_call_count == 0);
 	assert(game_fn_has_entity_call_count == 0);
@@ -3022,12 +2556,16 @@ static void ok_entity_and_resource_as_subexpression(void *on_fns, void *g, size_
 }
 
 static void ok_entity_duplicate(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	assert(streq(game_fn_define_y_foo, "ok:foo"));
-	assert(streq(game_fn_define_y_bar, "ok:foo"));
+	assert(game_fn_spawn_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_spawn_call_count == 2);
 
 	free(g);
+
+	assert(streq(game_fn_spawn_name, "ok:foo"));
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/entity_duplicate/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3039,12 +2577,17 @@ static void ok_entity_duplicate(void *on_fns, void *g, size_t resources_size, ch
 	assert(streq(entity_types[1], ""));
 }
 
-static void ok_entity_in_define(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	assert(streq(game_fn_define_x_projectile, "ok:foo"));
+static void ok_entity_in_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_spawn_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_spawn_call_count == 1);
 
 	free(g);
+
+	assert(streq(game_fn_spawn_name, "ok:foo"));
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/entity_in_on_fn/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3054,28 +2597,37 @@ static void ok_entity_in_define(void *on_fns, void *g, size_t resources_size, ch
 	assert(streq(entity_types[0], ""));
 }
 
-static void ok_entity_in_define_with_mod_specified(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	assert(streq(game_fn_define_x_projectile, "wow:foo"));
+static void ok_entity_in_on_fn_with_mod_specified(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_spawn_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_spawn_call_count == 1);
 
 	free(g);
+
+	assert(streq(game_fn_spawn_name, "ok:foo"));
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/entity_in_on_fn_with_mod_specified/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
 
 	assert(entities_size == 1);
-	assert(streq(entities[0], "wow:foo"));
+	assert(streq(entities[0], "ok:foo"));
 	assert(streq(entity_types[0], ""));
 }
 
 static void ok_entity_twice(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	assert(streq(game_fn_define_y_foo, "ok:foo"));
-	assert(streq(game_fn_define_y_bar, "ok:bar"));
+	assert(game_fn_spawn_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_spawn_call_count == 2);
 
 	free(g);
+
+	assert(streq(game_fn_spawn_name, "ok:bar"));
+
+	assert(streq(grug_on_fn_name, "on_a"));
+	assert(streq(grug_on_fn_path, "tests/ok/entity_twice/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3083,7 +2635,7 @@ static void ok_entity_twice(void *on_fns, void *g, size_t resources_size, char *
 	assert(entities_size == 2);
 	assert(streq(entities[0], "ok:bar"));
 	assert(streq(entity_types[0], ""));
-	assert(streq(entities[1], "ok:foo"));
+	assert(streq(entities[1], "ok:bar"));
 	assert(streq(entity_types[1], ""));
 }
 
@@ -5085,24 +4637,6 @@ static void ok_resource_and_entity(void *on_fns, void *g, size_t resources_size,
 	assert(streq(entity_types[0], ""));
 }
 
-static void ok_resource_and_entity_and_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(streq(game_fn_define_a2_sprite_path, "tests/ok/resource_and_entity_and_on_fn/foo.txt"));
-
-	((struct a2_on_fns *)on_fns)->a(g, 42);
-
-	free(g);
-
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/resource_and_entity_and_on_fn/input-d.grug"));
-
-	assert(resources_size == 1);
-	assert(streq(resources[0], "tests/ok/resource_and_entity_and_on_fn/foo.txt"));
-
-	assert(entities_size == 1);
-	assert(streq(entities[0], "ok:foo"));
-	assert(streq(entity_types[0], ""));
-}
-
 static void ok_resource_and_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(streq(game_fn_define_w_sprite_path, "tests/ok/resource_and_on_fn/foo.txt"));
 
@@ -6409,13 +5943,6 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(comment_lone_block_at_end, "d", 8);
 	ADD_TEST_OK(comment_lone_global, "d", 8);
 	ADD_TEST_OK(continue, "d", 8);
-	ADD_TEST_OK(define, "h", 8);
-	ADD_TEST_OK(define_containing_negation, "b", 8);
-	ADD_TEST_OK(define_containing_string, "k", 8);
-	ADD_TEST_OK(define_with_eight_f32_fields, "t", 8);
-	ADD_TEST_OK(define_with_six_fields, "m", 8);
-	ADD_TEST_OK(define_with_six_i32_fields, "n", 8);
-	ADD_TEST_OK(define_with_six_string_fields, "o", 8);
 	ADD_TEST_OK(division_negative_result, "d", 8);
 	ADD_TEST_OK(division_positive_result, "d", 8);
 	ADD_TEST_OK(double_negation_with_parentheses, "d", 8);
@@ -6428,12 +5955,11 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(else_true, "d", 8);
 	ADD_TEST_OK(empty_file, "a", 8);
 	ADD_TEST_OK(empty_line, "d", 8);
-	ADD_TEST_OK(entity_and_on_fn, "z", 8);
 	ADD_TEST_OK(entity_and_resource_as_subexpression, "d", 8);
 	ADD_TEST_OK(entity_duplicate, "y", 8);
-	ADD_TEST_OK(entity_in_define, "x", 8);
-	ADD_TEST_OK(entity_in_define_with_mod_specified, "x", 8);
-	ADD_TEST_OK(entity_twice, "y", 8);
+	ADD_TEST_OK(entity_in_on_fn, "d", 8);
+	ADD_TEST_OK(entity_in_on_fn_with_mod_specified, "d", 8);
+	ADD_TEST_OK(entity_twice, "d", 8);
 	ADD_TEST_OK(eq_false, "d", 8);
 	ADD_TEST_OK(eq_true, "d", 8);
 	ADD_TEST_OK(f32_addition, "d", 8);
@@ -6535,7 +6061,6 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(remainder_negative_result, "d", 8);
 	ADD_TEST_OK(remainder_positive_result, "d", 8);
 	ADD_TEST_OK(resource_and_entity, "b2", 8);
-	ADD_TEST_OK(resource_and_entity_and_on_fn, "a2", 8);
 	ADD_TEST_OK(resource_and_on_fn, "w", 8);
 	ADD_TEST_OK(resource_can_contain_dot_1, "u", 8);
 	ADD_TEST_OK(resource_can_contain_dot_2, "u", 8);

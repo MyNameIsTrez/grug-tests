@@ -1,39 +1,7 @@
 #pragma once
 
+#include <stdbool.h>
 #include <stdint.h>
-
-void game_fn_define_a(void);
-void game_fn_define_b(int32_t x);
-void game_fn_define_c(int32_t x, int32_t y);
-void game_fn_define_d(void);
-void game_fn_define_e(void);
-void game_fn_define_f(void);
-void game_fn_define_g(void);
-void game_fn_define_h(int32_t x);
-void game_fn_define_i(int32_t x, int32_t y);
-void game_fn_define_j(void);
-void game_fn_define_k(int32_t age, char *name);
-void game_fn_define_l(char *group, char *name);
-void game_fn_define_m(int32_t w, char *group, bool b1, char *name, bool b2, int32_t z);
-void game_fn_define_n(int32_t u, int32_t v, int32_t w, int32_t x, int32_t y, int32_t z);
-void game_fn_define_o(char *u, char *v, char *w, char *x, char *y, char *z);
-void game_fn_define_p(char *x);
-void game_fn_define_q(char *a, char *b, char *c);
-void game_fn_define_r(void);
-void game_fn_define_s(void);
-void game_fn_define_t(float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8);
-void game_fn_define_u(char *sprite_path);
-void game_fn_define_v(char *foo, char *bar);
-void game_fn_define_w(char *sprite_path);
-void game_fn_define_x(char *projectile);
-void game_fn_define_y(char *foo, char *bar);
-void game_fn_define_z(char *projectile);
-void game_fn_define_a2(char *sprite_path, char *projectile);
-void game_fn_define_b2(char *sprite_path, char *projectile);
-void game_fn_define_c2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, int32_t i8, float f10);
-void game_fn_define_d2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, int32_t i8, float f9);
-void game_fn_define_e2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, int32_t i8, int32_t i9, int32_t i10, int32_t i11, int32_t i12, int32_t i13, int32_t i14, int32_t i15, int32_t i16, int32_t i17, int32_t i18, int32_t i19, int32_t i20, int32_t i21, int32_t i22);
-void game_fn_define_f2(bool b);
 
 struct d_on_fns {
     void (*a)(void *globals);

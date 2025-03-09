@@ -1,8 +1,5 @@
 section .data
 
-global define_type
-define_type: db "y", 0
-
 align 8
 global globals_size
 globals_size: dq 8
@@ -33,19 +30,6 @@ section .text
 
 %include "tests/utils/defines.s"
 %include "tests/utils/macros.s"
-
-extern game_fn_define_y
-
-global define
-define:
-	sub rsp, byte 0x8
-	lea rax, [rel entity]
-	mov rsi, rax
-	lea rax, [rel entity]
-	mov rdi, rax
-	call game_fn_define_y wrt ..plt
-	add rsp, byte 0x8
-	ret
 
 global init_globals
 init_globals:

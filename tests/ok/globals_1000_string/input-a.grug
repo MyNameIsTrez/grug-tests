@@ -1,8 +1,3 @@
-define() a {
-    return {
-    }
-}
-
 g1: string = "global0001"
 g2: string = "global0002"
 g3: string = "global0003"

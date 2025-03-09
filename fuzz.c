@@ -1,7 +1,5 @@
 #include "grug.h"
 
-#include "mod_api.h"
-
 #include <dlfcn.h>
 #include <err.h>
 #include <errno.h>

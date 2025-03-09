@@ -1,0 +1,4 @@
+on_a() {
+    spawn("foo")
+    spawn("foo")
+}
