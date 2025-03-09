@@ -1,9 +1,0 @@
-define() d {
-    return {
-    }
-}
-
-a: i32 = 0
-on_a() {
-    nothing()
-}

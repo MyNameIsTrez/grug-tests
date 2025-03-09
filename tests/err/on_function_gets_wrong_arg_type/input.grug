@@ -1,8 +1,0 @@
-define() f {
-    return {
-    }
-}
-
-on_a(x: string) {
-    nothing()
-}

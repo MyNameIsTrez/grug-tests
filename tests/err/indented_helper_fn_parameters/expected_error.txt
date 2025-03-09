@@ -1,1 +1,1 @@
-Expected token type CLOSE_PARENTHESIS_TOKEN, but got NEWLINE_TOKEN on line 10
+Expected token type CLOSE_PARENTHESIS_TOKEN, but got NEWLINE_TOKEN on line 5

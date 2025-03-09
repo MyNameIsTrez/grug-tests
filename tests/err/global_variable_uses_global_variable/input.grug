@@ -1,7 +1,0 @@
-define() a {
-    return {
-    }
-}
-
-foo: i32 = 42
-bar: i32 = foo

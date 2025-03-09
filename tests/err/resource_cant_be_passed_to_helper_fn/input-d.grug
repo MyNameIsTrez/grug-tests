@@ -1,0 +1,7 @@
+on_a() {
+    helper_foo("resource_and_on_fn/foo.txt")
+}
+
+helper_foo(r: resource) {
+    draw(r)
+}

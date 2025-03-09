@@ -1,5 +1,0 @@
-define() u {
-    return {
-        .sprite_path = "resource_cant_refer_to_current_directory/.",
-    }
-}

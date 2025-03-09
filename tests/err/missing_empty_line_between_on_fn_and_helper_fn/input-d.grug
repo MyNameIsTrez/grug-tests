@@ -1,0 +1,6 @@
+on_a() {
+    nothing()
+}
+helper_a() {
+    nothing()
+}

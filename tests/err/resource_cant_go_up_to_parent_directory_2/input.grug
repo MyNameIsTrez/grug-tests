@@ -1,5 +1,0 @@
-define() u {
-    return {
-        .sprite_path = "../err",
-    }
-}

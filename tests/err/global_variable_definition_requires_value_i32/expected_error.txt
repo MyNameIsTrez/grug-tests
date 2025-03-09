@@ -1,1 +1,1 @@
-The global variable 'foo' was not assigned a value on line 6
+The global variable 'foo' was not assigned a value on line 1

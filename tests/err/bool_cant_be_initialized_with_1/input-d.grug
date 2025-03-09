@@ -1,0 +1,6 @@
+on_a() {
+    boolean: bool = 1
+    if (boolean) {
+        nothing()
+    }
+}

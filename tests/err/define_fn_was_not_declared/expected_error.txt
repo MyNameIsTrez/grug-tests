@@ -1,1 +1,0 @@
-The entity 'lol' was not declared by mod_api.json

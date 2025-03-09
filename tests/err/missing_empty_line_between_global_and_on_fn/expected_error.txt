@@ -1,1 +1,1 @@
-Expected an empty line, on line 7
+Expected an empty line, on line 2

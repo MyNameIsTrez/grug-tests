@@ -1,1 +1,0 @@
-Every grug file requires exactly one define function

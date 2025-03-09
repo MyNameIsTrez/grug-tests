@@ -1,0 +1,3 @@
+on_a() {
+    draw("./resource_cant_refer_to_current_directory")
+}

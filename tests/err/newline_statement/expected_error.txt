@@ -1,1 +1,1 @@
-Expected token type NEWLINE_TOKEN, but got INDENTATION_TOKEN on line 8
+Expected token type NEWLINE_TOKEN, but got INDENTATION_TOKEN on line 3

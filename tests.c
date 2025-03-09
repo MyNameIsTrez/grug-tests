@@ -2469,32 +2469,6 @@ static void ok_comment_above_block_twice(void *on_fns, void *g, size_t resources
 	assert(entity_types == NULL);
 }
 
-static void ok_comment_above_define_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	free(g);
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_comment_above_define_fn_twice(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	free(g);
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
 static void ok_comment_above_globals(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	(void)on_fns;
 
@@ -2971,6 +2945,19 @@ static void ok_else_true(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entities == NULL);
 	assert(entity_types == NULL);
 }
+
+// static void ok_empty_file(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+// 	(void)on_fns;
+
+// 	free(g);
+
+// 	assert(resources_size == 0);
+// 	assert(resources == NULL);
+
+// 	assert(entities_size == 0);
+// 	assert(entities == NULL);
+// 	assert(entity_types == NULL);
+// }
 
 static void ok_empty_line(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
@@ -5378,105 +5365,6 @@ static void ok_stack_16_byte_alignment_midway(void *on_fns, void *g, size_t reso
 	assert(entity_types == NULL);
 }
 
-static void ok_spill_args_to_define_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	assert(game_fn_define_c2_i1 == 1);
-	assert(game_fn_define_c2_i2 == 2);
-	assert(game_fn_define_c2_i3 == 3);
-	assert(game_fn_define_c2_i4 == 4);
-	assert(game_fn_define_c2_i5 == 5);
-	assert(game_fn_define_c2_i6 == 6);
-	assert(game_fn_define_c2_i7 == 7);
-	assert(game_fn_define_c2_f1 == 1.0f);
-	assert(game_fn_define_c2_f2 == 2.0f);
-	assert(game_fn_define_c2_f3 == 3.0f);
-	assert(game_fn_define_c2_f4 == 4.0f);
-	assert(game_fn_define_c2_f5 == 5.0f);
-	assert(game_fn_define_c2_f6 == 6.0f);
-	assert(game_fn_define_c2_f7 == 7.0f);
-	assert(game_fn_define_c2_f8 == 8.0f);
-	assert(game_fn_define_c2_f9 == 9.0f);
-	assert(game_fn_define_c2_i8 == 8);
-	assert(game_fn_define_c2_f10 == 10.0f);
-
-	free(g);
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_spill_args_to_define_fn_32_bit_add(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	assert(game_fn_define_e2_i1 == 1);
-	assert(game_fn_define_e2_i2 == 2);
-	assert(game_fn_define_e2_i3 == 3);
-	assert(game_fn_define_e2_i4 == 4);
-	assert(game_fn_define_e2_i5 == 5);
-	assert(game_fn_define_e2_i6 == 6);
-	assert(game_fn_define_e2_i7 == 7);
-	assert(game_fn_define_e2_i8 == 8);
-	assert(game_fn_define_e2_i9 == 9);
-	assert(game_fn_define_e2_i10 == 10);
-	assert(game_fn_define_e2_i11 == 11);
-	assert(game_fn_define_e2_i12 == 12);
-	assert(game_fn_define_e2_i13 == 13);
-	assert(game_fn_define_e2_i14 == 14);
-	assert(game_fn_define_e2_i15 == 15);
-	assert(game_fn_define_e2_i16 == 16);
-	assert(game_fn_define_e2_i17 == 17);
-	assert(game_fn_define_e2_i18 == 18);
-	assert(game_fn_define_e2_i19 == 19);
-	assert(game_fn_define_e2_i20 == 20);
-	assert(game_fn_define_e2_i21 == 21);
-	assert(game_fn_define_e2_i22 == 22);
-
-	free(g);
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_spill_args_to_define_fn_subless(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	assert(game_fn_define_d2_i1 == 1);
-	assert(game_fn_define_d2_i2 == 2);
-	assert(game_fn_define_d2_i3 == 3);
-	assert(game_fn_define_d2_i4 == 4);
-	assert(game_fn_define_d2_i5 == 5);
-	assert(game_fn_define_d2_i6 == 6);
-	assert(game_fn_define_d2_i7 == 7);
-	assert(game_fn_define_d2_f1 == 1.0f);
-	assert(game_fn_define_d2_f2 == 2.0f);
-	assert(game_fn_define_d2_f3 == 3.0f);
-	assert(game_fn_define_d2_f4 == 4.0f);
-	assert(game_fn_define_d2_f5 == 5.0f);
-	assert(game_fn_define_d2_f6 == 6.0f);
-	assert(game_fn_define_d2_f7 == 7.0f);
-	assert(game_fn_define_d2_f8 == 8.0f);
-	assert(game_fn_define_d2_i8 == 8);
-	assert(game_fn_define_d2_f9 == 9.0f);
-
-	free(g);
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
 static void ok_spill_args_to_game_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_motherload_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -6074,26 +5962,6 @@ static void ok_variable(void *on_fns, void *g, size_t resources_size, char **res
 	assert(entity_types == NULL);
 }
 
-static void ok_variable_does_not_shadow_define_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_initialize_call_count == 0);
-	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_initialize_call_count == 1);
-
-	free(g);
-
-	assert(game_fn_initialize_x == 42);
-
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/variable_does_not_shadow_define_fn/input.grug"));
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
 static void ok_variable_reassignment(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -6105,26 +5973,6 @@ static void ok_variable_reassignment(void *on_fns, void *g, size_t resources_siz
 
 	assert(streq(grug_on_fn_name, "on_a"));
 	assert(streq(grug_on_fn_path, "tests/ok/variable_reassignment/input.grug"));
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_variable_shadows_define_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_initialize_call_count == 0);
-	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_initialize_call_count == 1);
-
-	free(g);
-
-	assert(game_fn_initialize_x == 42);
-
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/variable_shadows_define_fn/input.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -6318,28 +6166,13 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(bool_unary_minus, "d");
 	ADD_TEST_ERROR(cant_add_strings, "d");
 	ADD_TEST_ERROR(cant_break_outside_of_loop, "d");
-	ADD_TEST_ERROR(cant_call_define_fn_1, "d");
-	ADD_TEST_ERROR(cant_call_define_fn_2, "d");
 	ADD_TEST_ERROR(cant_continue_outside_of_loop, "d");
-	ADD_TEST_ERROR(cant_declare_me_globally, "d");
+	ADD_TEST_ERROR(cant_declare_me_globally, "a");
 	ADD_TEST_ERROR(cant_declare_me_locally, "d");
 	ADD_TEST_ERROR(cant_declare_variable_in_fn_call, "d");
 	ADD_TEST_ERROR(cant_redefine_global, "d");
 	ADD_TEST_ERROR(comment_at_the_end_of_another_statement, "d");
-	ADD_TEST_ERROR(comment_at_the_end_of_define, "d");
-	ADD_TEST_ERROR(comment_lone_global_at_end, "d");
-	ADD_TEST_ERROR(define_fn_calls_fn, "d");
-	ADD_TEST_ERROR(define_fn_contains_addition, "d");
-	ADD_TEST_ERROR(define_fn_contains_double_negation, "d");
-	ADD_TEST_ERROR(define_fn_contains_not, "d");
-	ADD_TEST_ERROR(define_fn_contains_parentheses, "d");
-	ADD_TEST_ERROR(define_fn_contains_subtraction, "d");
-	ADD_TEST_ERROR(define_fn_different_name, "d");
-	ADD_TEST_ERROR(define_fn_different_type, "d");
-	ADD_TEST_ERROR(define_fn_not_enough_arguments, "d");
-	ADD_TEST_ERROR(define_fn_only_one_max, "d");
-	ADD_TEST_ERROR(define_fn_uses_global_variable, "d");
-	ADD_TEST_ERROR(define_fn_was_not_declared, "d");
+	ADD_TEST_ERROR(comment_lone_global_at_end, "a");
 	ADD_TEST_ERROR(double_negation, "d");
 	ADD_TEST_ERROR(double_not, "d");
 	ADD_TEST_ERROR(empty_helper_fn, "d");
@@ -6372,23 +6205,22 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(game_function_call_no_args_expected, "d");
 	ADD_TEST_ERROR(global_variable_after_on_fns, "d");
 	ADD_TEST_ERROR(global_variable_already_uses_local_variable_name, "d");
-	ADD_TEST_ERROR(global_variable_before_define, "d");
-	ADD_TEST_ERROR(global_variable_calls_fn, "d");
-	ADD_TEST_ERROR(global_variable_contains_addition, "d");
-	ADD_TEST_ERROR(global_variable_contains_double_negation, "d");
-	ADD_TEST_ERROR(global_variable_contains_double_not, "d");
-	ADD_TEST_ERROR(global_variable_contains_entity, "d");
-	ADD_TEST_ERROR(global_variable_contains_not, "d");
-	ADD_TEST_ERROR(global_variable_contains_parentheses, "d");
-	ADD_TEST_ERROR(global_variable_contains_resource, "d");
-	ADD_TEST_ERROR(global_variable_contains_subtraction, "d");
-	ADD_TEST_ERROR(global_variable_definition_cant_use_itself, "d");
-	ADD_TEST_ERROR(global_variable_definition_missing_type, "d");
+	ADD_TEST_ERROR(global_variable_calls_fn, "a");
+	ADD_TEST_ERROR(global_variable_contains_addition, "a");
+	ADD_TEST_ERROR(global_variable_contains_double_negation, "a");
+	ADD_TEST_ERROR(global_variable_contains_double_not, "a");
+	ADD_TEST_ERROR(global_variable_contains_entity, "a");
+	ADD_TEST_ERROR(global_variable_contains_not, "a");
+	ADD_TEST_ERROR(global_variable_contains_parentheses, "a");
+	ADD_TEST_ERROR(global_variable_contains_resource, "a");
+	ADD_TEST_ERROR(global_variable_contains_subtraction, "a");
+	ADD_TEST_ERROR(global_variable_definition_cant_use_itself, "a");
+	ADD_TEST_ERROR(global_variable_definition_missing_type, "a");
 	ADD_TEST_ERROR(global_variable_definition_requires_value_i32, "d");
 	ADD_TEST_ERROR(global_variable_definition_requires_value_string, "d");
-	ADD_TEST_ERROR(global_variable_uses_global_variable, "d");
+	ADD_TEST_ERROR(global_variable_uses_global_variable, "a");
 	ADD_TEST_ERROR(helper_fn_defined_before_first_helper_fn_usage, "d");
-	ADD_TEST_ERROR(helper_fn_defined_between_on_fns, "d");
+	ADD_TEST_ERROR(helper_fn_defined_between_on_fns, "e");
 	ADD_TEST_ERROR(helper_fn_does_not_exist, "d");
 	ADD_TEST_ERROR(helper_fn_duplicate, "d");
 	ADD_TEST_ERROR(helper_fn_is_not_called_1, "d");
@@ -6410,8 +6242,8 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(indented_call_arguments, "d");
 	ADD_TEST_ERROR(indented_helper_fn_parameter, "d");
 	ADD_TEST_ERROR(indented_helper_fn_parameters, "d");
-	ADD_TEST_ERROR(indented_on_fn_parameter, "d");
-	ADD_TEST_ERROR(indented_on_fn_parameters, "d");
+	ADD_TEST_ERROR(indented_on_fn_parameter, "f");
+	ADD_TEST_ERROR(indented_on_fn_parameters, "g");
 	ADD_TEST_ERROR(indentation_going_down_by_2, "d");
 	ADD_TEST_ERROR(local_variable_already_exists, "d");
 	ADD_TEST_ERROR(local_variable_definition_cant_use_itself, "d");
@@ -6422,8 +6254,6 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(me_cant_be_written_to, "d");
 	ADD_TEST_ERROR(me_plus_1, "d");
 	ADD_TEST_ERROR(me_plus_me, "d");
-	ADD_TEST_ERROR(missing_define_fn, "d");
-	ADD_TEST_ERROR(missing_empty_line_between_define_fn_and_global, "d");
 	ADD_TEST_ERROR(missing_empty_line_between_global_and_on_fn, "d");
 	ADD_TEST_ERROR(missing_empty_line_between_on_fn_and_helper_fn, "d");
 	ADD_TEST_ERROR(newline_statement, "d");
@@ -6431,16 +6261,15 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(not_followed_by_negation, "d");
 	ADD_TEST_ERROR(null_id_plus_1, "d");
 	ADD_TEST_ERROR(null_id_plus_null_id, "d");
-	ADD_TEST_ERROR(on_fn_before_define, "d");
 	ADD_TEST_ERROR(on_fn_cant_be_called_by_helper_fn, "d");
 	ADD_TEST_ERROR(on_fn_cant_be_called_by_on_fn, "d");
 	ADD_TEST_ERROR(on_fn_defined_after_helper_fn, "d");
 	ADD_TEST_ERROR(on_fn_duplicate, "d");
-	ADD_TEST_ERROR(on_fn_was_not_declared_in_entity, "d");
-	ADD_TEST_ERROR(on_fn_wrong_order, "d");
-	ADD_TEST_ERROR(on_function_gets_wrong_arg_type, "d");
-	ADD_TEST_ERROR(on_function_less_args_expected, "d");
-	ADD_TEST_ERROR(on_function_more_args_expected, "d");
+	ADD_TEST_ERROR(on_fn_was_not_declared_in_entity, "a");
+	ADD_TEST_ERROR(on_fn_wrong_order, "e");
+	ADD_TEST_ERROR(on_function_gets_wrong_arg_type, "f");
+	ADD_TEST_ERROR(on_function_less_args_expected, "f");
+	ADD_TEST_ERROR(on_function_more_args_expected, "g");
 	ADD_TEST_ERROR(on_function_no_args_expected, "d");
 	ADD_TEST_ERROR(on_function_no_return_value_expected, "d");
 	ADD_TEST_ERROR(pass_bool_to_i32_game_param, "d");
@@ -6460,7 +6289,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(resource_cant_refer_to_current_directory_2, "d");
 	ADD_TEST_ERROR(resource_cant_refer_to_current_directory_3, "d");
 	ADD_TEST_ERROR(resource_cant_refer_to_current_directory_4, "d");
-	ADD_TEST_ERROR(resource_type_for_global, "d");
+	ADD_TEST_ERROR(resource_type_for_global, "a");
 	ADD_TEST_ERROR(resource_type_for_helper_fn_argument, "d");
 	ADD_TEST_ERROR(resource_type_for_helper_fn_return_type, "d");
 	ADD_TEST_ERROR(resource_type_for_local, "d");
@@ -6468,7 +6297,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(string_pointer_arithmetic, "d");
 	ADD_TEST_ERROR(trailing_space_in_comment, "d");
 	ADD_TEST_ERROR(unary_plus_does_not_exist, "d");
-	ADD_TEST_ERROR(unclosed_double_quote, "d");
+	ADD_TEST_ERROR(unclosed_double_quote, "a");
 	ADD_TEST_ERROR(unknown_variable, "d");
 	ADD_TEST_ERROR(unused_expr_result, "d");
 	ADD_TEST_ERROR(variable_assignment_before_definition, "d");
@@ -6521,8 +6350,6 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(calls_in_call, "d", 8);
 	ADD_TEST_OK(comment_above_block, "d", 8);
 	ADD_TEST_OK(comment_above_block_twice, "d", 8);
-	ADD_TEST_OK(comment_above_define_fn, "d", 8);
-	ADD_TEST_OK(comment_above_define_fn_twice, "d", 8);
 	ADD_TEST_OK(comment_above_globals, "d", 20);
 	ADD_TEST_OK(comment_above_helper_fn, "d", 8);
 	ADD_TEST_OK(comment_above_on_fn, "d", 8);
@@ -6549,6 +6376,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(else_if_false, "d", 8);
 	ADD_TEST_OK(else_if_true, "d", 8);
 	ADD_TEST_OK(else_true, "d", 8);
+	// ADD_TEST_OK(empty_file, "a", 8);
 	ADD_TEST_OK(empty_line, "d", 8);
 	ADD_TEST_OK(entity_and_on_fn, "z", 8);
 	ADD_TEST_OK(entity_and_resource_as_subexpression, "d", 8);
@@ -6673,9 +6501,6 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(same_variable_name_in_different_functions, "e", 8);
 	ADD_TEST_OK(stack_16_byte_alignment, "d", 8);
 	ADD_TEST_OK(stack_16_byte_alignment_midway, "d", 8);
-	ADD_TEST_OK(spill_args_to_define_fn, "c2", 8);
-	ADD_TEST_OK(spill_args_to_define_fn_32_bit_add, "e2", 8);
-	ADD_TEST_OK(spill_args_to_define_fn_subless, "d2", 8);
 	ADD_TEST_OK(spill_args_to_game_fn, "d", 8);
 	ADD_TEST_OK(spill_args_to_game_fn_subless, "d", 8);
 	ADD_TEST_OK(spill_args_to_helper_fn, "d", 12);
@@ -6698,9 +6523,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(subtraction_negative_result, "d", 8);
 	ADD_TEST_OK(subtraction_positive_result, "d", 8);
 	ADD_TEST_OK(variable, "d", 8);
-	ADD_TEST_OK(variable_does_not_shadow_define_fn, "d", 8);
 	ADD_TEST_OK(variable_reassignment, "d", 8);
-	ADD_TEST_OK(variable_shadows_define_fn, "d", 8);
 	ADD_TEST_OK(variable_shadows_game_fn, "d", 8);
 	ADD_TEST_OK(variable_shadows_helper_fn, "d", 8);
 	ADD_TEST_OK(variable_shadows_on_fn_1, "d", 8);

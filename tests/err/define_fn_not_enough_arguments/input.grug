@@ -1,5 +1,0 @@
-define() c {
-    return {
-        .x = 42,
-    }
-}

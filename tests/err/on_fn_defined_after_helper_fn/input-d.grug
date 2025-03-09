@@ -1,0 +1,6 @@
+helper_foo() {
+}
+
+on_a() {
+    helper_foo()
+}

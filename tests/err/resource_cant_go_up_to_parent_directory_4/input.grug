@@ -1,5 +1,0 @@
-define() u {
-    return {
-        .sprite_path = "resource_cant_go_up_to_parent_directory_4/../resource_cant_go_up_to_parent_directory_4",
-    }
-}

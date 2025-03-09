@@ -1,1 +1,0 @@
-Mods aren't allowed to call their own define function

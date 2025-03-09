@@ -1,1 +1,1 @@
-Expected token type CLOSE_PARENTHESIS_TOKEN, but got COLON_TOKEN on line 7
+Expected token type CLOSE_PARENTHESIS_TOKEN, but got COLON_TOKEN on line 2

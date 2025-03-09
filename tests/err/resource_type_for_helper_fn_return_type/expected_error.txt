@@ -1,1 +1,1 @@
-The helper function 'helper_foo' can't have 'resource' as its return type
+The function 'helper_foo' can't have 'resource' as its return type

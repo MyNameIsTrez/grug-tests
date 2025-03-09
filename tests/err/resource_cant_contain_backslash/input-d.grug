@@ -1,0 +1,3 @@
+on_a() {
+    draw("resource_cant_contain_backslash\input.grug")
+}

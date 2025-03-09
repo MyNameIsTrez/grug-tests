@@ -1,1 +1,1 @@
-The variable 'foo' was not assigned a value on line 7
+The variable 'foo' was not assigned a value on line 2

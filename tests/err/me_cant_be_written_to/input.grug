@@ -1,8 +1,0 @@
-define() d {
-    return {
-    }
-}
-
-on_a() {
-    me = get_opponent()
-}

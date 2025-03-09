@@ -1,7 +1,0 @@
-foo: i32 = 0
-
-define() h {
-    return {
-        .x = 42,
-    }
-}

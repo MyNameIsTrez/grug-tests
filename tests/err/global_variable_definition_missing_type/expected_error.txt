@@ -1,1 +1,1 @@
-Unexpected token 'foo' on line 6
+Unexpected token 'foo' on line 1

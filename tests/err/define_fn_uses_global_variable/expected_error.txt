@@ -1,1 +1,0 @@
-The define function isn't allowed to use global variables

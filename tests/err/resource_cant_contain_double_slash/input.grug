@@ -1,5 +1,0 @@
-define() u {
-    return {
-        .sprite_path = "resource_cant_contain_double_slash//input.grug",
-    }
-}

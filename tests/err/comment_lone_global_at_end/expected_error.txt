@@ -1,1 +1,1 @@
-token_index 20 was out of bounds in peek_token()
+token_index 1 was out of bounds in peek_token()

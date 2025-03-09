@@ -1,0 +1,5 @@
+a: f32 = false
+
+on_a() {
+    nothing()
+}

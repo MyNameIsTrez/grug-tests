@@ -1,1 +1,1 @@
-Expected token type INDENTATION_TOKEN, but got CLOSE_BRACE_TOKEN on line 8
+Expected token type INDENTATION_TOKEN, but got CLOSE_BRACE_TOKEN on line 3

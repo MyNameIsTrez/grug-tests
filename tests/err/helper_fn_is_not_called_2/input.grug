@@ -1,8 +1,0 @@
-define() d {
-    return {
-    }
-}
-
-helper_foo() {
-    helper_foo()
-}
