@@ -1,8 +1,5 @@
 section .data
 
-global define_type
-define_type: db "d", 0
-
 align 8
 global globals_size
 globals_size: dq 8
@@ -12,7 +9,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/err_runtime/time_limit_exceeded_fibonacci/input.grug", 0
+	db "tests/err_runtime/time_limit_exceeded_fibonacci/input-d.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -36,19 +33,11 @@ extern grug_runtime_error_jmp_buffer
 extern grug_on_fn_path
 extern grug_on_fns_in_safe_mode
 extern grug_current_time
-extern game_fn_define_d
 extern clock_gettime
 extern setjmp
 extern grug_get_runtime_error_reason
 extern game_fn_initialize
 extern longjmp
-
-global define
-define:
-	sub rsp, byte 0x8
-	call game_fn_define_d wrt ..plt
-	add rsp, byte 0x8
-	ret
 
 global init_globals
 init_globals:
