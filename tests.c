@@ -108,7 +108,6 @@ struct runtime_error_test_data {
 	char *dump_path;
 	char *applied_path;
 	char *failed_file_path;
-	char *expected_define_type_str;
 	size_t expected_globals_size_value;
 };
 static struct runtime_error_test_data runtime_error_test_datas[420420];
@@ -132,7 +131,6 @@ struct ok_test_data {
 	char *dump_path;
 	char *applied_path;
 	char *failed_file_path;
-	char *expected_define_type_str;
 	size_t expected_globals_size_value;
 };
 static struct ok_test_data ok_test_datas[420420];
@@ -1058,11 +1056,11 @@ static bool is_whitelisted_test(char *name) {
 	return false;
 }
 
-#define ADD_TEST_ERROR(test_name) {\
+#define ADD_TEST_ERROR(test_name, entity_type) {\
 	if (whitelisted_tests_size == 0 || is_whitelisted_test(#test_name)) {\
 		error_test_datas[error_test_datas_size++] = (struct error_test_data){\
 			.test_name_str = #test_name,\
-			.grug_path = "tests/err/"#test_name"/input.grug",\
+			.grug_path = "tests/err/"#test_name"/input-"entity_type".grug",\
 			.expected_error_path = "tests/err/"#test_name"/expected_error.txt",\
 			.results_path = "tests/err/"#test_name"/results",\
 			.output_dll_path = "tests/err/"#test_name"/results/output.so",\
@@ -1072,12 +1070,12 @@ static bool is_whitelisted_test(char *name) {
 	}\
 }
 
-#define ADD_TEST_RUNTIME_ERROR(test_name, expected_define_type, expected_globals_size) {\
+#define ADD_TEST_RUNTIME_ERROR(test_name, entity_type, expected_globals_size) {\
 	if (whitelisted_tests_size == 0 || is_whitelisted_test(#test_name)) {\
 		runtime_error_test_datas[runtime_error_test_datas_size++] = (struct runtime_error_test_data){\
 			.run = runtime_error_##test_name,\
 			.test_name_str = #test_name,\
-			.grug_path = "tests/err_runtime/"#test_name"/input.grug",\
+			.grug_path = "tests/err_runtime/"#test_name"/input-"entity_type".grug",\
 			.nasm_path = "tests/err_runtime/"#test_name"/input.s",\
 			.expected_error_path = "tests/err_runtime/"#test_name"/expected_error.txt",\
 			.results_path = "tests/err_runtime/"#test_name"/results",\
@@ -1093,18 +1091,17 @@ static bool is_whitelisted_test(char *name) {
 			.dump_path = "tests/err_runtime/"#test_name"/results/dump.json",\
 			.applied_path = "tests/err_runtime/"#test_name"/results/applied.grug",\
 			.failed_file_path = "tests/err_runtime/"#test_name"/results/failed",\
-			.expected_define_type_str = expected_define_type,\
 			.expected_globals_size_value = expected_globals_size\
 		};\
 	}\
 }
 
-#define ADD_TEST_OK(test_name, expected_define_type, expected_globals_size) {\
+#define ADD_TEST_OK(test_name, entity_type, expected_globals_size) {\
 	if (whitelisted_tests_size == 0 || is_whitelisted_test(#test_name)) {\
 		ok_test_datas[ok_test_datas_size++] = (struct ok_test_data){\
 			.run = ok_##test_name,\
 			.test_name_str = #test_name,\
-			.grug_path = "tests/ok/"#test_name"/input.grug",\
+			.grug_path = "tests/ok/"#test_name"/input-"entity_type".grug",\
 			.nasm_path = "tests/ok/"#test_name"/input.s",\
 			.results_path = "tests/ok/"#test_name"/results",\
 			.output_dll_path = "tests/ok/"#test_name"/results/output.so",\
@@ -1119,7 +1116,6 @@ static bool is_whitelisted_test(char *name) {
 			.dump_path = "tests/ok/"#test_name"/results/dump.json",\
 			.applied_path = "tests/ok/"#test_name"/results/applied.grug",\
 			.failed_file_path = "tests/ok/"#test_name"/results/failed",\
-			.expected_define_type_str = expected_define_type,\
 			.expected_globals_size_value = expected_globals_size\
 		};\
 	}\
@@ -1553,7 +1549,6 @@ static struct test_data get_expected_test_data(
 	char *expected_readelf_path,
 	char *expected_objdump_path,
 	char *failed_file_path,
-	char *expected_define_type,
 	size_t expected_globals_size
 ) {
 	reset_call_counts();
@@ -1570,20 +1565,17 @@ static struct test_data get_expected_test_data(
 		handle_dlerror("dlopen");
 	}
 
-	assert(streq(get(dll, "define_type"), expected_define_type));
-
-	#pragma GCC diagnostic push
-	#pragma GCC diagnostic ignored "-Wpedantic"
-	grug_define_fn_t define = get(dll, "define");
-	define();
-
 	size_t globals_size = *(size_t *)get(dll, "globals_size");
 	assert(globals_size == expected_globals_size);
 
 	void *g = malloc(globals_size);
+
+	#pragma GCC diagnostic push
+	#pragma GCC diagnostic ignored "-Wpedantic"
 	grug_init_globals_fn_t init_globals = get(dll, "init_globals");
-	init_globals(g, 42);
 	#pragma GCC diagnostic pop
+
+	init_globals(g, 42);
 
 	void *on_fns = dlsym(dll, "on_fns");
 
@@ -1632,7 +1624,6 @@ static struct test_data runtime_error_prologue(
 	char *expected_readelf_path,
 	char *expected_objdump_path,
 	char *failed_file_path,
-	char *expected_define_type,
 	size_t expected_globals_size
 ) {
 	if (failed_file_doesnt_exist(failed_file_path)
@@ -1653,7 +1644,7 @@ static struct test_data runtime_error_prologue(
 
 	printf("Running tests/err_runtime/%s...\n", test_name);
 
-	return get_expected_test_data(nasm_path, results_path, expected_dll_path, nasm_o_path, expected_xxd_path, expected_readelf_path, expected_objdump_path, failed_file_path, expected_define_type, expected_globals_size);
+	return get_expected_test_data(nasm_path, results_path, expected_dll_path, nasm_o_path, expected_xxd_path, expected_readelf_path, expected_objdump_path, failed_file_path, expected_globals_size);
 }
 
 static bool had_runtime_error = false;
@@ -1754,10 +1745,10 @@ static void runtime_error_all(void *on_fns, void *g, size_t resources_size, char
 	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_DIVISION_BY_ZERO)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
-	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/all/input.grug"));
+	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/all/input-d.grug"));
 
 	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/all/input.grug"));
+	assert(streq(grug_on_fn_path, "tests/err_runtime/all/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2081,7 +2072,6 @@ static struct test_data ok_prologue(
 	char *expected_readelf_path,
 	char *expected_objdump_path,
 	char *failed_file_path,
-	char *expected_define_type,
 	size_t expected_globals_size
 ) {
 	if (failed_file_doesnt_exist(failed_file_path)
@@ -2101,7 +2091,7 @@ static struct test_data ok_prologue(
 
 	printf("Running tests/ok/%s...\n", test_name);
 
-	return get_expected_test_data(nasm_path, results_path, expected_dll_path, nasm_o_path, expected_xxd_path, expected_readelf_path, expected_objdump_path, failed_file_path, expected_define_type, expected_globals_size);
+	return get_expected_test_data(nasm_path, results_path, expected_dll_path, nasm_o_path, expected_xxd_path, expected_readelf_path, expected_objdump_path, failed_file_path, expected_globals_size);
 }
 
 static void ok_addition_as_argument(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
@@ -2114,7 +2104,7 @@ static void ok_addition_as_argument(void *on_fns, void *g, size_t resources_size
 	assert(game_fn_initialize_x == 3);
 
 	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/addition_as_argument/input.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/addition_as_argument/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -6322,174 +6312,174 @@ static void ok_write_to_global_variable(void *on_fns, void *g, size_t resources_
 }
 
 static void add_error_tests(void) {
-	ADD_TEST_ERROR(assign_to_unknown_variable);
-	ADD_TEST_ERROR(assignment_isnt_expression);
-	ADD_TEST_ERROR(bool_cant_be_initialized_with_1);
-	ADD_TEST_ERROR(bool_unary_minus);
-	ADD_TEST_ERROR(cant_add_strings);
-	ADD_TEST_ERROR(cant_break_outside_of_loop);
-	ADD_TEST_ERROR(cant_call_define_fn_1);
-	ADD_TEST_ERROR(cant_call_define_fn_2);
-	ADD_TEST_ERROR(cant_continue_outside_of_loop);
-	ADD_TEST_ERROR(cant_declare_me_globally);
-	ADD_TEST_ERROR(cant_declare_me_locally);
-	ADD_TEST_ERROR(cant_declare_variable_in_fn_call);
-	ADD_TEST_ERROR(cant_redefine_global);
-	ADD_TEST_ERROR(comment_at_the_end_of_another_statement);
-	ADD_TEST_ERROR(comment_at_the_end_of_define);
-	ADD_TEST_ERROR(comment_lone_global_at_end);
-	ADD_TEST_ERROR(define_fn_calls_fn);
-	ADD_TEST_ERROR(define_fn_contains_addition);
-	ADD_TEST_ERROR(define_fn_contains_double_negation);
-	ADD_TEST_ERROR(define_fn_contains_not);
-	ADD_TEST_ERROR(define_fn_contains_parentheses);
-	ADD_TEST_ERROR(define_fn_contains_subtraction);
-	ADD_TEST_ERROR(define_fn_different_name);
-	ADD_TEST_ERROR(define_fn_different_type);
-	ADD_TEST_ERROR(define_fn_not_enough_arguments);
-	ADD_TEST_ERROR(define_fn_only_one_max);
-	ADD_TEST_ERROR(define_fn_uses_global_variable);
-	ADD_TEST_ERROR(define_fn_was_not_declared);
-	ADD_TEST_ERROR(double_negation);
-	ADD_TEST_ERROR(double_not);
-	ADD_TEST_ERROR(empty_helper_fn);
-	ADD_TEST_ERROR(empty_line_after_group);
-	ADD_TEST_ERROR(empty_line_at_start_of_file);
-	ADD_TEST_ERROR(empty_line_before_group);
-	ADD_TEST_ERROR(empty_line_fn_group);
-	ADD_TEST_ERROR(empty_line_twice_at_end_of_file);
-	ADD_TEST_ERROR(empty_line_twice_between_local_statements);
-	ADD_TEST_ERROR(empty_line_while_group);
-	ADD_TEST_ERROR(empty_on_fn);
-	ADD_TEST_ERROR(entity_cant_be_empty_string);
-	ADD_TEST_ERROR(entity_cant_be_passed_to_helper_fn);
-	ADD_TEST_ERROR(entity_has_invalid_entity_name_colon);
-	ADD_TEST_ERROR(entity_has_invalid_entity_name_uppercase);
-	ADD_TEST_ERROR(entity_has_invalid_mod_name_uppercase);
-	ADD_TEST_ERROR(entity_mod_name_and_entity_name_is_missing);
-	ADD_TEST_ERROR(entity_mod_name_cant_be_current_mod);
-	ADD_TEST_ERROR(entity_mod_name_is_missing);
-	ADD_TEST_ERROR(entity_name_is_missing);
-	ADD_TEST_ERROR(f32_missing_digit_after_decimal_point);
-	ADD_TEST_ERROR(f32_too_big);
-	ADD_TEST_ERROR(f32_too_close_to_zero_negative);
-	ADD_TEST_ERROR(f32_too_close_to_zero_positive);
-	ADD_TEST_ERROR(f32_too_small);
-	ADD_TEST_ERROR(game_fn_does_not_exist);
-	ADD_TEST_ERROR(game_function_call_gets_wrong_arg_type);
-	ADD_TEST_ERROR(game_function_call_less_args_expected);
-	ADD_TEST_ERROR(game_function_call_more_args_expected);
-	ADD_TEST_ERROR(game_function_call_no_args_expected);
-	ADD_TEST_ERROR(global_variable_after_on_fns);
-	ADD_TEST_ERROR(global_variable_already_uses_local_variable_name);
-	ADD_TEST_ERROR(global_variable_before_define);
-	ADD_TEST_ERROR(global_variable_calls_fn);
-	ADD_TEST_ERROR(global_variable_contains_addition);
-	ADD_TEST_ERROR(global_variable_contains_double_negation);
-	ADD_TEST_ERROR(global_variable_contains_double_not);
-	ADD_TEST_ERROR(global_variable_contains_entity);
-	ADD_TEST_ERROR(global_variable_contains_not);
-	ADD_TEST_ERROR(global_variable_contains_parentheses);
-	ADD_TEST_ERROR(global_variable_contains_resource);
-	ADD_TEST_ERROR(global_variable_contains_subtraction);
-	ADD_TEST_ERROR(global_variable_definition_cant_use_itself);
-	ADD_TEST_ERROR(global_variable_definition_missing_type);
-	ADD_TEST_ERROR(global_variable_definition_requires_value_i32);
-	ADD_TEST_ERROR(global_variable_definition_requires_value_string);
-	ADD_TEST_ERROR(global_variable_uses_global_variable);
-	ADD_TEST_ERROR(helper_fn_defined_before_first_helper_fn_usage);
-	ADD_TEST_ERROR(helper_fn_defined_between_on_fns);
-	ADD_TEST_ERROR(helper_fn_does_not_exist);
-	ADD_TEST_ERROR(helper_fn_duplicate);
-	ADD_TEST_ERROR(helper_fn_is_not_called_1);
-	ADD_TEST_ERROR(helper_fn_is_not_called_2);
-	ADD_TEST_ERROR(helper_fn_is_not_called_3);
-	ADD_TEST_ERROR(helper_fn_is_not_called_4);
-	ADD_TEST_ERROR(helper_fn_is_not_called_5);
-	ADD_TEST_ERROR(helper_function_call_gets_wrong_arg_type);
-	ADD_TEST_ERROR(helper_function_call_less_args_expected);
-	ADD_TEST_ERROR(helper_function_call_more_args_expected);
-	ADD_TEST_ERROR(helper_function_call_no_args_expected);
-	ADD_TEST_ERROR(helper_function_different_return_value_expected);
-	ADD_TEST_ERROR(helper_function_missing_return_statement);
-	ADD_TEST_ERROR(helper_function_no_return_value_expected);
-	ADD_TEST_ERROR(i32_logical_not);
-	ADD_TEST_ERROR(i32_too_big);
-	ADD_TEST_ERROR(i32_too_small);
-	ADD_TEST_ERROR(indented_call_argument);
-	ADD_TEST_ERROR(indented_call_arguments);
-	ADD_TEST_ERROR(indented_helper_fn_parameter);
-	ADD_TEST_ERROR(indented_helper_fn_parameters);
-	ADD_TEST_ERROR(indented_on_fn_parameter);
-	ADD_TEST_ERROR(indented_on_fn_parameters);
-	ADD_TEST_ERROR(indentation_going_down_by_2);
-	ADD_TEST_ERROR(local_variable_already_exists);
-	ADD_TEST_ERROR(local_variable_definition_cant_use_itself);
-	ADD_TEST_ERROR(local_variable_definition_missing_type);
-	ADD_TEST_ERROR(max_expr_recursion_depth_exceeded);
-	ADD_TEST_ERROR(max_statement_recursion_depth_exceeded);
-	ADD_TEST_ERROR(me_cant_be_assigned_to_global);
-	ADD_TEST_ERROR(me_cant_be_written_to);
-	ADD_TEST_ERROR(me_plus_1);
-	ADD_TEST_ERROR(me_plus_me);
-	ADD_TEST_ERROR(missing_define_fn);
-	ADD_TEST_ERROR(missing_empty_line_between_define_fn_and_global);
-	ADD_TEST_ERROR(missing_empty_line_between_global_and_on_fn);
-	ADD_TEST_ERROR(missing_empty_line_between_on_fn_and_helper_fn);
-	ADD_TEST_ERROR(newline_statement);
-	ADD_TEST_ERROR(no_space_between_comment_character_and_comment);
-	ADD_TEST_ERROR(not_followed_by_negation);
-	ADD_TEST_ERROR(null_id_plus_1);
-	ADD_TEST_ERROR(null_id_plus_null_id);
-	ADD_TEST_ERROR(on_fn_before_define);
-	ADD_TEST_ERROR(on_fn_cant_be_called_by_helper_fn);
-	ADD_TEST_ERROR(on_fn_cant_be_called_by_on_fn);
-	ADD_TEST_ERROR(on_fn_defined_after_helper_fn);
-	ADD_TEST_ERROR(on_fn_duplicate);
-	ADD_TEST_ERROR(on_fn_was_not_declared_in_entity);
-	ADD_TEST_ERROR(on_fn_wrong_order);
-	ADD_TEST_ERROR(on_function_gets_wrong_arg_type);
-	ADD_TEST_ERROR(on_function_less_args_expected);
-	ADD_TEST_ERROR(on_function_more_args_expected);
-	ADD_TEST_ERROR(on_function_no_args_expected);
-	ADD_TEST_ERROR(on_function_no_return_value_expected);
-	ADD_TEST_ERROR(pass_bool_to_i32_game_param);
-	ADD_TEST_ERROR(pass_bool_to_i32_helper_param);
-	ADD_TEST_ERROR(remainder_by_float);
-	ADD_TEST_ERROR(resource_cant_be_empty_string);
-	ADD_TEST_ERROR(resource_cant_be_passed_to_helper_fn);
-	ADD_TEST_ERROR(resource_cant_contain_backslash);
-	ADD_TEST_ERROR(resource_cant_contain_double_slash);
-	ADD_TEST_ERROR(resource_cant_go_up_to_parent_directory_1);
-	ADD_TEST_ERROR(resource_cant_go_up_to_parent_directory_2);
-	ADD_TEST_ERROR(resource_cant_go_up_to_parent_directory_3);
-	ADD_TEST_ERROR(resource_cant_go_up_to_parent_directory_4);
-	ADD_TEST_ERROR(resource_cant_have_leading_slash);
-	ADD_TEST_ERROR(resource_cant_have_trailing_slash);
-	ADD_TEST_ERROR(resource_cant_refer_to_current_directory_1);
-	ADD_TEST_ERROR(resource_cant_refer_to_current_directory_2);
-	ADD_TEST_ERROR(resource_cant_refer_to_current_directory_3);
-	ADD_TEST_ERROR(resource_cant_refer_to_current_directory_4);
-	ADD_TEST_ERROR(resource_type_for_global);
-	ADD_TEST_ERROR(resource_type_for_helper_fn_argument);
-	ADD_TEST_ERROR(resource_type_for_helper_fn_return_type);
-	ADD_TEST_ERROR(resource_type_for_local);
-	ADD_TEST_ERROR(resource_type_for_on_fn_argument);
-	ADD_TEST_ERROR(string_pointer_arithmetic);
-	ADD_TEST_ERROR(trailing_space_in_comment);
-	ADD_TEST_ERROR(unary_plus_does_not_exist);
-	ADD_TEST_ERROR(unclosed_double_quote);
-	ADD_TEST_ERROR(unknown_variable);
-	ADD_TEST_ERROR(unused_expr_result);
-	ADD_TEST_ERROR(variable_assignment_before_definition);
-	ADD_TEST_ERROR(variable_definition_requires_value_i32);
-	ADD_TEST_ERROR(variable_definition_requires_value_string);
-	ADD_TEST_ERROR(variable_statement_missing_assignment);
-	ADD_TEST_ERROR(variable_used_before_definition);
-	ADD_TEST_ERROR(wrong_type_global_assignment);
-	ADD_TEST_ERROR(wrong_type_global_reassignment);
-	ADD_TEST_ERROR(wrong_type_local_assignment);
-	ADD_TEST_ERROR(wrong_type_local_reassignment);
+	ADD_TEST_ERROR(assign_to_unknown_variable, "d");
+	ADD_TEST_ERROR(assignment_isnt_expression, "d");
+	ADD_TEST_ERROR(bool_cant_be_initialized_with_1, "d");
+	ADD_TEST_ERROR(bool_unary_minus, "d");
+	ADD_TEST_ERROR(cant_add_strings, "d");
+	ADD_TEST_ERROR(cant_break_outside_of_loop, "d");
+	ADD_TEST_ERROR(cant_call_define_fn_1, "d");
+	ADD_TEST_ERROR(cant_call_define_fn_2, "d");
+	ADD_TEST_ERROR(cant_continue_outside_of_loop, "d");
+	ADD_TEST_ERROR(cant_declare_me_globally, "d");
+	ADD_TEST_ERROR(cant_declare_me_locally, "d");
+	ADD_TEST_ERROR(cant_declare_variable_in_fn_call, "d");
+	ADD_TEST_ERROR(cant_redefine_global, "d");
+	ADD_TEST_ERROR(comment_at_the_end_of_another_statement, "d");
+	ADD_TEST_ERROR(comment_at_the_end_of_define, "d");
+	ADD_TEST_ERROR(comment_lone_global_at_end, "d");
+	ADD_TEST_ERROR(define_fn_calls_fn, "d");
+	ADD_TEST_ERROR(define_fn_contains_addition, "d");
+	ADD_TEST_ERROR(define_fn_contains_double_negation, "d");
+	ADD_TEST_ERROR(define_fn_contains_not, "d");
+	ADD_TEST_ERROR(define_fn_contains_parentheses, "d");
+	ADD_TEST_ERROR(define_fn_contains_subtraction, "d");
+	ADD_TEST_ERROR(define_fn_different_name, "d");
+	ADD_TEST_ERROR(define_fn_different_type, "d");
+	ADD_TEST_ERROR(define_fn_not_enough_arguments, "d");
+	ADD_TEST_ERROR(define_fn_only_one_max, "d");
+	ADD_TEST_ERROR(define_fn_uses_global_variable, "d");
+	ADD_TEST_ERROR(define_fn_was_not_declared, "d");
+	ADD_TEST_ERROR(double_negation, "d");
+	ADD_TEST_ERROR(double_not, "d");
+	ADD_TEST_ERROR(empty_helper_fn, "d");
+	ADD_TEST_ERROR(empty_line_after_group, "d");
+	ADD_TEST_ERROR(empty_line_at_start_of_file, "d");
+	ADD_TEST_ERROR(empty_line_before_group, "d");
+	ADD_TEST_ERROR(empty_line_fn_group, "d");
+	ADD_TEST_ERROR(empty_line_twice_at_end_of_file, "d");
+	ADD_TEST_ERROR(empty_line_twice_between_local_statements, "d");
+	ADD_TEST_ERROR(empty_line_while_group, "d");
+	ADD_TEST_ERROR(empty_on_fn, "d");
+	ADD_TEST_ERROR(entity_cant_be_empty_string, "d");
+	ADD_TEST_ERROR(entity_cant_be_passed_to_helper_fn, "d");
+	ADD_TEST_ERROR(entity_has_invalid_entity_name_colon, "d");
+	ADD_TEST_ERROR(entity_has_invalid_entity_name_uppercase, "d");
+	ADD_TEST_ERROR(entity_has_invalid_mod_name_uppercase, "d");
+	ADD_TEST_ERROR(entity_mod_name_and_entity_name_is_missing, "d");
+	ADD_TEST_ERROR(entity_mod_name_cant_be_current_mod, "d");
+	ADD_TEST_ERROR(entity_mod_name_is_missing, "d");
+	ADD_TEST_ERROR(entity_name_is_missing, "d");
+	ADD_TEST_ERROR(f32_missing_digit_after_decimal_point, "d");
+	ADD_TEST_ERROR(f32_too_big, "d");
+	ADD_TEST_ERROR(f32_too_close_to_zero_negative, "d");
+	ADD_TEST_ERROR(f32_too_close_to_zero_positive, "d");
+	ADD_TEST_ERROR(f32_too_small, "d");
+	ADD_TEST_ERROR(game_fn_does_not_exist, "d");
+	ADD_TEST_ERROR(game_function_call_gets_wrong_arg_type, "d");
+	ADD_TEST_ERROR(game_function_call_less_args_expected, "d");
+	ADD_TEST_ERROR(game_function_call_more_args_expected, "d");
+	ADD_TEST_ERROR(game_function_call_no_args_expected, "d");
+	ADD_TEST_ERROR(global_variable_after_on_fns, "d");
+	ADD_TEST_ERROR(global_variable_already_uses_local_variable_name, "d");
+	ADD_TEST_ERROR(global_variable_before_define, "d");
+	ADD_TEST_ERROR(global_variable_calls_fn, "d");
+	ADD_TEST_ERROR(global_variable_contains_addition, "d");
+	ADD_TEST_ERROR(global_variable_contains_double_negation, "d");
+	ADD_TEST_ERROR(global_variable_contains_double_not, "d");
+	ADD_TEST_ERROR(global_variable_contains_entity, "d");
+	ADD_TEST_ERROR(global_variable_contains_not, "d");
+	ADD_TEST_ERROR(global_variable_contains_parentheses, "d");
+	ADD_TEST_ERROR(global_variable_contains_resource, "d");
+	ADD_TEST_ERROR(global_variable_contains_subtraction, "d");
+	ADD_TEST_ERROR(global_variable_definition_cant_use_itself, "d");
+	ADD_TEST_ERROR(global_variable_definition_missing_type, "d");
+	ADD_TEST_ERROR(global_variable_definition_requires_value_i32, "d");
+	ADD_TEST_ERROR(global_variable_definition_requires_value_string, "d");
+	ADD_TEST_ERROR(global_variable_uses_global_variable, "d");
+	ADD_TEST_ERROR(helper_fn_defined_before_first_helper_fn_usage, "d");
+	ADD_TEST_ERROR(helper_fn_defined_between_on_fns, "d");
+	ADD_TEST_ERROR(helper_fn_does_not_exist, "d");
+	ADD_TEST_ERROR(helper_fn_duplicate, "d");
+	ADD_TEST_ERROR(helper_fn_is_not_called_1, "d");
+	ADD_TEST_ERROR(helper_fn_is_not_called_2, "d");
+	ADD_TEST_ERROR(helper_fn_is_not_called_3, "d");
+	ADD_TEST_ERROR(helper_fn_is_not_called_4, "d");
+	ADD_TEST_ERROR(helper_fn_is_not_called_5, "d");
+	ADD_TEST_ERROR(helper_function_call_gets_wrong_arg_type, "d");
+	ADD_TEST_ERROR(helper_function_call_less_args_expected, "d");
+	ADD_TEST_ERROR(helper_function_call_more_args_expected, "d");
+	ADD_TEST_ERROR(helper_function_call_no_args_expected, "d");
+	ADD_TEST_ERROR(helper_function_different_return_value_expected, "d");
+	ADD_TEST_ERROR(helper_function_missing_return_statement, "d");
+	ADD_TEST_ERROR(helper_function_no_return_value_expected, "d");
+	ADD_TEST_ERROR(i32_logical_not, "d");
+	ADD_TEST_ERROR(i32_too_big, "d");
+	ADD_TEST_ERROR(i32_too_small, "d");
+	ADD_TEST_ERROR(indented_call_argument, "d");
+	ADD_TEST_ERROR(indented_call_arguments, "d");
+	ADD_TEST_ERROR(indented_helper_fn_parameter, "d");
+	ADD_TEST_ERROR(indented_helper_fn_parameters, "d");
+	ADD_TEST_ERROR(indented_on_fn_parameter, "d");
+	ADD_TEST_ERROR(indented_on_fn_parameters, "d");
+	ADD_TEST_ERROR(indentation_going_down_by_2, "d");
+	ADD_TEST_ERROR(local_variable_already_exists, "d");
+	ADD_TEST_ERROR(local_variable_definition_cant_use_itself, "d");
+	ADD_TEST_ERROR(local_variable_definition_missing_type, "d");
+	ADD_TEST_ERROR(max_expr_recursion_depth_exceeded, "d");
+	ADD_TEST_ERROR(max_statement_recursion_depth_exceeded, "d");
+	ADD_TEST_ERROR(me_cant_be_assigned_to_global, "d");
+	ADD_TEST_ERROR(me_cant_be_written_to, "d");
+	ADD_TEST_ERROR(me_plus_1, "d");
+	ADD_TEST_ERROR(me_plus_me, "d");
+	ADD_TEST_ERROR(missing_define_fn, "d");
+	ADD_TEST_ERROR(missing_empty_line_between_define_fn_and_global, "d");
+	ADD_TEST_ERROR(missing_empty_line_between_global_and_on_fn, "d");
+	ADD_TEST_ERROR(missing_empty_line_between_on_fn_and_helper_fn, "d");
+	ADD_TEST_ERROR(newline_statement, "d");
+	ADD_TEST_ERROR(no_space_between_comment_character_and_comment, "d");
+	ADD_TEST_ERROR(not_followed_by_negation, "d");
+	ADD_TEST_ERROR(null_id_plus_1, "d");
+	ADD_TEST_ERROR(null_id_plus_null_id, "d");
+	ADD_TEST_ERROR(on_fn_before_define, "d");
+	ADD_TEST_ERROR(on_fn_cant_be_called_by_helper_fn, "d");
+	ADD_TEST_ERROR(on_fn_cant_be_called_by_on_fn, "d");
+	ADD_TEST_ERROR(on_fn_defined_after_helper_fn, "d");
+	ADD_TEST_ERROR(on_fn_duplicate, "d");
+	ADD_TEST_ERROR(on_fn_was_not_declared_in_entity, "d");
+	ADD_TEST_ERROR(on_fn_wrong_order, "d");
+	ADD_TEST_ERROR(on_function_gets_wrong_arg_type, "d");
+	ADD_TEST_ERROR(on_function_less_args_expected, "d");
+	ADD_TEST_ERROR(on_function_more_args_expected, "d");
+	ADD_TEST_ERROR(on_function_no_args_expected, "d");
+	ADD_TEST_ERROR(on_function_no_return_value_expected, "d");
+	ADD_TEST_ERROR(pass_bool_to_i32_game_param, "d");
+	ADD_TEST_ERROR(pass_bool_to_i32_helper_param, "d");
+	ADD_TEST_ERROR(remainder_by_float, "d");
+	ADD_TEST_ERROR(resource_cant_be_empty_string, "d");
+	ADD_TEST_ERROR(resource_cant_be_passed_to_helper_fn, "d");
+	ADD_TEST_ERROR(resource_cant_contain_backslash, "d");
+	ADD_TEST_ERROR(resource_cant_contain_double_slash, "d");
+	ADD_TEST_ERROR(resource_cant_go_up_to_parent_directory_1, "d");
+	ADD_TEST_ERROR(resource_cant_go_up_to_parent_directory_2, "d");
+	ADD_TEST_ERROR(resource_cant_go_up_to_parent_directory_3, "d");
+	ADD_TEST_ERROR(resource_cant_go_up_to_parent_directory_4, "d");
+	ADD_TEST_ERROR(resource_cant_have_leading_slash, "d");
+	ADD_TEST_ERROR(resource_cant_have_trailing_slash, "d");
+	ADD_TEST_ERROR(resource_cant_refer_to_current_directory_1, "d");
+	ADD_TEST_ERROR(resource_cant_refer_to_current_directory_2, "d");
+	ADD_TEST_ERROR(resource_cant_refer_to_current_directory_3, "d");
+	ADD_TEST_ERROR(resource_cant_refer_to_current_directory_4, "d");
+	ADD_TEST_ERROR(resource_type_for_global, "d");
+	ADD_TEST_ERROR(resource_type_for_helper_fn_argument, "d");
+	ADD_TEST_ERROR(resource_type_for_helper_fn_return_type, "d");
+	ADD_TEST_ERROR(resource_type_for_local, "d");
+	ADD_TEST_ERROR(resource_type_for_on_fn_argument, "d");
+	ADD_TEST_ERROR(string_pointer_arithmetic, "d");
+	ADD_TEST_ERROR(trailing_space_in_comment, "d");
+	ADD_TEST_ERROR(unary_plus_does_not_exist, "d");
+	ADD_TEST_ERROR(unclosed_double_quote, "d");
+	ADD_TEST_ERROR(unknown_variable, "d");
+	ADD_TEST_ERROR(unused_expr_result, "d");
+	ADD_TEST_ERROR(variable_assignment_before_definition, "d");
+	ADD_TEST_ERROR(variable_definition_requires_value_i32, "d");
+	ADD_TEST_ERROR(variable_definition_requires_value_string, "d");
+	ADD_TEST_ERROR(variable_statement_missing_assignment, "d");
+	ADD_TEST_ERROR(variable_used_before_definition, "d");
+	ADD_TEST_ERROR(wrong_type_global_assignment, "d");
+	ADD_TEST_ERROR(wrong_type_global_reassignment, "d");
+	ADD_TEST_ERROR(wrong_type_local_assignment, "d");
+	ADD_TEST_ERROR(wrong_type_local_reassignment, "d");
 }
 
 static void add_runtime_error_tests(void) {
@@ -6775,7 +6765,6 @@ int main(int argc, char *argv[]) {
 			fn_data.expected_readelf_path,
 			fn_data.expected_objdump_path,
 			fn_data.failed_file_path,
-			fn_data.expected_define_type_str,
 			fn_data.expected_globals_size_value
 		);
 
@@ -6826,7 +6815,6 @@ int main(int argc, char *argv[]) {
 			fn_data.expected_readelf_path,
 			fn_data.expected_objdump_path,
 			fn_data.failed_file_path,
-			fn_data.expected_define_type_str,
 			fn_data.expected_globals_size_value
 		);
 

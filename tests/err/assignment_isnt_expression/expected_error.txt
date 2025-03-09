@@ -1,1 +1,1 @@
-Expected token type OPEN_BRACE_TOKEN, but got ASSIGNMENT_TOKEN on line 9
+Expected token type OPEN_BRACE_TOKEN, but got ASSIGNMENT_TOKEN on line 4
