@@ -960,6 +960,27 @@
 					"type": "i32"
 				}
 			]
+		},
+		"talk": {
+			"description": "foo",
+			"arguments": [
+				{
+					"name": "message1",
+					"type": "string"
+				},
+				{
+					"name": "message2",
+					"type": "string"
+				},
+				{
+					"name": "message3",
+					"type": "string"
+				},
+				{
+					"name": "message4",
+					"type": "string"
+				}
+			]
 		}
 	}
 }

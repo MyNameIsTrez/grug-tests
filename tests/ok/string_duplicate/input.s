@@ -12,12 +12,12 @@ on_fn_path:
 	db "tests/ok/string_duplicate/input-d.grug", 0
 on_fn_name:
 	db "on_a", 0
-foo:
-	db "foo", 0
-bar:
-	db "bar", 0
 baz:
 	db "baz", 0
+bar:
+	db "bar", 0
+foo:
+	db "foo", 0
 
 align 8
 global resources_size
@@ -34,7 +34,7 @@ section .text
 extern grug_on_fn_name
 extern grug_on_fn_path
 extern grug_on_fns_in_safe_mode
-extern game_fn_say
+extern game_fn_talk
 
 global init_globals
 init_globals:
@@ -55,50 +55,38 @@ on_a:
 
 	save_on_fn_name_and_path
 
+	lea rax, [rel baz]
+	push rax
+	lea rax, [rel bar]
+	push rax
+	lea rax, [rel bar]
+	push rax
 	lea rax, [rel foo]
 	push rax
 	pop rdi
-	call game_fn_say wrt ..plt
-
-	lea rax, [rel bar]
-	push rax
-	pop rdi
-	call game_fn_say wrt ..plt
-
-	lea rax, [rel bar]
-	push rax
-	pop rdi
-	call game_fn_say wrt ..plt
-
-	lea rax, [rel baz]
-	push rax
-	pop rdi
-	call game_fn_say wrt ..plt
+	pop rsi
+	pop rdx
+	pop rcx
+	call game_fn_talk wrt ..plt
 
 	mov rsp, rbp
 	pop rbp
 	ret
 
 .fast:
+	lea rax, [rel baz]
+	push rax
+	lea rax, [rel bar]
+	push rax
+	lea rax, [rel bar]
+	push rax
 	lea rax, [rel foo]
 	push rax
 	pop rdi
-	call game_fn_say wrt ..plt
-
-	lea rax, [rel bar]
-	push rax
-	pop rdi
-	call game_fn_say wrt ..plt
-
-	lea rax, [rel bar]
-	push rax
-	pop rdi
-	call game_fn_say wrt ..plt
-
-	lea rax, [rel baz]
-	push rax
-	pop rdi
-	call game_fn_say wrt ..plt
+	pop rsi
+	pop rdx
+	pop rcx
+	call game_fn_talk wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

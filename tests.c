@@ -166,6 +166,7 @@ static size_t game_fn_motherload_subless_call_count;
 static size_t game_fn_offset_32_bit_f32_call_count;
 static size_t game_fn_offset_32_bit_i32_call_count;
 static size_t game_fn_offset_32_bit_string_call_count;
+static size_t game_fn_talk_call_count;
 
 static bool streq(char *a, char *b) {
 	return strcmp(a, b) == 0;
@@ -687,6 +688,19 @@ void game_fn_offset_32_bit_string(float f1, float f2, float f3, float f4, float 
 	game_fn_offset_32_bit_string_s5 = s5;
 	game_fn_offset_32_bit_string_g = g;
 }
+static char *game_fn_talk_message1;
+static char *game_fn_talk_message2;
+static char *game_fn_talk_message3;
+static char *game_fn_talk_message4;
+void game_fn_talk(char *message1, char *message2, char *message3, char *message4) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
+	game_fn_talk_call_count++;
+
+	game_fn_talk_message1 = message1;
+	game_fn_talk_message2 = message2;
+	game_fn_talk_message3 = message3;
+	game_fn_talk_message4 = message4;
+}
 
 static void reset_call_counts(void) {
 	game_fn_nothing_call_count = 0;
@@ -719,6 +733,7 @@ static void reset_call_counts(void) {
 	game_fn_offset_32_bit_f32_call_count = 0;
 	game_fn_offset_32_bit_i32_call_count = 0;
 	game_fn_offset_32_bit_string_call_count = 0;
+	game_fn_talk_call_count = 0;
 }
 
 static void check(int status, char *fn_name) {
@@ -2627,28 +2642,6 @@ static void ok_entity_in_on_fn_with_mod_specified(void *on_fns, void *g, size_t 
 	assert(entities_size == 1);
 	assert(streq(entities[0], "wow:foo"));
 	assert(streq(entity_types[0], ""));
-}
-
-static void ok_entity_twice(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_spawn_call_count == 0);
-	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_spawn_call_count == 2);
-
-	free(g);
-
-	assert(streq(game_fn_spawn_name, "ok:bar"));
-
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/entity_twice/input-d.grug"));
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 2);
-	assert(streq(entities[0], "ok:foo"));
-	assert(streq(entity_types[0], ""));
-	assert(streq(entities[1], "ok:bar"));
-	assert(streq(entity_types[1], ""));
 }
 
 static void ok_eq_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
@@ -4728,27 +4721,6 @@ static void ok_resource_duplicate(void *on_fns, void *g, size_t resources_size, 
 	assert(entity_types == NULL);
 }
 
-static void ok_resource_twice(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_draw_call_count == 0);
-	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_draw_call_count == 2);
-
-	free(g);
-
-	assert(streq(game_fn_draw_sprite_path, "tests/ok/resource_twice/bar.txt"));
-
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/resource_twice/input-d.grug"));
-
-	assert(resources_size == 2);
-	assert(streq(resources[0], "tests/ok/resource_twice/foo.txt"));
-	assert(streq(resources[1], "tests/ok/resource_twice/bar.txt"));
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
 static void ok_return(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
@@ -5205,13 +5177,16 @@ static void ok_string_can_be_passed_to_helper_fn(void *on_fns, void *g, size_t r
 }
 
 static void ok_string_duplicate(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_say_call_count == 0);
+	assert(game_fn_talk_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_say_call_count == 4);
+	assert(game_fn_talk_call_count == 1);
 
 	free(g);
 
-	assert(streq(game_fn_say_message, "baz"));
+	assert(streq(game_fn_talk_message1, "foo"));
+	assert(streq(game_fn_talk_message2, "bar"));
+	assert(streq(game_fn_talk_message3, "bar"));
+	assert(streq(game_fn_talk_message4, "baz"));
 
 	assert(streq(grug_on_fn_name, "on_a"));
 	assert(streq(grug_on_fn_path, "tests/ok/string_duplicate/input-d.grug"));
@@ -5335,26 +5310,6 @@ static void ok_string_ne_true(void *on_fns, void *g, size_t resources_size, char
 
 	assert(streq(grug_on_fn_name, "on_a"));
 	assert(streq(grug_on_fn_path, "tests/ok/string_ne_true/input-d.grug"));
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_string_twice(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_say_call_count == 0);
-	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_say_call_count == 2);
-
-	free(g);
-
-	assert(streq(game_fn_say_message, "bar"));
-
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/string_twice/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5917,7 +5872,6 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(entity_duplicate, "d", 8);
 	ADD_TEST_OK(entity_in_on_fn, "d", 8);
 	ADD_TEST_OK(entity_in_on_fn_with_mod_specified, "d", 8);
-	ADD_TEST_OK(entity_twice, "d", 8);
 	ADD_TEST_OK(eq_false, "d", 8);
 	ADD_TEST_OK(eq_true, "d", 8);
 	ADD_TEST_OK(f32_addition, "d", 8);
@@ -6021,7 +5975,6 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(resource_can_contain_dot_dot_2, "d", 8);
 	ADD_TEST_OK(resource_can_contain_dot_dot_3, "d", 8);
 	ADD_TEST_OK(resource_duplicate, "d", 8);
-	ADD_TEST_OK(resource_twice, "d", 8);
 	ADD_TEST_OK(return, "d", 8);
 	ADD_TEST_OK(return_from_on_fn, "d", 8);
 	ADD_TEST_OK(return_from_on_fn_minimal, "d", 8);
@@ -6044,7 +5997,6 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(string_ne_false, "d", 8);
 	ADD_TEST_OK(string_ne_false_empty, "d", 8);
 	ADD_TEST_OK(string_ne_true, "d", 8);
-	ADD_TEST_OK(string_twice, "d", 8);
 	ADD_TEST_OK(sub_rsp_32_bits_global_variables_i32, "d", 268);
 	ADD_TEST_OK(sub_rsp_32_bits_global_variables_id, "d", 528);
 	ADD_TEST_OK(sub_rsp_32_bits_local_variables_i32, "d", 8);
@@ -6065,7 +6017,10 @@ static void add_ok_tests(void) {
 }
 
 int main(int argc, char *argv[]) {
-	grug_init(runtime_error_handler, "mod_api.json", "tests");
+	if (grug_init(runtime_error_handler, "mod_api.json", "tests")) {
+		fprintf(stderr, "grug_init() error: %s (detected in grug.c:%d)\n", grug_error.msg, grug_error.grug_c_line_number);
+		exit(EXIT_FAILURE);
+	}
 
 #ifdef SHUFFLING
 		// If a test failed, you can reproduce it

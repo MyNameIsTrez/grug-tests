@@ -1,6 +1,3 @@
 on_a() {
-    say("foo")
-    say("bar")
-    say("bar")
-    say("baz")
+    talk("foo", "bar", "bar", "baz")
 }
