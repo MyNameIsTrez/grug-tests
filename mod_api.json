@@ -67,6 +67,38 @@
 					"description": "foo"
 				}
 			}
+		},
+		"r": {
+			"description": "foo",
+			"on_functions": {
+				"on_a": {
+					"description": "foo",
+					"arguments": [
+						{
+							"name": "f",
+							"type": "f32"
+						}
+					]
+				}
+			}
+		},
+		"s": {
+			"description": "foo",
+			"on_functions": {
+				"on_a": {
+					"description": "foo",
+					"arguments": [
+						{
+							"name": "i",
+							"type": "i32"
+						},
+						{
+							"name": "f",
+							"type": "f32"
+						}
+					]
+				}
+			}
 		}
 	},
 	"game_functions": {

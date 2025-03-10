@@ -7,8 +7,6 @@ globals_size: dq 8
 global on_fns
 on_fns:
 	dq on_a
-	dq 0
-	dq 0
 
 on_fn_path:
 	db "tests/ok/variable_shadows_on_fn_2/input-d.grug", 0

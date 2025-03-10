@@ -1,5 +1,0 @@
-define() d {
-    return {
-        .lol = null_id,
-    }
-}

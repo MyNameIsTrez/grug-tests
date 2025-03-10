@@ -4,10 +4,6 @@ align 8
 global globals_size
 globals_size: dq 16
 
-global on_fns
-on_fns:
-	dq 0
-
 align 8
 global resources_size
 resources_size: dq 0

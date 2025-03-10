@@ -1,4 +1,6 @@
 on_a() {
     say("foo")
-    say("foo")
+    say("bar")
+    say("bar")
+    say("baz")
 }

@@ -2566,11 +2566,11 @@ static void ok_entity_and_resource_as_subexpression(void *on_fns, void *g, size_
 static void ok_entity_duplicate(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_spawn_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_spawn_call_count == 2);
+	assert(game_fn_spawn_call_count == 4);
 
 	free(g);
 
-	assert(streq(game_fn_spawn_name, "ok:foo"));
+	assert(streq(game_fn_spawn_name, "ok:baz"));
 
 	assert(streq(grug_on_fn_name, "on_a"));
 	assert(streq(grug_on_fn_path, "tests/ok/entity_duplicate/input-d.grug"));
@@ -2578,11 +2578,15 @@ static void ok_entity_duplicate(void *on_fns, void *g, size_t resources_size, ch
 	assert(resources_size == 0);
 	assert(resources == NULL);
 
-	assert(entities_size == 2);
+	assert(entities_size == 4);
 	assert(streq(entities[0], "ok:foo"));
 	assert(streq(entity_types[0], ""));
-	assert(streq(entities[1], "ok:foo"));
+	assert(streq(entities[1], "ok:bar"));
 	assert(streq(entity_types[1], ""));
+	assert(streq(entities[2], "ok:bar"));
+	assert(streq(entity_types[2], ""));
+	assert(streq(entities[3], "ok:baz"));
+	assert(streq(entity_types[3], ""));
 }
 
 static void ok_entity_in_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
@@ -3137,7 +3141,7 @@ static void ok_f32_passed_to_on_fn(void *on_fns, void *g, size_t resources_size,
 	assert(game_fn_sin_x == 42.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_passed_to_on_fn/input-d.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/f32_passed_to_on_fn/input-r.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3652,26 +3656,6 @@ static void ok_id_local_variable_get_and_set(void *on_fns, void *g, size_t resou
 	assert(entity_types == NULL);
 }
 
-static void ok_identical_strings_are_shared(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_say_call_count == 0);
-	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_say_call_count == 3);
-
-	free(g);
-
-	assert(streq(game_fn_say_message, "b"));
-
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/if_false/input-d.grug"));
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
 static void ok_if_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -3901,19 +3885,6 @@ static void ok_me_passed_to_helper_fn(void *on_fns, void *g, size_t resources_si
 	assert(entity_types == NULL);
 }
 
-static void ok_minimal(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	free(g);
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
 static void ok_multiplication_as_two_arguments(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_max_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -4042,32 +4013,6 @@ static void ok_nested_continue(void *on_fns, void *g, size_t resources_size, cha
 
 	assert(streq(grug_on_fn_name, "on_a"));
 	assert(streq(grug_on_fn_path, "tests/ok/nested_continue/input-d.grug"));
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_no_define_fields(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	free(g);
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_no_on_fns(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	(void)on_fns;
-
-	free(g);
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4303,7 +4248,7 @@ static void ok_on_fn_overwriting_param(void *on_fns, void *g, size_t resources_s
 	assert(game_fn_sin_x == 30.0f);
 
 	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_overwriting_param/input-d.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/on_fn_overwriting_param/input-s.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4356,15 +4301,15 @@ static void ok_on_fn_passing_magic_to_initialize(void *on_fns, void *g, size_t r
 static void ok_on_fn_three(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three/input-d.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three/input-j.grug"));
 
 	((struct j_on_fns *)on_fns)->b(g);
 	assert(streq(grug_on_fn_name, "on_b"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three/input-d.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three/input-j.grug"));
 
 	((struct j_on_fns *)on_fns)->c(g);
 	assert(streq(grug_on_fn_name, "on_c"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three/input-d.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three/input-j.grug"));
 
 	free(g);
 
@@ -4380,11 +4325,11 @@ static void ok_on_fn_three_unused_first(void *on_fns, void *g, size_t resources_
 	assert(((struct j_on_fns *)on_fns)->a == NULL);
 	((struct j_on_fns *)on_fns)->b(g);
 	assert(streq(grug_on_fn_name, "on_b"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three_unused_first/input-d.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three_unused_first/input-j.grug"));
 
 	((struct j_on_fns *)on_fns)->c(g);
 	assert(streq(grug_on_fn_name, "on_c"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three_unused_first/input-d.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three_unused_first/input-j.grug"));
 
 	free(g);
 
@@ -4399,13 +4344,13 @@ static void ok_on_fn_three_unused_first(void *on_fns, void *g, size_t resources_
 static void ok_on_fn_three_unused_second(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three_unused_second/input-d.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three_unused_second/input-j.grug"));
 
 	assert(((struct j_on_fns *)on_fns)->b == NULL);
 
 	((struct j_on_fns *)on_fns)->c(g);
 	assert(streq(grug_on_fn_name, "on_c"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three_unused_second/input-d.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three_unused_second/input-j.grug"));
 
 	free(g);
 
@@ -4420,26 +4365,13 @@ static void ok_on_fn_three_unused_second(void *on_fns, void *g, size_t resources
 static void ok_on_fn_three_unused_third(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three_unused_third/input-d.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three_unused_third/input-j.grug"));
 
 	((struct j_on_fns *)on_fns)->b(g);
 	assert(streq(grug_on_fn_name, "on_b"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three_unused_third/input-d.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three_unused_third/input-j.grug"));
 
 	assert(((struct j_on_fns *)on_fns)->c == NULL);
-
-	free(g);
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_on_fn_usage_is_optional(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(((struct d_on_fns *)on_fns)->a == NULL);
 
 	free(g);
 
@@ -4777,17 +4709,19 @@ static void ok_resource_can_contain_dot_dot_3(void *on_fns, void *g, size_t reso
 static void ok_resource_duplicate(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_draw_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_draw_call_count == 2);
+	assert(game_fn_draw_call_count == 4);
 
 	free(g);
 
-	assert(streq(game_fn_draw_sprite_path, "tests/ok/resource_duplicate/foo.txt"));
+	assert(streq(game_fn_draw_sprite_path, "tests/ok/resource_duplicate/baz.txt"));
 
 	assert(streq(grug_on_fn_name, "on_a"));
 	assert(streq(grug_on_fn_path, "tests/ok/resource_duplicate/input-d.grug"));
 
-	assert(resources_size == 1);
+	assert(resources_size == 3);
 	assert(streq(resources[0], "tests/ok/resource_duplicate/foo.txt"));
+	assert(streq(resources[1], "tests/ok/resource_duplicate/bar.txt"));
+	assert(streq(resources[2], "tests/ok/resource_duplicate/baz.txt"));
 
 	assert(entities_size == 0);
 	assert(entities == NULL);
@@ -4807,8 +4741,8 @@ static void ok_resource_twice(void *on_fns, void *g, size_t resources_size, char
 	assert(streq(grug_on_fn_path, "tests/ok/resource_twice/input-d.grug"));
 
 	assert(resources_size == 2);
-	assert(streq(resources[0], "tests/ok/resource_twice/bar.txt"));
-	assert(streq(resources[1], "tests/ok/resource_twice/foo.txt"));
+	assert(streq(resources[0], "tests/ok/resource_twice/foo.txt"));
+	assert(streq(resources[1], "tests/ok/resource_twice/bar.txt"));
 
 	assert(entities_size == 0);
 	assert(entities == NULL);
@@ -4897,7 +4831,7 @@ static void ok_same_variable_name_in_different_functions(void *on_fns, void *g, 
 	assert(game_fn_initialize_x == 69);
 
 	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/same_variable_name_in_different_functions/input-d.grug"));
+	assert(streq(grug_on_fn_path, "tests/ok/same_variable_name_in_different_functions/input-e.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5273,11 +5207,11 @@ static void ok_string_can_be_passed_to_helper_fn(void *on_fns, void *g, size_t r
 static void ok_string_duplicate(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_say_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_say_call_count == 2);
+	assert(game_fn_say_call_count == 4);
 
 	free(g);
 
-	assert(streq(game_fn_say_message, "foo"));
+	assert(streq(game_fn_say_message, "baz"));
 
 	assert(streq(grug_on_fn_name, "on_a"));
 	assert(streq(grug_on_fn_path, "tests/ok/string_duplicate/input-d.grug"));
@@ -6017,7 +5951,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(ge_true_2, "d", 8);
 	ADD_TEST_OK(global_containing_negation, "a", 12);
 	ADD_TEST_OK(global_containing_null_id, "d", 16);
-	ADD_TEST_OK(globals, "h", 16);
+	ADD_TEST_OK(globals, "a", 16);
 	ADD_TEST_OK(globals_1000, "a", 4008);
 	ADD_TEST_OK(globals_1000_string, "a", 8008);
 	ADD_TEST_OK(globals_32, "a", 136);
@@ -6034,7 +5968,6 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(i32_min, "d", 8);
 	ADD_TEST_OK(i32_negated, "d", 8);
 	ADD_TEST_OK(id_local_variable_get_and_set, "d", 8);
-	ADD_TEST_OK(identical_strings_are_shared, "q", 8);
 	ADD_TEST_OK(if_false, "d", 8);
 	ADD_TEST_OK(if_true, "d", 8);
 	ADD_TEST_OK(le_false, "d", 8);
@@ -6046,7 +5979,6 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(me, "d", 8);
 	ADD_TEST_OK(me_assigned_to_local_variable, "d", 8);
 	ADD_TEST_OK(me_passed_to_helper_fn, "d", 8);
-	ADD_TEST_OK(minimal, "a", 8);
 	ADD_TEST_OK(multiplication_as_two_arguments, "d", 8);
 	ADD_TEST_OK(ne_false, "d", 8);
 	ADD_TEST_OK(ne_true, "d", 8);
@@ -6054,8 +5986,6 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(negative_literal, "d", 8);
 	ADD_TEST_OK(nested_break, "d", 8);
 	ADD_TEST_OK(nested_continue, "d", 8);
-	ADD_TEST_OK(no_define_fields, "d", 8);
-	ADD_TEST_OK(no_on_fns, "a", 8);
 	ADD_TEST_OK(null_id_initializing_local, "d", 8);
 	ADD_TEST_OK(no_empty_line_between_globals, "a", 16);
 	ADD_TEST_OK(no_empty_line_between_statements, "d", 8);
@@ -6074,7 +6004,6 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(on_fn_three_unused_first, "j", 8);
 	ADD_TEST_OK(on_fn_three_unused_second, "j", 8);
 	ADD_TEST_OK(on_fn_three_unused_third, "j", 8);
-	ADD_TEST_OK(on_fn_usage_is_optional, "d", 8);
 	ADD_TEST_OK(or_false, "d", 8);
 	ADD_TEST_OK(or_short_circuit, "d", 8);
 	ADD_TEST_OK(or_true_1, "d", 8);
@@ -6084,15 +6013,15 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(pass_string_argument_to_helper_fn, "d", 8);
 	ADD_TEST_OK(remainder_negative_result, "d", 8);
 	ADD_TEST_OK(remainder_positive_result, "d", 8);
-	ADD_TEST_OK(resource_and_entity, "b2", 8);
-	ADD_TEST_OK(resource_can_contain_dot_1, "u", 8);
-	ADD_TEST_OK(resource_can_contain_dot_2, "u", 8);
-	ADD_TEST_OK(resource_can_contain_dot_3, "u", 8);
-	ADD_TEST_OK(resource_can_contain_dot_dot_1, "u", 8);
-	ADD_TEST_OK(resource_can_contain_dot_dot_2, "u", 8);
-	ADD_TEST_OK(resource_can_contain_dot_dot_3, "u", 8);
-	ADD_TEST_OK(resource_duplicate, "v", 8);
-	ADD_TEST_OK(resource_twice, "v", 8);
+	ADD_TEST_OK(resource_and_entity, "d", 8);
+	ADD_TEST_OK(resource_can_contain_dot_1, "d", 8);
+	ADD_TEST_OK(resource_can_contain_dot_2, "d", 8);
+	ADD_TEST_OK(resource_can_contain_dot_3, "d", 8);
+	ADD_TEST_OK(resource_can_contain_dot_dot_1, "d", 8);
+	ADD_TEST_OK(resource_can_contain_dot_dot_2, "d", 8);
+	ADD_TEST_OK(resource_can_contain_dot_dot_3, "d", 8);
+	ADD_TEST_OK(resource_duplicate, "d", 8);
+	ADD_TEST_OK(resource_twice, "d", 8);
 	ADD_TEST_OK(return, "d", 8);
 	ADD_TEST_OK(return_from_on_fn, "d", 8);
 	ADD_TEST_OK(return_from_on_fn_minimal, "d", 8);
@@ -6127,7 +6056,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(variable_shadows_game_fn, "d", 8);
 	ADD_TEST_OK(variable_shadows_helper_fn, "d", 8);
 	ADD_TEST_OK(variable_shadows_on_fn_1, "d", 8);
-	ADD_TEST_OK(variable_shadows_on_fn_2, "j", 8);
+	ADD_TEST_OK(variable_shadows_on_fn_2, "d", 8);
 	ADD_TEST_OK(variable_string_global, "d", 16);
 	ADD_TEST_OK(variable_string_local, "d", 8);
 	ADD_TEST_OK(void_function_early_return, "d", 8);

@@ -14,23 +14,31 @@ on_fn_path:
 	db "tests/ok/entity_duplicate/input-d.grug", 0
 on_fn_name:
 	db "on_a", 0
-entity:
+foo:
 	db "ok:foo", 0
+bar:
+	db "ok:bar", 0
+baz:
+	db "ok:baz", 0
 
 align 8
 global resources_size
 resources_size: dq 0
 
 global entities_size
-entities_size: dq 2
+entities_size: dq 4
 
 global entities
 entities:
-	dq entity
-	dq entity
+	dq foo
+	dq bar
+	dq bar
+	dq baz
 
 global entity_types
 entity_types:
+	dq entity_type
+	dq entity_type
 	dq entity_type
 	dq entity_type
 
@@ -63,12 +71,22 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	lea rax, [rel entity]
+	lea rax, [rel foo]
 	push rax
 	pop rdi
 	call game_fn_spawn wrt ..plt
 
-	lea rax, [rel entity]
+	lea rax, [rel bar]
+	push rax
+	pop rdi
+	call game_fn_spawn wrt ..plt
+
+	lea rax, [rel bar]
+	push rax
+	pop rdi
+	call game_fn_spawn wrt ..plt
+
+	lea rax, [rel baz]
 	push rax
 	pop rdi
 	call game_fn_spawn wrt ..plt
@@ -78,12 +96,22 @@ on_a:
 	ret
 
 .fast:
-	lea rax, [rel entity]
+	lea rax, [rel foo]
 	push rax
 	pop rdi
 	call game_fn_spawn wrt ..plt
 
-	lea rax, [rel entity]
+	lea rax, [rel bar]
+	push rax
+	pop rdi
+	call game_fn_spawn wrt ..plt
+
+	lea rax, [rel bar]
+	push rax
+	pop rdi
+	call game_fn_spawn wrt ..plt
+
+	lea rax, [rel baz]
 	push rax
 	pop rdi
 	call game_fn_spawn wrt ..plt
