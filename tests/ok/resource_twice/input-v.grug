@@ -1,6 +1,4 @@
-define() v {
-    return {
-        .foo = "resource_twice/foo.txt",
-        .bar = "resource_twice/bar.txt",
-    }
+on_a() {
+    draw("resource_twice/foo.txt")
+    draw("resource_twice/bar.txt")
 }

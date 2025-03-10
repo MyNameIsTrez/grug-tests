@@ -1,0 +1,4 @@
+on_a() {
+    draw("resource_duplicate/foo.txt")
+    draw("resource_duplicate/foo.txt")
+}

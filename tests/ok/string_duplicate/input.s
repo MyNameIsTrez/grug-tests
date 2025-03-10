@@ -5,7 +5,7 @@ global globals_size
 globals_size: dq 8
 
 resource:
-	db "tests/ok/resource_in_define/foo.txt", 0
+	db "tests/ok/resource_duplicate/foo.txt", 0
 
 align 8
 global resources_size

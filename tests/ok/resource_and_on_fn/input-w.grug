@@ -1,9 +1,0 @@
-define() w {
-    return {
-        .sprite_path = "resource_and_on_fn/foo.txt",
-    }
-}
-
-on_a(x: i32) {
-    nothing()
-}

@@ -1,9 +1,0 @@
-define() w {
-    return {
-        .sprite_path = "resource_in_define_and_entity_in_game_fn/foo.txt",
-    }
-}
-
-on_a(x: i32) {
-    spawn("bar")
-}

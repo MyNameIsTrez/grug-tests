@@ -1,0 +1,4 @@
+on_a() {
+    draw("resource_and_entity/foo.txt")
+    spawn("foo")
+}
