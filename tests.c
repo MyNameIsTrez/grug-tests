@@ -6048,11 +6048,11 @@ int main(int argc, char *argv[]) {
 	srand(seed);
 
 	for (size_t shuffle = 0; shuffle < SHUFFLES; shuffle++) {
+	SHUFFLE(error_test_datas, error_test_datas_size, struct error_test_data);
+	SHUFFLE(runtime_error_test_datas, runtime_error_test_datas_size, struct runtime_error_test_data);
+	SHUFFLE(ok_test_datas, ok_test_datas_size, struct ok_test_data);
 #endif
 
-#ifdef SHUFFLES
-	SHUFFLE(error_test_datas, error_test_datas_size, struct error_test_data);
-#endif
 	for (size_t i = 0; i < error_test_datas_size; i++) {
 		struct error_test_data data = error_test_datas[i];
 
@@ -6067,9 +6067,6 @@ int main(int argc, char *argv[]) {
 		);
 	}
 
-#ifdef SHUFFLES
-	SHUFFLE(runtime_error_test_datas, runtime_error_test_datas_size, struct runtime_error_test_data);
-#endif
 	for (size_t i = 0; i < runtime_error_test_datas_size; i++) {
 		struct runtime_error_test_data fn_data = runtime_error_test_datas[i];
 
@@ -6117,9 +6114,6 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-#ifdef SHUFFLES
-	SHUFFLE(ok_test_datas, ok_test_datas_size, struct ok_test_data);
-#endif
 	for (size_t i = 0; i < ok_test_datas_size; i++) {
 		struct ok_test_data fn_data = ok_test_datas[i];
 
