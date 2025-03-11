@@ -36,6 +36,7 @@ jobs:
         run: ./tests.sh
         env:
           ASAN: 1
+          SHUFFLES: 10
 
   build-ubuntu-clang-valgrind:
     name: ubuntu-clang-valgrind
@@ -57,6 +58,7 @@ jobs:
         run: ./tests.sh
         env:
           VALGRIND: 1
+          SHUFFLES: 10
 
   build-ubuntu-gcc:
     name: ubuntu-gcc

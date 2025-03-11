@@ -44,10 +44,10 @@ then
     echo "- VALGRIND was turned on"
 fi
 
-if [[ ${SHUFFLING+x} ]]
+if [[ ${SHUFFLES+x} ]]
 then
-    echo "- SHUFFLING was turned on"
-    compiler_flags+=' -DSHUFFLING'
+    echo "- SHUFFLES=${SHUFFLES} was passed"
+    compiler_flags+=" -DSHUFFLES=${SHUFFLES}"
 fi
 
 if [[ ${ANALYZE+x} ]]

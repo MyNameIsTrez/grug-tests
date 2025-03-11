@@ -10,9 +10,7 @@ This is the test suite of [my programming language called grug](https://github.c
 2. Run `git submodule update --init` to clone the `grug.c` and `grug.h` files (for your own game you can just drop these files directly into your project).
 3. Run the tests with `./tests.sh`.
 
-Check the terminal or the generated `results` directory in tests to inspect any errors.
-
-You can get more info in the results directory (from objdump, readelf and xxd) by running `OUTPUT_DLL_INFO= ./tests.sh`.
+You can get more info in the test its generated `results` directory (from objdump, readelf and xxd) by running `OUTPUT_DLL_INFO= ./tests.sh`.
 
 If a test failed, you can reproduce it by replacing `time(NULL)` in `main()` with the failing test's printed seed.
 

@@ -1026,6 +1026,13 @@ static int rm_rf(char *path) {
 	return nftw(path, remove_callback, 42, FTW_DEPTH | FTW_PHYS);
 }
 
+static bool shuffles_was_not_defined(void) {
+#ifdef SHUFFLES
+	return false;
+#endif
+	return true;
+}
+
 static void test_error(
 	char *test_name,
 	char *grug_path,
@@ -1036,6 +1043,7 @@ static void test_error(
 	char *failed_file_path
 ) {
 	if (failed_file_doesnt_exist(failed_file_path)
+	 && shuffles_was_not_defined()
 	 && newer(grug_output_path, grug_path)
 	 && newer(grug_output_path, expected_error_path)
 	 && newer(grug_output_path, "mod_api.json")
@@ -1332,6 +1340,7 @@ static struct test_data runtime_error_prologue(
 	size_t expected_globals_size
 ) {
 	if (failed_file_doesnt_exist(failed_file_path)
+	 && shuffles_was_not_defined()
 	 && newer(output_dll_path, nasm_path)
 	 && newer(output_dll_path, grug_path)
 	 && newer(output_dll_path, expected_error_path)
@@ -1779,6 +1788,7 @@ static struct test_data ok_prologue(
 	size_t expected_globals_size
 ) {
 	if (failed_file_doesnt_exist(failed_file_path)
+	 && shuffles_was_not_defined()
 	 && newer(output_dll_path, nasm_path)
 	 && newer(output_dll_path, grug_path)
 	 && newer(output_dll_path, expected_dll_path)
@@ -6022,21 +6032,26 @@ int main(int argc, char *argv[]) {
 		exit(EXIT_FAILURE);
 	}
 
-#ifdef SHUFFLING
-		// If a test failed, you can reproduce it
-		// by replacing `time(NULL)` with the failing test's printed seed
-		unsigned int seed = time(NULL);
-		printf("The seed is %u\n", seed);
-		srand(seed);
-#endif
-
 	for (int i = 1; i < argc; i++) {
 		whitelisted_tests[whitelisted_tests_size++] = argv[i];
 	}
 
 	add_error_tests();
-#ifdef SHUFFLING
-		SHUFFLE(error_test_datas, error_test_datas_size, struct error_test_data);
+	add_runtime_error_tests();
+	add_ok_tests();
+
+#ifdef SHUFFLES
+	// If a test failed, you can reproduce it
+	// by replacing `time(NULL)` with the failing test's printed seed
+	unsigned int seed = time(NULL);
+	printf("The seed is %u\n", seed);
+	srand(seed);
+
+	for (size_t shuffle = 0; shuffle < SHUFFLES; shuffle++) {
+#endif
+
+#ifdef SHUFFLES
+	SHUFFLE(error_test_datas, error_test_datas_size, struct error_test_data);
 #endif
 	for (size_t i = 0; i < error_test_datas_size; i++) {
 		struct error_test_data data = error_test_datas[i];
@@ -6052,9 +6067,8 @@ int main(int argc, char *argv[]) {
 		);
 	}
 
-	add_runtime_error_tests();
-#ifdef SHUFFLING
-		SHUFFLE(runtime_error_test_datas, runtime_error_test_datas_size, struct runtime_error_test_data);
+#ifdef SHUFFLES
+	SHUFFLE(runtime_error_test_datas, runtime_error_test_datas_size, struct runtime_error_test_data);
 #endif
 	for (size_t i = 0; i < runtime_error_test_datas_size; i++) {
 		struct runtime_error_test_data fn_data = runtime_error_test_datas[i];
@@ -6103,9 +6117,8 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	add_ok_tests();
-#ifdef SHUFFLING
-		SHUFFLE(ok_test_datas, ok_test_datas_size, struct ok_test_data);
+#ifdef SHUFFLES
+	SHUFFLE(ok_test_datas, ok_test_datas_size, struct ok_test_data);
 #endif
 	for (size_t i = 0; i < ok_test_datas_size; i++) {
 		struct ok_test_data fn_data = ok_test_datas[i];
@@ -6145,6 +6158,10 @@ int main(int argc, char *argv[]) {
 			handle_dlerror("dlclose");
 		}
 	}
+
+#ifdef SHUFFLES
+	}
+#endif
 
 	printf("\nAll tests passed! 🎉\n");
 }

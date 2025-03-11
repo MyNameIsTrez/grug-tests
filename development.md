@@ -3,7 +3,7 @@
 ## Notes
 
 - If you want to see the detailed logs of `grug.c`, run `LOGGING= ./tests.sh`.
-- If you want the tests to be run in a shuffled order, run `SHUFFLED= ./tests.sh`.
+- If you want the tests to be run in a shuffled order twice (within the same process), run `SHUFFLES=10 ./tests.sh`.
 - If you want to allow your compiler to optimize `grug.c` hard, run `OPTIMIZED= ./tests.sh`.
 - If you want to allow your compiler to statically analyze `grug.c` for problems, run `ANALYZE= ./tests.sh`.
 
