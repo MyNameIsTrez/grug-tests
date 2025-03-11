@@ -1103,12 +1103,12 @@ static void diff_dump_and_apply(
 	char *applied_path
 ) {
 	if (grug_dump_file_to_json(grug_path, dump_path)) {
-		printf("Failed to dump file AST: %s: %s (detected in grug.c:%d)\n", grug_error.path, grug_error.msg, grug_error.grug_c_line_number);
+		printf("Failed to dump file AST: %s: %s (detected by grug.c:%d)\n", grug_error.path, grug_error.msg, grug_error.grug_c_line_number);
 		exit(EXIT_FAILURE);
 	}
 
 	if (grug_generate_file_from_json(dump_path, applied_path)) {
-		printf("Failed to apply file AST: %s: %s (detected in grug.c:%d)\n", grug_error.path, grug_error.msg, grug_error.grug_c_line_number);
+		printf("Failed to apply file AST: %s: %s (detected by grug.c:%d)\n", grug_error.path, grug_error.msg, grug_error.grug_c_line_number);
 		exit(EXIT_FAILURE);
 	}
 
@@ -6028,7 +6028,7 @@ static void add_ok_tests(void) {
 
 int main(int argc, char *argv[]) {
 	if (grug_init(runtime_error_handler, "mod_api.json", "tests")) {
-		fprintf(stderr, "grug_init() error: %s (detected in grug.c:%d)\n", grug_error.msg, grug_error.grug_c_line_number);
+		fprintf(stderr, "grug_init() error: %s (detected by grug.c:%d)\n", grug_error.msg, grug_error.grug_c_line_number);
 		exit(EXIT_FAILURE);
 	}
 
