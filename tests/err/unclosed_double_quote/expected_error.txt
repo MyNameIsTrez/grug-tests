@@ -1,1 +1,1 @@
-Unclosed " on line 1 of the grug text file
+Unclosed " on line 1
