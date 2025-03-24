@@ -28,9 +28,9 @@ resources_size:
 .text
 
 // TODO: USE
-.extern grug_on_fn_name
+.extern grug_fn_name
 // TODO: USE
-.extern grug_on_fn_path
+.extern grug_fn_path
 // TODO: USE
 .extern grug_block_mask
 

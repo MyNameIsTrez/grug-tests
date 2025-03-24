@@ -1,1 +1,0 @@
-The global variable 'foo' isn't allowed to call functions

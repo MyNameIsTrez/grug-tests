@@ -392,7 +392,7 @@ uint64_t game_fn_get_opponent(void) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_get_opponent_call_count++;
 
-	return 42;
+	return 69;
 }
 static uint64_t game_fn_set_target_target;
 void game_fn_set_target(uint64_t target) {
@@ -1388,8 +1388,8 @@ static void runtime_error_all(void *on_fns, void *g, size_t resources_size, char
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/all/input-d.grug"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/all/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/err_runtime/all/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1412,8 +1412,8 @@ static void runtime_error_division_by_0(void *on_fns, void *g, size_t resources_
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/division_by_0/input-d.grug"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/division_by_0/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/err_runtime/division_by_0/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1436,8 +1436,8 @@ static void runtime_error_i32_overflow_addition(void *on_fns, void *g, size_t re
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_overflow_addition/input-d.grug"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/i32_overflow_addition/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/err_runtime/i32_overflow_addition/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1460,8 +1460,8 @@ static void runtime_error_i32_overflow_division(void *on_fns, void *g, size_t re
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_overflow_division/input-d.grug"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/i32_overflow_division/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/err_runtime/i32_overflow_division/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1484,8 +1484,8 @@ static void runtime_error_i32_overflow_multiplication(void *on_fns, void *g, siz
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_overflow_multiplication/input-d.grug"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/i32_overflow_multiplication/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/err_runtime/i32_overflow_multiplication/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1508,8 +1508,8 @@ static void runtime_error_i32_overflow_negation(void *on_fns, void *g, size_t re
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_overflow_negation/input-d.grug"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/i32_overflow_negation/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/err_runtime/i32_overflow_negation/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1532,8 +1532,8 @@ static void runtime_error_i32_overflow_remainder(void *on_fns, void *g, size_t r
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_overflow_remainder/input-d.grug"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/i32_overflow_remainder/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/err_runtime/i32_overflow_remainder/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1556,8 +1556,8 @@ static void runtime_error_i32_overflow_subtraction(void *on_fns, void *g, size_t
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_overflow_subtraction/input-d.grug"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/i32_overflow_subtraction/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/err_runtime/i32_overflow_subtraction/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1580,8 +1580,8 @@ static void runtime_error_i32_underflow_addition(void *on_fns, void *g, size_t r
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_underflow_addition/input-d.grug"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/i32_underflow_addition/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/err_runtime/i32_underflow_addition/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1604,8 +1604,8 @@ static void runtime_error_i32_underflow_multiplication(void *on_fns, void *g, si
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_underflow_multiplication/input-d.grug"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/i32_underflow_multiplication/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/err_runtime/i32_underflow_multiplication/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1628,8 +1628,8 @@ static void runtime_error_i32_underflow_subtraction(void *on_fns, void *g, size_
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_underflow_subtraction/input-d.grug"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/i32_underflow_subtraction/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/err_runtime/i32_underflow_subtraction/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1652,8 +1652,8 @@ static void runtime_error_remainder_by_0(void *on_fns, void *g, size_t resources
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/remainder_by_0/input-d.grug"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/remainder_by_0/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/err_runtime/remainder_by_0/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1676,8 +1676,8 @@ static void runtime_error_stack_overflow(void *on_fns, void *g, size_t resources
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/stack_overflow/input-d.grug"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/stack_overflow/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/err_runtime/stack_overflow/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1700,8 +1700,8 @@ static void runtime_error_time_limit_exceeded(void *on_fns, void *g, size_t reso
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/time_limit_exceeded/input-d.grug"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/time_limit_exceeded/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/err_runtime/time_limit_exceeded/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1724,8 +1724,8 @@ static void runtime_error_time_limit_exceeded_exponential_calls(void *on_fns, vo
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/time_limit_exceeded_exponential_calls/input-d.grug"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/time_limit_exceeded_exponential_calls/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/err_runtime/time_limit_exceeded_exponential_calls/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1748,8 +1748,8 @@ static void runtime_error_time_limit_exceeded_fibonacci(void *on_fns, void *g, s
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/time_limit_exceeded_fibonacci/input-d.grug"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/err_runtime/time_limit_exceeded_fibonacci/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/err_runtime/time_limit_exceeded_fibonacci/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1816,8 +1816,8 @@ static void ok_addition_as_argument(void *on_fns, void *g, size_t resources_size
 
 	assert(game_fn_initialize_x == 3);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/addition_as_argument/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/addition_as_argument/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1837,8 +1837,8 @@ static void ok_addition_as_two_arguments(void *on_fns, void *g, size_t resources
 	assert(game_fn_max_x == 3);
 	assert(game_fn_max_y == 9);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/addition_as_two_arguments/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/addition_as_two_arguments/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1857,8 +1857,8 @@ static void ok_addition_with_multiplication(void *on_fns, void *g, size_t resour
 
 	assert(game_fn_initialize_x == 14);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/addition_with_multiplication/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/addition_with_multiplication/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1877,8 +1877,8 @@ static void ok_addition_with_multiplication_2(void *on_fns, void *g, size_t reso
 
 	assert(game_fn_initialize_x == 10);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/addition_with_multiplication_2/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/addition_with_multiplication_2/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1897,8 +1897,8 @@ static void ok_and_false_1(void *on_fns, void *g, size_t resources_size, char **
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/and_false_1/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/and_false_1/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1917,8 +1917,8 @@ static void ok_and_false_2(void *on_fns, void *g, size_t resources_size, char **
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/and_false_2/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/and_false_2/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1937,8 +1937,8 @@ static void ok_and_false_3(void *on_fns, void *g, size_t resources_size, char **
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/and_false_3/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/and_false_3/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1957,8 +1957,8 @@ static void ok_and_short_circuit(void *on_fns, void *g, size_t resources_size, c
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/and_short_circuit/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/and_short_circuit/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1977,8 +1977,8 @@ static void ok_and_true(void *on_fns, void *g, size_t resources_size, char **res
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/and_true/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/and_true/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -1995,8 +1995,8 @@ static void ok_blocked_alrm(void *on_fns, void *g, size_t resources_size, char *
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/blocked_alrm/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/blocked_alrm/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2015,8 +2015,8 @@ static void ok_bool_logical_not_false(void *on_fns, void *g, size_t resources_si
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/bool_logical_not_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/bool_logical_not_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2035,8 +2035,8 @@ static void ok_bool_logical_not_true(void *on_fns, void *g, size_t resources_siz
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/bool_logical_not_true/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/bool_logical_not_true/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2057,8 +2057,8 @@ static void ok_bool_returned(void *on_fns, void *g, size_t resources_size, char 
 
 	assert(game_fn_set_is_happy_is_happy == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/bool_returned/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/bool_returned/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2075,8 +2075,8 @@ static void ok_break(void *on_fns, void *g, size_t resources_size, char **resour
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/break/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/break/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2093,8 +2093,8 @@ static void ok_calls_100(void *on_fns, void *g, size_t resources_size, char **re
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/calls_100/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/calls_100/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2111,8 +2111,8 @@ static void ok_calls_1000(void *on_fns, void *g, size_t resources_size, char **r
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/calls_1000/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/calls_1000/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2135,8 +2135,8 @@ static void ok_calls_in_call(void *on_fns, void *g, size_t resources_size, char 
 	assert(game_fn_max_y == 4);
 	assert(game_fn_initialize_x == 4);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/calls_in_call/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/calls_in_call/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2153,8 +2153,8 @@ static void ok_comment_above_block(void *on_fns, void *g, size_t resources_size,
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/comment_above_block/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/comment_above_block/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2171,8 +2171,8 @@ static void ok_comment_above_block_twice(void *on_fns, void *g, size_t resources
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/comment_above_block_twice/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/comment_above_block_twice/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2210,8 +2210,8 @@ static void ok_comment_above_helper_fn(void *on_fns, void *g, size_t resources_s
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/comment_above_helper_fn/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/comment_above_helper_fn/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2226,8 +2226,8 @@ static void ok_comment_above_on_fn(void *on_fns, void *g, size_t resources_size,
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/comment_above_on_fn/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/comment_above_on_fn/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2264,8 +2264,8 @@ static void ok_comment_between_statements(void *on_fns, void *g, size_t resource
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/comment_between_statements/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/comment_between_statements/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2282,8 +2282,8 @@ static void ok_comment_lone_block(void *on_fns, void *g, size_t resources_size, 
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/comment_lone_block/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/comment_lone_block/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2298,8 +2298,8 @@ static void ok_comment_lone_block_at_end(void *on_fns, void *g, size_t resources
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/comment_lone_block_at_end/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/comment_lone_block_at_end/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2314,8 +2314,8 @@ static void ok_comment_lone_global(void *on_fns, void *g, size_t resources_size,
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/comment_lone_global/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/comment_lone_global/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2332,8 +2332,8 @@ static void ok_continue(void *on_fns, void *g, size_t resources_size, char **res
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/continue/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/continue/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2352,8 +2352,8 @@ static void ok_division_negative_result(void *on_fns, void *g, size_t resources_
 
 	assert(game_fn_initialize_x == -2);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/division_negative_result/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/division_negative_result/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2372,8 +2372,8 @@ static void ok_division_positive_result(void *on_fns, void *g, size_t resources_
 
 	assert(game_fn_initialize_x == 2);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/division_positive_result/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/division_positive_result/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2392,8 +2392,8 @@ static void ok_double_negation_with_parentheses(void *on_fns, void *g, size_t re
 
 	assert(game_fn_initialize_x == 2);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/double_negation_with_parentheses/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/double_negation_with_parentheses/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2412,8 +2412,8 @@ static void ok_double_not_with_parentheses(void *on_fns, void *g, size_t resourc
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/double_not_with_parentheses/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/double_not_with_parentheses/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2430,8 +2430,8 @@ static void ok_else_after_else_if_false(void *on_fns, void *g, size_t resources_
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/else_after_else_if_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/else_after_else_if_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2448,8 +2448,8 @@ static void ok_else_after_else_if_true(void *on_fns, void *g, size_t resources_s
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/else_after_else_if_true/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/else_after_else_if_true/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2466,8 +2466,8 @@ static void ok_else_false(void *on_fns, void *g, size_t resources_size, char **r
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/else_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/else_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2484,8 +2484,8 @@ static void ok_else_if_false(void *on_fns, void *g, size_t resources_size, char 
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/else_if_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/else_if_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2502,8 +2502,8 @@ static void ok_else_if_true(void *on_fns, void *g, size_t resources_size, char *
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/else_if_true/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/else_if_true/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2520,8 +2520,8 @@ static void ok_else_true(void *on_fns, void *g, size_t resources_size, char **re
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/else_true/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/else_true/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2551,8 +2551,8 @@ static void ok_empty_line(void *on_fns, void *g, size_t resources_size, char **r
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/empty_line/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/empty_line/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2577,8 +2577,8 @@ static void ok_entity_and_resource_as_subexpression(void *on_fns, void *g, size_
 	assert(streq(game_fn_has_entity_name, "ok:baz"));
 	assert(streq(game_fn_has_string_str, "bar"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/entity_and_resource_as_subexpression/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/entity_and_resource_as_subexpression/input-d.grug"));
 
 	assert(resources_size == 1);
 	assert(streq(resources[0], "tests/ok/entity_and_resource_as_subexpression/foo.txt"));
@@ -2597,8 +2597,8 @@ static void ok_entity_duplicate(void *on_fns, void *g, size_t resources_size, ch
 
 	assert(streq(game_fn_spawn_name, "ok:baz"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/entity_duplicate/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/entity_duplicate/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2623,8 +2623,8 @@ static void ok_entity_in_on_fn(void *on_fns, void *g, size_t resources_size, cha
 
 	assert(streq(game_fn_spawn_name, "ok:foo"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/entity_in_on_fn/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/entity_in_on_fn/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2643,8 +2643,8 @@ static void ok_entity_in_on_fn_with_mod_specified(void *on_fns, void *g, size_t 
 
 	assert(streq(game_fn_spawn_name, "wow:foo"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/entity_in_on_fn_with_mod_specified/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/entity_in_on_fn_with_mod_specified/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2663,8 +2663,8 @@ static void ok_eq_false(void *on_fns, void *g, size_t resources_size, char **res
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/eq_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/eq_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2683,8 +2683,8 @@ static void ok_eq_true(void *on_fns, void *g, size_t resources_size, char **reso
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/eq_true/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/eq_true/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2703,8 +2703,8 @@ static void ok_f32_addition(void *on_fns, void *g, size_t resources_size, char *
 
 	assert(game_fn_sin_x == 6.0f);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_addition/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_addition/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2723,8 +2723,8 @@ static void ok_f32_argument(void *on_fns, void *g, size_t resources_size, char *
 
 	assert(game_fn_sin_x == 4.0f);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_argument/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_argument/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2743,8 +2743,8 @@ static void ok_f32_division(void *on_fns, void *g, size_t resources_size, char *
 
 	assert(game_fn_sin_x == 0.5f);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_division/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_division/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2763,8 +2763,8 @@ static void ok_f32_eq_false(void *on_fns, void *g, size_t resources_size, char *
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_eq_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_eq_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2783,8 +2783,8 @@ static void ok_f32_eq_true(void *on_fns, void *g, size_t resources_size, char **
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_eq_true/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_eq_true/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2803,8 +2803,8 @@ static void ok_f32_ge_false(void *on_fns, void *g, size_t resources_size, char *
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_ge_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_ge_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2823,8 +2823,8 @@ static void ok_f32_ge_true_1(void *on_fns, void *g, size_t resources_size, char 
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_ge_true_1/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_ge_true_1/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2843,8 +2843,8 @@ static void ok_f32_ge_true_2(void *on_fns, void *g, size_t resources_size, char 
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_ge_true_2/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_ge_true_2/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2863,8 +2863,8 @@ static void ok_f32_global_variable(void *on_fns, void *g, size_t resources_size,
 
 	assert(game_fn_sin_x == 4.0f);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_global_variable/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_global_variable/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2883,8 +2883,8 @@ static void ok_f32_gt_false(void *on_fns, void *g, size_t resources_size, char *
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_gt_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_gt_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2903,8 +2903,8 @@ static void ok_f32_gt_true(void *on_fns, void *g, size_t resources_size, char **
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_gt_true/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_gt_true/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2923,8 +2923,8 @@ static void ok_f32_le_false(void *on_fns, void *g, size_t resources_size, char *
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_le_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_le_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2943,8 +2943,8 @@ static void ok_f32_le_true_1(void *on_fns, void *g, size_t resources_size, char 
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_le_true_1/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_le_true_1/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2963,8 +2963,8 @@ static void ok_f32_le_true_2(void *on_fns, void *g, size_t resources_size, char 
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_le_true_2/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_le_true_2/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2983,8 +2983,8 @@ static void ok_f32_local_variable(void *on_fns, void *g, size_t resources_size, 
 
 	assert(game_fn_sin_x == 4.0f);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_local_variable/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_local_variable/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3003,8 +3003,8 @@ static void ok_f32_lt_false(void *on_fns, void *g, size_t resources_size, char *
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_lt_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_lt_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3023,8 +3023,8 @@ static void ok_f32_lt_true(void *on_fns, void *g, size_t resources_size, char **
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_lt_true/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_lt_true/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3043,8 +3043,8 @@ static void ok_f32_multiplication(void *on_fns, void *g, size_t resources_size, 
 
 	assert(game_fn_sin_x == 8.0f);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_multiplication/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_multiplication/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3063,8 +3063,8 @@ static void ok_f32_ne_false(void *on_fns, void *g, size_t resources_size, char *
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_ne_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_ne_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3083,8 +3083,8 @@ static void ok_f32_negated(void *on_fns, void *g, size_t resources_size, char **
 
 	assert(game_fn_sin_x == -4.0f);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_negated/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_negated/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3103,8 +3103,8 @@ static void ok_f32_ne_true(void *on_fns, void *g, size_t resources_size, char **
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_ne_true/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_ne_true/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3123,8 +3123,8 @@ static void ok_f32_passed_to_helper_fn(void *on_fns, void *g, size_t resources_s
 
 	assert(game_fn_sin_x == 42.0f);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_passed_to_helper_fn/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_passed_to_helper_fn/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3143,8 +3143,8 @@ static void ok_f32_passed_to_on_fn(void *on_fns, void *g, size_t resources_size,
 
 	assert(game_fn_sin_x == 42.0f);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_passed_to_on_fn/input-r.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_passed_to_on_fn/input-r.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3166,8 +3166,8 @@ static void ok_f32_passing_sin_to_cos(void *on_fns, void *g, size_t resources_si
 	assert(game_fn_sin_x == 4.0f);
 	assert(game_fn_cos_x == sinf(4.0f));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_passing_sin_to_cos/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_passing_sin_to_cos/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3186,8 +3186,8 @@ static void ok_f32_subtraction(void *on_fns, void *g, size_t resources_size, cha
 
 	assert(game_fn_sin_x == -2.0f);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/f32_subtraction/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/f32_subtraction/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3206,8 +3206,8 @@ static void ok_fibonacci(void *on_fns, void *g, size_t resources_size, char **re
 
 	assert(game_fn_initialize_x == 55);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/fibonacci/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/fibonacci/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3226,8 +3226,8 @@ static void ok_ge_false(void *on_fns, void *g, size_t resources_size, char **res
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/ge_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/ge_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3246,8 +3246,8 @@ static void ok_ge_true_1(void *on_fns, void *g, size_t resources_size, char **re
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/ge_true_1/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/ge_true_1/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3266,8 +3266,8 @@ static void ok_ge_true_2(void *on_fns, void *g, size_t resources_size, char **re
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/ge_true_2/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/ge_true_2/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3305,8 +3305,29 @@ static void ok_global_containing_null_id(void *on_fns, void *g, size_t resources
 
 	assert(game_fn_set_target_target == UINT64_MAX);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/global_containing_null_id/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/global_containing_null_id/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_global_id(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	(void)on_fns;
+
+	assert(game_fn_get_opponent_call_count == 1);
+
+	char *globals = g;
+	assert(*((uint64_t*)globals) == 42);
+	globals += sizeof(uint64_t);
+
+	assert(((uint64_t*)globals)[0] == 69);
+
+	free(g);
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3433,8 +3454,8 @@ static void ok_gt_false(void *on_fns, void *g, size_t resources_size, char **res
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/gt_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/gt_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3453,8 +3474,8 @@ static void ok_gt_true(void *on_fns, void *g, size_t resources_size, char **reso
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/gt_true/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/gt_true/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3471,8 +3492,8 @@ static void ok_helper_fn(void *on_fns, void *g, size_t resources_size, char **re
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/helper_fn/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/helper_fn/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3489,8 +3510,8 @@ static void ok_helper_fn_called_in_if(void *on_fns, void *g, size_t resources_si
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/helper_fn_called_in_if/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/helper_fn_called_in_if/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3507,8 +3528,8 @@ static void ok_helper_fn_called_indirectly(void *on_fns, void *g, size_t resourc
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/helper_fn_called_indirectly/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/helper_fn_called_indirectly/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3530,8 +3551,8 @@ static void ok_helper_fn_overwriting_param(void *on_fns, void *g, size_t resourc
 	assert(game_fn_initialize_x == 20);
 	assert(game_fn_sin_x == 30.0f);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/helper_fn_overwriting_param/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/helper_fn_overwriting_param/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3548,8 +3569,8 @@ static void ok_helper_fn_returning_void_has_no_return(void *on_fns, void *g, siz
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/helper_fn_returning_void_has_no_return/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/helper_fn_returning_void_has_no_return/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3566,8 +3587,8 @@ static void ok_helper_fn_returning_void_returns_void(void *on_fns, void *g, size
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/helper_fn_returning_void_returns_void/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/helper_fn_returning_void_returns_void/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3586,8 +3607,8 @@ static void ok_i32_max(void *on_fns, void *g, size_t resources_size, char **reso
 
 	assert(game_fn_initialize_x == 2147483647);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/i32_max/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/i32_max/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3606,8 +3627,8 @@ static void ok_i32_min(void *on_fns, void *g, size_t resources_size, char **reso
 
 	assert(game_fn_initialize_x == -2147483648);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/i32_min/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/i32_min/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3626,8 +3647,8 @@ static void ok_i32_negated(void *on_fns, void *g, size_t resources_size, char **
 
 	assert(game_fn_initialize_x == -42);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/i32_negated/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/i32_negated/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3646,10 +3667,10 @@ static void ok_id_local_variable_get_and_set(void *on_fns, void *g, size_t resou
 
 	free(g);
 
-	assert(game_fn_set_target_target == 42);
+	assert(game_fn_set_target_target == 69);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/id_local_variable_get_and_set/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/id_local_variable_get_and_set/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3666,8 +3687,8 @@ static void ok_if_false(void *on_fns, void *g, size_t resources_size, char **res
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/if_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/if_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3684,8 +3705,8 @@ static void ok_if_true(void *on_fns, void *g, size_t resources_size, char **reso
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/if_true/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/if_true/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3704,8 +3725,8 @@ static void ok_le_false(void *on_fns, void *g, size_t resources_size, char **res
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/le_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/le_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3724,8 +3745,8 @@ static void ok_le_true_1(void *on_fns, void *g, size_t resources_size, char **re
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/le_true_1/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/le_true_1/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3744,8 +3765,8 @@ static void ok_le_true_2(void *on_fns, void *g, size_t resources_size, char **re
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/le_true_2/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/le_true_2/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3764,8 +3785,8 @@ static void ok_lt_false(void *on_fns, void *g, size_t resources_size, char **res
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/lt_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/lt_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3784,8 +3805,8 @@ static void ok_lt_true(void *on_fns, void *g, size_t resources_size, char **reso
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/lt_true/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/lt_true/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3817,8 +3838,8 @@ static void ok_max_args(void *on_fns, void *g, size_t resources_size, char **res
 	assert(game_fn_mega_id == 42);
 	assert(streq(game_fn_mega_str, "foo"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/max_args/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/max_args/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3837,8 +3858,8 @@ static void ok_me(void *on_fns, void *g, size_t resources_size, char **resources
 
 	assert(game_fn_set_target_target == 42);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/me/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/me/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3857,8 +3878,8 @@ static void ok_me_assigned_to_local_variable(void *on_fns, void *g, size_t resou
 
 	assert(game_fn_set_target_target == 42);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/me_assigned_to_local_variable/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/me_assigned_to_local_variable/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3877,8 +3898,8 @@ static void ok_me_passed_to_helper_fn(void *on_fns, void *g, size_t resources_si
 
 	assert(game_fn_set_target_target == 42);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/me_passed_to_helper_fn/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/me_passed_to_helper_fn/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3898,8 +3919,8 @@ static void ok_multiplication_as_two_arguments(void *on_fns, void *g, size_t res
 	assert(game_fn_max_x == 6);
 	assert(game_fn_max_y == 20);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/multiplication_as_two_arguments/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/multiplication_as_two_arguments/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3918,8 +3939,8 @@ static void ok_ne_false(void *on_fns, void *g, size_t resources_size, char **res
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/ne_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/ne_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3938,8 +3959,8 @@ static void ok_ne_true(void *on_fns, void *g, size_t resources_size, char **reso
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/ne_true/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/ne_true/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3958,8 +3979,8 @@ static void ok_negate_parenthesized_expr(void *on_fns, void *g, size_t resources
 
 	assert(game_fn_initialize_x == -5);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/negate_parenthesized_expr/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/negate_parenthesized_expr/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3978,8 +3999,8 @@ static void ok_negative_literal(void *on_fns, void *g, size_t resources_size, ch
 
 	assert(game_fn_initialize_x == -42);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/negative_literal/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/negative_literal/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3996,8 +4017,8 @@ static void ok_nested_break(void *on_fns, void *g, size_t resources_size, char *
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/nested_break/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/nested_break/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4014,8 +4035,8 @@ static void ok_nested_continue(void *on_fns, void *g, size_t resources_size, cha
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/nested_continue/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/nested_continue/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4034,8 +4055,8 @@ static void ok_null_id_initializing_local(void *on_fns, void *g, size_t resource
 
 	assert(game_fn_set_target_target == UINT64_MAX);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/null_id_initializing_local/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/null_id_initializing_local/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4072,8 +4093,8 @@ static void ok_no_empty_line_between_statements(void *on_fns, void *g, size_t re
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/no_empty_line_between_statements/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/no_empty_line_between_statements/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4090,8 +4111,8 @@ static void ok_on_fn(void *on_fns, void *g, size_t resources_size, char **resour
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4108,8 +4129,8 @@ static void ok_on_fn_calling_game_fn_nothing(void *on_fns, void *g, size_t resou
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_calling_game_fn_nothing/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_calling_game_fn_nothing/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4126,8 +4147,8 @@ static void ok_on_fn_calling_game_fn_nothing_twice(void *on_fns, void *g, size_t
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_calling_game_fn_nothing_twice/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_calling_game_fn_nothing_twice/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4157,8 +4178,8 @@ static void ok_on_fn_calling_game_fn_plt_order(void *on_fns, void *g, size_t res
 	assert(game_fn_max_x == 1337);
 	assert(game_fn_max_y == 8192);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_calling_game_fn_plt_order/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_calling_game_fn_plt_order/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4179,8 +4200,8 @@ static void ok_on_fn_calling_helper_fns(void *on_fns, void *g, size_t resources_
 
 	assert(game_fn_initialize_x == 42);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_calling_helper_fns/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_calling_helper_fns/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4195,8 +4216,8 @@ static void ok_on_fn_calling_no_game_fn(void *on_fns, void *g, size_t resources_
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_calling_no_game_fn/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_calling_no_game_fn/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4211,8 +4232,8 @@ static void ok_on_fn_calling_no_game_fn_but_with_addition(void *on_fns, void *g,
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_calling_no_game_fn_but_with_addition/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_calling_no_game_fn_but_with_addition/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4227,8 +4248,8 @@ static void ok_on_fn_calling_no_game_fn_but_with_global(void *on_fns, void *g, s
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_calling_no_game_fn_but_with_global/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_calling_no_game_fn_but_with_global/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4250,8 +4271,8 @@ static void ok_on_fn_overwriting_param(void *on_fns, void *g, size_t resources_s
 	assert(game_fn_initialize_x == 20);
 	assert(game_fn_sin_x == 30.0f);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_overwriting_param/input-s.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_overwriting_param/input-s.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4270,8 +4291,8 @@ static void ok_on_fn_passing_argument_to_helper_fn(void *on_fns, void *g, size_t
 
 	assert(game_fn_initialize_x == 42);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_passing_argument_to_helper_fn/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_passing_argument_to_helper_fn/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4290,8 +4311,8 @@ static void ok_on_fn_passing_magic_to_initialize(void *on_fns, void *g, size_t r
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_passing_magic_to_initialize/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_passing_magic_to_initialize/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4303,16 +4324,16 @@ static void ok_on_fn_passing_magic_to_initialize(void *on_fns, void *g, size_t r
 
 static void ok_on_fn_three(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	((struct j_on_fns *)on_fns)->a(g);
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three/input-j.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_three/input-j.grug"));
 
 	((struct j_on_fns *)on_fns)->b(g);
-	assert(streq(grug_on_fn_name, "on_b"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three/input-j.grug"));
+	assert(streq(grug_fn_name, "on_b"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_three/input-j.grug"));
 
 	((struct j_on_fns *)on_fns)->c(g);
-	assert(streq(grug_on_fn_name, "on_c"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three/input-j.grug"));
+	assert(streq(grug_fn_name, "on_c"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_three/input-j.grug"));
 
 	free(g);
 
@@ -4327,12 +4348,12 @@ static void ok_on_fn_three(void *on_fns, void *g, size_t resources_size, char **
 static void ok_on_fn_three_unused_first(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(((struct j_on_fns *)on_fns)->a == NULL);
 	((struct j_on_fns *)on_fns)->b(g);
-	assert(streq(grug_on_fn_name, "on_b"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three_unused_first/input-j.grug"));
+	assert(streq(grug_fn_name, "on_b"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_three_unused_first/input-j.grug"));
 
 	((struct j_on_fns *)on_fns)->c(g);
-	assert(streq(grug_on_fn_name, "on_c"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three_unused_first/input-j.grug"));
+	assert(streq(grug_fn_name, "on_c"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_three_unused_first/input-j.grug"));
 
 	free(g);
 
@@ -4346,14 +4367,14 @@ static void ok_on_fn_three_unused_first(void *on_fns, void *g, size_t resources_
 
 static void ok_on_fn_three_unused_second(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	((struct j_on_fns *)on_fns)->a(g);
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three_unused_second/input-j.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_three_unused_second/input-j.grug"));
 
 	assert(((struct j_on_fns *)on_fns)->b == NULL);
 
 	((struct j_on_fns *)on_fns)->c(g);
-	assert(streq(grug_on_fn_name, "on_c"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three_unused_second/input-j.grug"));
+	assert(streq(grug_fn_name, "on_c"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_three_unused_second/input-j.grug"));
 
 	free(g);
 
@@ -4367,12 +4388,12 @@ static void ok_on_fn_three_unused_second(void *on_fns, void *g, size_t resources
 
 static void ok_on_fn_three_unused_third(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	((struct j_on_fns *)on_fns)->a(g);
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three_unused_third/input-j.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_three_unused_third/input-j.grug"));
 
 	((struct j_on_fns *)on_fns)->b(g);
-	assert(streq(grug_on_fn_name, "on_b"));
-	assert(streq(grug_on_fn_path, "tests/ok/on_fn_three_unused_third/input-j.grug"));
+	assert(streq(grug_fn_name, "on_b"));
+	assert(streq(grug_fn_path, "tests/ok/on_fn_three_unused_third/input-j.grug"));
 
 	assert(((struct j_on_fns *)on_fns)->c == NULL);
 
@@ -4395,8 +4416,8 @@ static void ok_or_false(void *on_fns, void *g, size_t resources_size, char **res
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/or_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/or_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4415,8 +4436,8 @@ static void ok_or_short_circuit(void *on_fns, void *g, size_t resources_size, ch
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/or_short_circuit/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/or_short_circuit/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4435,8 +4456,8 @@ static void ok_or_true_1(void *on_fns, void *g, size_t resources_size, char **re
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/or_true_1/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/or_true_1/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4455,8 +4476,8 @@ static void ok_or_true_2(void *on_fns, void *g, size_t resources_size, char **re
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/or_true_2/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/or_true_2/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4475,8 +4496,8 @@ static void ok_or_true_3(void *on_fns, void *g, size_t resources_size, char **re
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/or_true_3/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/or_true_3/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4495,8 +4516,8 @@ static void ok_pass_string_argument_to_game_fn(void *on_fns, void *g, size_t res
 
 	assert(streq(game_fn_say_message, "foo"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/pass_string_argument_to_game_fn/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/pass_string_argument_to_game_fn/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4515,8 +4536,8 @@ static void ok_pass_string_argument_to_helper_fn(void *on_fns, void *g, size_t r
 
 	assert(streq(game_fn_say_message, "foo"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/pass_string_argument_to_helper_fn/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/pass_string_argument_to_helper_fn/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4535,8 +4556,8 @@ static void ok_remainder_negative_result(void *on_fns, void *g, size_t resources
 
 	assert(game_fn_initialize_x == -1);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/remainder_negative_result/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/remainder_negative_result/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4555,8 +4576,8 @@ static void ok_remainder_positive_result(void *on_fns, void *g, size_t resources
 
 	assert(game_fn_initialize_x == 1);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/remainder_positive_result/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/remainder_positive_result/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4578,8 +4599,8 @@ static void ok_resource_and_entity(void *on_fns, void *g, size_t resources_size,
 	assert(streq(game_fn_draw_sprite_path, "tests/ok/resource_and_entity/foo.txt"));
 	assert(streq(game_fn_spawn_name, "ok:foo"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/resource_and_entity/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/resource_and_entity/input-d.grug"));
 
 	assert(resources_size == 1);
 	assert(streq(resources[0], "tests/ok/resource_and_entity/foo.txt"));
@@ -4598,8 +4619,8 @@ static void ok_resource_can_contain_dot_1(void *on_fns, void *g, size_t resource
 
 	assert(streq(game_fn_draw_sprite_path, "tests/ok/resource_can_contain_dot_1/.foo"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/resource_can_contain_dot_1/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/resource_can_contain_dot_1/input-d.grug"));
 
 	assert(resources_size == 1);
 	assert(streq(resources[0], "tests/ok/resource_can_contain_dot_1/.foo"));
@@ -4618,8 +4639,8 @@ static void ok_resource_can_contain_dot_2(void *on_fns, void *g, size_t resource
 
 	assert(streq(game_fn_draw_sprite_path, "tests/ok/resource_can_contain_dot_2/foo."));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/resource_can_contain_dot_2/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/resource_can_contain_dot_2/input-d.grug"));
 
 	assert(resources_size == 1);
 	assert(streq(resources[0], "tests/ok/resource_can_contain_dot_2/foo."));
@@ -4638,8 +4659,8 @@ static void ok_resource_can_contain_dot_3(void *on_fns, void *g, size_t resource
 
 	assert(streq(game_fn_draw_sprite_path, "tests/ok/resource_can_contain_dot_3/foo.bar"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/resource_can_contain_dot_3/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/resource_can_contain_dot_3/input-d.grug"));
 
 	assert(resources_size == 1);
 	assert(streq(resources[0], "tests/ok/resource_can_contain_dot_3/foo.bar"));
@@ -4658,8 +4679,8 @@ static void ok_resource_can_contain_dot_dot_1(void *on_fns, void *g, size_t reso
 
 	assert(streq(game_fn_draw_sprite_path, "tests/ok/resource_can_contain_dot_dot_1/..foo"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/resource_can_contain_dot_dot_1/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/resource_can_contain_dot_dot_1/input-d.grug"));
 
 	assert(resources_size == 1);
 	assert(streq(resources[0], "tests/ok/resource_can_contain_dot_dot_1/..foo"));
@@ -4678,8 +4699,8 @@ static void ok_resource_can_contain_dot_dot_2(void *on_fns, void *g, size_t reso
 
 	assert(streq(game_fn_draw_sprite_path, "tests/ok/resource_can_contain_dot_dot_2/foo.."));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/resource_can_contain_dot_dot_2/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/resource_can_contain_dot_dot_2/input-d.grug"));
 
 	assert(resources_size == 1);
 	assert(streq(resources[0], "tests/ok/resource_can_contain_dot_dot_2/foo.."));
@@ -4698,8 +4719,8 @@ static void ok_resource_can_contain_dot_dot_3(void *on_fns, void *g, size_t reso
 
 	assert(streq(game_fn_draw_sprite_path, "tests/ok/resource_can_contain_dot_dot_3/foo..bar"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/resource_can_contain_dot_dot_3/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/resource_can_contain_dot_dot_3/input-d.grug"));
 
 	assert(resources_size == 1);
 	assert(streq(resources[0], "tests/ok/resource_can_contain_dot_dot_3/foo..bar"));
@@ -4718,8 +4739,8 @@ static void ok_resource_duplicate(void *on_fns, void *g, size_t resources_size, 
 
 	assert(streq(game_fn_draw_sprite_path, "tests/ok/resource_duplicate/baz.txt"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/resource_duplicate/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/resource_duplicate/input-d.grug"));
 
 	assert(resources_size == 3);
 	assert(streq(resources[0], "tests/ok/resource_duplicate/foo.txt"));
@@ -4740,8 +4761,8 @@ static void ok_return(void *on_fns, void *g, size_t resources_size, char **resou
 
 	assert(game_fn_initialize_x == 42);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/return/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/return/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4758,8 +4779,8 @@ static void ok_return_from_on_fn(void *on_fns, void *g, size_t resources_size, c
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/return_from_on_fn/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/return_from_on_fn/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4774,8 +4795,8 @@ static void ok_return_from_on_fn_minimal(void *on_fns, void *g, size_t resources
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/return_from_on_fn_minimal/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/return_from_on_fn_minimal/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4792,8 +4813,8 @@ static void ok_return_with_no_value(void *on_fns, void *g, size_t resources_size
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/return_with_no_value/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/return_with_no_value/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4812,8 +4833,8 @@ static void ok_same_variable_name_in_different_functions(void *on_fns, void *g, 
 
 	assert(game_fn_initialize_x == 69);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/same_variable_name_in_different_functions/input-e.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/same_variable_name_in_different_functions/input-e.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4834,8 +4855,8 @@ static void ok_stack_16_byte_alignment(void *on_fns, void *g, size_t resources_s
 
 	assert(game_fn_initialize_aligned_x == 42);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/stack_16_byte_alignment/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/stack_16_byte_alignment/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4856,8 +4877,8 @@ static void ok_stack_16_byte_alignment_midway(void *on_fns, void *g, size_t reso
 
 	assert(game_fn_initialize_aligned_x == 42 + 42);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/stack_16_byte_alignment_midway/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/stack_16_byte_alignment_midway/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4892,8 +4913,8 @@ static void ok_spill_args_to_game_fn(void *on_fns, void *g, size_t resources_siz
 	assert(game_fn_motherload_id == 42);
 	assert(game_fn_motherload_f9 == 9.0f);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/spill_args_to_game_fn/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/spill_args_to_game_fn/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4929,8 +4950,8 @@ static void ok_spill_args_to_game_fn_subless(void *on_fns, void *g, size_t resou
 	assert(game_fn_motherload_subless_id == 42);
 	assert(game_fn_motherload_subless_f10 == 10.0f);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/spill_args_to_game_fn_subless/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/spill_args_to_game_fn_subless/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4965,8 +4986,8 @@ static void ok_spill_args_to_helper_fn(void *on_fns, void *g, size_t resources_s
 	assert(game_fn_motherload_id == 42);
 	assert(game_fn_motherload_f9 == 9.0f);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/spill_args_to_helper_fn/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/spill_args_to_helper_fn/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5008,8 +5029,8 @@ static void ok_spill_args_to_helper_fn_32_bit_f32(void *on_fns, void *g, size_t 
 	assert(game_fn_offset_32_bit_f32_f8 == 8.0f);
 	assert(game_fn_offset_32_bit_f32_g == 1);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/spill_args_to_helper_fn_32_bit_f32/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/spill_args_to_helper_fn_32_bit_f32/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5063,8 +5084,8 @@ static void ok_spill_args_to_helper_fn_32_bit_i32(void *on_fns, void *g, size_t 
 	assert(game_fn_offset_32_bit_i32_i5 == 5);
 	assert(game_fn_offset_32_bit_i32_g == 6);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/spill_args_to_helper_fn_32_bit_i32/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/spill_args_to_helper_fn_32_bit_i32/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5118,8 +5139,8 @@ static void ok_spill_args_to_helper_fn_32_bit_string(void *on_fns, void *g, size
 	assert(streq(game_fn_offset_32_bit_string_s5, "5"));
 	assert(game_fn_offset_32_bit_string_g == 1);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/spill_args_to_helper_fn_32_bit_string/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/spill_args_to_helper_fn_32_bit_string/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5155,8 +5176,8 @@ static void ok_spill_args_to_helper_fn_subless(void *on_fns, void *g, size_t res
 	assert(game_fn_motherload_subless_id == 42);
 	assert(game_fn_motherload_subless_f10 == 10.0f);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/spill_args_to_helper_fn_subless/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/spill_args_to_helper_fn_subless/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5175,8 +5196,8 @@ static void ok_string_can_be_passed_to_helper_fn(void *on_fns, void *g, size_t r
 
 	assert(streq(game_fn_say_message, "foo"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/string_can_be_passed_to_helper_fn/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/string_can_be_passed_to_helper_fn/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5198,8 +5219,8 @@ static void ok_string_duplicate(void *on_fns, void *g, size_t resources_size, ch
 	assert(streq(game_fn_talk_message3, "bar"));
 	assert(streq(game_fn_talk_message4, "baz"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/string_duplicate/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/string_duplicate/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5218,8 +5239,8 @@ static void ok_string_eq_false(void *on_fns, void *g, size_t resources_size, cha
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/string_eq_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/string_eq_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5238,8 +5259,8 @@ static void ok_string_eq_true(void *on_fns, void *g, size_t resources_size, char
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/string_eq_true/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/string_eq_true/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5258,8 +5279,8 @@ static void ok_string_eq_true_empty(void *on_fns, void *g, size_t resources_size
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/string_eq_true_empty/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/string_eq_true_empty/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5278,8 +5299,8 @@ static void ok_string_ne_false(void *on_fns, void *g, size_t resources_size, cha
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/string_ne_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/string_ne_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5298,8 +5319,8 @@ static void ok_string_ne_false_empty(void *on_fns, void *g, size_t resources_siz
 
 	assert(game_fn_initialize_bool_b == false);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/string_ne_false_empty/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/string_ne_false_empty/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5318,8 +5339,8 @@ static void ok_string_ne_true(void *on_fns, void *g, size_t resources_size, char
 
 	assert(game_fn_initialize_bool_b == true);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/string_ne_true/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/string_ne_true/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5338,8 +5359,8 @@ static void ok_sub_rsp_32_bits_global_variables_i32(void *on_fns, void *g, size_
 
 	assert(game_fn_initialize_x == 65);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/sub_rsp_32_bits_global_variables_i32/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/sub_rsp_32_bits_global_variables_i32/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5358,8 +5379,8 @@ static void ok_sub_rsp_32_bits_global_variables_id(void *on_fns, void *g, size_t
 
 	assert(game_fn_set_target_target == UINT64_MAX);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/sub_rsp_32_bits_global_variables_id/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/sub_rsp_32_bits_global_variables_id/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5378,8 +5399,8 @@ static void ok_sub_rsp_32_bits_local_variables_i32(void *on_fns, void *g, size_t
 
 	assert(game_fn_initialize_x == 65);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/sub_rsp_32_bits_local_variables_i32/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/sub_rsp_32_bits_local_variables_i32/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5398,8 +5419,8 @@ static void ok_sub_rsp_32_bits_local_variables_id(void *on_fns, void *g, size_t 
 
 	assert(game_fn_set_target_target == UINT64_MAX);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/sub_rsp_32_bits_local_variables_id/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/sub_rsp_32_bits_local_variables_id/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5418,8 +5439,8 @@ static void ok_subtraction_negative_result(void *on_fns, void *g, size_t resourc
 
 	assert(game_fn_initialize_x == -3);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/subtraction_negative_result/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/subtraction_negative_result/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5438,8 +5459,8 @@ static void ok_subtraction_positive_result(void *on_fns, void *g, size_t resourc
 
 	assert(game_fn_initialize_x == 3);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/subtraction_positive_result/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/subtraction_positive_result/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5458,8 +5479,8 @@ static void ok_variable(void *on_fns, void *g, size_t resources_size, char **res
 
 	assert(game_fn_initialize_x == 42);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/variable/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/variable/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5478,8 +5499,8 @@ static void ok_variable_reassignment(void *on_fns, void *g, size_t resources_siz
 
 	assert(game_fn_initialize_x == 69);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/variable_reassignment/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/variable_reassignment/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5498,8 +5519,8 @@ static void ok_variable_shadows_game_fn(void *on_fns, void *g, size_t resources_
 
 	assert(game_fn_initialize_x == 42);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/variable_shadows_game_fn/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/variable_shadows_game_fn/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5518,8 +5539,8 @@ static void ok_variable_shadows_helper_fn(void *on_fns, void *g, size_t resource
 
 	assert(game_fn_initialize_x == 42);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/variable_shadows_helper_fn/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/variable_shadows_helper_fn/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5538,8 +5559,8 @@ static void ok_variable_shadows_on_fn_1(void *on_fns, void *g, size_t resources_
 
 	assert(game_fn_initialize_x == 42);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/variable_shadows_on_fn_1/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/variable_shadows_on_fn_1/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5558,8 +5579,8 @@ static void ok_variable_shadows_on_fn_2(void *on_fns, void *g, size_t resources_
 
 	assert(game_fn_initialize_x == 42);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/variable_shadows_on_fn_2/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/variable_shadows_on_fn_2/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5578,8 +5599,8 @@ static void ok_variable_string_global(void *on_fns, void *g, size_t resources_si
 
 	assert(streq(game_fn_say_message, "foo"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/variable_string_global/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/variable_string_global/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5598,8 +5619,8 @@ static void ok_variable_string_local(void *on_fns, void *g, size_t resources_siz
 
 	assert(streq(game_fn_say_message, "foo"));
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/variable_string_local/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/variable_string_local/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5616,8 +5637,8 @@ static void ok_void_function_early_return(void *on_fns, void *g, size_t resource
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/void_function_early_return/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/void_function_early_return/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5634,8 +5655,8 @@ static void ok_while_false(void *on_fns, void *g, size_t resources_size, char **
 
 	free(g);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/while_false/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/while_false/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5655,8 +5676,8 @@ static void ok_write_to_global_variable(void *on_fns, void *g, size_t resources_
 	assert(game_fn_max_x == 43);
 	assert(game_fn_max_y == 69);
 
-	assert(streq(grug_on_fn_name, "on_a"));
-	assert(streq(grug_on_fn_path, "tests/ok/write_to_global_variable/input-d.grug"));
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/write_to_global_variable/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5712,7 +5733,6 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(game_function_call_no_args_expected, "d");
 	ADD_TEST_ERROR(global_variable_after_on_fns, "d");
 	ADD_TEST_ERROR(global_variable_already_uses_local_variable_name, "d");
-	ADD_TEST_ERROR(global_variable_calls_fn, "a");
 	ADD_TEST_ERROR(global_variable_contains_addition, "a");
 	ADD_TEST_ERROR(global_variable_contains_double_negation, "a");
 	ADD_TEST_ERROR(global_variable_contains_double_not, "a");
@@ -5915,6 +5935,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(ge_true_2, "d", 8);
 	ADD_TEST_OK(global_containing_negation, "a", 12);
 	ADD_TEST_OK(global_containing_null_id, "d", 16);
+	ADD_TEST_OK(global_id, "a", 16);
 	ADD_TEST_OK(globals, "a", 16);
 	ADD_TEST_OK(globals_1000, "a", 4008);
 	ADD_TEST_OK(globals_1000_string, "a", 8008);

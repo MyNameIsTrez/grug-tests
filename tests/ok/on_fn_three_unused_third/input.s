@@ -30,29 +30,29 @@ section .text
 %include "tests/utils/macros.s"
 
 %macro save_on_fn_name_and_path_on_a 0
-	mov rax, [rel grug_on_fn_path wrt ..got]
+	mov rax, [rel grug_fn_path wrt ..got]
 	lea r11, [rel on_fn_path]
 	mov [rax], r11
 
-	mov rax, [rel grug_on_fn_name wrt ..got]
+	mov rax, [rel grug_fn_name wrt ..got]
 	lea r11, [rel on_fn_name_a]
 	mov [rax], r11
 %endmacro
 
 %macro save_on_fn_name_and_path_on_b 0
-	mov rax, [rel grug_on_fn_path wrt ..got]
+	mov rax, [rel grug_fn_path wrt ..got]
 	lea r11, [rel on_fn_path]
 	mov [rax], r11
 
-	mov rax, [rel grug_on_fn_name wrt ..got]
+	mov rax, [rel grug_fn_name wrt ..got]
 	lea r11, [rel on_fn_name_b]
 	mov [rax], r11
 %endmacro
 
 extern grug_runtime_error_handler
-extern grug_on_fn_name
+extern grug_fn_path
 extern grug_runtime_error_jmp_buffer
-extern grug_on_fn_path
+extern grug_fn_name
 extern grug_on_fns_in_safe_mode
 extern setjmp
 extern grug_get_runtime_error_reason

@@ -2,15 +2,11 @@ section .data
 
 align 8
 global globals_size
-globals_size: dq 8
+globals_size: dq 16
 
-global on_fns
-on_fns:
-	dq on_a
-
-on_fn_path:
-	db "tests/ok/f32_ne_true/input-d.grug", 0
-on_fn_name:
+init_fn_path:
+	db "tests/ok/global_id/input-a.grug", 0
+init_fn_name:
 	db "on_a", 0
 
 align 8
@@ -32,59 +28,38 @@ extern grug_fn_name
 extern grug_on_fns_in_safe_mode
 extern setjmp
 extern grug_get_runtime_error_reason
-extern game_fn_initialize_bool
+extern game_fn_get_opponent
 
 global init_globals
 init_globals:
-	mov rdi[0x0], rsi
-	ret
-
-global on_a
-on_a:
 	push rbp
 	mov rbp, rsp
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rdi
+
+	mov rdi[0x0], rsi
 
 	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
 	mov al, [rax]
 	test al, al
 	je strict .fast
 
-	save_on_fn_name_and_path
+	save_init_fn_name_and_path
 
-	mov eax, __?float32?__(2.0)
-	push rax
-	mov eax, __?float32?__(1.0)
-	pop r11
-	movd xmm0, eax
-	movd xmm1, r11d
-	xor eax, eax
-	comiss xmm0, xmm1
-	setne al
-	push rax
+	init_fn_error_handling
 
-	pop rdi
-	call game_fn_initialize_bool wrt ..plt
+	call game_fn_get_opponent wrt ..plt
+	mov r11, rbp[-0x8]
+	mov r11[byte 0x8], rax
 
 	mov rsp, rbp
 	pop rbp
 	ret
 
 .fast:
-	mov eax, __?float32?__(2.0)
-	push rax
-	mov eax, __?float32?__(1.0)
-	pop r11
-	movd xmm0, eax
-	movd xmm1, r11d
-	xor eax, eax
-	comiss xmm0, xmm1
-	setne al
-	push rax
-
-	pop rdi
-	call game_fn_initialize_bool wrt ..plt
+	call game_fn_get_opponent wrt ..plt
+	mov r11, rbp[-0x8]
+	mov r11[byte 0x8], rax
 
 	mov rsp, rbp
 	pop rbp

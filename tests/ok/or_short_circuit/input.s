@@ -26,9 +26,9 @@ section .text
 %include "tests/utils/macros.s"
 
 extern grug_runtime_error_handler
-extern grug_on_fn_name
+extern grug_fn_path
 extern grug_runtime_error_jmp_buffer
-extern grug_on_fn_path
+extern grug_fn_name
 extern grug_on_fns_in_safe_mode
 extern setjmp
 extern grug_get_runtime_error_reason
@@ -54,7 +54,7 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	error_handling
+	on_fn_error_handling
 
 	mov eax, 1
 	test eax, eax

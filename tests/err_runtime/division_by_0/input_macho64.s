@@ -26,9 +26,9 @@ section .text
 %include "tests/utils/macros.s"
 
 extern grug_runtime_error_handler
-extern grug_on_fn_name
+extern grug_fn_path
 extern grug_runtime_error_jmp_buffer
-extern grug_on_fn_path
+extern grug_fn_name
 extern grug_on_fns_in_safe_mode
 extern setjmp
 extern grug_get_runtime_error_reason
@@ -57,11 +57,11 @@ on_a:
 	; add rbx, _GLOBAL_OFFSET_TABLE_ wrt ..gotpc
 
 	; lea rax, strings[rel 0]
-	; mov r11, [rel grug_on_fn_path wrt ..got]
+	; mov r11, [rel grug_fn_path wrt ..got]
 	; mov [r11], rax
 
 	; lea rax, strings[rel 43]
-	; mov r11, [rel grug_on_fn_name wrt ..got]
+	; mov r11, [rel grug_fn_name wrt ..got]
 	; mov [r11], rax
 
 	; call grug_enable_on_fn_runtime_error_handling wrt ..gotpcrel

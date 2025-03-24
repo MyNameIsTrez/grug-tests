@@ -27,9 +27,9 @@ section .text
 
 extern grug_runtime_error_handler
 extern grug_max_time
-extern grug_on_fn_name
+extern grug_fn_path
 extern grug_runtime_error_jmp_buffer
-extern grug_on_fn_path
+extern grug_fn_name
 extern grug_on_fns_in_safe_mode
 extern grug_current_time
 extern clock_gettime
@@ -59,7 +59,7 @@ on_a:
 
 	set_time_limit
 
-	error_handling
+	on_fn_error_handling
 
 	call game_fn_nothing wrt ..plt
 .repeat_outer:
