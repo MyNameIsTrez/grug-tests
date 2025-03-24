@@ -1,0 +1,1 @@
+Mods aren't allowed to call their own on_ functions, but 'on_a' was called

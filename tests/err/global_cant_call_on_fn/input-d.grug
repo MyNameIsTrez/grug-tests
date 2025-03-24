@@ -1,0 +1,5 @@
+foo: i32 = on_a()
+
+on_a() {
+    nothing()
+}

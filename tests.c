@@ -5731,6 +5731,8 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(game_function_call_less_args_expected, "d");
 	ADD_TEST_ERROR(game_function_call_more_args_expected, "d");
 	ADD_TEST_ERROR(game_function_call_no_args_expected, "d");
+	ADD_TEST_ERROR(global_cant_call_helper_fn, "a");
+	ADD_TEST_ERROR(global_cant_call_on_fn, "d");
 	ADD_TEST_ERROR(global_variable_after_on_fns, "d");
 	ADD_TEST_ERROR(global_variable_already_uses_local_variable_name, "d");
 	ADD_TEST_ERROR(global_variable_contains_addition, "a");

@@ -1,0 +1,5 @@
+foo: i32 = helper_bar()
+
+helper_bar() i32 {
+    return 42
+}
