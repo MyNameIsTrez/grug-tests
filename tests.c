@@ -830,6 +830,7 @@ static bool is_whitelisted_test(char *name) {
 // This is the Fisher-Yates shuffle:
 // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 // https://blog.codinghorror.com/the-danger-of-naivete/
+#ifdef SHUFFLES
 #define SHUFFLE(arr, size, T) {\
 	for (int i = size; i > 0; i--) {\
 		int n = rand() % i;\
@@ -839,6 +840,7 @@ static bool is_whitelisted_test(char *name) {
 		arr[n] = old;\
 	}\
 }
+#endif
 
 static size_t read_file(char *path, uint8_t *bytes) {
 	FILE *f = fopen(path, "r");

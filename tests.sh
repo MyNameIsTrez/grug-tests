@@ -1,6 +1,6 @@
 #!/bin/bash
 
-compiler_flags='-Igrug -g -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wmissing-prototypes -Wshadow -Wuninitialized -Wfatal-errors'
+compiler_flags='-Igrug -g -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wmissing-prototypes -Wshadow -Wuninitialized -Wunused-macros -Wfatal-errors'
 
 # This makes compilation quite a bit slower
 # compiler_flags+=' -Og'
