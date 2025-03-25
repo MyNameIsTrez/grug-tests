@@ -1,10 +1,10 @@
-%macro save_init_fn_name_and_path 0
+%macro save_init_globals_fn_name_and_path 0
 	mov rax, [rel grug_fn_path wrt ..got]
-	lea r11, [rel init_fn_path]
+	lea r11, [rel init_globals_fn_path]
 	mov [rax], r11
 
 	mov rax, [rel grug_fn_name wrt ..got]
-	lea r11, [rel init_fn_name]
+	lea r11, [rel init_globals_fn_name]
 	mov [rax], r11
 %endmacro
 
@@ -32,9 +32,9 @@
 	add rsp, byte 0x8
 	mov rdi, rax
 
-	lea rcx, [rel init_fn_path]
+	lea rcx, [rel init_globals_fn_path]
 
-	lea rdx, [rel init_fn_name]
+	lea rdx, [rel init_globals_fn_name]
 
 	pop rsi
 

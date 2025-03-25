@@ -4,10 +4,10 @@ align 8
 global globals_size
 globals_size: dq 16
 
-init_fn_path:
+init_globals_fn_path:
 	db "tests/ok/global_id/input-a.grug", 0
-init_fn_name:
-	db "on_a", 0
+init_globals_fn_name:
+	db "init_globals", 0
 
 align 8
 global resources_size
@@ -44,7 +44,7 @@ init_globals:
 	test al, al
 	je strict .fast
 
-	save_init_fn_name_and_path
+	save_init_globals_fn_name_and_path
 
 	init_fn_error_handling
 
