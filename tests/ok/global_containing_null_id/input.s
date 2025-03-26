@@ -8,8 +8,11 @@ global on_fns
 on_fns:
 	dq on_a
 
+init_globals_fn_path:
 on_fn_path:
 	db "tests/ok/global_containing_null_id/input-d.grug", 0
+init_globals_fn_name:
+	db "init_globals", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -36,9 +39,35 @@ extern game_fn_set_target
 
 global init_globals
 init_globals:
+	push rbp
+	mov rbp, rsp
+	sub rsp, byte 0x10
+	mov rbp[-0x8], rdi
+
 	mov rdi[0x0], rsi
+
+	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
+	mov al, [rax]
+	test al, al
+	je strict .fast
+
+	save_init_globals_fn_name_and_path
+
 	mov rax, -1
-	mov rdi[0x8], rax
+	mov r11, rbp[-0x8]
+	mov r11[byte 0x8], rax
+
+	mov rsp, rbp
+	pop rbp
+	ret
+
+.fast:
+	mov rax, -1
+	mov r11, rbp[-0x8]
+	mov r11[byte 0x8], rax
+
+	mov rsp, rbp
+	pop rbp
 	ret
 
 global on_a

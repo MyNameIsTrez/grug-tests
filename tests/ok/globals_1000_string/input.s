@@ -4,6 +4,10 @@ align 8
 global globals_size
 globals_size: dq 8008
 
+init_globals_fn_path:
+	db "tests/ok/globals_1000_string/input-a.grug", 0
+init_globals_fn_name:
+	db "init_globals", 0
 global0001:
     db "global0001", 0
 global0002:
@@ -2017,2007 +2021,8031 @@ section .text
 %include "tests/utils/defines.s"
 %include "tests/utils/macros.s"
 
+extern grug_fn_path
+extern grug_fn_name
+extern grug_on_fns_in_safe_mode
+
 global init_globals
 init_globals:
+	push rbp
+	mov rbp, rsp
+	sub rsp, byte 0x10
+	mov rbp[-0x8], rdi
+
 	mov rdi[0x0], rsi
-    lea rax, [rel global0001]
-    mov rdi[0x8], rax
-    lea rax, [rel global0002]
-    mov rdi[0x10], rax
-    lea rax, [rel global0003]
-    mov rdi[0x18], rax
-    lea rax, [rel global0004]
-    mov rdi[0x20], rax
-    lea rax, [rel global0005]
-    mov rdi[0x28], rax
-    lea rax, [rel global0006]
-    mov rdi[0x30], rax
-    lea rax, [rel global0007]
-    mov rdi[0x38], rax
-    lea rax, [rel global0008]
-    mov rdi[0x40], rax
-    lea rax, [rel global0009]
-    mov rdi[0x48], rax
-    lea rax, [rel global0010]
-    mov rdi[0x50], rax
-    lea rax, [rel global0011]
-    mov rdi[0x58], rax
-    lea rax, [rel global0012]
-    mov rdi[0x60], rax
-    lea rax, [rel global0013]
-    mov rdi[0x68], rax
-    lea rax, [rel global0014]
-    mov rdi[0x70], rax
-    lea rax, [rel global0015]
-    mov rdi[0x78], rax
-    lea rax, [rel global0016]
-    mov rdi[0x80], rax
-    lea rax, [rel global0017]
-    mov rdi[0x88], rax
-    lea rax, [rel global0018]
-    mov rdi[0x90], rax
-    lea rax, [rel global0019]
-    mov rdi[0x98], rax
-    lea rax, [rel global0020]
-    mov rdi[0xa0], rax
-    lea rax, [rel global0021]
-    mov rdi[0xa8], rax
-    lea rax, [rel global0022]
-    mov rdi[0xb0], rax
-    lea rax, [rel global0023]
-    mov rdi[0xb8], rax
-    lea rax, [rel global0024]
-    mov rdi[0xc0], rax
-    lea rax, [rel global0025]
-    mov rdi[0xc8], rax
-    lea rax, [rel global0026]
-    mov rdi[0xd0], rax
-    lea rax, [rel global0027]
-    mov rdi[0xd8], rax
-    lea rax, [rel global0028]
-    mov rdi[0xe0], rax
-    lea rax, [rel global0029]
-    mov rdi[0xe8], rax
-    lea rax, [rel global0030]
-    mov rdi[0xf0], rax
-    lea rax, [rel global0031]
-    mov rdi[0xf8], rax
-    lea rax, [rel global0032]
-    mov rdi[0x100], rax
-    lea rax, [rel global0033]
-    mov rdi[0x108], rax
-    lea rax, [rel global0034]
-    mov rdi[0x110], rax
-    lea rax, [rel global0035]
-    mov rdi[0x118], rax
-    lea rax, [rel global0036]
-    mov rdi[0x120], rax
-    lea rax, [rel global0037]
-    mov rdi[0x128], rax
-    lea rax, [rel global0038]
-    mov rdi[0x130], rax
-    lea rax, [rel global0039]
-    mov rdi[0x138], rax
-    lea rax, [rel global0040]
-    mov rdi[0x140], rax
-    lea rax, [rel global0041]
-    mov rdi[0x148], rax
-    lea rax, [rel global0042]
-    mov rdi[0x150], rax
-    lea rax, [rel global0043]
-    mov rdi[0x158], rax
-    lea rax, [rel global0044]
-    mov rdi[0x160], rax
-    lea rax, [rel global0045]
-    mov rdi[0x168], rax
-    lea rax, [rel global0046]
-    mov rdi[0x170], rax
-    lea rax, [rel global0047]
-    mov rdi[0x178], rax
-    lea rax, [rel global0048]
-    mov rdi[0x180], rax
-    lea rax, [rel global0049]
-    mov rdi[0x188], rax
-    lea rax, [rel global0050]
-    mov rdi[0x190], rax
-    lea rax, [rel global0051]
-    mov rdi[0x198], rax
-    lea rax, [rel global0052]
-    mov rdi[0x1a0], rax
-    lea rax, [rel global0053]
-    mov rdi[0x1a8], rax
-    lea rax, [rel global0054]
-    mov rdi[0x1b0], rax
-    lea rax, [rel global0055]
-    mov rdi[0x1b8], rax
-    lea rax, [rel global0056]
-    mov rdi[0x1c0], rax
-    lea rax, [rel global0057]
-    mov rdi[0x1c8], rax
-    lea rax, [rel global0058]
-    mov rdi[0x1d0], rax
-    lea rax, [rel global0059]
-    mov rdi[0x1d8], rax
-    lea rax, [rel global0060]
-    mov rdi[0x1e0], rax
-    lea rax, [rel global0061]
-    mov rdi[0x1e8], rax
-    lea rax, [rel global0062]
-    mov rdi[0x1f0], rax
-    lea rax, [rel global0063]
-    mov rdi[0x1f8], rax
-    lea rax, [rel global0064]
-    mov rdi[0x200], rax
-    lea rax, [rel global0065]
-    mov rdi[0x208], rax
-    lea rax, [rel global0066]
-    mov rdi[0x210], rax
-    lea rax, [rel global0067]
-    mov rdi[0x218], rax
-    lea rax, [rel global0068]
-    mov rdi[0x220], rax
-    lea rax, [rel global0069]
-    mov rdi[0x228], rax
-    lea rax, [rel global0070]
-    mov rdi[0x230], rax
-    lea rax, [rel global0071]
-    mov rdi[0x238], rax
-    lea rax, [rel global0072]
-    mov rdi[0x240], rax
-    lea rax, [rel global0073]
-    mov rdi[0x248], rax
-    lea rax, [rel global0074]
-    mov rdi[0x250], rax
-    lea rax, [rel global0075]
-    mov rdi[0x258], rax
-    lea rax, [rel global0076]
-    mov rdi[0x260], rax
-    lea rax, [rel global0077]
-    mov rdi[0x268], rax
-    lea rax, [rel global0078]
-    mov rdi[0x270], rax
-    lea rax, [rel global0079]
-    mov rdi[0x278], rax
-    lea rax, [rel global0080]
-    mov rdi[0x280], rax
-    lea rax, [rel global0081]
-    mov rdi[0x288], rax
-    lea rax, [rel global0082]
-    mov rdi[0x290], rax
-    lea rax, [rel global0083]
-    mov rdi[0x298], rax
-    lea rax, [rel global0084]
-    mov rdi[0x2a0], rax
-    lea rax, [rel global0085]
-    mov rdi[0x2a8], rax
-    lea rax, [rel global0086]
-    mov rdi[0x2b0], rax
-    lea rax, [rel global0087]
-    mov rdi[0x2b8], rax
-    lea rax, [rel global0088]
-    mov rdi[0x2c0], rax
-    lea rax, [rel global0089]
-    mov rdi[0x2c8], rax
-    lea rax, [rel global0090]
-    mov rdi[0x2d0], rax
-    lea rax, [rel global0091]
-    mov rdi[0x2d8], rax
-    lea rax, [rel global0092]
-    mov rdi[0x2e0], rax
-    lea rax, [rel global0093]
-    mov rdi[0x2e8], rax
-    lea rax, [rel global0094]
-    mov rdi[0x2f0], rax
-    lea rax, [rel global0095]
-    mov rdi[0x2f8], rax
-    lea rax, [rel global0096]
-    mov rdi[0x300], rax
-    lea rax, [rel global0097]
-    mov rdi[0x308], rax
-    lea rax, [rel global0098]
-    mov rdi[0x310], rax
-    lea rax, [rel global0099]
-    mov rdi[0x318], rax
-    lea rax, [rel global0100]
-    mov rdi[0x320], rax
-    lea rax, [rel global0101]
-    mov rdi[0x328], rax
-    lea rax, [rel global0102]
-    mov rdi[0x330], rax
-    lea rax, [rel global0103]
-    mov rdi[0x338], rax
-    lea rax, [rel global0104]
-    mov rdi[0x340], rax
-    lea rax, [rel global0105]
-    mov rdi[0x348], rax
-    lea rax, [rel global0106]
-    mov rdi[0x350], rax
-    lea rax, [rel global0107]
-    mov rdi[0x358], rax
-    lea rax, [rel global0108]
-    mov rdi[0x360], rax
-    lea rax, [rel global0109]
-    mov rdi[0x368], rax
-    lea rax, [rel global0110]
-    mov rdi[0x370], rax
-    lea rax, [rel global0111]
-    mov rdi[0x378], rax
-    lea rax, [rel global0112]
-    mov rdi[0x380], rax
-    lea rax, [rel global0113]
-    mov rdi[0x388], rax
-    lea rax, [rel global0114]
-    mov rdi[0x390], rax
-    lea rax, [rel global0115]
-    mov rdi[0x398], rax
-    lea rax, [rel global0116]
-    mov rdi[0x3a0], rax
-    lea rax, [rel global0117]
-    mov rdi[0x3a8], rax
-    lea rax, [rel global0118]
-    mov rdi[0x3b0], rax
-    lea rax, [rel global0119]
-    mov rdi[0x3b8], rax
-    lea rax, [rel global0120]
-    mov rdi[0x3c0], rax
-    lea rax, [rel global0121]
-    mov rdi[0x3c8], rax
-    lea rax, [rel global0122]
-    mov rdi[0x3d0], rax
-    lea rax, [rel global0123]
-    mov rdi[0x3d8], rax
-    lea rax, [rel global0124]
-    mov rdi[0x3e0], rax
-    lea rax, [rel global0125]
-    mov rdi[0x3e8], rax
-    lea rax, [rel global0126]
-    mov rdi[0x3f0], rax
-    lea rax, [rel global0127]
-    mov rdi[0x3f8], rax
-    lea rax, [rel global0128]
-    mov rdi[0x400], rax
-    lea rax, [rel global0129]
-    mov rdi[0x408], rax
-    lea rax, [rel global0130]
-    mov rdi[0x410], rax
-    lea rax, [rel global0131]
-    mov rdi[0x418], rax
-    lea rax, [rel global0132]
-    mov rdi[0x420], rax
-    lea rax, [rel global0133]
-    mov rdi[0x428], rax
-    lea rax, [rel global0134]
-    mov rdi[0x430], rax
-    lea rax, [rel global0135]
-    mov rdi[0x438], rax
-    lea rax, [rel global0136]
-    mov rdi[0x440], rax
-    lea rax, [rel global0137]
-    mov rdi[0x448], rax
-    lea rax, [rel global0138]
-    mov rdi[0x450], rax
-    lea rax, [rel global0139]
-    mov rdi[0x458], rax
-    lea rax, [rel global0140]
-    mov rdi[0x460], rax
-    lea rax, [rel global0141]
-    mov rdi[0x468], rax
-    lea rax, [rel global0142]
-    mov rdi[0x470], rax
-    lea rax, [rel global0143]
-    mov rdi[0x478], rax
-    lea rax, [rel global0144]
-    mov rdi[0x480], rax
-    lea rax, [rel global0145]
-    mov rdi[0x488], rax
-    lea rax, [rel global0146]
-    mov rdi[0x490], rax
-    lea rax, [rel global0147]
-    mov rdi[0x498], rax
-    lea rax, [rel global0148]
-    mov rdi[0x4a0], rax
-    lea rax, [rel global0149]
-    mov rdi[0x4a8], rax
-    lea rax, [rel global0150]
-    mov rdi[0x4b0], rax
-    lea rax, [rel global0151]
-    mov rdi[0x4b8], rax
-    lea rax, [rel global0152]
-    mov rdi[0x4c0], rax
-    lea rax, [rel global0153]
-    mov rdi[0x4c8], rax
-    lea rax, [rel global0154]
-    mov rdi[0x4d0], rax
-    lea rax, [rel global0155]
-    mov rdi[0x4d8], rax
-    lea rax, [rel global0156]
-    mov rdi[0x4e0], rax
-    lea rax, [rel global0157]
-    mov rdi[0x4e8], rax
-    lea rax, [rel global0158]
-    mov rdi[0x4f0], rax
-    lea rax, [rel global0159]
-    mov rdi[0x4f8], rax
-    lea rax, [rel global0160]
-    mov rdi[0x500], rax
-    lea rax, [rel global0161]
-    mov rdi[0x508], rax
-    lea rax, [rel global0162]
-    mov rdi[0x510], rax
-    lea rax, [rel global0163]
-    mov rdi[0x518], rax
-    lea rax, [rel global0164]
-    mov rdi[0x520], rax
-    lea rax, [rel global0165]
-    mov rdi[0x528], rax
-    lea rax, [rel global0166]
-    mov rdi[0x530], rax
-    lea rax, [rel global0167]
-    mov rdi[0x538], rax
-    lea rax, [rel global0168]
-    mov rdi[0x540], rax
-    lea rax, [rel global0169]
-    mov rdi[0x548], rax
-    lea rax, [rel global0170]
-    mov rdi[0x550], rax
-    lea rax, [rel global0171]
-    mov rdi[0x558], rax
-    lea rax, [rel global0172]
-    mov rdi[0x560], rax
-    lea rax, [rel global0173]
-    mov rdi[0x568], rax
-    lea rax, [rel global0174]
-    mov rdi[0x570], rax
-    lea rax, [rel global0175]
-    mov rdi[0x578], rax
-    lea rax, [rel global0176]
-    mov rdi[0x580], rax
-    lea rax, [rel global0177]
-    mov rdi[0x588], rax
-    lea rax, [rel global0178]
-    mov rdi[0x590], rax
-    lea rax, [rel global0179]
-    mov rdi[0x598], rax
-    lea rax, [rel global0180]
-    mov rdi[0x5a0], rax
-    lea rax, [rel global0181]
-    mov rdi[0x5a8], rax
-    lea rax, [rel global0182]
-    mov rdi[0x5b0], rax
-    lea rax, [rel global0183]
-    mov rdi[0x5b8], rax
-    lea rax, [rel global0184]
-    mov rdi[0x5c0], rax
-    lea rax, [rel global0185]
-    mov rdi[0x5c8], rax
-    lea rax, [rel global0186]
-    mov rdi[0x5d0], rax
-    lea rax, [rel global0187]
-    mov rdi[0x5d8], rax
-    lea rax, [rel global0188]
-    mov rdi[0x5e0], rax
-    lea rax, [rel global0189]
-    mov rdi[0x5e8], rax
-    lea rax, [rel global0190]
-    mov rdi[0x5f0], rax
-    lea rax, [rel global0191]
-    mov rdi[0x5f8], rax
-    lea rax, [rel global0192]
-    mov rdi[0x600], rax
-    lea rax, [rel global0193]
-    mov rdi[0x608], rax
-    lea rax, [rel global0194]
-    mov rdi[0x610], rax
-    lea rax, [rel global0195]
-    mov rdi[0x618], rax
-    lea rax, [rel global0196]
-    mov rdi[0x620], rax
-    lea rax, [rel global0197]
-    mov rdi[0x628], rax
-    lea rax, [rel global0198]
-    mov rdi[0x630], rax
-    lea rax, [rel global0199]
-    mov rdi[0x638], rax
-    lea rax, [rel global0200]
-    mov rdi[0x640], rax
-    lea rax, [rel global0201]
-    mov rdi[0x648], rax
-    lea rax, [rel global0202]
-    mov rdi[0x650], rax
-    lea rax, [rel global0203]
-    mov rdi[0x658], rax
-    lea rax, [rel global0204]
-    mov rdi[0x660], rax
-    lea rax, [rel global0205]
-    mov rdi[0x668], rax
-    lea rax, [rel global0206]
-    mov rdi[0x670], rax
-    lea rax, [rel global0207]
-    mov rdi[0x678], rax
-    lea rax, [rel global0208]
-    mov rdi[0x680], rax
-    lea rax, [rel global0209]
-    mov rdi[0x688], rax
-    lea rax, [rel global0210]
-    mov rdi[0x690], rax
-    lea rax, [rel global0211]
-    mov rdi[0x698], rax
-    lea rax, [rel global0212]
-    mov rdi[0x6a0], rax
-    lea rax, [rel global0213]
-    mov rdi[0x6a8], rax
-    lea rax, [rel global0214]
-    mov rdi[0x6b0], rax
-    lea rax, [rel global0215]
-    mov rdi[0x6b8], rax
-    lea rax, [rel global0216]
-    mov rdi[0x6c0], rax
-    lea rax, [rel global0217]
-    mov rdi[0x6c8], rax
-    lea rax, [rel global0218]
-    mov rdi[0x6d0], rax
-    lea rax, [rel global0219]
-    mov rdi[0x6d8], rax
-    lea rax, [rel global0220]
-    mov rdi[0x6e0], rax
-    lea rax, [rel global0221]
-    mov rdi[0x6e8], rax
-    lea rax, [rel global0222]
-    mov rdi[0x6f0], rax
-    lea rax, [rel global0223]
-    mov rdi[0x6f8], rax
-    lea rax, [rel global0224]
-    mov rdi[0x700], rax
-    lea rax, [rel global0225]
-    mov rdi[0x708], rax
-    lea rax, [rel global0226]
-    mov rdi[0x710], rax
-    lea rax, [rel global0227]
-    mov rdi[0x718], rax
-    lea rax, [rel global0228]
-    mov rdi[0x720], rax
-    lea rax, [rel global0229]
-    mov rdi[0x728], rax
-    lea rax, [rel global0230]
-    mov rdi[0x730], rax
-    lea rax, [rel global0231]
-    mov rdi[0x738], rax
-    lea rax, [rel global0232]
-    mov rdi[0x740], rax
-    lea rax, [rel global0233]
-    mov rdi[0x748], rax
-    lea rax, [rel global0234]
-    mov rdi[0x750], rax
-    lea rax, [rel global0235]
-    mov rdi[0x758], rax
-    lea rax, [rel global0236]
-    mov rdi[0x760], rax
-    lea rax, [rel global0237]
-    mov rdi[0x768], rax
-    lea rax, [rel global0238]
-    mov rdi[0x770], rax
-    lea rax, [rel global0239]
-    mov rdi[0x778], rax
-    lea rax, [rel global0240]
-    mov rdi[0x780], rax
-    lea rax, [rel global0241]
-    mov rdi[0x788], rax
-    lea rax, [rel global0242]
-    mov rdi[0x790], rax
-    lea rax, [rel global0243]
-    mov rdi[0x798], rax
-    lea rax, [rel global0244]
-    mov rdi[0x7a0], rax
-    lea rax, [rel global0245]
-    mov rdi[0x7a8], rax
-    lea rax, [rel global0246]
-    mov rdi[0x7b0], rax
-    lea rax, [rel global0247]
-    mov rdi[0x7b8], rax
-    lea rax, [rel global0248]
-    mov rdi[0x7c0], rax
-    lea rax, [rel global0249]
-    mov rdi[0x7c8], rax
-    lea rax, [rel global0250]
-    mov rdi[0x7d0], rax
-    lea rax, [rel global0251]
-    mov rdi[0x7d8], rax
-    lea rax, [rel global0252]
-    mov rdi[0x7e0], rax
-    lea rax, [rel global0253]
-    mov rdi[0x7e8], rax
-    lea rax, [rel global0254]
-    mov rdi[0x7f0], rax
-    lea rax, [rel global0255]
-    mov rdi[0x7f8], rax
-    lea rax, [rel global0256]
-    mov rdi[0x800], rax
-    lea rax, [rel global0257]
-    mov rdi[0x808], rax
-    lea rax, [rel global0258]
-    mov rdi[0x810], rax
-    lea rax, [rel global0259]
-    mov rdi[0x818], rax
-    lea rax, [rel global0260]
-    mov rdi[0x820], rax
-    lea rax, [rel global0261]
-    mov rdi[0x828], rax
-    lea rax, [rel global0262]
-    mov rdi[0x830], rax
-    lea rax, [rel global0263]
-    mov rdi[0x838], rax
-    lea rax, [rel global0264]
-    mov rdi[0x840], rax
-    lea rax, [rel global0265]
-    mov rdi[0x848], rax
-    lea rax, [rel global0266]
-    mov rdi[0x850], rax
-    lea rax, [rel global0267]
-    mov rdi[0x858], rax
-    lea rax, [rel global0268]
-    mov rdi[0x860], rax
-    lea rax, [rel global0269]
-    mov rdi[0x868], rax
-    lea rax, [rel global0270]
-    mov rdi[0x870], rax
-    lea rax, [rel global0271]
-    mov rdi[0x878], rax
-    lea rax, [rel global0272]
-    mov rdi[0x880], rax
-    lea rax, [rel global0273]
-    mov rdi[0x888], rax
-    lea rax, [rel global0274]
-    mov rdi[0x890], rax
-    lea rax, [rel global0275]
-    mov rdi[0x898], rax
-    lea rax, [rel global0276]
-    mov rdi[0x8a0], rax
-    lea rax, [rel global0277]
-    mov rdi[0x8a8], rax
-    lea rax, [rel global0278]
-    mov rdi[0x8b0], rax
-    lea rax, [rel global0279]
-    mov rdi[0x8b8], rax
-    lea rax, [rel global0280]
-    mov rdi[0x8c0], rax
-    lea rax, [rel global0281]
-    mov rdi[0x8c8], rax
-    lea rax, [rel global0282]
-    mov rdi[0x8d0], rax
-    lea rax, [rel global0283]
-    mov rdi[0x8d8], rax
-    lea rax, [rel global0284]
-    mov rdi[0x8e0], rax
-    lea rax, [rel global0285]
-    mov rdi[0x8e8], rax
-    lea rax, [rel global0286]
-    mov rdi[0x8f0], rax
-    lea rax, [rel global0287]
-    mov rdi[0x8f8], rax
-    lea rax, [rel global0288]
-    mov rdi[0x900], rax
-    lea rax, [rel global0289]
-    mov rdi[0x908], rax
-    lea rax, [rel global0290]
-    mov rdi[0x910], rax
-    lea rax, [rel global0291]
-    mov rdi[0x918], rax
-    lea rax, [rel global0292]
-    mov rdi[0x920], rax
-    lea rax, [rel global0293]
-    mov rdi[0x928], rax
-    lea rax, [rel global0294]
-    mov rdi[0x930], rax
-    lea rax, [rel global0295]
-    mov rdi[0x938], rax
-    lea rax, [rel global0296]
-    mov rdi[0x940], rax
-    lea rax, [rel global0297]
-    mov rdi[0x948], rax
-    lea rax, [rel global0298]
-    mov rdi[0x950], rax
-    lea rax, [rel global0299]
-    mov rdi[0x958], rax
-    lea rax, [rel global0300]
-    mov rdi[0x960], rax
-    lea rax, [rel global0301]
-    mov rdi[0x968], rax
-    lea rax, [rel global0302]
-    mov rdi[0x970], rax
-    lea rax, [rel global0303]
-    mov rdi[0x978], rax
-    lea rax, [rel global0304]
-    mov rdi[0x980], rax
-    lea rax, [rel global0305]
-    mov rdi[0x988], rax
-    lea rax, [rel global0306]
-    mov rdi[0x990], rax
-    lea rax, [rel global0307]
-    mov rdi[0x998], rax
-    lea rax, [rel global0308]
-    mov rdi[0x9a0], rax
-    lea rax, [rel global0309]
-    mov rdi[0x9a8], rax
-    lea rax, [rel global0310]
-    mov rdi[0x9b0], rax
-    lea rax, [rel global0311]
-    mov rdi[0x9b8], rax
-    lea rax, [rel global0312]
-    mov rdi[0x9c0], rax
-    lea rax, [rel global0313]
-    mov rdi[0x9c8], rax
-    lea rax, [rel global0314]
-    mov rdi[0x9d0], rax
-    lea rax, [rel global0315]
-    mov rdi[0x9d8], rax
-    lea rax, [rel global0316]
-    mov rdi[0x9e0], rax
-    lea rax, [rel global0317]
-    mov rdi[0x9e8], rax
-    lea rax, [rel global0318]
-    mov rdi[0x9f0], rax
-    lea rax, [rel global0319]
-    mov rdi[0x9f8], rax
-    lea rax, [rel global0320]
-    mov rdi[0xa00], rax
-    lea rax, [rel global0321]
-    mov rdi[0xa08], rax
-    lea rax, [rel global0322]
-    mov rdi[0xa10], rax
-    lea rax, [rel global0323]
-    mov rdi[0xa18], rax
-    lea rax, [rel global0324]
-    mov rdi[0xa20], rax
-    lea rax, [rel global0325]
-    mov rdi[0xa28], rax
-    lea rax, [rel global0326]
-    mov rdi[0xa30], rax
-    lea rax, [rel global0327]
-    mov rdi[0xa38], rax
-    lea rax, [rel global0328]
-    mov rdi[0xa40], rax
-    lea rax, [rel global0329]
-    mov rdi[0xa48], rax
-    lea rax, [rel global0330]
-    mov rdi[0xa50], rax
-    lea rax, [rel global0331]
-    mov rdi[0xa58], rax
-    lea rax, [rel global0332]
-    mov rdi[0xa60], rax
-    lea rax, [rel global0333]
-    mov rdi[0xa68], rax
-    lea rax, [rel global0334]
-    mov rdi[0xa70], rax
-    lea rax, [rel global0335]
-    mov rdi[0xa78], rax
-    lea rax, [rel global0336]
-    mov rdi[0xa80], rax
-    lea rax, [rel global0337]
-    mov rdi[0xa88], rax
-    lea rax, [rel global0338]
-    mov rdi[0xa90], rax
-    lea rax, [rel global0339]
-    mov rdi[0xa98], rax
-    lea rax, [rel global0340]
-    mov rdi[0xaa0], rax
-    lea rax, [rel global0341]
-    mov rdi[0xaa8], rax
-    lea rax, [rel global0342]
-    mov rdi[0xab0], rax
-    lea rax, [rel global0343]
-    mov rdi[0xab8], rax
-    lea rax, [rel global0344]
-    mov rdi[0xac0], rax
-    lea rax, [rel global0345]
-    mov rdi[0xac8], rax
-    lea rax, [rel global0346]
-    mov rdi[0xad0], rax
-    lea rax, [rel global0347]
-    mov rdi[0xad8], rax
-    lea rax, [rel global0348]
-    mov rdi[0xae0], rax
-    lea rax, [rel global0349]
-    mov rdi[0xae8], rax
-    lea rax, [rel global0350]
-    mov rdi[0xaf0], rax
-    lea rax, [rel global0351]
-    mov rdi[0xaf8], rax
-    lea rax, [rel global0352]
-    mov rdi[0xb00], rax
-    lea rax, [rel global0353]
-    mov rdi[0xb08], rax
-    lea rax, [rel global0354]
-    mov rdi[0xb10], rax
-    lea rax, [rel global0355]
-    mov rdi[0xb18], rax
-    lea rax, [rel global0356]
-    mov rdi[0xb20], rax
-    lea rax, [rel global0357]
-    mov rdi[0xb28], rax
-    lea rax, [rel global0358]
-    mov rdi[0xb30], rax
-    lea rax, [rel global0359]
-    mov rdi[0xb38], rax
-    lea rax, [rel global0360]
-    mov rdi[0xb40], rax
-    lea rax, [rel global0361]
-    mov rdi[0xb48], rax
-    lea rax, [rel global0362]
-    mov rdi[0xb50], rax
-    lea rax, [rel global0363]
-    mov rdi[0xb58], rax
-    lea rax, [rel global0364]
-    mov rdi[0xb60], rax
-    lea rax, [rel global0365]
-    mov rdi[0xb68], rax
-    lea rax, [rel global0366]
-    mov rdi[0xb70], rax
-    lea rax, [rel global0367]
-    mov rdi[0xb78], rax
-    lea rax, [rel global0368]
-    mov rdi[0xb80], rax
-    lea rax, [rel global0369]
-    mov rdi[0xb88], rax
-    lea rax, [rel global0370]
-    mov rdi[0xb90], rax
-    lea rax, [rel global0371]
-    mov rdi[0xb98], rax
-    lea rax, [rel global0372]
-    mov rdi[0xba0], rax
-    lea rax, [rel global0373]
-    mov rdi[0xba8], rax
-    lea rax, [rel global0374]
-    mov rdi[0xbb0], rax
-    lea rax, [rel global0375]
-    mov rdi[0xbb8], rax
-    lea rax, [rel global0376]
-    mov rdi[0xbc0], rax
-    lea rax, [rel global0377]
-    mov rdi[0xbc8], rax
-    lea rax, [rel global0378]
-    mov rdi[0xbd0], rax
-    lea rax, [rel global0379]
-    mov rdi[0xbd8], rax
-    lea rax, [rel global0380]
-    mov rdi[0xbe0], rax
-    lea rax, [rel global0381]
-    mov rdi[0xbe8], rax
-    lea rax, [rel global0382]
-    mov rdi[0xbf0], rax
-    lea rax, [rel global0383]
-    mov rdi[0xbf8], rax
-    lea rax, [rel global0384]
-    mov rdi[0xc00], rax
-    lea rax, [rel global0385]
-    mov rdi[0xc08], rax
-    lea rax, [rel global0386]
-    mov rdi[0xc10], rax
-    lea rax, [rel global0387]
-    mov rdi[0xc18], rax
-    lea rax, [rel global0388]
-    mov rdi[0xc20], rax
-    lea rax, [rel global0389]
-    mov rdi[0xc28], rax
-    lea rax, [rel global0390]
-    mov rdi[0xc30], rax
-    lea rax, [rel global0391]
-    mov rdi[0xc38], rax
-    lea rax, [rel global0392]
-    mov rdi[0xc40], rax
-    lea rax, [rel global0393]
-    mov rdi[0xc48], rax
-    lea rax, [rel global0394]
-    mov rdi[0xc50], rax
-    lea rax, [rel global0395]
-    mov rdi[0xc58], rax
-    lea rax, [rel global0396]
-    mov rdi[0xc60], rax
-    lea rax, [rel global0397]
-    mov rdi[0xc68], rax
-    lea rax, [rel global0398]
-    mov rdi[0xc70], rax
-    lea rax, [rel global0399]
-    mov rdi[0xc78], rax
-    lea rax, [rel global0400]
-    mov rdi[0xc80], rax
-    lea rax, [rel global0401]
-    mov rdi[0xc88], rax
-    lea rax, [rel global0402]
-    mov rdi[0xc90], rax
-    lea rax, [rel global0403]
-    mov rdi[0xc98], rax
-    lea rax, [rel global0404]
-    mov rdi[0xca0], rax
-    lea rax, [rel global0405]
-    mov rdi[0xca8], rax
-    lea rax, [rel global0406]
-    mov rdi[0xcb0], rax
-    lea rax, [rel global0407]
-    mov rdi[0xcb8], rax
-    lea rax, [rel global0408]
-    mov rdi[0xcc0], rax
-    lea rax, [rel global0409]
-    mov rdi[0xcc8], rax
-    lea rax, [rel global0410]
-    mov rdi[0xcd0], rax
-    lea rax, [rel global0411]
-    mov rdi[0xcd8], rax
-    lea rax, [rel global0412]
-    mov rdi[0xce0], rax
-    lea rax, [rel global0413]
-    mov rdi[0xce8], rax
-    lea rax, [rel global0414]
-    mov rdi[0xcf0], rax
-    lea rax, [rel global0415]
-    mov rdi[0xcf8], rax
-    lea rax, [rel global0416]
-    mov rdi[0xd00], rax
-    lea rax, [rel global0417]
-    mov rdi[0xd08], rax
-    lea rax, [rel global0418]
-    mov rdi[0xd10], rax
-    lea rax, [rel global0419]
-    mov rdi[0xd18], rax
-    lea rax, [rel global0420]
-    mov rdi[0xd20], rax
-    lea rax, [rel global0421]
-    mov rdi[0xd28], rax
-    lea rax, [rel global0422]
-    mov rdi[0xd30], rax
-    lea rax, [rel global0423]
-    mov rdi[0xd38], rax
-    lea rax, [rel global0424]
-    mov rdi[0xd40], rax
-    lea rax, [rel global0425]
-    mov rdi[0xd48], rax
-    lea rax, [rel global0426]
-    mov rdi[0xd50], rax
-    lea rax, [rel global0427]
-    mov rdi[0xd58], rax
-    lea rax, [rel global0428]
-    mov rdi[0xd60], rax
-    lea rax, [rel global0429]
-    mov rdi[0xd68], rax
-    lea rax, [rel global0430]
-    mov rdi[0xd70], rax
-    lea rax, [rel global0431]
-    mov rdi[0xd78], rax
-    lea rax, [rel global0432]
-    mov rdi[0xd80], rax
-    lea rax, [rel global0433]
-    mov rdi[0xd88], rax
-    lea rax, [rel global0434]
-    mov rdi[0xd90], rax
-    lea rax, [rel global0435]
-    mov rdi[0xd98], rax
-    lea rax, [rel global0436]
-    mov rdi[0xda0], rax
-    lea rax, [rel global0437]
-    mov rdi[0xda8], rax
-    lea rax, [rel global0438]
-    mov rdi[0xdb0], rax
-    lea rax, [rel global0439]
-    mov rdi[0xdb8], rax
-    lea rax, [rel global0440]
-    mov rdi[0xdc0], rax
-    lea rax, [rel global0441]
-    mov rdi[0xdc8], rax
-    lea rax, [rel global0442]
-    mov rdi[0xdd0], rax
-    lea rax, [rel global0443]
-    mov rdi[0xdd8], rax
-    lea rax, [rel global0444]
-    mov rdi[0xde0], rax
-    lea rax, [rel global0445]
-    mov rdi[0xde8], rax
-    lea rax, [rel global0446]
-    mov rdi[0xdf0], rax
-    lea rax, [rel global0447]
-    mov rdi[0xdf8], rax
-    lea rax, [rel global0448]
-    mov rdi[0xe00], rax
-    lea rax, [rel global0449]
-    mov rdi[0xe08], rax
-    lea rax, [rel global0450]
-    mov rdi[0xe10], rax
-    lea rax, [rel global0451]
-    mov rdi[0xe18], rax
-    lea rax, [rel global0452]
-    mov rdi[0xe20], rax
-    lea rax, [rel global0453]
-    mov rdi[0xe28], rax
-    lea rax, [rel global0454]
-    mov rdi[0xe30], rax
-    lea rax, [rel global0455]
-    mov rdi[0xe38], rax
-    lea rax, [rel global0456]
-    mov rdi[0xe40], rax
-    lea rax, [rel global0457]
-    mov rdi[0xe48], rax
-    lea rax, [rel global0458]
-    mov rdi[0xe50], rax
-    lea rax, [rel global0459]
-    mov rdi[0xe58], rax
-    lea rax, [rel global0460]
-    mov rdi[0xe60], rax
-    lea rax, [rel global0461]
-    mov rdi[0xe68], rax
-    lea rax, [rel global0462]
-    mov rdi[0xe70], rax
-    lea rax, [rel global0463]
-    mov rdi[0xe78], rax
-    lea rax, [rel global0464]
-    mov rdi[0xe80], rax
-    lea rax, [rel global0465]
-    mov rdi[0xe88], rax
-    lea rax, [rel global0466]
-    mov rdi[0xe90], rax
-    lea rax, [rel global0467]
-    mov rdi[0xe98], rax
-    lea rax, [rel global0468]
-    mov rdi[0xea0], rax
-    lea rax, [rel global0469]
-    mov rdi[0xea8], rax
-    lea rax, [rel global0470]
-    mov rdi[0xeb0], rax
-    lea rax, [rel global0471]
-    mov rdi[0xeb8], rax
-    lea rax, [rel global0472]
-    mov rdi[0xec0], rax
-    lea rax, [rel global0473]
-    mov rdi[0xec8], rax
-    lea rax, [rel global0474]
-    mov rdi[0xed0], rax
-    lea rax, [rel global0475]
-    mov rdi[0xed8], rax
-    lea rax, [rel global0476]
-    mov rdi[0xee0], rax
-    lea rax, [rel global0477]
-    mov rdi[0xee8], rax
-    lea rax, [rel global0478]
-    mov rdi[0xef0], rax
-    lea rax, [rel global0479]
-    mov rdi[0xef8], rax
-    lea rax, [rel global0480]
-    mov rdi[0xf00], rax
-    lea rax, [rel global0481]
-    mov rdi[0xf08], rax
-    lea rax, [rel global0482]
-    mov rdi[0xf10], rax
-    lea rax, [rel global0483]
-    mov rdi[0xf18], rax
-    lea rax, [rel global0484]
-    mov rdi[0xf20], rax
-    lea rax, [rel global0485]
-    mov rdi[0xf28], rax
-    lea rax, [rel global0486]
-    mov rdi[0xf30], rax
-    lea rax, [rel global0487]
-    mov rdi[0xf38], rax
-    lea rax, [rel global0488]
-    mov rdi[0xf40], rax
-    lea rax, [rel global0489]
-    mov rdi[0xf48], rax
-    lea rax, [rel global0490]
-    mov rdi[0xf50], rax
-    lea rax, [rel global0491]
-    mov rdi[0xf58], rax
-    lea rax, [rel global0492]
-    mov rdi[0xf60], rax
-    lea rax, [rel global0493]
-    mov rdi[0xf68], rax
-    lea rax, [rel global0494]
-    mov rdi[0xf70], rax
-    lea rax, [rel global0495]
-    mov rdi[0xf78], rax
-    lea rax, [rel global0496]
-    mov rdi[0xf80], rax
-    lea rax, [rel global0497]
-    mov rdi[0xf88], rax
-    lea rax, [rel global0498]
-    mov rdi[0xf90], rax
-    lea rax, [rel global0499]
-    mov rdi[0xf98], rax
-    lea rax, [rel global0500]
-    mov rdi[0xfa0], rax
-    lea rax, [rel global0501]
-    mov rdi[0xfa8], rax
-    lea rax, [rel global0502]
-    mov rdi[0xfb0], rax
-    lea rax, [rel global0503]
-    mov rdi[0xfb8], rax
-    lea rax, [rel global0504]
-    mov rdi[0xfc0], rax
-    lea rax, [rel global0505]
-    mov rdi[0xfc8], rax
-    lea rax, [rel global0506]
-    mov rdi[0xfd0], rax
-    lea rax, [rel global0507]
-    mov rdi[0xfd8], rax
-    lea rax, [rel global0508]
-    mov rdi[0xfe0], rax
-    lea rax, [rel global0509]
-    mov rdi[0xfe8], rax
-    lea rax, [rel global0510]
-    mov rdi[0xff0], rax
-    lea rax, [rel global0511]
-    mov rdi[0xff8], rax
-    lea rax, [rel global0512]
-    mov rdi[0x1000], rax
-    lea rax, [rel global0513]
-    mov rdi[0x1008], rax
-    lea rax, [rel global0514]
-    mov rdi[0x1010], rax
-    lea rax, [rel global0515]
-    mov rdi[0x1018], rax
-    lea rax, [rel global0516]
-    mov rdi[0x1020], rax
-    lea rax, [rel global0517]
-    mov rdi[0x1028], rax
-    lea rax, [rel global0518]
-    mov rdi[0x1030], rax
-    lea rax, [rel global0519]
-    mov rdi[0x1038], rax
-    lea rax, [rel global0520]
-    mov rdi[0x1040], rax
-    lea rax, [rel global0521]
-    mov rdi[0x1048], rax
-    lea rax, [rel global0522]
-    mov rdi[0x1050], rax
-    lea rax, [rel global0523]
-    mov rdi[0x1058], rax
-    lea rax, [rel global0524]
-    mov rdi[0x1060], rax
-    lea rax, [rel global0525]
-    mov rdi[0x1068], rax
-    lea rax, [rel global0526]
-    mov rdi[0x1070], rax
-    lea rax, [rel global0527]
-    mov rdi[0x1078], rax
-    lea rax, [rel global0528]
-    mov rdi[0x1080], rax
-    lea rax, [rel global0529]
-    mov rdi[0x1088], rax
-    lea rax, [rel global0530]
-    mov rdi[0x1090], rax
-    lea rax, [rel global0531]
-    mov rdi[0x1098], rax
-    lea rax, [rel global0532]
-    mov rdi[0x10a0], rax
-    lea rax, [rel global0533]
-    mov rdi[0x10a8], rax
-    lea rax, [rel global0534]
-    mov rdi[0x10b0], rax
-    lea rax, [rel global0535]
-    mov rdi[0x10b8], rax
-    lea rax, [rel global0536]
-    mov rdi[0x10c0], rax
-    lea rax, [rel global0537]
-    mov rdi[0x10c8], rax
-    lea rax, [rel global0538]
-    mov rdi[0x10d0], rax
-    lea rax, [rel global0539]
-    mov rdi[0x10d8], rax
-    lea rax, [rel global0540]
-    mov rdi[0x10e0], rax
-    lea rax, [rel global0541]
-    mov rdi[0x10e8], rax
-    lea rax, [rel global0542]
-    mov rdi[0x10f0], rax
-    lea rax, [rel global0543]
-    mov rdi[0x10f8], rax
-    lea rax, [rel global0544]
-    mov rdi[0x1100], rax
-    lea rax, [rel global0545]
-    mov rdi[0x1108], rax
-    lea rax, [rel global0546]
-    mov rdi[0x1110], rax
-    lea rax, [rel global0547]
-    mov rdi[0x1118], rax
-    lea rax, [rel global0548]
-    mov rdi[0x1120], rax
-    lea rax, [rel global0549]
-    mov rdi[0x1128], rax
-    lea rax, [rel global0550]
-    mov rdi[0x1130], rax
-    lea rax, [rel global0551]
-    mov rdi[0x1138], rax
-    lea rax, [rel global0552]
-    mov rdi[0x1140], rax
-    lea rax, [rel global0553]
-    mov rdi[0x1148], rax
-    lea rax, [rel global0554]
-    mov rdi[0x1150], rax
-    lea rax, [rel global0555]
-    mov rdi[0x1158], rax
-    lea rax, [rel global0556]
-    mov rdi[0x1160], rax
-    lea rax, [rel global0557]
-    mov rdi[0x1168], rax
-    lea rax, [rel global0558]
-    mov rdi[0x1170], rax
-    lea rax, [rel global0559]
-    mov rdi[0x1178], rax
-    lea rax, [rel global0560]
-    mov rdi[0x1180], rax
-    lea rax, [rel global0561]
-    mov rdi[0x1188], rax
-    lea rax, [rel global0562]
-    mov rdi[0x1190], rax
-    lea rax, [rel global0563]
-    mov rdi[0x1198], rax
-    lea rax, [rel global0564]
-    mov rdi[0x11a0], rax
-    lea rax, [rel global0565]
-    mov rdi[0x11a8], rax
-    lea rax, [rel global0566]
-    mov rdi[0x11b0], rax
-    lea rax, [rel global0567]
-    mov rdi[0x11b8], rax
-    lea rax, [rel global0568]
-    mov rdi[0x11c0], rax
-    lea rax, [rel global0569]
-    mov rdi[0x11c8], rax
-    lea rax, [rel global0570]
-    mov rdi[0x11d0], rax
-    lea rax, [rel global0571]
-    mov rdi[0x11d8], rax
-    lea rax, [rel global0572]
-    mov rdi[0x11e0], rax
-    lea rax, [rel global0573]
-    mov rdi[0x11e8], rax
-    lea rax, [rel global0574]
-    mov rdi[0x11f0], rax
-    lea rax, [rel global0575]
-    mov rdi[0x11f8], rax
-    lea rax, [rel global0576]
-    mov rdi[0x1200], rax
-    lea rax, [rel global0577]
-    mov rdi[0x1208], rax
-    lea rax, [rel global0578]
-    mov rdi[0x1210], rax
-    lea rax, [rel global0579]
-    mov rdi[0x1218], rax
-    lea rax, [rel global0580]
-    mov rdi[0x1220], rax
-    lea rax, [rel global0581]
-    mov rdi[0x1228], rax
-    lea rax, [rel global0582]
-    mov rdi[0x1230], rax
-    lea rax, [rel global0583]
-    mov rdi[0x1238], rax
-    lea rax, [rel global0584]
-    mov rdi[0x1240], rax
-    lea rax, [rel global0585]
-    mov rdi[0x1248], rax
-    lea rax, [rel global0586]
-    mov rdi[0x1250], rax
-    lea rax, [rel global0587]
-    mov rdi[0x1258], rax
-    lea rax, [rel global0588]
-    mov rdi[0x1260], rax
-    lea rax, [rel global0589]
-    mov rdi[0x1268], rax
-    lea rax, [rel global0590]
-    mov rdi[0x1270], rax
-    lea rax, [rel global0591]
-    mov rdi[0x1278], rax
-    lea rax, [rel global0592]
-    mov rdi[0x1280], rax
-    lea rax, [rel global0593]
-    mov rdi[0x1288], rax
-    lea rax, [rel global0594]
-    mov rdi[0x1290], rax
-    lea rax, [rel global0595]
-    mov rdi[0x1298], rax
-    lea rax, [rel global0596]
-    mov rdi[0x12a0], rax
-    lea rax, [rel global0597]
-    mov rdi[0x12a8], rax
-    lea rax, [rel global0598]
-    mov rdi[0x12b0], rax
-    lea rax, [rel global0599]
-    mov rdi[0x12b8], rax
-    lea rax, [rel global0600]
-    mov rdi[0x12c0], rax
-    lea rax, [rel global0601]
-    mov rdi[0x12c8], rax
-    lea rax, [rel global0602]
-    mov rdi[0x12d0], rax
-    lea rax, [rel global0603]
-    mov rdi[0x12d8], rax
-    lea rax, [rel global0604]
-    mov rdi[0x12e0], rax
-    lea rax, [rel global0605]
-    mov rdi[0x12e8], rax
-    lea rax, [rel global0606]
-    mov rdi[0x12f0], rax
-    lea rax, [rel global0607]
-    mov rdi[0x12f8], rax
-    lea rax, [rel global0608]
-    mov rdi[0x1300], rax
-    lea rax, [rel global0609]
-    mov rdi[0x1308], rax
-    lea rax, [rel global0610]
-    mov rdi[0x1310], rax
-    lea rax, [rel global0611]
-    mov rdi[0x1318], rax
-    lea rax, [rel global0612]
-    mov rdi[0x1320], rax
-    lea rax, [rel global0613]
-    mov rdi[0x1328], rax
-    lea rax, [rel global0614]
-    mov rdi[0x1330], rax
-    lea rax, [rel global0615]
-    mov rdi[0x1338], rax
-    lea rax, [rel global0616]
-    mov rdi[0x1340], rax
-    lea rax, [rel global0617]
-    mov rdi[0x1348], rax
-    lea rax, [rel global0618]
-    mov rdi[0x1350], rax
-    lea rax, [rel global0619]
-    mov rdi[0x1358], rax
-    lea rax, [rel global0620]
-    mov rdi[0x1360], rax
-    lea rax, [rel global0621]
-    mov rdi[0x1368], rax
-    lea rax, [rel global0622]
-    mov rdi[0x1370], rax
-    lea rax, [rel global0623]
-    mov rdi[0x1378], rax
-    lea rax, [rel global0624]
-    mov rdi[0x1380], rax
-    lea rax, [rel global0625]
-    mov rdi[0x1388], rax
-    lea rax, [rel global0626]
-    mov rdi[0x1390], rax
-    lea rax, [rel global0627]
-    mov rdi[0x1398], rax
-    lea rax, [rel global0628]
-    mov rdi[0x13a0], rax
-    lea rax, [rel global0629]
-    mov rdi[0x13a8], rax
-    lea rax, [rel global0630]
-    mov rdi[0x13b0], rax
-    lea rax, [rel global0631]
-    mov rdi[0x13b8], rax
-    lea rax, [rel global0632]
-    mov rdi[0x13c0], rax
-    lea rax, [rel global0633]
-    mov rdi[0x13c8], rax
-    lea rax, [rel global0634]
-    mov rdi[0x13d0], rax
-    lea rax, [rel global0635]
-    mov rdi[0x13d8], rax
-    lea rax, [rel global0636]
-    mov rdi[0x13e0], rax
-    lea rax, [rel global0637]
-    mov rdi[0x13e8], rax
-    lea rax, [rel global0638]
-    mov rdi[0x13f0], rax
-    lea rax, [rel global0639]
-    mov rdi[0x13f8], rax
-    lea rax, [rel global0640]
-    mov rdi[0x1400], rax
-    lea rax, [rel global0641]
-    mov rdi[0x1408], rax
-    lea rax, [rel global0642]
-    mov rdi[0x1410], rax
-    lea rax, [rel global0643]
-    mov rdi[0x1418], rax
-    lea rax, [rel global0644]
-    mov rdi[0x1420], rax
-    lea rax, [rel global0645]
-    mov rdi[0x1428], rax
-    lea rax, [rel global0646]
-    mov rdi[0x1430], rax
-    lea rax, [rel global0647]
-    mov rdi[0x1438], rax
-    lea rax, [rel global0648]
-    mov rdi[0x1440], rax
-    lea rax, [rel global0649]
-    mov rdi[0x1448], rax
-    lea rax, [rel global0650]
-    mov rdi[0x1450], rax
-    lea rax, [rel global0651]
-    mov rdi[0x1458], rax
-    lea rax, [rel global0652]
-    mov rdi[0x1460], rax
-    lea rax, [rel global0653]
-    mov rdi[0x1468], rax
-    lea rax, [rel global0654]
-    mov rdi[0x1470], rax
-    lea rax, [rel global0655]
-    mov rdi[0x1478], rax
-    lea rax, [rel global0656]
-    mov rdi[0x1480], rax
-    lea rax, [rel global0657]
-    mov rdi[0x1488], rax
-    lea rax, [rel global0658]
-    mov rdi[0x1490], rax
-    lea rax, [rel global0659]
-    mov rdi[0x1498], rax
-    lea rax, [rel global0660]
-    mov rdi[0x14a0], rax
-    lea rax, [rel global0661]
-    mov rdi[0x14a8], rax
-    lea rax, [rel global0662]
-    mov rdi[0x14b0], rax
-    lea rax, [rel global0663]
-    mov rdi[0x14b8], rax
-    lea rax, [rel global0664]
-    mov rdi[0x14c0], rax
-    lea rax, [rel global0665]
-    mov rdi[0x14c8], rax
-    lea rax, [rel global0666]
-    mov rdi[0x14d0], rax
-    lea rax, [rel global0667]
-    mov rdi[0x14d8], rax
-    lea rax, [rel global0668]
-    mov rdi[0x14e0], rax
-    lea rax, [rel global0669]
-    mov rdi[0x14e8], rax
-    lea rax, [rel global0670]
-    mov rdi[0x14f0], rax
-    lea rax, [rel global0671]
-    mov rdi[0x14f8], rax
-    lea rax, [rel global0672]
-    mov rdi[0x1500], rax
-    lea rax, [rel global0673]
-    mov rdi[0x1508], rax
-    lea rax, [rel global0674]
-    mov rdi[0x1510], rax
-    lea rax, [rel global0675]
-    mov rdi[0x1518], rax
-    lea rax, [rel global0676]
-    mov rdi[0x1520], rax
-    lea rax, [rel global0677]
-    mov rdi[0x1528], rax
-    lea rax, [rel global0678]
-    mov rdi[0x1530], rax
-    lea rax, [rel global0679]
-    mov rdi[0x1538], rax
-    lea rax, [rel global0680]
-    mov rdi[0x1540], rax
-    lea rax, [rel global0681]
-    mov rdi[0x1548], rax
-    lea rax, [rel global0682]
-    mov rdi[0x1550], rax
-    lea rax, [rel global0683]
-    mov rdi[0x1558], rax
-    lea rax, [rel global0684]
-    mov rdi[0x1560], rax
-    lea rax, [rel global0685]
-    mov rdi[0x1568], rax
-    lea rax, [rel global0686]
-    mov rdi[0x1570], rax
-    lea rax, [rel global0687]
-    mov rdi[0x1578], rax
-    lea rax, [rel global0688]
-    mov rdi[0x1580], rax
-    lea rax, [rel global0689]
-    mov rdi[0x1588], rax
-    lea rax, [rel global0690]
-    mov rdi[0x1590], rax
-    lea rax, [rel global0691]
-    mov rdi[0x1598], rax
-    lea rax, [rel global0692]
-    mov rdi[0x15a0], rax
-    lea rax, [rel global0693]
-    mov rdi[0x15a8], rax
-    lea rax, [rel global0694]
-    mov rdi[0x15b0], rax
-    lea rax, [rel global0695]
-    mov rdi[0x15b8], rax
-    lea rax, [rel global0696]
-    mov rdi[0x15c0], rax
-    lea rax, [rel global0697]
-    mov rdi[0x15c8], rax
-    lea rax, [rel global0698]
-    mov rdi[0x15d0], rax
-    lea rax, [rel global0699]
-    mov rdi[0x15d8], rax
-    lea rax, [rel global0700]
-    mov rdi[0x15e0], rax
-    lea rax, [rel global0701]
-    mov rdi[0x15e8], rax
-    lea rax, [rel global0702]
-    mov rdi[0x15f0], rax
-    lea rax, [rel global0703]
-    mov rdi[0x15f8], rax
-    lea rax, [rel global0704]
-    mov rdi[0x1600], rax
-    lea rax, [rel global0705]
-    mov rdi[0x1608], rax
-    lea rax, [rel global0706]
-    mov rdi[0x1610], rax
-    lea rax, [rel global0707]
-    mov rdi[0x1618], rax
-    lea rax, [rel global0708]
-    mov rdi[0x1620], rax
-    lea rax, [rel global0709]
-    mov rdi[0x1628], rax
-    lea rax, [rel global0710]
-    mov rdi[0x1630], rax
-    lea rax, [rel global0711]
-    mov rdi[0x1638], rax
-    lea rax, [rel global0712]
-    mov rdi[0x1640], rax
-    lea rax, [rel global0713]
-    mov rdi[0x1648], rax
-    lea rax, [rel global0714]
-    mov rdi[0x1650], rax
-    lea rax, [rel global0715]
-    mov rdi[0x1658], rax
-    lea rax, [rel global0716]
-    mov rdi[0x1660], rax
-    lea rax, [rel global0717]
-    mov rdi[0x1668], rax
-    lea rax, [rel global0718]
-    mov rdi[0x1670], rax
-    lea rax, [rel global0719]
-    mov rdi[0x1678], rax
-    lea rax, [rel global0720]
-    mov rdi[0x1680], rax
-    lea rax, [rel global0721]
-    mov rdi[0x1688], rax
-    lea rax, [rel global0722]
-    mov rdi[0x1690], rax
-    lea rax, [rel global0723]
-    mov rdi[0x1698], rax
-    lea rax, [rel global0724]
-    mov rdi[0x16a0], rax
-    lea rax, [rel global0725]
-    mov rdi[0x16a8], rax
-    lea rax, [rel global0726]
-    mov rdi[0x16b0], rax
-    lea rax, [rel global0727]
-    mov rdi[0x16b8], rax
-    lea rax, [rel global0728]
-    mov rdi[0x16c0], rax
-    lea rax, [rel global0729]
-    mov rdi[0x16c8], rax
-    lea rax, [rel global0730]
-    mov rdi[0x16d0], rax
-    lea rax, [rel global0731]
-    mov rdi[0x16d8], rax
-    lea rax, [rel global0732]
-    mov rdi[0x16e0], rax
-    lea rax, [rel global0733]
-    mov rdi[0x16e8], rax
-    lea rax, [rel global0734]
-    mov rdi[0x16f0], rax
-    lea rax, [rel global0735]
-    mov rdi[0x16f8], rax
-    lea rax, [rel global0736]
-    mov rdi[0x1700], rax
-    lea rax, [rel global0737]
-    mov rdi[0x1708], rax
-    lea rax, [rel global0738]
-    mov rdi[0x1710], rax
-    lea rax, [rel global0739]
-    mov rdi[0x1718], rax
-    lea rax, [rel global0740]
-    mov rdi[0x1720], rax
-    lea rax, [rel global0741]
-    mov rdi[0x1728], rax
-    lea rax, [rel global0742]
-    mov rdi[0x1730], rax
-    lea rax, [rel global0743]
-    mov rdi[0x1738], rax
-    lea rax, [rel global0744]
-    mov rdi[0x1740], rax
-    lea rax, [rel global0745]
-    mov rdi[0x1748], rax
-    lea rax, [rel global0746]
-    mov rdi[0x1750], rax
-    lea rax, [rel global0747]
-    mov rdi[0x1758], rax
-    lea rax, [rel global0748]
-    mov rdi[0x1760], rax
-    lea rax, [rel global0749]
-    mov rdi[0x1768], rax
-    lea rax, [rel global0750]
-    mov rdi[0x1770], rax
-    lea rax, [rel global0751]
-    mov rdi[0x1778], rax
-    lea rax, [rel global0752]
-    mov rdi[0x1780], rax
-    lea rax, [rel global0753]
-    mov rdi[0x1788], rax
-    lea rax, [rel global0754]
-    mov rdi[0x1790], rax
-    lea rax, [rel global0755]
-    mov rdi[0x1798], rax
-    lea rax, [rel global0756]
-    mov rdi[0x17a0], rax
-    lea rax, [rel global0757]
-    mov rdi[0x17a8], rax
-    lea rax, [rel global0758]
-    mov rdi[0x17b0], rax
-    lea rax, [rel global0759]
-    mov rdi[0x17b8], rax
-    lea rax, [rel global0760]
-    mov rdi[0x17c0], rax
-    lea rax, [rel global0761]
-    mov rdi[0x17c8], rax
-    lea rax, [rel global0762]
-    mov rdi[0x17d0], rax
-    lea rax, [rel global0763]
-    mov rdi[0x17d8], rax
-    lea rax, [rel global0764]
-    mov rdi[0x17e0], rax
-    lea rax, [rel global0765]
-    mov rdi[0x17e8], rax
-    lea rax, [rel global0766]
-    mov rdi[0x17f0], rax
-    lea rax, [rel global0767]
-    mov rdi[0x17f8], rax
-    lea rax, [rel global0768]
-    mov rdi[0x1800], rax
-    lea rax, [rel global0769]
-    mov rdi[0x1808], rax
-    lea rax, [rel global0770]
-    mov rdi[0x1810], rax
-    lea rax, [rel global0771]
-    mov rdi[0x1818], rax
-    lea rax, [rel global0772]
-    mov rdi[0x1820], rax
-    lea rax, [rel global0773]
-    mov rdi[0x1828], rax
-    lea rax, [rel global0774]
-    mov rdi[0x1830], rax
-    lea rax, [rel global0775]
-    mov rdi[0x1838], rax
-    lea rax, [rel global0776]
-    mov rdi[0x1840], rax
-    lea rax, [rel global0777]
-    mov rdi[0x1848], rax
-    lea rax, [rel global0778]
-    mov rdi[0x1850], rax
-    lea rax, [rel global0779]
-    mov rdi[0x1858], rax
-    lea rax, [rel global0780]
-    mov rdi[0x1860], rax
-    lea rax, [rel global0781]
-    mov rdi[0x1868], rax
-    lea rax, [rel global0782]
-    mov rdi[0x1870], rax
-    lea rax, [rel global0783]
-    mov rdi[0x1878], rax
-    lea rax, [rel global0784]
-    mov rdi[0x1880], rax
-    lea rax, [rel global0785]
-    mov rdi[0x1888], rax
-    lea rax, [rel global0786]
-    mov rdi[0x1890], rax
-    lea rax, [rel global0787]
-    mov rdi[0x1898], rax
-    lea rax, [rel global0788]
-    mov rdi[0x18a0], rax
-    lea rax, [rel global0789]
-    mov rdi[0x18a8], rax
-    lea rax, [rel global0790]
-    mov rdi[0x18b0], rax
-    lea rax, [rel global0791]
-    mov rdi[0x18b8], rax
-    lea rax, [rel global0792]
-    mov rdi[0x18c0], rax
-    lea rax, [rel global0793]
-    mov rdi[0x18c8], rax
-    lea rax, [rel global0794]
-    mov rdi[0x18d0], rax
-    lea rax, [rel global0795]
-    mov rdi[0x18d8], rax
-    lea rax, [rel global0796]
-    mov rdi[0x18e0], rax
-    lea rax, [rel global0797]
-    mov rdi[0x18e8], rax
-    lea rax, [rel global0798]
-    mov rdi[0x18f0], rax
-    lea rax, [rel global0799]
-    mov rdi[0x18f8], rax
-    lea rax, [rel global0800]
-    mov rdi[0x1900], rax
-    lea rax, [rel global0801]
-    mov rdi[0x1908], rax
-    lea rax, [rel global0802]
-    mov rdi[0x1910], rax
-    lea rax, [rel global0803]
-    mov rdi[0x1918], rax
-    lea rax, [rel global0804]
-    mov rdi[0x1920], rax
-    lea rax, [rel global0805]
-    mov rdi[0x1928], rax
-    lea rax, [rel global0806]
-    mov rdi[0x1930], rax
-    lea rax, [rel global0807]
-    mov rdi[0x1938], rax
-    lea rax, [rel global0808]
-    mov rdi[0x1940], rax
-    lea rax, [rel global0809]
-    mov rdi[0x1948], rax
-    lea rax, [rel global0810]
-    mov rdi[0x1950], rax
-    lea rax, [rel global0811]
-    mov rdi[0x1958], rax
-    lea rax, [rel global0812]
-    mov rdi[0x1960], rax
-    lea rax, [rel global0813]
-    mov rdi[0x1968], rax
-    lea rax, [rel global0814]
-    mov rdi[0x1970], rax
-    lea rax, [rel global0815]
-    mov rdi[0x1978], rax
-    lea rax, [rel global0816]
-    mov rdi[0x1980], rax
-    lea rax, [rel global0817]
-    mov rdi[0x1988], rax
-    lea rax, [rel global0818]
-    mov rdi[0x1990], rax
-    lea rax, [rel global0819]
-    mov rdi[0x1998], rax
-    lea rax, [rel global0820]
-    mov rdi[0x19a0], rax
-    lea rax, [rel global0821]
-    mov rdi[0x19a8], rax
-    lea rax, [rel global0822]
-    mov rdi[0x19b0], rax
-    lea rax, [rel global0823]
-    mov rdi[0x19b8], rax
-    lea rax, [rel global0824]
-    mov rdi[0x19c0], rax
-    lea rax, [rel global0825]
-    mov rdi[0x19c8], rax
-    lea rax, [rel global0826]
-    mov rdi[0x19d0], rax
-    lea rax, [rel global0827]
-    mov rdi[0x19d8], rax
-    lea rax, [rel global0828]
-    mov rdi[0x19e0], rax
-    lea rax, [rel global0829]
-    mov rdi[0x19e8], rax
-    lea rax, [rel global0830]
-    mov rdi[0x19f0], rax
-    lea rax, [rel global0831]
-    mov rdi[0x19f8], rax
-    lea rax, [rel global0832]
-    mov rdi[0x1a00], rax
-    lea rax, [rel global0833]
-    mov rdi[0x1a08], rax
-    lea rax, [rel global0834]
-    mov rdi[0x1a10], rax
-    lea rax, [rel global0835]
-    mov rdi[0x1a18], rax
-    lea rax, [rel global0836]
-    mov rdi[0x1a20], rax
-    lea rax, [rel global0837]
-    mov rdi[0x1a28], rax
-    lea rax, [rel global0838]
-    mov rdi[0x1a30], rax
-    lea rax, [rel global0839]
-    mov rdi[0x1a38], rax
-    lea rax, [rel global0840]
-    mov rdi[0x1a40], rax
-    lea rax, [rel global0841]
-    mov rdi[0x1a48], rax
-    lea rax, [rel global0842]
-    mov rdi[0x1a50], rax
-    lea rax, [rel global0843]
-    mov rdi[0x1a58], rax
-    lea rax, [rel global0844]
-    mov rdi[0x1a60], rax
-    lea rax, [rel global0845]
-    mov rdi[0x1a68], rax
-    lea rax, [rel global0846]
-    mov rdi[0x1a70], rax
-    lea rax, [rel global0847]
-    mov rdi[0x1a78], rax
-    lea rax, [rel global0848]
-    mov rdi[0x1a80], rax
-    lea rax, [rel global0849]
-    mov rdi[0x1a88], rax
-    lea rax, [rel global0850]
-    mov rdi[0x1a90], rax
-    lea rax, [rel global0851]
-    mov rdi[0x1a98], rax
-    lea rax, [rel global0852]
-    mov rdi[0x1aa0], rax
-    lea rax, [rel global0853]
-    mov rdi[0x1aa8], rax
-    lea rax, [rel global0854]
-    mov rdi[0x1ab0], rax
-    lea rax, [rel global0855]
-    mov rdi[0x1ab8], rax
-    lea rax, [rel global0856]
-    mov rdi[0x1ac0], rax
-    lea rax, [rel global0857]
-    mov rdi[0x1ac8], rax
-    lea rax, [rel global0858]
-    mov rdi[0x1ad0], rax
-    lea rax, [rel global0859]
-    mov rdi[0x1ad8], rax
-    lea rax, [rel global0860]
-    mov rdi[0x1ae0], rax
-    lea rax, [rel global0861]
-    mov rdi[0x1ae8], rax
-    lea rax, [rel global0862]
-    mov rdi[0x1af0], rax
-    lea rax, [rel global0863]
-    mov rdi[0x1af8], rax
-    lea rax, [rel global0864]
-    mov rdi[0x1b00], rax
-    lea rax, [rel global0865]
-    mov rdi[0x1b08], rax
-    lea rax, [rel global0866]
-    mov rdi[0x1b10], rax
-    lea rax, [rel global0867]
-    mov rdi[0x1b18], rax
-    lea rax, [rel global0868]
-    mov rdi[0x1b20], rax
-    lea rax, [rel global0869]
-    mov rdi[0x1b28], rax
-    lea rax, [rel global0870]
-    mov rdi[0x1b30], rax
-    lea rax, [rel global0871]
-    mov rdi[0x1b38], rax
-    lea rax, [rel global0872]
-    mov rdi[0x1b40], rax
-    lea rax, [rel global0873]
-    mov rdi[0x1b48], rax
-    lea rax, [rel global0874]
-    mov rdi[0x1b50], rax
-    lea rax, [rel global0875]
-    mov rdi[0x1b58], rax
-    lea rax, [rel global0876]
-    mov rdi[0x1b60], rax
-    lea rax, [rel global0877]
-    mov rdi[0x1b68], rax
-    lea rax, [rel global0878]
-    mov rdi[0x1b70], rax
-    lea rax, [rel global0879]
-    mov rdi[0x1b78], rax
-    lea rax, [rel global0880]
-    mov rdi[0x1b80], rax
-    lea rax, [rel global0881]
-    mov rdi[0x1b88], rax
-    lea rax, [rel global0882]
-    mov rdi[0x1b90], rax
-    lea rax, [rel global0883]
-    mov rdi[0x1b98], rax
-    lea rax, [rel global0884]
-    mov rdi[0x1ba0], rax
-    lea rax, [rel global0885]
-    mov rdi[0x1ba8], rax
-    lea rax, [rel global0886]
-    mov rdi[0x1bb0], rax
-    lea rax, [rel global0887]
-    mov rdi[0x1bb8], rax
-    lea rax, [rel global0888]
-    mov rdi[0x1bc0], rax
-    lea rax, [rel global0889]
-    mov rdi[0x1bc8], rax
-    lea rax, [rel global0890]
-    mov rdi[0x1bd0], rax
-    lea rax, [rel global0891]
-    mov rdi[0x1bd8], rax
-    lea rax, [rel global0892]
-    mov rdi[0x1be0], rax
-    lea rax, [rel global0893]
-    mov rdi[0x1be8], rax
-    lea rax, [rel global0894]
-    mov rdi[0x1bf0], rax
-    lea rax, [rel global0895]
-    mov rdi[0x1bf8], rax
-    lea rax, [rel global0896]
-    mov rdi[0x1c00], rax
-    lea rax, [rel global0897]
-    mov rdi[0x1c08], rax
-    lea rax, [rel global0898]
-    mov rdi[0x1c10], rax
-    lea rax, [rel global0899]
-    mov rdi[0x1c18], rax
-    lea rax, [rel global0900]
-    mov rdi[0x1c20], rax
-    lea rax, [rel global0901]
-    mov rdi[0x1c28], rax
-    lea rax, [rel global0902]
-    mov rdi[0x1c30], rax
-    lea rax, [rel global0903]
-    mov rdi[0x1c38], rax
-    lea rax, [rel global0904]
-    mov rdi[0x1c40], rax
-    lea rax, [rel global0905]
-    mov rdi[0x1c48], rax
-    lea rax, [rel global0906]
-    mov rdi[0x1c50], rax
-    lea rax, [rel global0907]
-    mov rdi[0x1c58], rax
-    lea rax, [rel global0908]
-    mov rdi[0x1c60], rax
-    lea rax, [rel global0909]
-    mov rdi[0x1c68], rax
-    lea rax, [rel global0910]
-    mov rdi[0x1c70], rax
-    lea rax, [rel global0911]
-    mov rdi[0x1c78], rax
-    lea rax, [rel global0912]
-    mov rdi[0x1c80], rax
-    lea rax, [rel global0913]
-    mov rdi[0x1c88], rax
-    lea rax, [rel global0914]
-    mov rdi[0x1c90], rax
-    lea rax, [rel global0915]
-    mov rdi[0x1c98], rax
-    lea rax, [rel global0916]
-    mov rdi[0x1ca0], rax
-    lea rax, [rel global0917]
-    mov rdi[0x1ca8], rax
-    lea rax, [rel global0918]
-    mov rdi[0x1cb0], rax
-    lea rax, [rel global0919]
-    mov rdi[0x1cb8], rax
-    lea rax, [rel global0920]
-    mov rdi[0x1cc0], rax
-    lea rax, [rel global0921]
-    mov rdi[0x1cc8], rax
-    lea rax, [rel global0922]
-    mov rdi[0x1cd0], rax
-    lea rax, [rel global0923]
-    mov rdi[0x1cd8], rax
-    lea rax, [rel global0924]
-    mov rdi[0x1ce0], rax
-    lea rax, [rel global0925]
-    mov rdi[0x1ce8], rax
-    lea rax, [rel global0926]
-    mov rdi[0x1cf0], rax
-    lea rax, [rel global0927]
-    mov rdi[0x1cf8], rax
-    lea rax, [rel global0928]
-    mov rdi[0x1d00], rax
-    lea rax, [rel global0929]
-    mov rdi[0x1d08], rax
-    lea rax, [rel global0930]
-    mov rdi[0x1d10], rax
-    lea rax, [rel global0931]
-    mov rdi[0x1d18], rax
-    lea rax, [rel global0932]
-    mov rdi[0x1d20], rax
-    lea rax, [rel global0933]
-    mov rdi[0x1d28], rax
-    lea rax, [rel global0934]
-    mov rdi[0x1d30], rax
-    lea rax, [rel global0935]
-    mov rdi[0x1d38], rax
-    lea rax, [rel global0936]
-    mov rdi[0x1d40], rax
-    lea rax, [rel global0937]
-    mov rdi[0x1d48], rax
-    lea rax, [rel global0938]
-    mov rdi[0x1d50], rax
-    lea rax, [rel global0939]
-    mov rdi[0x1d58], rax
-    lea rax, [rel global0940]
-    mov rdi[0x1d60], rax
-    lea rax, [rel global0941]
-    mov rdi[0x1d68], rax
-    lea rax, [rel global0942]
-    mov rdi[0x1d70], rax
-    lea rax, [rel global0943]
-    mov rdi[0x1d78], rax
-    lea rax, [rel global0944]
-    mov rdi[0x1d80], rax
-    lea rax, [rel global0945]
-    mov rdi[0x1d88], rax
-    lea rax, [rel global0946]
-    mov rdi[0x1d90], rax
-    lea rax, [rel global0947]
-    mov rdi[0x1d98], rax
-    lea rax, [rel global0948]
-    mov rdi[0x1da0], rax
-    lea rax, [rel global0949]
-    mov rdi[0x1da8], rax
-    lea rax, [rel global0950]
-    mov rdi[0x1db0], rax
-    lea rax, [rel global0951]
-    mov rdi[0x1db8], rax
-    lea rax, [rel global0952]
-    mov rdi[0x1dc0], rax
-    lea rax, [rel global0953]
-    mov rdi[0x1dc8], rax
-    lea rax, [rel global0954]
-    mov rdi[0x1dd0], rax
-    lea rax, [rel global0955]
-    mov rdi[0x1dd8], rax
-    lea rax, [rel global0956]
-    mov rdi[0x1de0], rax
-    lea rax, [rel global0957]
-    mov rdi[0x1de8], rax
-    lea rax, [rel global0958]
-    mov rdi[0x1df0], rax
-    lea rax, [rel global0959]
-    mov rdi[0x1df8], rax
-    lea rax, [rel global0960]
-    mov rdi[0x1e00], rax
-    lea rax, [rel global0961]
-    mov rdi[0x1e08], rax
-    lea rax, [rel global0962]
-    mov rdi[0x1e10], rax
-    lea rax, [rel global0963]
-    mov rdi[0x1e18], rax
-    lea rax, [rel global0964]
-    mov rdi[0x1e20], rax
-    lea rax, [rel global0965]
-    mov rdi[0x1e28], rax
-    lea rax, [rel global0966]
-    mov rdi[0x1e30], rax
-    lea rax, [rel global0967]
-    mov rdi[0x1e38], rax
-    lea rax, [rel global0968]
-    mov rdi[0x1e40], rax
-    lea rax, [rel global0969]
-    mov rdi[0x1e48], rax
-    lea rax, [rel global0970]
-    mov rdi[0x1e50], rax
-    lea rax, [rel global0971]
-    mov rdi[0x1e58], rax
-    lea rax, [rel global0972]
-    mov rdi[0x1e60], rax
-    lea rax, [rel global0973]
-    mov rdi[0x1e68], rax
-    lea rax, [rel global0974]
-    mov rdi[0x1e70], rax
-    lea rax, [rel global0975]
-    mov rdi[0x1e78], rax
-    lea rax, [rel global0976]
-    mov rdi[0x1e80], rax
-    lea rax, [rel global0977]
-    mov rdi[0x1e88], rax
-    lea rax, [rel global0978]
-    mov rdi[0x1e90], rax
-    lea rax, [rel global0979]
-    mov rdi[0x1e98], rax
-    lea rax, [rel global0980]
-    mov rdi[0x1ea0], rax
-    lea rax, [rel global0981]
-    mov rdi[0x1ea8], rax
-    lea rax, [rel global0982]
-    mov rdi[0x1eb0], rax
-    lea rax, [rel global0983]
-    mov rdi[0x1eb8], rax
-    lea rax, [rel global0984]
-    mov rdi[0x1ec0], rax
-    lea rax, [rel global0985]
-    mov rdi[0x1ec8], rax
-    lea rax, [rel global0986]
-    mov rdi[0x1ed0], rax
-    lea rax, [rel global0987]
-    mov rdi[0x1ed8], rax
-    lea rax, [rel global0988]
-    mov rdi[0x1ee0], rax
-    lea rax, [rel global0989]
-    mov rdi[0x1ee8], rax
-    lea rax, [rel global0990]
-    mov rdi[0x1ef0], rax
-    lea rax, [rel global0991]
-    mov rdi[0x1ef8], rax
-    lea rax, [rel global0992]
-    mov rdi[0x1f00], rax
-    lea rax, [rel global0993]
-    mov rdi[0x1f08], rax
-    lea rax, [rel global0994]
-    mov rdi[0x1f10], rax
-    lea rax, [rel global0995]
-    mov rdi[0x1f18], rax
-    lea rax, [rel global0996]
-    mov rdi[0x1f20], rax
-    lea rax, [rel global0997]
-    mov rdi[0x1f28], rax
-    lea rax, [rel global0998]
-    mov rdi[0x1f30], rax
-    lea rax, [rel global0999]
-    mov rdi[0x1f38], rax
-    lea rax, [rel global1000]
-    mov rdi[0x1f40], rax
+
+	mov rax, [rel grug_on_fns_in_safe_mode wrt ..got]
+	mov al, [rax]
+	test al, al
+	je strict .fast
+
+	save_init_globals_fn_name_and_path
+
+	lea rax, [rel global0001]
+	mov r11, rbp[-0x8]
+	mov r11[0x8], rax
+
+	lea rax, [rel global0002]
+	mov r11, rbp[-0x8]
+	mov r11[0x10], rax
+
+	lea rax, [rel global0003]
+	mov r11, rbp[-0x8]
+	mov r11[0x18], rax
+
+	lea rax, [rel global0004]
+	mov r11, rbp[-0x8]
+	mov r11[0x20], rax
+
+	lea rax, [rel global0005]
+	mov r11, rbp[-0x8]
+	mov r11[0x28], rax
+
+	lea rax, [rel global0006]
+	mov r11, rbp[-0x8]
+	mov r11[0x30], rax
+
+	lea rax, [rel global0007]
+	mov r11, rbp[-0x8]
+	mov r11[0x38], rax
+
+	lea rax, [rel global0008]
+	mov r11, rbp[-0x8]
+	mov r11[0x40], rax
+
+	lea rax, [rel global0009]
+	mov r11, rbp[-0x8]
+	mov r11[0x48], rax
+
+	lea rax, [rel global0010]
+	mov r11, rbp[-0x8]
+	mov r11[0x50], rax
+
+	lea rax, [rel global0011]
+	mov r11, rbp[-0x8]
+	mov r11[0x58], rax
+
+	lea rax, [rel global0012]
+	mov r11, rbp[-0x8]
+	mov r11[0x60], rax
+
+	lea rax, [rel global0013]
+	mov r11, rbp[-0x8]
+	mov r11[0x68], rax
+
+	lea rax, [rel global0014]
+	mov r11, rbp[-0x8]
+	mov r11[0x70], rax
+
+	lea rax, [rel global0015]
+	mov r11, rbp[-0x8]
+	mov r11[0x78], rax
+
+	lea rax, [rel global0016]
+	mov r11, rbp[-0x8]
+	mov r11[0x80], rax
+
+	lea rax, [rel global0017]
+	mov r11, rbp[-0x8]
+	mov r11[0x88], rax
+
+	lea rax, [rel global0018]
+	mov r11, rbp[-0x8]
+	mov r11[0x90], rax
+
+	lea rax, [rel global0019]
+	mov r11, rbp[-0x8]
+	mov r11[0x98], rax
+
+	lea rax, [rel global0020]
+	mov r11, rbp[-0x8]
+	mov r11[0xa0], rax
+
+	lea rax, [rel global0021]
+	mov r11, rbp[-0x8]
+	mov r11[0xa8], rax
+
+	lea rax, [rel global0022]
+	mov r11, rbp[-0x8]
+	mov r11[0xb0], rax
+
+	lea rax, [rel global0023]
+	mov r11, rbp[-0x8]
+	mov r11[0xb8], rax
+
+	lea rax, [rel global0024]
+	mov r11, rbp[-0x8]
+	mov r11[0xc0], rax
+
+	lea rax, [rel global0025]
+	mov r11, rbp[-0x8]
+	mov r11[0xc8], rax
+
+	lea rax, [rel global0026]
+	mov r11, rbp[-0x8]
+	mov r11[0xd0], rax
+
+	lea rax, [rel global0027]
+	mov r11, rbp[-0x8]
+	mov r11[0xd8], rax
+
+	lea rax, [rel global0028]
+	mov r11, rbp[-0x8]
+	mov r11[0xe0], rax
+
+	lea rax, [rel global0029]
+	mov r11, rbp[-0x8]
+	mov r11[0xe8], rax
+
+	lea rax, [rel global0030]
+	mov r11, rbp[-0x8]
+	mov r11[0xf0], rax
+
+	lea rax, [rel global0031]
+	mov r11, rbp[-0x8]
+	mov r11[0xf8], rax
+
+	lea rax, [rel global0032]
+	mov r11, rbp[-0x8]
+	mov r11[0x100], rax
+
+	lea rax, [rel global0033]
+	mov r11, rbp[-0x8]
+	mov r11[0x108], rax
+
+	lea rax, [rel global0034]
+	mov r11, rbp[-0x8]
+	mov r11[0x110], rax
+
+	lea rax, [rel global0035]
+	mov r11, rbp[-0x8]
+	mov r11[0x118], rax
+
+	lea rax, [rel global0036]
+	mov r11, rbp[-0x8]
+	mov r11[0x120], rax
+
+	lea rax, [rel global0037]
+	mov r11, rbp[-0x8]
+	mov r11[0x128], rax
+
+	lea rax, [rel global0038]
+	mov r11, rbp[-0x8]
+	mov r11[0x130], rax
+
+	lea rax, [rel global0039]
+	mov r11, rbp[-0x8]
+	mov r11[0x138], rax
+
+	lea rax, [rel global0040]
+	mov r11, rbp[-0x8]
+	mov r11[0x140], rax
+
+	lea rax, [rel global0041]
+	mov r11, rbp[-0x8]
+	mov r11[0x148], rax
+
+	lea rax, [rel global0042]
+	mov r11, rbp[-0x8]
+	mov r11[0x150], rax
+
+	lea rax, [rel global0043]
+	mov r11, rbp[-0x8]
+	mov r11[0x158], rax
+
+	lea rax, [rel global0044]
+	mov r11, rbp[-0x8]
+	mov r11[0x160], rax
+
+	lea rax, [rel global0045]
+	mov r11, rbp[-0x8]
+	mov r11[0x168], rax
+
+	lea rax, [rel global0046]
+	mov r11, rbp[-0x8]
+	mov r11[0x170], rax
+
+	lea rax, [rel global0047]
+	mov r11, rbp[-0x8]
+	mov r11[0x178], rax
+
+	lea rax, [rel global0048]
+	mov r11, rbp[-0x8]
+	mov r11[0x180], rax
+
+	lea rax, [rel global0049]
+	mov r11, rbp[-0x8]
+	mov r11[0x188], rax
+
+	lea rax, [rel global0050]
+	mov r11, rbp[-0x8]
+	mov r11[0x190], rax
+
+	lea rax, [rel global0051]
+	mov r11, rbp[-0x8]
+	mov r11[0x198], rax
+
+	lea rax, [rel global0052]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a0], rax
+
+	lea rax, [rel global0053]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a8], rax
+
+	lea rax, [rel global0054]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b0], rax
+
+	lea rax, [rel global0055]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b8], rax
+
+	lea rax, [rel global0056]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c0], rax
+
+	lea rax, [rel global0057]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c8], rax
+
+	lea rax, [rel global0058]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d0], rax
+
+	lea rax, [rel global0059]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d8], rax
+
+	lea rax, [rel global0060]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e0], rax
+
+	lea rax, [rel global0061]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e8], rax
+
+	lea rax, [rel global0062]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f0], rax
+
+	lea rax, [rel global0063]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f8], rax
+
+	lea rax, [rel global0064]
+	mov r11, rbp[-0x8]
+	mov r11[0x200], rax
+
+	lea rax, [rel global0065]
+	mov r11, rbp[-0x8]
+	mov r11[0x208], rax
+
+	lea rax, [rel global0066]
+	mov r11, rbp[-0x8]
+	mov r11[0x210], rax
+
+	lea rax, [rel global0067]
+	mov r11, rbp[-0x8]
+	mov r11[0x218], rax
+
+	lea rax, [rel global0068]
+	mov r11, rbp[-0x8]
+	mov r11[0x220], rax
+
+	lea rax, [rel global0069]
+	mov r11, rbp[-0x8]
+	mov r11[0x228], rax
+
+	lea rax, [rel global0070]
+	mov r11, rbp[-0x8]
+	mov r11[0x230], rax
+
+	lea rax, [rel global0071]
+	mov r11, rbp[-0x8]
+	mov r11[0x238], rax
+
+	lea rax, [rel global0072]
+	mov r11, rbp[-0x8]
+	mov r11[0x240], rax
+
+	lea rax, [rel global0073]
+	mov r11, rbp[-0x8]
+	mov r11[0x248], rax
+
+	lea rax, [rel global0074]
+	mov r11, rbp[-0x8]
+	mov r11[0x250], rax
+
+	lea rax, [rel global0075]
+	mov r11, rbp[-0x8]
+	mov r11[0x258], rax
+
+	lea rax, [rel global0076]
+	mov r11, rbp[-0x8]
+	mov r11[0x260], rax
+
+	lea rax, [rel global0077]
+	mov r11, rbp[-0x8]
+	mov r11[0x268], rax
+
+	lea rax, [rel global0078]
+	mov r11, rbp[-0x8]
+	mov r11[0x270], rax
+
+	lea rax, [rel global0079]
+	mov r11, rbp[-0x8]
+	mov r11[0x278], rax
+
+	lea rax, [rel global0080]
+	mov r11, rbp[-0x8]
+	mov r11[0x280], rax
+
+	lea rax, [rel global0081]
+	mov r11, rbp[-0x8]
+	mov r11[0x288], rax
+
+	lea rax, [rel global0082]
+	mov r11, rbp[-0x8]
+	mov r11[0x290], rax
+
+	lea rax, [rel global0083]
+	mov r11, rbp[-0x8]
+	mov r11[0x298], rax
+
+	lea rax, [rel global0084]
+	mov r11, rbp[-0x8]
+	mov r11[0x2a0], rax
+
+	lea rax, [rel global0085]
+	mov r11, rbp[-0x8]
+	mov r11[0x2a8], rax
+
+	lea rax, [rel global0086]
+	mov r11, rbp[-0x8]
+	mov r11[0x2b0], rax
+
+	lea rax, [rel global0087]
+	mov r11, rbp[-0x8]
+	mov r11[0x2b8], rax
+
+	lea rax, [rel global0088]
+	mov r11, rbp[-0x8]
+	mov r11[0x2c0], rax
+
+	lea rax, [rel global0089]
+	mov r11, rbp[-0x8]
+	mov r11[0x2c8], rax
+
+	lea rax, [rel global0090]
+	mov r11, rbp[-0x8]
+	mov r11[0x2d0], rax
+
+	lea rax, [rel global0091]
+	mov r11, rbp[-0x8]
+	mov r11[0x2d8], rax
+
+	lea rax, [rel global0092]
+	mov r11, rbp[-0x8]
+	mov r11[0x2e0], rax
+
+	lea rax, [rel global0093]
+	mov r11, rbp[-0x8]
+	mov r11[0x2e8], rax
+
+	lea rax, [rel global0094]
+	mov r11, rbp[-0x8]
+	mov r11[0x2f0], rax
+
+	lea rax, [rel global0095]
+	mov r11, rbp[-0x8]
+	mov r11[0x2f8], rax
+
+	lea rax, [rel global0096]
+	mov r11, rbp[-0x8]
+	mov r11[0x300], rax
+
+	lea rax, [rel global0097]
+	mov r11, rbp[-0x8]
+	mov r11[0x308], rax
+
+	lea rax, [rel global0098]
+	mov r11, rbp[-0x8]
+	mov r11[0x310], rax
+
+	lea rax, [rel global0099]
+	mov r11, rbp[-0x8]
+	mov r11[0x318], rax
+
+	lea rax, [rel global0100]
+	mov r11, rbp[-0x8]
+	mov r11[0x320], rax
+
+	lea rax, [rel global0101]
+	mov r11, rbp[-0x8]
+	mov r11[0x328], rax
+
+	lea rax, [rel global0102]
+	mov r11, rbp[-0x8]
+	mov r11[0x330], rax
+
+	lea rax, [rel global0103]
+	mov r11, rbp[-0x8]
+	mov r11[0x338], rax
+
+	lea rax, [rel global0104]
+	mov r11, rbp[-0x8]
+	mov r11[0x340], rax
+
+	lea rax, [rel global0105]
+	mov r11, rbp[-0x8]
+	mov r11[0x348], rax
+
+	lea rax, [rel global0106]
+	mov r11, rbp[-0x8]
+	mov r11[0x350], rax
+
+	lea rax, [rel global0107]
+	mov r11, rbp[-0x8]
+	mov r11[0x358], rax
+
+	lea rax, [rel global0108]
+	mov r11, rbp[-0x8]
+	mov r11[0x360], rax
+
+	lea rax, [rel global0109]
+	mov r11, rbp[-0x8]
+	mov r11[0x368], rax
+
+	lea rax, [rel global0110]
+	mov r11, rbp[-0x8]
+	mov r11[0x370], rax
+
+	lea rax, [rel global0111]
+	mov r11, rbp[-0x8]
+	mov r11[0x378], rax
+
+	lea rax, [rel global0112]
+	mov r11, rbp[-0x8]
+	mov r11[0x380], rax
+
+	lea rax, [rel global0113]
+	mov r11, rbp[-0x8]
+	mov r11[0x388], rax
+
+	lea rax, [rel global0114]
+	mov r11, rbp[-0x8]
+	mov r11[0x390], rax
+
+	lea rax, [rel global0115]
+	mov r11, rbp[-0x8]
+	mov r11[0x398], rax
+
+	lea rax, [rel global0116]
+	mov r11, rbp[-0x8]
+	mov r11[0x3a0], rax
+
+	lea rax, [rel global0117]
+	mov r11, rbp[-0x8]
+	mov r11[0x3a8], rax
+
+	lea rax, [rel global0118]
+	mov r11, rbp[-0x8]
+	mov r11[0x3b0], rax
+
+	lea rax, [rel global0119]
+	mov r11, rbp[-0x8]
+	mov r11[0x3b8], rax
+
+	lea rax, [rel global0120]
+	mov r11, rbp[-0x8]
+	mov r11[0x3c0], rax
+
+	lea rax, [rel global0121]
+	mov r11, rbp[-0x8]
+	mov r11[0x3c8], rax
+
+	lea rax, [rel global0122]
+	mov r11, rbp[-0x8]
+	mov r11[0x3d0], rax
+
+	lea rax, [rel global0123]
+	mov r11, rbp[-0x8]
+	mov r11[0x3d8], rax
+
+	lea rax, [rel global0124]
+	mov r11, rbp[-0x8]
+	mov r11[0x3e0], rax
+
+	lea rax, [rel global0125]
+	mov r11, rbp[-0x8]
+	mov r11[0x3e8], rax
+
+	lea rax, [rel global0126]
+	mov r11, rbp[-0x8]
+	mov r11[0x3f0], rax
+
+	lea rax, [rel global0127]
+	mov r11, rbp[-0x8]
+	mov r11[0x3f8], rax
+
+	lea rax, [rel global0128]
+	mov r11, rbp[-0x8]
+	mov r11[0x400], rax
+
+	lea rax, [rel global0129]
+	mov r11, rbp[-0x8]
+	mov r11[0x408], rax
+
+	lea rax, [rel global0130]
+	mov r11, rbp[-0x8]
+	mov r11[0x410], rax
+
+	lea rax, [rel global0131]
+	mov r11, rbp[-0x8]
+	mov r11[0x418], rax
+
+	lea rax, [rel global0132]
+	mov r11, rbp[-0x8]
+	mov r11[0x420], rax
+
+	lea rax, [rel global0133]
+	mov r11, rbp[-0x8]
+	mov r11[0x428], rax
+
+	lea rax, [rel global0134]
+	mov r11, rbp[-0x8]
+	mov r11[0x430], rax
+
+	lea rax, [rel global0135]
+	mov r11, rbp[-0x8]
+	mov r11[0x438], rax
+
+	lea rax, [rel global0136]
+	mov r11, rbp[-0x8]
+	mov r11[0x440], rax
+
+	lea rax, [rel global0137]
+	mov r11, rbp[-0x8]
+	mov r11[0x448], rax
+
+	lea rax, [rel global0138]
+	mov r11, rbp[-0x8]
+	mov r11[0x450], rax
+
+	lea rax, [rel global0139]
+	mov r11, rbp[-0x8]
+	mov r11[0x458], rax
+
+	lea rax, [rel global0140]
+	mov r11, rbp[-0x8]
+	mov r11[0x460], rax
+
+	lea rax, [rel global0141]
+	mov r11, rbp[-0x8]
+	mov r11[0x468], rax
+
+	lea rax, [rel global0142]
+	mov r11, rbp[-0x8]
+	mov r11[0x470], rax
+
+	lea rax, [rel global0143]
+	mov r11, rbp[-0x8]
+	mov r11[0x478], rax
+
+	lea rax, [rel global0144]
+	mov r11, rbp[-0x8]
+	mov r11[0x480], rax
+
+	lea rax, [rel global0145]
+	mov r11, rbp[-0x8]
+	mov r11[0x488], rax
+
+	lea rax, [rel global0146]
+	mov r11, rbp[-0x8]
+	mov r11[0x490], rax
+
+	lea rax, [rel global0147]
+	mov r11, rbp[-0x8]
+	mov r11[0x498], rax
+
+	lea rax, [rel global0148]
+	mov r11, rbp[-0x8]
+	mov r11[0x4a0], rax
+
+	lea rax, [rel global0149]
+	mov r11, rbp[-0x8]
+	mov r11[0x4a8], rax
+
+	lea rax, [rel global0150]
+	mov r11, rbp[-0x8]
+	mov r11[0x4b0], rax
+
+	lea rax, [rel global0151]
+	mov r11, rbp[-0x8]
+	mov r11[0x4b8], rax
+
+	lea rax, [rel global0152]
+	mov r11, rbp[-0x8]
+	mov r11[0x4c0], rax
+
+	lea rax, [rel global0153]
+	mov r11, rbp[-0x8]
+	mov r11[0x4c8], rax
+
+	lea rax, [rel global0154]
+	mov r11, rbp[-0x8]
+	mov r11[0x4d0], rax
+
+	lea rax, [rel global0155]
+	mov r11, rbp[-0x8]
+	mov r11[0x4d8], rax
+
+	lea rax, [rel global0156]
+	mov r11, rbp[-0x8]
+	mov r11[0x4e0], rax
+
+	lea rax, [rel global0157]
+	mov r11, rbp[-0x8]
+	mov r11[0x4e8], rax
+
+	lea rax, [rel global0158]
+	mov r11, rbp[-0x8]
+	mov r11[0x4f0], rax
+
+	lea rax, [rel global0159]
+	mov r11, rbp[-0x8]
+	mov r11[0x4f8], rax
+
+	lea rax, [rel global0160]
+	mov r11, rbp[-0x8]
+	mov r11[0x500], rax
+
+	lea rax, [rel global0161]
+	mov r11, rbp[-0x8]
+	mov r11[0x508], rax
+
+	lea rax, [rel global0162]
+	mov r11, rbp[-0x8]
+	mov r11[0x510], rax
+
+	lea rax, [rel global0163]
+	mov r11, rbp[-0x8]
+	mov r11[0x518], rax
+
+	lea rax, [rel global0164]
+	mov r11, rbp[-0x8]
+	mov r11[0x520], rax
+
+	lea rax, [rel global0165]
+	mov r11, rbp[-0x8]
+	mov r11[0x528], rax
+
+	lea rax, [rel global0166]
+	mov r11, rbp[-0x8]
+	mov r11[0x530], rax
+
+	lea rax, [rel global0167]
+	mov r11, rbp[-0x8]
+	mov r11[0x538], rax
+
+	lea rax, [rel global0168]
+	mov r11, rbp[-0x8]
+	mov r11[0x540], rax
+
+	lea rax, [rel global0169]
+	mov r11, rbp[-0x8]
+	mov r11[0x548], rax
+
+	lea rax, [rel global0170]
+	mov r11, rbp[-0x8]
+	mov r11[0x550], rax
+
+	lea rax, [rel global0171]
+	mov r11, rbp[-0x8]
+	mov r11[0x558], rax
+
+	lea rax, [rel global0172]
+	mov r11, rbp[-0x8]
+	mov r11[0x560], rax
+
+	lea rax, [rel global0173]
+	mov r11, rbp[-0x8]
+	mov r11[0x568], rax
+
+	lea rax, [rel global0174]
+	mov r11, rbp[-0x8]
+	mov r11[0x570], rax
+
+	lea rax, [rel global0175]
+	mov r11, rbp[-0x8]
+	mov r11[0x578], rax
+
+	lea rax, [rel global0176]
+	mov r11, rbp[-0x8]
+	mov r11[0x580], rax
+
+	lea rax, [rel global0177]
+	mov r11, rbp[-0x8]
+	mov r11[0x588], rax
+
+	lea rax, [rel global0178]
+	mov r11, rbp[-0x8]
+	mov r11[0x590], rax
+
+	lea rax, [rel global0179]
+	mov r11, rbp[-0x8]
+	mov r11[0x598], rax
+
+	lea rax, [rel global0180]
+	mov r11, rbp[-0x8]
+	mov r11[0x5a0], rax
+
+	lea rax, [rel global0181]
+	mov r11, rbp[-0x8]
+	mov r11[0x5a8], rax
+
+	lea rax, [rel global0182]
+	mov r11, rbp[-0x8]
+	mov r11[0x5b0], rax
+
+	lea rax, [rel global0183]
+	mov r11, rbp[-0x8]
+	mov r11[0x5b8], rax
+
+	lea rax, [rel global0184]
+	mov r11, rbp[-0x8]
+	mov r11[0x5c0], rax
+
+	lea rax, [rel global0185]
+	mov r11, rbp[-0x8]
+	mov r11[0x5c8], rax
+
+	lea rax, [rel global0186]
+	mov r11, rbp[-0x8]
+	mov r11[0x5d0], rax
+
+	lea rax, [rel global0187]
+	mov r11, rbp[-0x8]
+	mov r11[0x5d8], rax
+
+	lea rax, [rel global0188]
+	mov r11, rbp[-0x8]
+	mov r11[0x5e0], rax
+
+	lea rax, [rel global0189]
+	mov r11, rbp[-0x8]
+	mov r11[0x5e8], rax
+
+	lea rax, [rel global0190]
+	mov r11, rbp[-0x8]
+	mov r11[0x5f0], rax
+
+	lea rax, [rel global0191]
+	mov r11, rbp[-0x8]
+	mov r11[0x5f8], rax
+
+	lea rax, [rel global0192]
+	mov r11, rbp[-0x8]
+	mov r11[0x600], rax
+
+	lea rax, [rel global0193]
+	mov r11, rbp[-0x8]
+	mov r11[0x608], rax
+
+	lea rax, [rel global0194]
+	mov r11, rbp[-0x8]
+	mov r11[0x610], rax
+
+	lea rax, [rel global0195]
+	mov r11, rbp[-0x8]
+	mov r11[0x618], rax
+
+	lea rax, [rel global0196]
+	mov r11, rbp[-0x8]
+	mov r11[0x620], rax
+
+	lea rax, [rel global0197]
+	mov r11, rbp[-0x8]
+	mov r11[0x628], rax
+
+	lea rax, [rel global0198]
+	mov r11, rbp[-0x8]
+	mov r11[0x630], rax
+
+	lea rax, [rel global0199]
+	mov r11, rbp[-0x8]
+	mov r11[0x638], rax
+
+	lea rax, [rel global0200]
+	mov r11, rbp[-0x8]
+	mov r11[0x640], rax
+
+	lea rax, [rel global0201]
+	mov r11, rbp[-0x8]
+	mov r11[0x648], rax
+
+	lea rax, [rel global0202]
+	mov r11, rbp[-0x8]
+	mov r11[0x650], rax
+
+	lea rax, [rel global0203]
+	mov r11, rbp[-0x8]
+	mov r11[0x658], rax
+
+	lea rax, [rel global0204]
+	mov r11, rbp[-0x8]
+	mov r11[0x660], rax
+
+	lea rax, [rel global0205]
+	mov r11, rbp[-0x8]
+	mov r11[0x668], rax
+
+	lea rax, [rel global0206]
+	mov r11, rbp[-0x8]
+	mov r11[0x670], rax
+
+	lea rax, [rel global0207]
+	mov r11, rbp[-0x8]
+	mov r11[0x678], rax
+
+	lea rax, [rel global0208]
+	mov r11, rbp[-0x8]
+	mov r11[0x680], rax
+
+	lea rax, [rel global0209]
+	mov r11, rbp[-0x8]
+	mov r11[0x688], rax
+
+	lea rax, [rel global0210]
+	mov r11, rbp[-0x8]
+	mov r11[0x690], rax
+
+	lea rax, [rel global0211]
+	mov r11, rbp[-0x8]
+	mov r11[0x698], rax
+
+	lea rax, [rel global0212]
+	mov r11, rbp[-0x8]
+	mov r11[0x6a0], rax
+
+	lea rax, [rel global0213]
+	mov r11, rbp[-0x8]
+	mov r11[0x6a8], rax
+
+	lea rax, [rel global0214]
+	mov r11, rbp[-0x8]
+	mov r11[0x6b0], rax
+
+	lea rax, [rel global0215]
+	mov r11, rbp[-0x8]
+	mov r11[0x6b8], rax
+
+	lea rax, [rel global0216]
+	mov r11, rbp[-0x8]
+	mov r11[0x6c0], rax
+
+	lea rax, [rel global0217]
+	mov r11, rbp[-0x8]
+	mov r11[0x6c8], rax
+
+	lea rax, [rel global0218]
+	mov r11, rbp[-0x8]
+	mov r11[0x6d0], rax
+
+	lea rax, [rel global0219]
+	mov r11, rbp[-0x8]
+	mov r11[0x6d8], rax
+
+	lea rax, [rel global0220]
+	mov r11, rbp[-0x8]
+	mov r11[0x6e0], rax
+
+	lea rax, [rel global0221]
+	mov r11, rbp[-0x8]
+	mov r11[0x6e8], rax
+
+	lea rax, [rel global0222]
+	mov r11, rbp[-0x8]
+	mov r11[0x6f0], rax
+
+	lea rax, [rel global0223]
+	mov r11, rbp[-0x8]
+	mov r11[0x6f8], rax
+
+	lea rax, [rel global0224]
+	mov r11, rbp[-0x8]
+	mov r11[0x700], rax
+
+	lea rax, [rel global0225]
+	mov r11, rbp[-0x8]
+	mov r11[0x708], rax
+
+	lea rax, [rel global0226]
+	mov r11, rbp[-0x8]
+	mov r11[0x710], rax
+
+	lea rax, [rel global0227]
+	mov r11, rbp[-0x8]
+	mov r11[0x718], rax
+
+	lea rax, [rel global0228]
+	mov r11, rbp[-0x8]
+	mov r11[0x720], rax
+
+	lea rax, [rel global0229]
+	mov r11, rbp[-0x8]
+	mov r11[0x728], rax
+
+	lea rax, [rel global0230]
+	mov r11, rbp[-0x8]
+	mov r11[0x730], rax
+
+	lea rax, [rel global0231]
+	mov r11, rbp[-0x8]
+	mov r11[0x738], rax
+
+	lea rax, [rel global0232]
+	mov r11, rbp[-0x8]
+	mov r11[0x740], rax
+
+	lea rax, [rel global0233]
+	mov r11, rbp[-0x8]
+	mov r11[0x748], rax
+
+	lea rax, [rel global0234]
+	mov r11, rbp[-0x8]
+	mov r11[0x750], rax
+
+	lea rax, [rel global0235]
+	mov r11, rbp[-0x8]
+	mov r11[0x758], rax
+
+	lea rax, [rel global0236]
+	mov r11, rbp[-0x8]
+	mov r11[0x760], rax
+
+	lea rax, [rel global0237]
+	mov r11, rbp[-0x8]
+	mov r11[0x768], rax
+
+	lea rax, [rel global0238]
+	mov r11, rbp[-0x8]
+	mov r11[0x770], rax
+
+	lea rax, [rel global0239]
+	mov r11, rbp[-0x8]
+	mov r11[0x778], rax
+
+	lea rax, [rel global0240]
+	mov r11, rbp[-0x8]
+	mov r11[0x780], rax
+
+	lea rax, [rel global0241]
+	mov r11, rbp[-0x8]
+	mov r11[0x788], rax
+
+	lea rax, [rel global0242]
+	mov r11, rbp[-0x8]
+	mov r11[0x790], rax
+
+	lea rax, [rel global0243]
+	mov r11, rbp[-0x8]
+	mov r11[0x798], rax
+
+	lea rax, [rel global0244]
+	mov r11, rbp[-0x8]
+	mov r11[0x7a0], rax
+
+	lea rax, [rel global0245]
+	mov r11, rbp[-0x8]
+	mov r11[0x7a8], rax
+
+	lea rax, [rel global0246]
+	mov r11, rbp[-0x8]
+	mov r11[0x7b0], rax
+
+	lea rax, [rel global0247]
+	mov r11, rbp[-0x8]
+	mov r11[0x7b8], rax
+
+	lea rax, [rel global0248]
+	mov r11, rbp[-0x8]
+	mov r11[0x7c0], rax
+
+	lea rax, [rel global0249]
+	mov r11, rbp[-0x8]
+	mov r11[0x7c8], rax
+
+	lea rax, [rel global0250]
+	mov r11, rbp[-0x8]
+	mov r11[0x7d0], rax
+
+	lea rax, [rel global0251]
+	mov r11, rbp[-0x8]
+	mov r11[0x7d8], rax
+
+	lea rax, [rel global0252]
+	mov r11, rbp[-0x8]
+	mov r11[0x7e0], rax
+
+	lea rax, [rel global0253]
+	mov r11, rbp[-0x8]
+	mov r11[0x7e8], rax
+
+	lea rax, [rel global0254]
+	mov r11, rbp[-0x8]
+	mov r11[0x7f0], rax
+
+	lea rax, [rel global0255]
+	mov r11, rbp[-0x8]
+	mov r11[0x7f8], rax
+
+	lea rax, [rel global0256]
+	mov r11, rbp[-0x8]
+	mov r11[0x800], rax
+
+	lea rax, [rel global0257]
+	mov r11, rbp[-0x8]
+	mov r11[0x808], rax
+
+	lea rax, [rel global0258]
+	mov r11, rbp[-0x8]
+	mov r11[0x810], rax
+
+	lea rax, [rel global0259]
+	mov r11, rbp[-0x8]
+	mov r11[0x818], rax
+
+	lea rax, [rel global0260]
+	mov r11, rbp[-0x8]
+	mov r11[0x820], rax
+
+	lea rax, [rel global0261]
+	mov r11, rbp[-0x8]
+	mov r11[0x828], rax
+
+	lea rax, [rel global0262]
+	mov r11, rbp[-0x8]
+	mov r11[0x830], rax
+
+	lea rax, [rel global0263]
+	mov r11, rbp[-0x8]
+	mov r11[0x838], rax
+
+	lea rax, [rel global0264]
+	mov r11, rbp[-0x8]
+	mov r11[0x840], rax
+
+	lea rax, [rel global0265]
+	mov r11, rbp[-0x8]
+	mov r11[0x848], rax
+
+	lea rax, [rel global0266]
+	mov r11, rbp[-0x8]
+	mov r11[0x850], rax
+
+	lea rax, [rel global0267]
+	mov r11, rbp[-0x8]
+	mov r11[0x858], rax
+
+	lea rax, [rel global0268]
+	mov r11, rbp[-0x8]
+	mov r11[0x860], rax
+
+	lea rax, [rel global0269]
+	mov r11, rbp[-0x8]
+	mov r11[0x868], rax
+
+	lea rax, [rel global0270]
+	mov r11, rbp[-0x8]
+	mov r11[0x870], rax
+
+	lea rax, [rel global0271]
+	mov r11, rbp[-0x8]
+	mov r11[0x878], rax
+
+	lea rax, [rel global0272]
+	mov r11, rbp[-0x8]
+	mov r11[0x880], rax
+
+	lea rax, [rel global0273]
+	mov r11, rbp[-0x8]
+	mov r11[0x888], rax
+
+	lea rax, [rel global0274]
+	mov r11, rbp[-0x8]
+	mov r11[0x890], rax
+
+	lea rax, [rel global0275]
+	mov r11, rbp[-0x8]
+	mov r11[0x898], rax
+
+	lea rax, [rel global0276]
+	mov r11, rbp[-0x8]
+	mov r11[0x8a0], rax
+
+	lea rax, [rel global0277]
+	mov r11, rbp[-0x8]
+	mov r11[0x8a8], rax
+
+	lea rax, [rel global0278]
+	mov r11, rbp[-0x8]
+	mov r11[0x8b0], rax
+
+	lea rax, [rel global0279]
+	mov r11, rbp[-0x8]
+	mov r11[0x8b8], rax
+
+	lea rax, [rel global0280]
+	mov r11, rbp[-0x8]
+	mov r11[0x8c0], rax
+
+	lea rax, [rel global0281]
+	mov r11, rbp[-0x8]
+	mov r11[0x8c8], rax
+
+	lea rax, [rel global0282]
+	mov r11, rbp[-0x8]
+	mov r11[0x8d0], rax
+
+	lea rax, [rel global0283]
+	mov r11, rbp[-0x8]
+	mov r11[0x8d8], rax
+
+	lea rax, [rel global0284]
+	mov r11, rbp[-0x8]
+	mov r11[0x8e0], rax
+
+	lea rax, [rel global0285]
+	mov r11, rbp[-0x8]
+	mov r11[0x8e8], rax
+
+	lea rax, [rel global0286]
+	mov r11, rbp[-0x8]
+	mov r11[0x8f0], rax
+
+	lea rax, [rel global0287]
+	mov r11, rbp[-0x8]
+	mov r11[0x8f8], rax
+
+	lea rax, [rel global0288]
+	mov r11, rbp[-0x8]
+	mov r11[0x900], rax
+
+	lea rax, [rel global0289]
+	mov r11, rbp[-0x8]
+	mov r11[0x908], rax
+
+	lea rax, [rel global0290]
+	mov r11, rbp[-0x8]
+	mov r11[0x910], rax
+
+	lea rax, [rel global0291]
+	mov r11, rbp[-0x8]
+	mov r11[0x918], rax
+
+	lea rax, [rel global0292]
+	mov r11, rbp[-0x8]
+	mov r11[0x920], rax
+
+	lea rax, [rel global0293]
+	mov r11, rbp[-0x8]
+	mov r11[0x928], rax
+
+	lea rax, [rel global0294]
+	mov r11, rbp[-0x8]
+	mov r11[0x930], rax
+
+	lea rax, [rel global0295]
+	mov r11, rbp[-0x8]
+	mov r11[0x938], rax
+
+	lea rax, [rel global0296]
+	mov r11, rbp[-0x8]
+	mov r11[0x940], rax
+
+	lea rax, [rel global0297]
+	mov r11, rbp[-0x8]
+	mov r11[0x948], rax
+
+	lea rax, [rel global0298]
+	mov r11, rbp[-0x8]
+	mov r11[0x950], rax
+
+	lea rax, [rel global0299]
+	mov r11, rbp[-0x8]
+	mov r11[0x958], rax
+
+	lea rax, [rel global0300]
+	mov r11, rbp[-0x8]
+	mov r11[0x960], rax
+
+	lea rax, [rel global0301]
+	mov r11, rbp[-0x8]
+	mov r11[0x968], rax
+
+	lea rax, [rel global0302]
+	mov r11, rbp[-0x8]
+	mov r11[0x970], rax
+
+	lea rax, [rel global0303]
+	mov r11, rbp[-0x8]
+	mov r11[0x978], rax
+
+	lea rax, [rel global0304]
+	mov r11, rbp[-0x8]
+	mov r11[0x980], rax
+
+	lea rax, [rel global0305]
+	mov r11, rbp[-0x8]
+	mov r11[0x988], rax
+
+	lea rax, [rel global0306]
+	mov r11, rbp[-0x8]
+	mov r11[0x990], rax
+
+	lea rax, [rel global0307]
+	mov r11, rbp[-0x8]
+	mov r11[0x998], rax
+
+	lea rax, [rel global0308]
+	mov r11, rbp[-0x8]
+	mov r11[0x9a0], rax
+
+	lea rax, [rel global0309]
+	mov r11, rbp[-0x8]
+	mov r11[0x9a8], rax
+
+	lea rax, [rel global0310]
+	mov r11, rbp[-0x8]
+	mov r11[0x9b0], rax
+
+	lea rax, [rel global0311]
+	mov r11, rbp[-0x8]
+	mov r11[0x9b8], rax
+
+	lea rax, [rel global0312]
+	mov r11, rbp[-0x8]
+	mov r11[0x9c0], rax
+
+	lea rax, [rel global0313]
+	mov r11, rbp[-0x8]
+	mov r11[0x9c8], rax
+
+	lea rax, [rel global0314]
+	mov r11, rbp[-0x8]
+	mov r11[0x9d0], rax
+
+	lea rax, [rel global0315]
+	mov r11, rbp[-0x8]
+	mov r11[0x9d8], rax
+
+	lea rax, [rel global0316]
+	mov r11, rbp[-0x8]
+	mov r11[0x9e0], rax
+
+	lea rax, [rel global0317]
+	mov r11, rbp[-0x8]
+	mov r11[0x9e8], rax
+
+	lea rax, [rel global0318]
+	mov r11, rbp[-0x8]
+	mov r11[0x9f0], rax
+
+	lea rax, [rel global0319]
+	mov r11, rbp[-0x8]
+	mov r11[0x9f8], rax
+
+	lea rax, [rel global0320]
+	mov r11, rbp[-0x8]
+	mov r11[0xa00], rax
+
+	lea rax, [rel global0321]
+	mov r11, rbp[-0x8]
+	mov r11[0xa08], rax
+
+	lea rax, [rel global0322]
+	mov r11, rbp[-0x8]
+	mov r11[0xa10], rax
+
+	lea rax, [rel global0323]
+	mov r11, rbp[-0x8]
+	mov r11[0xa18], rax
+
+	lea rax, [rel global0324]
+	mov r11, rbp[-0x8]
+	mov r11[0xa20], rax
+
+	lea rax, [rel global0325]
+	mov r11, rbp[-0x8]
+	mov r11[0xa28], rax
+
+	lea rax, [rel global0326]
+	mov r11, rbp[-0x8]
+	mov r11[0xa30], rax
+
+	lea rax, [rel global0327]
+	mov r11, rbp[-0x8]
+	mov r11[0xa38], rax
+
+	lea rax, [rel global0328]
+	mov r11, rbp[-0x8]
+	mov r11[0xa40], rax
+
+	lea rax, [rel global0329]
+	mov r11, rbp[-0x8]
+	mov r11[0xa48], rax
+
+	lea rax, [rel global0330]
+	mov r11, rbp[-0x8]
+	mov r11[0xa50], rax
+
+	lea rax, [rel global0331]
+	mov r11, rbp[-0x8]
+	mov r11[0xa58], rax
+
+	lea rax, [rel global0332]
+	mov r11, rbp[-0x8]
+	mov r11[0xa60], rax
+
+	lea rax, [rel global0333]
+	mov r11, rbp[-0x8]
+	mov r11[0xa68], rax
+
+	lea rax, [rel global0334]
+	mov r11, rbp[-0x8]
+	mov r11[0xa70], rax
+
+	lea rax, [rel global0335]
+	mov r11, rbp[-0x8]
+	mov r11[0xa78], rax
+
+	lea rax, [rel global0336]
+	mov r11, rbp[-0x8]
+	mov r11[0xa80], rax
+
+	lea rax, [rel global0337]
+	mov r11, rbp[-0x8]
+	mov r11[0xa88], rax
+
+	lea rax, [rel global0338]
+	mov r11, rbp[-0x8]
+	mov r11[0xa90], rax
+
+	lea rax, [rel global0339]
+	mov r11, rbp[-0x8]
+	mov r11[0xa98], rax
+
+	lea rax, [rel global0340]
+	mov r11, rbp[-0x8]
+	mov r11[0xaa0], rax
+
+	lea rax, [rel global0341]
+	mov r11, rbp[-0x8]
+	mov r11[0xaa8], rax
+
+	lea rax, [rel global0342]
+	mov r11, rbp[-0x8]
+	mov r11[0xab0], rax
+
+	lea rax, [rel global0343]
+	mov r11, rbp[-0x8]
+	mov r11[0xab8], rax
+
+	lea rax, [rel global0344]
+	mov r11, rbp[-0x8]
+	mov r11[0xac0], rax
+
+	lea rax, [rel global0345]
+	mov r11, rbp[-0x8]
+	mov r11[0xac8], rax
+
+	lea rax, [rel global0346]
+	mov r11, rbp[-0x8]
+	mov r11[0xad0], rax
+
+	lea rax, [rel global0347]
+	mov r11, rbp[-0x8]
+	mov r11[0xad8], rax
+
+	lea rax, [rel global0348]
+	mov r11, rbp[-0x8]
+	mov r11[0xae0], rax
+
+	lea rax, [rel global0349]
+	mov r11, rbp[-0x8]
+	mov r11[0xae8], rax
+
+	lea rax, [rel global0350]
+	mov r11, rbp[-0x8]
+	mov r11[0xaf0], rax
+
+	lea rax, [rel global0351]
+	mov r11, rbp[-0x8]
+	mov r11[0xaf8], rax
+
+	lea rax, [rel global0352]
+	mov r11, rbp[-0x8]
+	mov r11[0xb00], rax
+
+	lea rax, [rel global0353]
+	mov r11, rbp[-0x8]
+	mov r11[0xb08], rax
+
+	lea rax, [rel global0354]
+	mov r11, rbp[-0x8]
+	mov r11[0xb10], rax
+
+	lea rax, [rel global0355]
+	mov r11, rbp[-0x8]
+	mov r11[0xb18], rax
+
+	lea rax, [rel global0356]
+	mov r11, rbp[-0x8]
+	mov r11[0xb20], rax
+
+	lea rax, [rel global0357]
+	mov r11, rbp[-0x8]
+	mov r11[0xb28], rax
+
+	lea rax, [rel global0358]
+	mov r11, rbp[-0x8]
+	mov r11[0xb30], rax
+
+	lea rax, [rel global0359]
+	mov r11, rbp[-0x8]
+	mov r11[0xb38], rax
+
+	lea rax, [rel global0360]
+	mov r11, rbp[-0x8]
+	mov r11[0xb40], rax
+
+	lea rax, [rel global0361]
+	mov r11, rbp[-0x8]
+	mov r11[0xb48], rax
+
+	lea rax, [rel global0362]
+	mov r11, rbp[-0x8]
+	mov r11[0xb50], rax
+
+	lea rax, [rel global0363]
+	mov r11, rbp[-0x8]
+	mov r11[0xb58], rax
+
+	lea rax, [rel global0364]
+	mov r11, rbp[-0x8]
+	mov r11[0xb60], rax
+
+	lea rax, [rel global0365]
+	mov r11, rbp[-0x8]
+	mov r11[0xb68], rax
+
+	lea rax, [rel global0366]
+	mov r11, rbp[-0x8]
+	mov r11[0xb70], rax
+
+	lea rax, [rel global0367]
+	mov r11, rbp[-0x8]
+	mov r11[0xb78], rax
+
+	lea rax, [rel global0368]
+	mov r11, rbp[-0x8]
+	mov r11[0xb80], rax
+
+	lea rax, [rel global0369]
+	mov r11, rbp[-0x8]
+	mov r11[0xb88], rax
+
+	lea rax, [rel global0370]
+	mov r11, rbp[-0x8]
+	mov r11[0xb90], rax
+
+	lea rax, [rel global0371]
+	mov r11, rbp[-0x8]
+	mov r11[0xb98], rax
+
+	lea rax, [rel global0372]
+	mov r11, rbp[-0x8]
+	mov r11[0xba0], rax
+
+	lea rax, [rel global0373]
+	mov r11, rbp[-0x8]
+	mov r11[0xba8], rax
+
+	lea rax, [rel global0374]
+	mov r11, rbp[-0x8]
+	mov r11[0xbb0], rax
+
+	lea rax, [rel global0375]
+	mov r11, rbp[-0x8]
+	mov r11[0xbb8], rax
+
+	lea rax, [rel global0376]
+	mov r11, rbp[-0x8]
+	mov r11[0xbc0], rax
+
+	lea rax, [rel global0377]
+	mov r11, rbp[-0x8]
+	mov r11[0xbc8], rax
+
+	lea rax, [rel global0378]
+	mov r11, rbp[-0x8]
+	mov r11[0xbd0], rax
+
+	lea rax, [rel global0379]
+	mov r11, rbp[-0x8]
+	mov r11[0xbd8], rax
+
+	lea rax, [rel global0380]
+	mov r11, rbp[-0x8]
+	mov r11[0xbe0], rax
+
+	lea rax, [rel global0381]
+	mov r11, rbp[-0x8]
+	mov r11[0xbe8], rax
+
+	lea rax, [rel global0382]
+	mov r11, rbp[-0x8]
+	mov r11[0xbf0], rax
+
+	lea rax, [rel global0383]
+	mov r11, rbp[-0x8]
+	mov r11[0xbf8], rax
+
+	lea rax, [rel global0384]
+	mov r11, rbp[-0x8]
+	mov r11[0xc00], rax
+
+	lea rax, [rel global0385]
+	mov r11, rbp[-0x8]
+	mov r11[0xc08], rax
+
+	lea rax, [rel global0386]
+	mov r11, rbp[-0x8]
+	mov r11[0xc10], rax
+
+	lea rax, [rel global0387]
+	mov r11, rbp[-0x8]
+	mov r11[0xc18], rax
+
+	lea rax, [rel global0388]
+	mov r11, rbp[-0x8]
+	mov r11[0xc20], rax
+
+	lea rax, [rel global0389]
+	mov r11, rbp[-0x8]
+	mov r11[0xc28], rax
+
+	lea rax, [rel global0390]
+	mov r11, rbp[-0x8]
+	mov r11[0xc30], rax
+
+	lea rax, [rel global0391]
+	mov r11, rbp[-0x8]
+	mov r11[0xc38], rax
+
+	lea rax, [rel global0392]
+	mov r11, rbp[-0x8]
+	mov r11[0xc40], rax
+
+	lea rax, [rel global0393]
+	mov r11, rbp[-0x8]
+	mov r11[0xc48], rax
+
+	lea rax, [rel global0394]
+	mov r11, rbp[-0x8]
+	mov r11[0xc50], rax
+
+	lea rax, [rel global0395]
+	mov r11, rbp[-0x8]
+	mov r11[0xc58], rax
+
+	lea rax, [rel global0396]
+	mov r11, rbp[-0x8]
+	mov r11[0xc60], rax
+
+	lea rax, [rel global0397]
+	mov r11, rbp[-0x8]
+	mov r11[0xc68], rax
+
+	lea rax, [rel global0398]
+	mov r11, rbp[-0x8]
+	mov r11[0xc70], rax
+
+	lea rax, [rel global0399]
+	mov r11, rbp[-0x8]
+	mov r11[0xc78], rax
+
+	lea rax, [rel global0400]
+	mov r11, rbp[-0x8]
+	mov r11[0xc80], rax
+
+	lea rax, [rel global0401]
+	mov r11, rbp[-0x8]
+	mov r11[0xc88], rax
+
+	lea rax, [rel global0402]
+	mov r11, rbp[-0x8]
+	mov r11[0xc90], rax
+
+	lea rax, [rel global0403]
+	mov r11, rbp[-0x8]
+	mov r11[0xc98], rax
+
+	lea rax, [rel global0404]
+	mov r11, rbp[-0x8]
+	mov r11[0xca0], rax
+
+	lea rax, [rel global0405]
+	mov r11, rbp[-0x8]
+	mov r11[0xca8], rax
+
+	lea rax, [rel global0406]
+	mov r11, rbp[-0x8]
+	mov r11[0xcb0], rax
+
+	lea rax, [rel global0407]
+	mov r11, rbp[-0x8]
+	mov r11[0xcb8], rax
+
+	lea rax, [rel global0408]
+	mov r11, rbp[-0x8]
+	mov r11[0xcc0], rax
+
+	lea rax, [rel global0409]
+	mov r11, rbp[-0x8]
+	mov r11[0xcc8], rax
+
+	lea rax, [rel global0410]
+	mov r11, rbp[-0x8]
+	mov r11[0xcd0], rax
+
+	lea rax, [rel global0411]
+	mov r11, rbp[-0x8]
+	mov r11[0xcd8], rax
+
+	lea rax, [rel global0412]
+	mov r11, rbp[-0x8]
+	mov r11[0xce0], rax
+
+	lea rax, [rel global0413]
+	mov r11, rbp[-0x8]
+	mov r11[0xce8], rax
+
+	lea rax, [rel global0414]
+	mov r11, rbp[-0x8]
+	mov r11[0xcf0], rax
+
+	lea rax, [rel global0415]
+	mov r11, rbp[-0x8]
+	mov r11[0xcf8], rax
+
+	lea rax, [rel global0416]
+	mov r11, rbp[-0x8]
+	mov r11[0xd00], rax
+
+	lea rax, [rel global0417]
+	mov r11, rbp[-0x8]
+	mov r11[0xd08], rax
+
+	lea rax, [rel global0418]
+	mov r11, rbp[-0x8]
+	mov r11[0xd10], rax
+
+	lea rax, [rel global0419]
+	mov r11, rbp[-0x8]
+	mov r11[0xd18], rax
+
+	lea rax, [rel global0420]
+	mov r11, rbp[-0x8]
+	mov r11[0xd20], rax
+
+	lea rax, [rel global0421]
+	mov r11, rbp[-0x8]
+	mov r11[0xd28], rax
+
+	lea rax, [rel global0422]
+	mov r11, rbp[-0x8]
+	mov r11[0xd30], rax
+
+	lea rax, [rel global0423]
+	mov r11, rbp[-0x8]
+	mov r11[0xd38], rax
+
+	lea rax, [rel global0424]
+	mov r11, rbp[-0x8]
+	mov r11[0xd40], rax
+
+	lea rax, [rel global0425]
+	mov r11, rbp[-0x8]
+	mov r11[0xd48], rax
+
+	lea rax, [rel global0426]
+	mov r11, rbp[-0x8]
+	mov r11[0xd50], rax
+
+	lea rax, [rel global0427]
+	mov r11, rbp[-0x8]
+	mov r11[0xd58], rax
+
+	lea rax, [rel global0428]
+	mov r11, rbp[-0x8]
+	mov r11[0xd60], rax
+
+	lea rax, [rel global0429]
+	mov r11, rbp[-0x8]
+	mov r11[0xd68], rax
+
+	lea rax, [rel global0430]
+	mov r11, rbp[-0x8]
+	mov r11[0xd70], rax
+
+	lea rax, [rel global0431]
+	mov r11, rbp[-0x8]
+	mov r11[0xd78], rax
+
+	lea rax, [rel global0432]
+	mov r11, rbp[-0x8]
+	mov r11[0xd80], rax
+
+	lea rax, [rel global0433]
+	mov r11, rbp[-0x8]
+	mov r11[0xd88], rax
+
+	lea rax, [rel global0434]
+	mov r11, rbp[-0x8]
+	mov r11[0xd90], rax
+
+	lea rax, [rel global0435]
+	mov r11, rbp[-0x8]
+	mov r11[0xd98], rax
+
+	lea rax, [rel global0436]
+	mov r11, rbp[-0x8]
+	mov r11[0xda0], rax
+
+	lea rax, [rel global0437]
+	mov r11, rbp[-0x8]
+	mov r11[0xda8], rax
+
+	lea rax, [rel global0438]
+	mov r11, rbp[-0x8]
+	mov r11[0xdb0], rax
+
+	lea rax, [rel global0439]
+	mov r11, rbp[-0x8]
+	mov r11[0xdb8], rax
+
+	lea rax, [rel global0440]
+	mov r11, rbp[-0x8]
+	mov r11[0xdc0], rax
+
+	lea rax, [rel global0441]
+	mov r11, rbp[-0x8]
+	mov r11[0xdc8], rax
+
+	lea rax, [rel global0442]
+	mov r11, rbp[-0x8]
+	mov r11[0xdd0], rax
+
+	lea rax, [rel global0443]
+	mov r11, rbp[-0x8]
+	mov r11[0xdd8], rax
+
+	lea rax, [rel global0444]
+	mov r11, rbp[-0x8]
+	mov r11[0xde0], rax
+
+	lea rax, [rel global0445]
+	mov r11, rbp[-0x8]
+	mov r11[0xde8], rax
+
+	lea rax, [rel global0446]
+	mov r11, rbp[-0x8]
+	mov r11[0xdf0], rax
+
+	lea rax, [rel global0447]
+	mov r11, rbp[-0x8]
+	mov r11[0xdf8], rax
+
+	lea rax, [rel global0448]
+	mov r11, rbp[-0x8]
+	mov r11[0xe00], rax
+
+	lea rax, [rel global0449]
+	mov r11, rbp[-0x8]
+	mov r11[0xe08], rax
+
+	lea rax, [rel global0450]
+	mov r11, rbp[-0x8]
+	mov r11[0xe10], rax
+
+	lea rax, [rel global0451]
+	mov r11, rbp[-0x8]
+	mov r11[0xe18], rax
+
+	lea rax, [rel global0452]
+	mov r11, rbp[-0x8]
+	mov r11[0xe20], rax
+
+	lea rax, [rel global0453]
+	mov r11, rbp[-0x8]
+	mov r11[0xe28], rax
+
+	lea rax, [rel global0454]
+	mov r11, rbp[-0x8]
+	mov r11[0xe30], rax
+
+	lea rax, [rel global0455]
+	mov r11, rbp[-0x8]
+	mov r11[0xe38], rax
+
+	lea rax, [rel global0456]
+	mov r11, rbp[-0x8]
+	mov r11[0xe40], rax
+
+	lea rax, [rel global0457]
+	mov r11, rbp[-0x8]
+	mov r11[0xe48], rax
+
+	lea rax, [rel global0458]
+	mov r11, rbp[-0x8]
+	mov r11[0xe50], rax
+
+	lea rax, [rel global0459]
+	mov r11, rbp[-0x8]
+	mov r11[0xe58], rax
+
+	lea rax, [rel global0460]
+	mov r11, rbp[-0x8]
+	mov r11[0xe60], rax
+
+	lea rax, [rel global0461]
+	mov r11, rbp[-0x8]
+	mov r11[0xe68], rax
+
+	lea rax, [rel global0462]
+	mov r11, rbp[-0x8]
+	mov r11[0xe70], rax
+
+	lea rax, [rel global0463]
+	mov r11, rbp[-0x8]
+	mov r11[0xe78], rax
+
+	lea rax, [rel global0464]
+	mov r11, rbp[-0x8]
+	mov r11[0xe80], rax
+
+	lea rax, [rel global0465]
+	mov r11, rbp[-0x8]
+	mov r11[0xe88], rax
+
+	lea rax, [rel global0466]
+	mov r11, rbp[-0x8]
+	mov r11[0xe90], rax
+
+	lea rax, [rel global0467]
+	mov r11, rbp[-0x8]
+	mov r11[0xe98], rax
+
+	lea rax, [rel global0468]
+	mov r11, rbp[-0x8]
+	mov r11[0xea0], rax
+
+	lea rax, [rel global0469]
+	mov r11, rbp[-0x8]
+	mov r11[0xea8], rax
+
+	lea rax, [rel global0470]
+	mov r11, rbp[-0x8]
+	mov r11[0xeb0], rax
+
+	lea rax, [rel global0471]
+	mov r11, rbp[-0x8]
+	mov r11[0xeb8], rax
+
+	lea rax, [rel global0472]
+	mov r11, rbp[-0x8]
+	mov r11[0xec0], rax
+
+	lea rax, [rel global0473]
+	mov r11, rbp[-0x8]
+	mov r11[0xec8], rax
+
+	lea rax, [rel global0474]
+	mov r11, rbp[-0x8]
+	mov r11[0xed0], rax
+
+	lea rax, [rel global0475]
+	mov r11, rbp[-0x8]
+	mov r11[0xed8], rax
+
+	lea rax, [rel global0476]
+	mov r11, rbp[-0x8]
+	mov r11[0xee0], rax
+
+	lea rax, [rel global0477]
+	mov r11, rbp[-0x8]
+	mov r11[0xee8], rax
+
+	lea rax, [rel global0478]
+	mov r11, rbp[-0x8]
+	mov r11[0xef0], rax
+
+	lea rax, [rel global0479]
+	mov r11, rbp[-0x8]
+	mov r11[0xef8], rax
+
+	lea rax, [rel global0480]
+	mov r11, rbp[-0x8]
+	mov r11[0xf00], rax
+
+	lea rax, [rel global0481]
+	mov r11, rbp[-0x8]
+	mov r11[0xf08], rax
+
+	lea rax, [rel global0482]
+	mov r11, rbp[-0x8]
+	mov r11[0xf10], rax
+
+	lea rax, [rel global0483]
+	mov r11, rbp[-0x8]
+	mov r11[0xf18], rax
+
+	lea rax, [rel global0484]
+	mov r11, rbp[-0x8]
+	mov r11[0xf20], rax
+
+	lea rax, [rel global0485]
+	mov r11, rbp[-0x8]
+	mov r11[0xf28], rax
+
+	lea rax, [rel global0486]
+	mov r11, rbp[-0x8]
+	mov r11[0xf30], rax
+
+	lea rax, [rel global0487]
+	mov r11, rbp[-0x8]
+	mov r11[0xf38], rax
+
+	lea rax, [rel global0488]
+	mov r11, rbp[-0x8]
+	mov r11[0xf40], rax
+
+	lea rax, [rel global0489]
+	mov r11, rbp[-0x8]
+	mov r11[0xf48], rax
+
+	lea rax, [rel global0490]
+	mov r11, rbp[-0x8]
+	mov r11[0xf50], rax
+
+	lea rax, [rel global0491]
+	mov r11, rbp[-0x8]
+	mov r11[0xf58], rax
+
+	lea rax, [rel global0492]
+	mov r11, rbp[-0x8]
+	mov r11[0xf60], rax
+
+	lea rax, [rel global0493]
+	mov r11, rbp[-0x8]
+	mov r11[0xf68], rax
+
+	lea rax, [rel global0494]
+	mov r11, rbp[-0x8]
+	mov r11[0xf70], rax
+
+	lea rax, [rel global0495]
+	mov r11, rbp[-0x8]
+	mov r11[0xf78], rax
+
+	lea rax, [rel global0496]
+	mov r11, rbp[-0x8]
+	mov r11[0xf80], rax
+
+	lea rax, [rel global0497]
+	mov r11, rbp[-0x8]
+	mov r11[0xf88], rax
+
+	lea rax, [rel global0498]
+	mov r11, rbp[-0x8]
+	mov r11[0xf90], rax
+
+	lea rax, [rel global0499]
+	mov r11, rbp[-0x8]
+	mov r11[0xf98], rax
+
+	lea rax, [rel global0500]
+	mov r11, rbp[-0x8]
+	mov r11[0xfa0], rax
+
+	lea rax, [rel global0501]
+	mov r11, rbp[-0x8]
+	mov r11[0xfa8], rax
+
+	lea rax, [rel global0502]
+	mov r11, rbp[-0x8]
+	mov r11[0xfb0], rax
+
+	lea rax, [rel global0503]
+	mov r11, rbp[-0x8]
+	mov r11[0xfb8], rax
+
+	lea rax, [rel global0504]
+	mov r11, rbp[-0x8]
+	mov r11[0xfc0], rax
+
+	lea rax, [rel global0505]
+	mov r11, rbp[-0x8]
+	mov r11[0xfc8], rax
+
+	lea rax, [rel global0506]
+	mov r11, rbp[-0x8]
+	mov r11[0xfd0], rax
+
+	lea rax, [rel global0507]
+	mov r11, rbp[-0x8]
+	mov r11[0xfd8], rax
+
+	lea rax, [rel global0508]
+	mov r11, rbp[-0x8]
+	mov r11[0xfe0], rax
+
+	lea rax, [rel global0509]
+	mov r11, rbp[-0x8]
+	mov r11[0xfe8], rax
+
+	lea rax, [rel global0510]
+	mov r11, rbp[-0x8]
+	mov r11[0xff0], rax
+
+	lea rax, [rel global0511]
+	mov r11, rbp[-0x8]
+	mov r11[0xff8], rax
+
+	lea rax, [rel global0512]
+	mov r11, rbp[-0x8]
+	mov r11[0x1000], rax
+
+	lea rax, [rel global0513]
+	mov r11, rbp[-0x8]
+	mov r11[0x1008], rax
+
+	lea rax, [rel global0514]
+	mov r11, rbp[-0x8]
+	mov r11[0x1010], rax
+
+	lea rax, [rel global0515]
+	mov r11, rbp[-0x8]
+	mov r11[0x1018], rax
+
+	lea rax, [rel global0516]
+	mov r11, rbp[-0x8]
+	mov r11[0x1020], rax
+
+	lea rax, [rel global0517]
+	mov r11, rbp[-0x8]
+	mov r11[0x1028], rax
+
+	lea rax, [rel global0518]
+	mov r11, rbp[-0x8]
+	mov r11[0x1030], rax
+
+	lea rax, [rel global0519]
+	mov r11, rbp[-0x8]
+	mov r11[0x1038], rax
+
+	lea rax, [rel global0520]
+	mov r11, rbp[-0x8]
+	mov r11[0x1040], rax
+
+	lea rax, [rel global0521]
+	mov r11, rbp[-0x8]
+	mov r11[0x1048], rax
+
+	lea rax, [rel global0522]
+	mov r11, rbp[-0x8]
+	mov r11[0x1050], rax
+
+	lea rax, [rel global0523]
+	mov r11, rbp[-0x8]
+	mov r11[0x1058], rax
+
+	lea rax, [rel global0524]
+	mov r11, rbp[-0x8]
+	mov r11[0x1060], rax
+
+	lea rax, [rel global0525]
+	mov r11, rbp[-0x8]
+	mov r11[0x1068], rax
+
+	lea rax, [rel global0526]
+	mov r11, rbp[-0x8]
+	mov r11[0x1070], rax
+
+	lea rax, [rel global0527]
+	mov r11, rbp[-0x8]
+	mov r11[0x1078], rax
+
+	lea rax, [rel global0528]
+	mov r11, rbp[-0x8]
+	mov r11[0x1080], rax
+
+	lea rax, [rel global0529]
+	mov r11, rbp[-0x8]
+	mov r11[0x1088], rax
+
+	lea rax, [rel global0530]
+	mov r11, rbp[-0x8]
+	mov r11[0x1090], rax
+
+	lea rax, [rel global0531]
+	mov r11, rbp[-0x8]
+	mov r11[0x1098], rax
+
+	lea rax, [rel global0532]
+	mov r11, rbp[-0x8]
+	mov r11[0x10a0], rax
+
+	lea rax, [rel global0533]
+	mov r11, rbp[-0x8]
+	mov r11[0x10a8], rax
+
+	lea rax, [rel global0534]
+	mov r11, rbp[-0x8]
+	mov r11[0x10b0], rax
+
+	lea rax, [rel global0535]
+	mov r11, rbp[-0x8]
+	mov r11[0x10b8], rax
+
+	lea rax, [rel global0536]
+	mov r11, rbp[-0x8]
+	mov r11[0x10c0], rax
+
+	lea rax, [rel global0537]
+	mov r11, rbp[-0x8]
+	mov r11[0x10c8], rax
+
+	lea rax, [rel global0538]
+	mov r11, rbp[-0x8]
+	mov r11[0x10d0], rax
+
+	lea rax, [rel global0539]
+	mov r11, rbp[-0x8]
+	mov r11[0x10d8], rax
+
+	lea rax, [rel global0540]
+	mov r11, rbp[-0x8]
+	mov r11[0x10e0], rax
+
+	lea rax, [rel global0541]
+	mov r11, rbp[-0x8]
+	mov r11[0x10e8], rax
+
+	lea rax, [rel global0542]
+	mov r11, rbp[-0x8]
+	mov r11[0x10f0], rax
+
+	lea rax, [rel global0543]
+	mov r11, rbp[-0x8]
+	mov r11[0x10f8], rax
+
+	lea rax, [rel global0544]
+	mov r11, rbp[-0x8]
+	mov r11[0x1100], rax
+
+	lea rax, [rel global0545]
+	mov r11, rbp[-0x8]
+	mov r11[0x1108], rax
+
+	lea rax, [rel global0546]
+	mov r11, rbp[-0x8]
+	mov r11[0x1110], rax
+
+	lea rax, [rel global0547]
+	mov r11, rbp[-0x8]
+	mov r11[0x1118], rax
+
+	lea rax, [rel global0548]
+	mov r11, rbp[-0x8]
+	mov r11[0x1120], rax
+
+	lea rax, [rel global0549]
+	mov r11, rbp[-0x8]
+	mov r11[0x1128], rax
+
+	lea rax, [rel global0550]
+	mov r11, rbp[-0x8]
+	mov r11[0x1130], rax
+
+	lea rax, [rel global0551]
+	mov r11, rbp[-0x8]
+	mov r11[0x1138], rax
+
+	lea rax, [rel global0552]
+	mov r11, rbp[-0x8]
+	mov r11[0x1140], rax
+
+	lea rax, [rel global0553]
+	mov r11, rbp[-0x8]
+	mov r11[0x1148], rax
+
+	lea rax, [rel global0554]
+	mov r11, rbp[-0x8]
+	mov r11[0x1150], rax
+
+	lea rax, [rel global0555]
+	mov r11, rbp[-0x8]
+	mov r11[0x1158], rax
+
+	lea rax, [rel global0556]
+	mov r11, rbp[-0x8]
+	mov r11[0x1160], rax
+
+	lea rax, [rel global0557]
+	mov r11, rbp[-0x8]
+	mov r11[0x1168], rax
+
+	lea rax, [rel global0558]
+	mov r11, rbp[-0x8]
+	mov r11[0x1170], rax
+
+	lea rax, [rel global0559]
+	mov r11, rbp[-0x8]
+	mov r11[0x1178], rax
+
+	lea rax, [rel global0560]
+	mov r11, rbp[-0x8]
+	mov r11[0x1180], rax
+
+	lea rax, [rel global0561]
+	mov r11, rbp[-0x8]
+	mov r11[0x1188], rax
+
+	lea rax, [rel global0562]
+	mov r11, rbp[-0x8]
+	mov r11[0x1190], rax
+
+	lea rax, [rel global0563]
+	mov r11, rbp[-0x8]
+	mov r11[0x1198], rax
+
+	lea rax, [rel global0564]
+	mov r11, rbp[-0x8]
+	mov r11[0x11a0], rax
+
+	lea rax, [rel global0565]
+	mov r11, rbp[-0x8]
+	mov r11[0x11a8], rax
+
+	lea rax, [rel global0566]
+	mov r11, rbp[-0x8]
+	mov r11[0x11b0], rax
+
+	lea rax, [rel global0567]
+	mov r11, rbp[-0x8]
+	mov r11[0x11b8], rax
+
+	lea rax, [rel global0568]
+	mov r11, rbp[-0x8]
+	mov r11[0x11c0], rax
+
+	lea rax, [rel global0569]
+	mov r11, rbp[-0x8]
+	mov r11[0x11c8], rax
+
+	lea rax, [rel global0570]
+	mov r11, rbp[-0x8]
+	mov r11[0x11d0], rax
+
+	lea rax, [rel global0571]
+	mov r11, rbp[-0x8]
+	mov r11[0x11d8], rax
+
+	lea rax, [rel global0572]
+	mov r11, rbp[-0x8]
+	mov r11[0x11e0], rax
+
+	lea rax, [rel global0573]
+	mov r11, rbp[-0x8]
+	mov r11[0x11e8], rax
+
+	lea rax, [rel global0574]
+	mov r11, rbp[-0x8]
+	mov r11[0x11f0], rax
+
+	lea rax, [rel global0575]
+	mov r11, rbp[-0x8]
+	mov r11[0x11f8], rax
+
+	lea rax, [rel global0576]
+	mov r11, rbp[-0x8]
+	mov r11[0x1200], rax
+
+	lea rax, [rel global0577]
+	mov r11, rbp[-0x8]
+	mov r11[0x1208], rax
+
+	lea rax, [rel global0578]
+	mov r11, rbp[-0x8]
+	mov r11[0x1210], rax
+
+	lea rax, [rel global0579]
+	mov r11, rbp[-0x8]
+	mov r11[0x1218], rax
+
+	lea rax, [rel global0580]
+	mov r11, rbp[-0x8]
+	mov r11[0x1220], rax
+
+	lea rax, [rel global0581]
+	mov r11, rbp[-0x8]
+	mov r11[0x1228], rax
+
+	lea rax, [rel global0582]
+	mov r11, rbp[-0x8]
+	mov r11[0x1230], rax
+
+	lea rax, [rel global0583]
+	mov r11, rbp[-0x8]
+	mov r11[0x1238], rax
+
+	lea rax, [rel global0584]
+	mov r11, rbp[-0x8]
+	mov r11[0x1240], rax
+
+	lea rax, [rel global0585]
+	mov r11, rbp[-0x8]
+	mov r11[0x1248], rax
+
+	lea rax, [rel global0586]
+	mov r11, rbp[-0x8]
+	mov r11[0x1250], rax
+
+	lea rax, [rel global0587]
+	mov r11, rbp[-0x8]
+	mov r11[0x1258], rax
+
+	lea rax, [rel global0588]
+	mov r11, rbp[-0x8]
+	mov r11[0x1260], rax
+
+	lea rax, [rel global0589]
+	mov r11, rbp[-0x8]
+	mov r11[0x1268], rax
+
+	lea rax, [rel global0590]
+	mov r11, rbp[-0x8]
+	mov r11[0x1270], rax
+
+	lea rax, [rel global0591]
+	mov r11, rbp[-0x8]
+	mov r11[0x1278], rax
+
+	lea rax, [rel global0592]
+	mov r11, rbp[-0x8]
+	mov r11[0x1280], rax
+
+	lea rax, [rel global0593]
+	mov r11, rbp[-0x8]
+	mov r11[0x1288], rax
+
+	lea rax, [rel global0594]
+	mov r11, rbp[-0x8]
+	mov r11[0x1290], rax
+
+	lea rax, [rel global0595]
+	mov r11, rbp[-0x8]
+	mov r11[0x1298], rax
+
+	lea rax, [rel global0596]
+	mov r11, rbp[-0x8]
+	mov r11[0x12a0], rax
+
+	lea rax, [rel global0597]
+	mov r11, rbp[-0x8]
+	mov r11[0x12a8], rax
+
+	lea rax, [rel global0598]
+	mov r11, rbp[-0x8]
+	mov r11[0x12b0], rax
+
+	lea rax, [rel global0599]
+	mov r11, rbp[-0x8]
+	mov r11[0x12b8], rax
+
+	lea rax, [rel global0600]
+	mov r11, rbp[-0x8]
+	mov r11[0x12c0], rax
+
+	lea rax, [rel global0601]
+	mov r11, rbp[-0x8]
+	mov r11[0x12c8], rax
+
+	lea rax, [rel global0602]
+	mov r11, rbp[-0x8]
+	mov r11[0x12d0], rax
+
+	lea rax, [rel global0603]
+	mov r11, rbp[-0x8]
+	mov r11[0x12d8], rax
+
+	lea rax, [rel global0604]
+	mov r11, rbp[-0x8]
+	mov r11[0x12e0], rax
+
+	lea rax, [rel global0605]
+	mov r11, rbp[-0x8]
+	mov r11[0x12e8], rax
+
+	lea rax, [rel global0606]
+	mov r11, rbp[-0x8]
+	mov r11[0x12f0], rax
+
+	lea rax, [rel global0607]
+	mov r11, rbp[-0x8]
+	mov r11[0x12f8], rax
+
+	lea rax, [rel global0608]
+	mov r11, rbp[-0x8]
+	mov r11[0x1300], rax
+
+	lea rax, [rel global0609]
+	mov r11, rbp[-0x8]
+	mov r11[0x1308], rax
+
+	lea rax, [rel global0610]
+	mov r11, rbp[-0x8]
+	mov r11[0x1310], rax
+
+	lea rax, [rel global0611]
+	mov r11, rbp[-0x8]
+	mov r11[0x1318], rax
+
+	lea rax, [rel global0612]
+	mov r11, rbp[-0x8]
+	mov r11[0x1320], rax
+
+	lea rax, [rel global0613]
+	mov r11, rbp[-0x8]
+	mov r11[0x1328], rax
+
+	lea rax, [rel global0614]
+	mov r11, rbp[-0x8]
+	mov r11[0x1330], rax
+
+	lea rax, [rel global0615]
+	mov r11, rbp[-0x8]
+	mov r11[0x1338], rax
+
+	lea rax, [rel global0616]
+	mov r11, rbp[-0x8]
+	mov r11[0x1340], rax
+
+	lea rax, [rel global0617]
+	mov r11, rbp[-0x8]
+	mov r11[0x1348], rax
+
+	lea rax, [rel global0618]
+	mov r11, rbp[-0x8]
+	mov r11[0x1350], rax
+
+	lea rax, [rel global0619]
+	mov r11, rbp[-0x8]
+	mov r11[0x1358], rax
+
+	lea rax, [rel global0620]
+	mov r11, rbp[-0x8]
+	mov r11[0x1360], rax
+
+	lea rax, [rel global0621]
+	mov r11, rbp[-0x8]
+	mov r11[0x1368], rax
+
+	lea rax, [rel global0622]
+	mov r11, rbp[-0x8]
+	mov r11[0x1370], rax
+
+	lea rax, [rel global0623]
+	mov r11, rbp[-0x8]
+	mov r11[0x1378], rax
+
+	lea rax, [rel global0624]
+	mov r11, rbp[-0x8]
+	mov r11[0x1380], rax
+
+	lea rax, [rel global0625]
+	mov r11, rbp[-0x8]
+	mov r11[0x1388], rax
+
+	lea rax, [rel global0626]
+	mov r11, rbp[-0x8]
+	mov r11[0x1390], rax
+
+	lea rax, [rel global0627]
+	mov r11, rbp[-0x8]
+	mov r11[0x1398], rax
+
+	lea rax, [rel global0628]
+	mov r11, rbp[-0x8]
+	mov r11[0x13a0], rax
+
+	lea rax, [rel global0629]
+	mov r11, rbp[-0x8]
+	mov r11[0x13a8], rax
+
+	lea rax, [rel global0630]
+	mov r11, rbp[-0x8]
+	mov r11[0x13b0], rax
+
+	lea rax, [rel global0631]
+	mov r11, rbp[-0x8]
+	mov r11[0x13b8], rax
+
+	lea rax, [rel global0632]
+	mov r11, rbp[-0x8]
+	mov r11[0x13c0], rax
+
+	lea rax, [rel global0633]
+	mov r11, rbp[-0x8]
+	mov r11[0x13c8], rax
+
+	lea rax, [rel global0634]
+	mov r11, rbp[-0x8]
+	mov r11[0x13d0], rax
+
+	lea rax, [rel global0635]
+	mov r11, rbp[-0x8]
+	mov r11[0x13d8], rax
+
+	lea rax, [rel global0636]
+	mov r11, rbp[-0x8]
+	mov r11[0x13e0], rax
+
+	lea rax, [rel global0637]
+	mov r11, rbp[-0x8]
+	mov r11[0x13e8], rax
+
+	lea rax, [rel global0638]
+	mov r11, rbp[-0x8]
+	mov r11[0x13f0], rax
+
+	lea rax, [rel global0639]
+	mov r11, rbp[-0x8]
+	mov r11[0x13f8], rax
+
+	lea rax, [rel global0640]
+	mov r11, rbp[-0x8]
+	mov r11[0x1400], rax
+
+	lea rax, [rel global0641]
+	mov r11, rbp[-0x8]
+	mov r11[0x1408], rax
+
+	lea rax, [rel global0642]
+	mov r11, rbp[-0x8]
+	mov r11[0x1410], rax
+
+	lea rax, [rel global0643]
+	mov r11, rbp[-0x8]
+	mov r11[0x1418], rax
+
+	lea rax, [rel global0644]
+	mov r11, rbp[-0x8]
+	mov r11[0x1420], rax
+
+	lea rax, [rel global0645]
+	mov r11, rbp[-0x8]
+	mov r11[0x1428], rax
+
+	lea rax, [rel global0646]
+	mov r11, rbp[-0x8]
+	mov r11[0x1430], rax
+
+	lea rax, [rel global0647]
+	mov r11, rbp[-0x8]
+	mov r11[0x1438], rax
+
+	lea rax, [rel global0648]
+	mov r11, rbp[-0x8]
+	mov r11[0x1440], rax
+
+	lea rax, [rel global0649]
+	mov r11, rbp[-0x8]
+	mov r11[0x1448], rax
+
+	lea rax, [rel global0650]
+	mov r11, rbp[-0x8]
+	mov r11[0x1450], rax
+
+	lea rax, [rel global0651]
+	mov r11, rbp[-0x8]
+	mov r11[0x1458], rax
+
+	lea rax, [rel global0652]
+	mov r11, rbp[-0x8]
+	mov r11[0x1460], rax
+
+	lea rax, [rel global0653]
+	mov r11, rbp[-0x8]
+	mov r11[0x1468], rax
+
+	lea rax, [rel global0654]
+	mov r11, rbp[-0x8]
+	mov r11[0x1470], rax
+
+	lea rax, [rel global0655]
+	mov r11, rbp[-0x8]
+	mov r11[0x1478], rax
+
+	lea rax, [rel global0656]
+	mov r11, rbp[-0x8]
+	mov r11[0x1480], rax
+
+	lea rax, [rel global0657]
+	mov r11, rbp[-0x8]
+	mov r11[0x1488], rax
+
+	lea rax, [rel global0658]
+	mov r11, rbp[-0x8]
+	mov r11[0x1490], rax
+
+	lea rax, [rel global0659]
+	mov r11, rbp[-0x8]
+	mov r11[0x1498], rax
+
+	lea rax, [rel global0660]
+	mov r11, rbp[-0x8]
+	mov r11[0x14a0], rax
+
+	lea rax, [rel global0661]
+	mov r11, rbp[-0x8]
+	mov r11[0x14a8], rax
+
+	lea rax, [rel global0662]
+	mov r11, rbp[-0x8]
+	mov r11[0x14b0], rax
+
+	lea rax, [rel global0663]
+	mov r11, rbp[-0x8]
+	mov r11[0x14b8], rax
+
+	lea rax, [rel global0664]
+	mov r11, rbp[-0x8]
+	mov r11[0x14c0], rax
+
+	lea rax, [rel global0665]
+	mov r11, rbp[-0x8]
+	mov r11[0x14c8], rax
+
+	lea rax, [rel global0666]
+	mov r11, rbp[-0x8]
+	mov r11[0x14d0], rax
+
+	lea rax, [rel global0667]
+	mov r11, rbp[-0x8]
+	mov r11[0x14d8], rax
+
+	lea rax, [rel global0668]
+	mov r11, rbp[-0x8]
+	mov r11[0x14e0], rax
+
+	lea rax, [rel global0669]
+	mov r11, rbp[-0x8]
+	mov r11[0x14e8], rax
+
+	lea rax, [rel global0670]
+	mov r11, rbp[-0x8]
+	mov r11[0x14f0], rax
+
+	lea rax, [rel global0671]
+	mov r11, rbp[-0x8]
+	mov r11[0x14f8], rax
+
+	lea rax, [rel global0672]
+	mov r11, rbp[-0x8]
+	mov r11[0x1500], rax
+
+	lea rax, [rel global0673]
+	mov r11, rbp[-0x8]
+	mov r11[0x1508], rax
+
+	lea rax, [rel global0674]
+	mov r11, rbp[-0x8]
+	mov r11[0x1510], rax
+
+	lea rax, [rel global0675]
+	mov r11, rbp[-0x8]
+	mov r11[0x1518], rax
+
+	lea rax, [rel global0676]
+	mov r11, rbp[-0x8]
+	mov r11[0x1520], rax
+
+	lea rax, [rel global0677]
+	mov r11, rbp[-0x8]
+	mov r11[0x1528], rax
+
+	lea rax, [rel global0678]
+	mov r11, rbp[-0x8]
+	mov r11[0x1530], rax
+
+	lea rax, [rel global0679]
+	mov r11, rbp[-0x8]
+	mov r11[0x1538], rax
+
+	lea rax, [rel global0680]
+	mov r11, rbp[-0x8]
+	mov r11[0x1540], rax
+
+	lea rax, [rel global0681]
+	mov r11, rbp[-0x8]
+	mov r11[0x1548], rax
+
+	lea rax, [rel global0682]
+	mov r11, rbp[-0x8]
+	mov r11[0x1550], rax
+
+	lea rax, [rel global0683]
+	mov r11, rbp[-0x8]
+	mov r11[0x1558], rax
+
+	lea rax, [rel global0684]
+	mov r11, rbp[-0x8]
+	mov r11[0x1560], rax
+
+	lea rax, [rel global0685]
+	mov r11, rbp[-0x8]
+	mov r11[0x1568], rax
+
+	lea rax, [rel global0686]
+	mov r11, rbp[-0x8]
+	mov r11[0x1570], rax
+
+	lea rax, [rel global0687]
+	mov r11, rbp[-0x8]
+	mov r11[0x1578], rax
+
+	lea rax, [rel global0688]
+	mov r11, rbp[-0x8]
+	mov r11[0x1580], rax
+
+	lea rax, [rel global0689]
+	mov r11, rbp[-0x8]
+	mov r11[0x1588], rax
+
+	lea rax, [rel global0690]
+	mov r11, rbp[-0x8]
+	mov r11[0x1590], rax
+
+	lea rax, [rel global0691]
+	mov r11, rbp[-0x8]
+	mov r11[0x1598], rax
+
+	lea rax, [rel global0692]
+	mov r11, rbp[-0x8]
+	mov r11[0x15a0], rax
+
+	lea rax, [rel global0693]
+	mov r11, rbp[-0x8]
+	mov r11[0x15a8], rax
+
+	lea rax, [rel global0694]
+	mov r11, rbp[-0x8]
+	mov r11[0x15b0], rax
+
+	lea rax, [rel global0695]
+	mov r11, rbp[-0x8]
+	mov r11[0x15b8], rax
+
+	lea rax, [rel global0696]
+	mov r11, rbp[-0x8]
+	mov r11[0x15c0], rax
+
+	lea rax, [rel global0697]
+	mov r11, rbp[-0x8]
+	mov r11[0x15c8], rax
+
+	lea rax, [rel global0698]
+	mov r11, rbp[-0x8]
+	mov r11[0x15d0], rax
+
+	lea rax, [rel global0699]
+	mov r11, rbp[-0x8]
+	mov r11[0x15d8], rax
+
+	lea rax, [rel global0700]
+	mov r11, rbp[-0x8]
+	mov r11[0x15e0], rax
+
+	lea rax, [rel global0701]
+	mov r11, rbp[-0x8]
+	mov r11[0x15e8], rax
+
+	lea rax, [rel global0702]
+	mov r11, rbp[-0x8]
+	mov r11[0x15f0], rax
+
+	lea rax, [rel global0703]
+	mov r11, rbp[-0x8]
+	mov r11[0x15f8], rax
+
+	lea rax, [rel global0704]
+	mov r11, rbp[-0x8]
+	mov r11[0x1600], rax
+
+	lea rax, [rel global0705]
+	mov r11, rbp[-0x8]
+	mov r11[0x1608], rax
+
+	lea rax, [rel global0706]
+	mov r11, rbp[-0x8]
+	mov r11[0x1610], rax
+
+	lea rax, [rel global0707]
+	mov r11, rbp[-0x8]
+	mov r11[0x1618], rax
+
+	lea rax, [rel global0708]
+	mov r11, rbp[-0x8]
+	mov r11[0x1620], rax
+
+	lea rax, [rel global0709]
+	mov r11, rbp[-0x8]
+	mov r11[0x1628], rax
+
+	lea rax, [rel global0710]
+	mov r11, rbp[-0x8]
+	mov r11[0x1630], rax
+
+	lea rax, [rel global0711]
+	mov r11, rbp[-0x8]
+	mov r11[0x1638], rax
+
+	lea rax, [rel global0712]
+	mov r11, rbp[-0x8]
+	mov r11[0x1640], rax
+
+	lea rax, [rel global0713]
+	mov r11, rbp[-0x8]
+	mov r11[0x1648], rax
+
+	lea rax, [rel global0714]
+	mov r11, rbp[-0x8]
+	mov r11[0x1650], rax
+
+	lea rax, [rel global0715]
+	mov r11, rbp[-0x8]
+	mov r11[0x1658], rax
+
+	lea rax, [rel global0716]
+	mov r11, rbp[-0x8]
+	mov r11[0x1660], rax
+
+	lea rax, [rel global0717]
+	mov r11, rbp[-0x8]
+	mov r11[0x1668], rax
+
+	lea rax, [rel global0718]
+	mov r11, rbp[-0x8]
+	mov r11[0x1670], rax
+
+	lea rax, [rel global0719]
+	mov r11, rbp[-0x8]
+	mov r11[0x1678], rax
+
+	lea rax, [rel global0720]
+	mov r11, rbp[-0x8]
+	mov r11[0x1680], rax
+
+	lea rax, [rel global0721]
+	mov r11, rbp[-0x8]
+	mov r11[0x1688], rax
+
+	lea rax, [rel global0722]
+	mov r11, rbp[-0x8]
+	mov r11[0x1690], rax
+
+	lea rax, [rel global0723]
+	mov r11, rbp[-0x8]
+	mov r11[0x1698], rax
+
+	lea rax, [rel global0724]
+	mov r11, rbp[-0x8]
+	mov r11[0x16a0], rax
+
+	lea rax, [rel global0725]
+	mov r11, rbp[-0x8]
+	mov r11[0x16a8], rax
+
+	lea rax, [rel global0726]
+	mov r11, rbp[-0x8]
+	mov r11[0x16b0], rax
+
+	lea rax, [rel global0727]
+	mov r11, rbp[-0x8]
+	mov r11[0x16b8], rax
+
+	lea rax, [rel global0728]
+	mov r11, rbp[-0x8]
+	mov r11[0x16c0], rax
+
+	lea rax, [rel global0729]
+	mov r11, rbp[-0x8]
+	mov r11[0x16c8], rax
+
+	lea rax, [rel global0730]
+	mov r11, rbp[-0x8]
+	mov r11[0x16d0], rax
+
+	lea rax, [rel global0731]
+	mov r11, rbp[-0x8]
+	mov r11[0x16d8], rax
+
+	lea rax, [rel global0732]
+	mov r11, rbp[-0x8]
+	mov r11[0x16e0], rax
+
+	lea rax, [rel global0733]
+	mov r11, rbp[-0x8]
+	mov r11[0x16e8], rax
+
+	lea rax, [rel global0734]
+	mov r11, rbp[-0x8]
+	mov r11[0x16f0], rax
+
+	lea rax, [rel global0735]
+	mov r11, rbp[-0x8]
+	mov r11[0x16f8], rax
+
+	lea rax, [rel global0736]
+	mov r11, rbp[-0x8]
+	mov r11[0x1700], rax
+
+	lea rax, [rel global0737]
+	mov r11, rbp[-0x8]
+	mov r11[0x1708], rax
+
+	lea rax, [rel global0738]
+	mov r11, rbp[-0x8]
+	mov r11[0x1710], rax
+
+	lea rax, [rel global0739]
+	mov r11, rbp[-0x8]
+	mov r11[0x1718], rax
+
+	lea rax, [rel global0740]
+	mov r11, rbp[-0x8]
+	mov r11[0x1720], rax
+
+	lea rax, [rel global0741]
+	mov r11, rbp[-0x8]
+	mov r11[0x1728], rax
+
+	lea rax, [rel global0742]
+	mov r11, rbp[-0x8]
+	mov r11[0x1730], rax
+
+	lea rax, [rel global0743]
+	mov r11, rbp[-0x8]
+	mov r11[0x1738], rax
+
+	lea rax, [rel global0744]
+	mov r11, rbp[-0x8]
+	mov r11[0x1740], rax
+
+	lea rax, [rel global0745]
+	mov r11, rbp[-0x8]
+	mov r11[0x1748], rax
+
+	lea rax, [rel global0746]
+	mov r11, rbp[-0x8]
+	mov r11[0x1750], rax
+
+	lea rax, [rel global0747]
+	mov r11, rbp[-0x8]
+	mov r11[0x1758], rax
+
+	lea rax, [rel global0748]
+	mov r11, rbp[-0x8]
+	mov r11[0x1760], rax
+
+	lea rax, [rel global0749]
+	mov r11, rbp[-0x8]
+	mov r11[0x1768], rax
+
+	lea rax, [rel global0750]
+	mov r11, rbp[-0x8]
+	mov r11[0x1770], rax
+
+	lea rax, [rel global0751]
+	mov r11, rbp[-0x8]
+	mov r11[0x1778], rax
+
+	lea rax, [rel global0752]
+	mov r11, rbp[-0x8]
+	mov r11[0x1780], rax
+
+	lea rax, [rel global0753]
+	mov r11, rbp[-0x8]
+	mov r11[0x1788], rax
+
+	lea rax, [rel global0754]
+	mov r11, rbp[-0x8]
+	mov r11[0x1790], rax
+
+	lea rax, [rel global0755]
+	mov r11, rbp[-0x8]
+	mov r11[0x1798], rax
+
+	lea rax, [rel global0756]
+	mov r11, rbp[-0x8]
+	mov r11[0x17a0], rax
+
+	lea rax, [rel global0757]
+	mov r11, rbp[-0x8]
+	mov r11[0x17a8], rax
+
+	lea rax, [rel global0758]
+	mov r11, rbp[-0x8]
+	mov r11[0x17b0], rax
+
+	lea rax, [rel global0759]
+	mov r11, rbp[-0x8]
+	mov r11[0x17b8], rax
+
+	lea rax, [rel global0760]
+	mov r11, rbp[-0x8]
+	mov r11[0x17c0], rax
+
+	lea rax, [rel global0761]
+	mov r11, rbp[-0x8]
+	mov r11[0x17c8], rax
+
+	lea rax, [rel global0762]
+	mov r11, rbp[-0x8]
+	mov r11[0x17d0], rax
+
+	lea rax, [rel global0763]
+	mov r11, rbp[-0x8]
+	mov r11[0x17d8], rax
+
+	lea rax, [rel global0764]
+	mov r11, rbp[-0x8]
+	mov r11[0x17e0], rax
+
+	lea rax, [rel global0765]
+	mov r11, rbp[-0x8]
+	mov r11[0x17e8], rax
+
+	lea rax, [rel global0766]
+	mov r11, rbp[-0x8]
+	mov r11[0x17f0], rax
+
+	lea rax, [rel global0767]
+	mov r11, rbp[-0x8]
+	mov r11[0x17f8], rax
+
+	lea rax, [rel global0768]
+	mov r11, rbp[-0x8]
+	mov r11[0x1800], rax
+
+	lea rax, [rel global0769]
+	mov r11, rbp[-0x8]
+	mov r11[0x1808], rax
+
+	lea rax, [rel global0770]
+	mov r11, rbp[-0x8]
+	mov r11[0x1810], rax
+
+	lea rax, [rel global0771]
+	mov r11, rbp[-0x8]
+	mov r11[0x1818], rax
+
+	lea rax, [rel global0772]
+	mov r11, rbp[-0x8]
+	mov r11[0x1820], rax
+
+	lea rax, [rel global0773]
+	mov r11, rbp[-0x8]
+	mov r11[0x1828], rax
+
+	lea rax, [rel global0774]
+	mov r11, rbp[-0x8]
+	mov r11[0x1830], rax
+
+	lea rax, [rel global0775]
+	mov r11, rbp[-0x8]
+	mov r11[0x1838], rax
+
+	lea rax, [rel global0776]
+	mov r11, rbp[-0x8]
+	mov r11[0x1840], rax
+
+	lea rax, [rel global0777]
+	mov r11, rbp[-0x8]
+	mov r11[0x1848], rax
+
+	lea rax, [rel global0778]
+	mov r11, rbp[-0x8]
+	mov r11[0x1850], rax
+
+	lea rax, [rel global0779]
+	mov r11, rbp[-0x8]
+	mov r11[0x1858], rax
+
+	lea rax, [rel global0780]
+	mov r11, rbp[-0x8]
+	mov r11[0x1860], rax
+
+	lea rax, [rel global0781]
+	mov r11, rbp[-0x8]
+	mov r11[0x1868], rax
+
+	lea rax, [rel global0782]
+	mov r11, rbp[-0x8]
+	mov r11[0x1870], rax
+
+	lea rax, [rel global0783]
+	mov r11, rbp[-0x8]
+	mov r11[0x1878], rax
+
+	lea rax, [rel global0784]
+	mov r11, rbp[-0x8]
+	mov r11[0x1880], rax
+
+	lea rax, [rel global0785]
+	mov r11, rbp[-0x8]
+	mov r11[0x1888], rax
+
+	lea rax, [rel global0786]
+	mov r11, rbp[-0x8]
+	mov r11[0x1890], rax
+
+	lea rax, [rel global0787]
+	mov r11, rbp[-0x8]
+	mov r11[0x1898], rax
+
+	lea rax, [rel global0788]
+	mov r11, rbp[-0x8]
+	mov r11[0x18a0], rax
+
+	lea rax, [rel global0789]
+	mov r11, rbp[-0x8]
+	mov r11[0x18a8], rax
+
+	lea rax, [rel global0790]
+	mov r11, rbp[-0x8]
+	mov r11[0x18b0], rax
+
+	lea rax, [rel global0791]
+	mov r11, rbp[-0x8]
+	mov r11[0x18b8], rax
+
+	lea rax, [rel global0792]
+	mov r11, rbp[-0x8]
+	mov r11[0x18c0], rax
+
+	lea rax, [rel global0793]
+	mov r11, rbp[-0x8]
+	mov r11[0x18c8], rax
+
+	lea rax, [rel global0794]
+	mov r11, rbp[-0x8]
+	mov r11[0x18d0], rax
+
+	lea rax, [rel global0795]
+	mov r11, rbp[-0x8]
+	mov r11[0x18d8], rax
+
+	lea rax, [rel global0796]
+	mov r11, rbp[-0x8]
+	mov r11[0x18e0], rax
+
+	lea rax, [rel global0797]
+	mov r11, rbp[-0x8]
+	mov r11[0x18e8], rax
+
+	lea rax, [rel global0798]
+	mov r11, rbp[-0x8]
+	mov r11[0x18f0], rax
+
+	lea rax, [rel global0799]
+	mov r11, rbp[-0x8]
+	mov r11[0x18f8], rax
+
+	lea rax, [rel global0800]
+	mov r11, rbp[-0x8]
+	mov r11[0x1900], rax
+
+	lea rax, [rel global0801]
+	mov r11, rbp[-0x8]
+	mov r11[0x1908], rax
+
+	lea rax, [rel global0802]
+	mov r11, rbp[-0x8]
+	mov r11[0x1910], rax
+
+	lea rax, [rel global0803]
+	mov r11, rbp[-0x8]
+	mov r11[0x1918], rax
+
+	lea rax, [rel global0804]
+	mov r11, rbp[-0x8]
+	mov r11[0x1920], rax
+
+	lea rax, [rel global0805]
+	mov r11, rbp[-0x8]
+	mov r11[0x1928], rax
+
+	lea rax, [rel global0806]
+	mov r11, rbp[-0x8]
+	mov r11[0x1930], rax
+
+	lea rax, [rel global0807]
+	mov r11, rbp[-0x8]
+	mov r11[0x1938], rax
+
+	lea rax, [rel global0808]
+	mov r11, rbp[-0x8]
+	mov r11[0x1940], rax
+
+	lea rax, [rel global0809]
+	mov r11, rbp[-0x8]
+	mov r11[0x1948], rax
+
+	lea rax, [rel global0810]
+	mov r11, rbp[-0x8]
+	mov r11[0x1950], rax
+
+	lea rax, [rel global0811]
+	mov r11, rbp[-0x8]
+	mov r11[0x1958], rax
+
+	lea rax, [rel global0812]
+	mov r11, rbp[-0x8]
+	mov r11[0x1960], rax
+
+	lea rax, [rel global0813]
+	mov r11, rbp[-0x8]
+	mov r11[0x1968], rax
+
+	lea rax, [rel global0814]
+	mov r11, rbp[-0x8]
+	mov r11[0x1970], rax
+
+	lea rax, [rel global0815]
+	mov r11, rbp[-0x8]
+	mov r11[0x1978], rax
+
+	lea rax, [rel global0816]
+	mov r11, rbp[-0x8]
+	mov r11[0x1980], rax
+
+	lea rax, [rel global0817]
+	mov r11, rbp[-0x8]
+	mov r11[0x1988], rax
+
+	lea rax, [rel global0818]
+	mov r11, rbp[-0x8]
+	mov r11[0x1990], rax
+
+	lea rax, [rel global0819]
+	mov r11, rbp[-0x8]
+	mov r11[0x1998], rax
+
+	lea rax, [rel global0820]
+	mov r11, rbp[-0x8]
+	mov r11[0x19a0], rax
+
+	lea rax, [rel global0821]
+	mov r11, rbp[-0x8]
+	mov r11[0x19a8], rax
+
+	lea rax, [rel global0822]
+	mov r11, rbp[-0x8]
+	mov r11[0x19b0], rax
+
+	lea rax, [rel global0823]
+	mov r11, rbp[-0x8]
+	mov r11[0x19b8], rax
+
+	lea rax, [rel global0824]
+	mov r11, rbp[-0x8]
+	mov r11[0x19c0], rax
+
+	lea rax, [rel global0825]
+	mov r11, rbp[-0x8]
+	mov r11[0x19c8], rax
+
+	lea rax, [rel global0826]
+	mov r11, rbp[-0x8]
+	mov r11[0x19d0], rax
+
+	lea rax, [rel global0827]
+	mov r11, rbp[-0x8]
+	mov r11[0x19d8], rax
+
+	lea rax, [rel global0828]
+	mov r11, rbp[-0x8]
+	mov r11[0x19e0], rax
+
+	lea rax, [rel global0829]
+	mov r11, rbp[-0x8]
+	mov r11[0x19e8], rax
+
+	lea rax, [rel global0830]
+	mov r11, rbp[-0x8]
+	mov r11[0x19f0], rax
+
+	lea rax, [rel global0831]
+	mov r11, rbp[-0x8]
+	mov r11[0x19f8], rax
+
+	lea rax, [rel global0832]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a00], rax
+
+	lea rax, [rel global0833]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a08], rax
+
+	lea rax, [rel global0834]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a10], rax
+
+	lea rax, [rel global0835]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a18], rax
+
+	lea rax, [rel global0836]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a20], rax
+
+	lea rax, [rel global0837]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a28], rax
+
+	lea rax, [rel global0838]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a30], rax
+
+	lea rax, [rel global0839]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a38], rax
+
+	lea rax, [rel global0840]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a40], rax
+
+	lea rax, [rel global0841]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a48], rax
+
+	lea rax, [rel global0842]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a50], rax
+
+	lea rax, [rel global0843]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a58], rax
+
+	lea rax, [rel global0844]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a60], rax
+
+	lea rax, [rel global0845]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a68], rax
+
+	lea rax, [rel global0846]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a70], rax
+
+	lea rax, [rel global0847]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a78], rax
+
+	lea rax, [rel global0848]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a80], rax
+
+	lea rax, [rel global0849]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a88], rax
+
+	lea rax, [rel global0850]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a90], rax
+
+	lea rax, [rel global0851]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a98], rax
+
+	lea rax, [rel global0852]
+	mov r11, rbp[-0x8]
+	mov r11[0x1aa0], rax
+
+	lea rax, [rel global0853]
+	mov r11, rbp[-0x8]
+	mov r11[0x1aa8], rax
+
+	lea rax, [rel global0854]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ab0], rax
+
+	lea rax, [rel global0855]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ab8], rax
+
+	lea rax, [rel global0856]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ac0], rax
+
+	lea rax, [rel global0857]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ac8], rax
+
+	lea rax, [rel global0858]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ad0], rax
+
+	lea rax, [rel global0859]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ad8], rax
+
+	lea rax, [rel global0860]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ae0], rax
+
+	lea rax, [rel global0861]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ae8], rax
+
+	lea rax, [rel global0862]
+	mov r11, rbp[-0x8]
+	mov r11[0x1af0], rax
+
+	lea rax, [rel global0863]
+	mov r11, rbp[-0x8]
+	mov r11[0x1af8], rax
+
+	lea rax, [rel global0864]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b00], rax
+
+	lea rax, [rel global0865]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b08], rax
+
+	lea rax, [rel global0866]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b10], rax
+
+	lea rax, [rel global0867]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b18], rax
+
+	lea rax, [rel global0868]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b20], rax
+
+	lea rax, [rel global0869]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b28], rax
+
+	lea rax, [rel global0870]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b30], rax
+
+	lea rax, [rel global0871]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b38], rax
+
+	lea rax, [rel global0872]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b40], rax
+
+	lea rax, [rel global0873]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b48], rax
+
+	lea rax, [rel global0874]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b50], rax
+
+	lea rax, [rel global0875]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b58], rax
+
+	lea rax, [rel global0876]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b60], rax
+
+	lea rax, [rel global0877]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b68], rax
+
+	lea rax, [rel global0878]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b70], rax
+
+	lea rax, [rel global0879]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b78], rax
+
+	lea rax, [rel global0880]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b80], rax
+
+	lea rax, [rel global0881]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b88], rax
+
+	lea rax, [rel global0882]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b90], rax
+
+	lea rax, [rel global0883]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b98], rax
+
+	lea rax, [rel global0884]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ba0], rax
+
+	lea rax, [rel global0885]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ba8], rax
+
+	lea rax, [rel global0886]
+	mov r11, rbp[-0x8]
+	mov r11[0x1bb0], rax
+
+	lea rax, [rel global0887]
+	mov r11, rbp[-0x8]
+	mov r11[0x1bb8], rax
+
+	lea rax, [rel global0888]
+	mov r11, rbp[-0x8]
+	mov r11[0x1bc0], rax
+
+	lea rax, [rel global0889]
+	mov r11, rbp[-0x8]
+	mov r11[0x1bc8], rax
+
+	lea rax, [rel global0890]
+	mov r11, rbp[-0x8]
+	mov r11[0x1bd0], rax
+
+	lea rax, [rel global0891]
+	mov r11, rbp[-0x8]
+	mov r11[0x1bd8], rax
+
+	lea rax, [rel global0892]
+	mov r11, rbp[-0x8]
+	mov r11[0x1be0], rax
+
+	lea rax, [rel global0893]
+	mov r11, rbp[-0x8]
+	mov r11[0x1be8], rax
+
+	lea rax, [rel global0894]
+	mov r11, rbp[-0x8]
+	mov r11[0x1bf0], rax
+
+	lea rax, [rel global0895]
+	mov r11, rbp[-0x8]
+	mov r11[0x1bf8], rax
+
+	lea rax, [rel global0896]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c00], rax
+
+	lea rax, [rel global0897]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c08], rax
+
+	lea rax, [rel global0898]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c10], rax
+
+	lea rax, [rel global0899]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c18], rax
+
+	lea rax, [rel global0900]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c20], rax
+
+	lea rax, [rel global0901]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c28], rax
+
+	lea rax, [rel global0902]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c30], rax
+
+	lea rax, [rel global0903]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c38], rax
+
+	lea rax, [rel global0904]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c40], rax
+
+	lea rax, [rel global0905]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c48], rax
+
+	lea rax, [rel global0906]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c50], rax
+
+	lea rax, [rel global0907]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c58], rax
+
+	lea rax, [rel global0908]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c60], rax
+
+	lea rax, [rel global0909]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c68], rax
+
+	lea rax, [rel global0910]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c70], rax
+
+	lea rax, [rel global0911]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c78], rax
+
+	lea rax, [rel global0912]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c80], rax
+
+	lea rax, [rel global0913]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c88], rax
+
+	lea rax, [rel global0914]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c90], rax
+
+	lea rax, [rel global0915]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c98], rax
+
+	lea rax, [rel global0916]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ca0], rax
+
+	lea rax, [rel global0917]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ca8], rax
+
+	lea rax, [rel global0918]
+	mov r11, rbp[-0x8]
+	mov r11[0x1cb0], rax
+
+	lea rax, [rel global0919]
+	mov r11, rbp[-0x8]
+	mov r11[0x1cb8], rax
+
+	lea rax, [rel global0920]
+	mov r11, rbp[-0x8]
+	mov r11[0x1cc0], rax
+
+	lea rax, [rel global0921]
+	mov r11, rbp[-0x8]
+	mov r11[0x1cc8], rax
+
+	lea rax, [rel global0922]
+	mov r11, rbp[-0x8]
+	mov r11[0x1cd0], rax
+
+	lea rax, [rel global0923]
+	mov r11, rbp[-0x8]
+	mov r11[0x1cd8], rax
+
+	lea rax, [rel global0924]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ce0], rax
+
+	lea rax, [rel global0925]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ce8], rax
+
+	lea rax, [rel global0926]
+	mov r11, rbp[-0x8]
+	mov r11[0x1cf0], rax
+
+	lea rax, [rel global0927]
+	mov r11, rbp[-0x8]
+	mov r11[0x1cf8], rax
+
+	lea rax, [rel global0928]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d00], rax
+
+	lea rax, [rel global0929]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d08], rax
+
+	lea rax, [rel global0930]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d10], rax
+
+	lea rax, [rel global0931]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d18], rax
+
+	lea rax, [rel global0932]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d20], rax
+
+	lea rax, [rel global0933]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d28], rax
+
+	lea rax, [rel global0934]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d30], rax
+
+	lea rax, [rel global0935]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d38], rax
+
+	lea rax, [rel global0936]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d40], rax
+
+	lea rax, [rel global0937]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d48], rax
+
+	lea rax, [rel global0938]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d50], rax
+
+	lea rax, [rel global0939]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d58], rax
+
+	lea rax, [rel global0940]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d60], rax
+
+	lea rax, [rel global0941]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d68], rax
+
+	lea rax, [rel global0942]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d70], rax
+
+	lea rax, [rel global0943]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d78], rax
+
+	lea rax, [rel global0944]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d80], rax
+
+	lea rax, [rel global0945]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d88], rax
+
+	lea rax, [rel global0946]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d90], rax
+
+	lea rax, [rel global0947]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d98], rax
+
+	lea rax, [rel global0948]
+	mov r11, rbp[-0x8]
+	mov r11[0x1da0], rax
+
+	lea rax, [rel global0949]
+	mov r11, rbp[-0x8]
+	mov r11[0x1da8], rax
+
+	lea rax, [rel global0950]
+	mov r11, rbp[-0x8]
+	mov r11[0x1db0], rax
+
+	lea rax, [rel global0951]
+	mov r11, rbp[-0x8]
+	mov r11[0x1db8], rax
+
+	lea rax, [rel global0952]
+	mov r11, rbp[-0x8]
+	mov r11[0x1dc0], rax
+
+	lea rax, [rel global0953]
+	mov r11, rbp[-0x8]
+	mov r11[0x1dc8], rax
+
+	lea rax, [rel global0954]
+	mov r11, rbp[-0x8]
+	mov r11[0x1dd0], rax
+
+	lea rax, [rel global0955]
+	mov r11, rbp[-0x8]
+	mov r11[0x1dd8], rax
+
+	lea rax, [rel global0956]
+	mov r11, rbp[-0x8]
+	mov r11[0x1de0], rax
+
+	lea rax, [rel global0957]
+	mov r11, rbp[-0x8]
+	mov r11[0x1de8], rax
+
+	lea rax, [rel global0958]
+	mov r11, rbp[-0x8]
+	mov r11[0x1df0], rax
+
+	lea rax, [rel global0959]
+	mov r11, rbp[-0x8]
+	mov r11[0x1df8], rax
+
+	lea rax, [rel global0960]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e00], rax
+
+	lea rax, [rel global0961]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e08], rax
+
+	lea rax, [rel global0962]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e10], rax
+
+	lea rax, [rel global0963]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e18], rax
+
+	lea rax, [rel global0964]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e20], rax
+
+	lea rax, [rel global0965]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e28], rax
+
+	lea rax, [rel global0966]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e30], rax
+
+	lea rax, [rel global0967]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e38], rax
+
+	lea rax, [rel global0968]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e40], rax
+
+	lea rax, [rel global0969]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e48], rax
+
+	lea rax, [rel global0970]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e50], rax
+
+	lea rax, [rel global0971]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e58], rax
+
+	lea rax, [rel global0972]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e60], rax
+
+	lea rax, [rel global0973]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e68], rax
+
+	lea rax, [rel global0974]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e70], rax
+
+	lea rax, [rel global0975]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e78], rax
+
+	lea rax, [rel global0976]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e80], rax
+
+	lea rax, [rel global0977]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e88], rax
+
+	lea rax, [rel global0978]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e90], rax
+
+	lea rax, [rel global0979]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e98], rax
+
+	lea rax, [rel global0980]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ea0], rax
+
+	lea rax, [rel global0981]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ea8], rax
+
+	lea rax, [rel global0982]
+	mov r11, rbp[-0x8]
+	mov r11[0x1eb0], rax
+
+	lea rax, [rel global0983]
+	mov r11, rbp[-0x8]
+	mov r11[0x1eb8], rax
+
+	lea rax, [rel global0984]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ec0], rax
+
+	lea rax, [rel global0985]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ec8], rax
+
+	lea rax, [rel global0986]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ed0], rax
+
+	lea rax, [rel global0987]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ed8], rax
+
+	lea rax, [rel global0988]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ee0], rax
+
+	lea rax, [rel global0989]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ee8], rax
+
+	lea rax, [rel global0990]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ef0], rax
+
+	lea rax, [rel global0991]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ef8], rax
+
+	lea rax, [rel global0992]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f00], rax
+
+	lea rax, [rel global0993]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f08], rax
+
+	lea rax, [rel global0994]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f10], rax
+
+	lea rax, [rel global0995]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f18], rax
+
+	lea rax, [rel global0996]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f20], rax
+
+	lea rax, [rel global0997]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f28], rax
+
+	lea rax, [rel global0998]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f30], rax
+
+	lea rax, [rel global0999]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f38], rax
+
+	lea rax, [rel global1000]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f40], rax
+
+	mov rsp, rbp
+	pop rbp
+	ret
+
+.fast:
+	lea rax, [rel global0001]
+	mov r11, rbp[-0x8]
+	mov r11[0x8], rax
+
+	lea rax, [rel global0002]
+	mov r11, rbp[-0x8]
+	mov r11[0x10], rax
+
+	lea rax, [rel global0003]
+	mov r11, rbp[-0x8]
+	mov r11[0x18], rax
+
+	lea rax, [rel global0004]
+	mov r11, rbp[-0x8]
+	mov r11[0x20], rax
+
+	lea rax, [rel global0005]
+	mov r11, rbp[-0x8]
+	mov r11[0x28], rax
+
+	lea rax, [rel global0006]
+	mov r11, rbp[-0x8]
+	mov r11[0x30], rax
+
+	lea rax, [rel global0007]
+	mov r11, rbp[-0x8]
+	mov r11[0x38], rax
+
+	lea rax, [rel global0008]
+	mov r11, rbp[-0x8]
+	mov r11[0x40], rax
+
+	lea rax, [rel global0009]
+	mov r11, rbp[-0x8]
+	mov r11[0x48], rax
+
+	lea rax, [rel global0010]
+	mov r11, rbp[-0x8]
+	mov r11[0x50], rax
+
+	lea rax, [rel global0011]
+	mov r11, rbp[-0x8]
+	mov r11[0x58], rax
+
+	lea rax, [rel global0012]
+	mov r11, rbp[-0x8]
+	mov r11[0x60], rax
+
+	lea rax, [rel global0013]
+	mov r11, rbp[-0x8]
+	mov r11[0x68], rax
+
+	lea rax, [rel global0014]
+	mov r11, rbp[-0x8]
+	mov r11[0x70], rax
+
+	lea rax, [rel global0015]
+	mov r11, rbp[-0x8]
+	mov r11[0x78], rax
+
+	lea rax, [rel global0016]
+	mov r11, rbp[-0x8]
+	mov r11[0x80], rax
+
+	lea rax, [rel global0017]
+	mov r11, rbp[-0x8]
+	mov r11[0x88], rax
+
+	lea rax, [rel global0018]
+	mov r11, rbp[-0x8]
+	mov r11[0x90], rax
+
+	lea rax, [rel global0019]
+	mov r11, rbp[-0x8]
+	mov r11[0x98], rax
+
+	lea rax, [rel global0020]
+	mov r11, rbp[-0x8]
+	mov r11[0xa0], rax
+
+	lea rax, [rel global0021]
+	mov r11, rbp[-0x8]
+	mov r11[0xa8], rax
+
+	lea rax, [rel global0022]
+	mov r11, rbp[-0x8]
+	mov r11[0xb0], rax
+
+	lea rax, [rel global0023]
+	mov r11, rbp[-0x8]
+	mov r11[0xb8], rax
+
+	lea rax, [rel global0024]
+	mov r11, rbp[-0x8]
+	mov r11[0xc0], rax
+
+	lea rax, [rel global0025]
+	mov r11, rbp[-0x8]
+	mov r11[0xc8], rax
+
+	lea rax, [rel global0026]
+	mov r11, rbp[-0x8]
+	mov r11[0xd0], rax
+
+	lea rax, [rel global0027]
+	mov r11, rbp[-0x8]
+	mov r11[0xd8], rax
+
+	lea rax, [rel global0028]
+	mov r11, rbp[-0x8]
+	mov r11[0xe0], rax
+
+	lea rax, [rel global0029]
+	mov r11, rbp[-0x8]
+	mov r11[0xe8], rax
+
+	lea rax, [rel global0030]
+	mov r11, rbp[-0x8]
+	mov r11[0xf0], rax
+
+	lea rax, [rel global0031]
+	mov r11, rbp[-0x8]
+	mov r11[0xf8], rax
+
+	lea rax, [rel global0032]
+	mov r11, rbp[-0x8]
+	mov r11[0x100], rax
+
+	lea rax, [rel global0033]
+	mov r11, rbp[-0x8]
+	mov r11[0x108], rax
+
+	lea rax, [rel global0034]
+	mov r11, rbp[-0x8]
+	mov r11[0x110], rax
+
+	lea rax, [rel global0035]
+	mov r11, rbp[-0x8]
+	mov r11[0x118], rax
+
+	lea rax, [rel global0036]
+	mov r11, rbp[-0x8]
+	mov r11[0x120], rax
+
+	lea rax, [rel global0037]
+	mov r11, rbp[-0x8]
+	mov r11[0x128], rax
+
+	lea rax, [rel global0038]
+	mov r11, rbp[-0x8]
+	mov r11[0x130], rax
+
+	lea rax, [rel global0039]
+	mov r11, rbp[-0x8]
+	mov r11[0x138], rax
+
+	lea rax, [rel global0040]
+	mov r11, rbp[-0x8]
+	mov r11[0x140], rax
+
+	lea rax, [rel global0041]
+	mov r11, rbp[-0x8]
+	mov r11[0x148], rax
+
+	lea rax, [rel global0042]
+	mov r11, rbp[-0x8]
+	mov r11[0x150], rax
+
+	lea rax, [rel global0043]
+	mov r11, rbp[-0x8]
+	mov r11[0x158], rax
+
+	lea rax, [rel global0044]
+	mov r11, rbp[-0x8]
+	mov r11[0x160], rax
+
+	lea rax, [rel global0045]
+	mov r11, rbp[-0x8]
+	mov r11[0x168], rax
+
+	lea rax, [rel global0046]
+	mov r11, rbp[-0x8]
+	mov r11[0x170], rax
+
+	lea rax, [rel global0047]
+	mov r11, rbp[-0x8]
+	mov r11[0x178], rax
+
+	lea rax, [rel global0048]
+	mov r11, rbp[-0x8]
+	mov r11[0x180], rax
+
+	lea rax, [rel global0049]
+	mov r11, rbp[-0x8]
+	mov r11[0x188], rax
+
+	lea rax, [rel global0050]
+	mov r11, rbp[-0x8]
+	mov r11[0x190], rax
+
+	lea rax, [rel global0051]
+	mov r11, rbp[-0x8]
+	mov r11[0x198], rax
+
+	lea rax, [rel global0052]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a0], rax
+
+	lea rax, [rel global0053]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a8], rax
+
+	lea rax, [rel global0054]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b0], rax
+
+	lea rax, [rel global0055]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b8], rax
+
+	lea rax, [rel global0056]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c0], rax
+
+	lea rax, [rel global0057]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c8], rax
+
+	lea rax, [rel global0058]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d0], rax
+
+	lea rax, [rel global0059]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d8], rax
+
+	lea rax, [rel global0060]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e0], rax
+
+	lea rax, [rel global0061]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e8], rax
+
+	lea rax, [rel global0062]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f0], rax
+
+	lea rax, [rel global0063]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f8], rax
+
+	lea rax, [rel global0064]
+	mov r11, rbp[-0x8]
+	mov r11[0x200], rax
+
+	lea rax, [rel global0065]
+	mov r11, rbp[-0x8]
+	mov r11[0x208], rax
+
+	lea rax, [rel global0066]
+	mov r11, rbp[-0x8]
+	mov r11[0x210], rax
+
+	lea rax, [rel global0067]
+	mov r11, rbp[-0x8]
+	mov r11[0x218], rax
+
+	lea rax, [rel global0068]
+	mov r11, rbp[-0x8]
+	mov r11[0x220], rax
+
+	lea rax, [rel global0069]
+	mov r11, rbp[-0x8]
+	mov r11[0x228], rax
+
+	lea rax, [rel global0070]
+	mov r11, rbp[-0x8]
+	mov r11[0x230], rax
+
+	lea rax, [rel global0071]
+	mov r11, rbp[-0x8]
+	mov r11[0x238], rax
+
+	lea rax, [rel global0072]
+	mov r11, rbp[-0x8]
+	mov r11[0x240], rax
+
+	lea rax, [rel global0073]
+	mov r11, rbp[-0x8]
+	mov r11[0x248], rax
+
+	lea rax, [rel global0074]
+	mov r11, rbp[-0x8]
+	mov r11[0x250], rax
+
+	lea rax, [rel global0075]
+	mov r11, rbp[-0x8]
+	mov r11[0x258], rax
+
+	lea rax, [rel global0076]
+	mov r11, rbp[-0x8]
+	mov r11[0x260], rax
+
+	lea rax, [rel global0077]
+	mov r11, rbp[-0x8]
+	mov r11[0x268], rax
+
+	lea rax, [rel global0078]
+	mov r11, rbp[-0x8]
+	mov r11[0x270], rax
+
+	lea rax, [rel global0079]
+	mov r11, rbp[-0x8]
+	mov r11[0x278], rax
+
+	lea rax, [rel global0080]
+	mov r11, rbp[-0x8]
+	mov r11[0x280], rax
+
+	lea rax, [rel global0081]
+	mov r11, rbp[-0x8]
+	mov r11[0x288], rax
+
+	lea rax, [rel global0082]
+	mov r11, rbp[-0x8]
+	mov r11[0x290], rax
+
+	lea rax, [rel global0083]
+	mov r11, rbp[-0x8]
+	mov r11[0x298], rax
+
+	lea rax, [rel global0084]
+	mov r11, rbp[-0x8]
+	mov r11[0x2a0], rax
+
+	lea rax, [rel global0085]
+	mov r11, rbp[-0x8]
+	mov r11[0x2a8], rax
+
+	lea rax, [rel global0086]
+	mov r11, rbp[-0x8]
+	mov r11[0x2b0], rax
+
+	lea rax, [rel global0087]
+	mov r11, rbp[-0x8]
+	mov r11[0x2b8], rax
+
+	lea rax, [rel global0088]
+	mov r11, rbp[-0x8]
+	mov r11[0x2c0], rax
+
+	lea rax, [rel global0089]
+	mov r11, rbp[-0x8]
+	mov r11[0x2c8], rax
+
+	lea rax, [rel global0090]
+	mov r11, rbp[-0x8]
+	mov r11[0x2d0], rax
+
+	lea rax, [rel global0091]
+	mov r11, rbp[-0x8]
+	mov r11[0x2d8], rax
+
+	lea rax, [rel global0092]
+	mov r11, rbp[-0x8]
+	mov r11[0x2e0], rax
+
+	lea rax, [rel global0093]
+	mov r11, rbp[-0x8]
+	mov r11[0x2e8], rax
+
+	lea rax, [rel global0094]
+	mov r11, rbp[-0x8]
+	mov r11[0x2f0], rax
+
+	lea rax, [rel global0095]
+	mov r11, rbp[-0x8]
+	mov r11[0x2f8], rax
+
+	lea rax, [rel global0096]
+	mov r11, rbp[-0x8]
+	mov r11[0x300], rax
+
+	lea rax, [rel global0097]
+	mov r11, rbp[-0x8]
+	mov r11[0x308], rax
+
+	lea rax, [rel global0098]
+	mov r11, rbp[-0x8]
+	mov r11[0x310], rax
+
+	lea rax, [rel global0099]
+	mov r11, rbp[-0x8]
+	mov r11[0x318], rax
+
+	lea rax, [rel global0100]
+	mov r11, rbp[-0x8]
+	mov r11[0x320], rax
+
+	lea rax, [rel global0101]
+	mov r11, rbp[-0x8]
+	mov r11[0x328], rax
+
+	lea rax, [rel global0102]
+	mov r11, rbp[-0x8]
+	mov r11[0x330], rax
+
+	lea rax, [rel global0103]
+	mov r11, rbp[-0x8]
+	mov r11[0x338], rax
+
+	lea rax, [rel global0104]
+	mov r11, rbp[-0x8]
+	mov r11[0x340], rax
+
+	lea rax, [rel global0105]
+	mov r11, rbp[-0x8]
+	mov r11[0x348], rax
+
+	lea rax, [rel global0106]
+	mov r11, rbp[-0x8]
+	mov r11[0x350], rax
+
+	lea rax, [rel global0107]
+	mov r11, rbp[-0x8]
+	mov r11[0x358], rax
+
+	lea rax, [rel global0108]
+	mov r11, rbp[-0x8]
+	mov r11[0x360], rax
+
+	lea rax, [rel global0109]
+	mov r11, rbp[-0x8]
+	mov r11[0x368], rax
+
+	lea rax, [rel global0110]
+	mov r11, rbp[-0x8]
+	mov r11[0x370], rax
+
+	lea rax, [rel global0111]
+	mov r11, rbp[-0x8]
+	mov r11[0x378], rax
+
+	lea rax, [rel global0112]
+	mov r11, rbp[-0x8]
+	mov r11[0x380], rax
+
+	lea rax, [rel global0113]
+	mov r11, rbp[-0x8]
+	mov r11[0x388], rax
+
+	lea rax, [rel global0114]
+	mov r11, rbp[-0x8]
+	mov r11[0x390], rax
+
+	lea rax, [rel global0115]
+	mov r11, rbp[-0x8]
+	mov r11[0x398], rax
+
+	lea rax, [rel global0116]
+	mov r11, rbp[-0x8]
+	mov r11[0x3a0], rax
+
+	lea rax, [rel global0117]
+	mov r11, rbp[-0x8]
+	mov r11[0x3a8], rax
+
+	lea rax, [rel global0118]
+	mov r11, rbp[-0x8]
+	mov r11[0x3b0], rax
+
+	lea rax, [rel global0119]
+	mov r11, rbp[-0x8]
+	mov r11[0x3b8], rax
+
+	lea rax, [rel global0120]
+	mov r11, rbp[-0x8]
+	mov r11[0x3c0], rax
+
+	lea rax, [rel global0121]
+	mov r11, rbp[-0x8]
+	mov r11[0x3c8], rax
+
+	lea rax, [rel global0122]
+	mov r11, rbp[-0x8]
+	mov r11[0x3d0], rax
+
+	lea rax, [rel global0123]
+	mov r11, rbp[-0x8]
+	mov r11[0x3d8], rax
+
+	lea rax, [rel global0124]
+	mov r11, rbp[-0x8]
+	mov r11[0x3e0], rax
+
+	lea rax, [rel global0125]
+	mov r11, rbp[-0x8]
+	mov r11[0x3e8], rax
+
+	lea rax, [rel global0126]
+	mov r11, rbp[-0x8]
+	mov r11[0x3f0], rax
+
+	lea rax, [rel global0127]
+	mov r11, rbp[-0x8]
+	mov r11[0x3f8], rax
+
+	lea rax, [rel global0128]
+	mov r11, rbp[-0x8]
+	mov r11[0x400], rax
+
+	lea rax, [rel global0129]
+	mov r11, rbp[-0x8]
+	mov r11[0x408], rax
+
+	lea rax, [rel global0130]
+	mov r11, rbp[-0x8]
+	mov r11[0x410], rax
+
+	lea rax, [rel global0131]
+	mov r11, rbp[-0x8]
+	mov r11[0x418], rax
+
+	lea rax, [rel global0132]
+	mov r11, rbp[-0x8]
+	mov r11[0x420], rax
+
+	lea rax, [rel global0133]
+	mov r11, rbp[-0x8]
+	mov r11[0x428], rax
+
+	lea rax, [rel global0134]
+	mov r11, rbp[-0x8]
+	mov r11[0x430], rax
+
+	lea rax, [rel global0135]
+	mov r11, rbp[-0x8]
+	mov r11[0x438], rax
+
+	lea rax, [rel global0136]
+	mov r11, rbp[-0x8]
+	mov r11[0x440], rax
+
+	lea rax, [rel global0137]
+	mov r11, rbp[-0x8]
+	mov r11[0x448], rax
+
+	lea rax, [rel global0138]
+	mov r11, rbp[-0x8]
+	mov r11[0x450], rax
+
+	lea rax, [rel global0139]
+	mov r11, rbp[-0x8]
+	mov r11[0x458], rax
+
+	lea rax, [rel global0140]
+	mov r11, rbp[-0x8]
+	mov r11[0x460], rax
+
+	lea rax, [rel global0141]
+	mov r11, rbp[-0x8]
+	mov r11[0x468], rax
+
+	lea rax, [rel global0142]
+	mov r11, rbp[-0x8]
+	mov r11[0x470], rax
+
+	lea rax, [rel global0143]
+	mov r11, rbp[-0x8]
+	mov r11[0x478], rax
+
+	lea rax, [rel global0144]
+	mov r11, rbp[-0x8]
+	mov r11[0x480], rax
+
+	lea rax, [rel global0145]
+	mov r11, rbp[-0x8]
+	mov r11[0x488], rax
+
+	lea rax, [rel global0146]
+	mov r11, rbp[-0x8]
+	mov r11[0x490], rax
+
+	lea rax, [rel global0147]
+	mov r11, rbp[-0x8]
+	mov r11[0x498], rax
+
+	lea rax, [rel global0148]
+	mov r11, rbp[-0x8]
+	mov r11[0x4a0], rax
+
+	lea rax, [rel global0149]
+	mov r11, rbp[-0x8]
+	mov r11[0x4a8], rax
+
+	lea rax, [rel global0150]
+	mov r11, rbp[-0x8]
+	mov r11[0x4b0], rax
+
+	lea rax, [rel global0151]
+	mov r11, rbp[-0x8]
+	mov r11[0x4b8], rax
+
+	lea rax, [rel global0152]
+	mov r11, rbp[-0x8]
+	mov r11[0x4c0], rax
+
+	lea rax, [rel global0153]
+	mov r11, rbp[-0x8]
+	mov r11[0x4c8], rax
+
+	lea rax, [rel global0154]
+	mov r11, rbp[-0x8]
+	mov r11[0x4d0], rax
+
+	lea rax, [rel global0155]
+	mov r11, rbp[-0x8]
+	mov r11[0x4d8], rax
+
+	lea rax, [rel global0156]
+	mov r11, rbp[-0x8]
+	mov r11[0x4e0], rax
+
+	lea rax, [rel global0157]
+	mov r11, rbp[-0x8]
+	mov r11[0x4e8], rax
+
+	lea rax, [rel global0158]
+	mov r11, rbp[-0x8]
+	mov r11[0x4f0], rax
+
+	lea rax, [rel global0159]
+	mov r11, rbp[-0x8]
+	mov r11[0x4f8], rax
+
+	lea rax, [rel global0160]
+	mov r11, rbp[-0x8]
+	mov r11[0x500], rax
+
+	lea rax, [rel global0161]
+	mov r11, rbp[-0x8]
+	mov r11[0x508], rax
+
+	lea rax, [rel global0162]
+	mov r11, rbp[-0x8]
+	mov r11[0x510], rax
+
+	lea rax, [rel global0163]
+	mov r11, rbp[-0x8]
+	mov r11[0x518], rax
+
+	lea rax, [rel global0164]
+	mov r11, rbp[-0x8]
+	mov r11[0x520], rax
+
+	lea rax, [rel global0165]
+	mov r11, rbp[-0x8]
+	mov r11[0x528], rax
+
+	lea rax, [rel global0166]
+	mov r11, rbp[-0x8]
+	mov r11[0x530], rax
+
+	lea rax, [rel global0167]
+	mov r11, rbp[-0x8]
+	mov r11[0x538], rax
+
+	lea rax, [rel global0168]
+	mov r11, rbp[-0x8]
+	mov r11[0x540], rax
+
+	lea rax, [rel global0169]
+	mov r11, rbp[-0x8]
+	mov r11[0x548], rax
+
+	lea rax, [rel global0170]
+	mov r11, rbp[-0x8]
+	mov r11[0x550], rax
+
+	lea rax, [rel global0171]
+	mov r11, rbp[-0x8]
+	mov r11[0x558], rax
+
+	lea rax, [rel global0172]
+	mov r11, rbp[-0x8]
+	mov r11[0x560], rax
+
+	lea rax, [rel global0173]
+	mov r11, rbp[-0x8]
+	mov r11[0x568], rax
+
+	lea rax, [rel global0174]
+	mov r11, rbp[-0x8]
+	mov r11[0x570], rax
+
+	lea rax, [rel global0175]
+	mov r11, rbp[-0x8]
+	mov r11[0x578], rax
+
+	lea rax, [rel global0176]
+	mov r11, rbp[-0x8]
+	mov r11[0x580], rax
+
+	lea rax, [rel global0177]
+	mov r11, rbp[-0x8]
+	mov r11[0x588], rax
+
+	lea rax, [rel global0178]
+	mov r11, rbp[-0x8]
+	mov r11[0x590], rax
+
+	lea rax, [rel global0179]
+	mov r11, rbp[-0x8]
+	mov r11[0x598], rax
+
+	lea rax, [rel global0180]
+	mov r11, rbp[-0x8]
+	mov r11[0x5a0], rax
+
+	lea rax, [rel global0181]
+	mov r11, rbp[-0x8]
+	mov r11[0x5a8], rax
+
+	lea rax, [rel global0182]
+	mov r11, rbp[-0x8]
+	mov r11[0x5b0], rax
+
+	lea rax, [rel global0183]
+	mov r11, rbp[-0x8]
+	mov r11[0x5b8], rax
+
+	lea rax, [rel global0184]
+	mov r11, rbp[-0x8]
+	mov r11[0x5c0], rax
+
+	lea rax, [rel global0185]
+	mov r11, rbp[-0x8]
+	mov r11[0x5c8], rax
+
+	lea rax, [rel global0186]
+	mov r11, rbp[-0x8]
+	mov r11[0x5d0], rax
+
+	lea rax, [rel global0187]
+	mov r11, rbp[-0x8]
+	mov r11[0x5d8], rax
+
+	lea rax, [rel global0188]
+	mov r11, rbp[-0x8]
+	mov r11[0x5e0], rax
+
+	lea rax, [rel global0189]
+	mov r11, rbp[-0x8]
+	mov r11[0x5e8], rax
+
+	lea rax, [rel global0190]
+	mov r11, rbp[-0x8]
+	mov r11[0x5f0], rax
+
+	lea rax, [rel global0191]
+	mov r11, rbp[-0x8]
+	mov r11[0x5f8], rax
+
+	lea rax, [rel global0192]
+	mov r11, rbp[-0x8]
+	mov r11[0x600], rax
+
+	lea rax, [rel global0193]
+	mov r11, rbp[-0x8]
+	mov r11[0x608], rax
+
+	lea rax, [rel global0194]
+	mov r11, rbp[-0x8]
+	mov r11[0x610], rax
+
+	lea rax, [rel global0195]
+	mov r11, rbp[-0x8]
+	mov r11[0x618], rax
+
+	lea rax, [rel global0196]
+	mov r11, rbp[-0x8]
+	mov r11[0x620], rax
+
+	lea rax, [rel global0197]
+	mov r11, rbp[-0x8]
+	mov r11[0x628], rax
+
+	lea rax, [rel global0198]
+	mov r11, rbp[-0x8]
+	mov r11[0x630], rax
+
+	lea rax, [rel global0199]
+	mov r11, rbp[-0x8]
+	mov r11[0x638], rax
+
+	lea rax, [rel global0200]
+	mov r11, rbp[-0x8]
+	mov r11[0x640], rax
+
+	lea rax, [rel global0201]
+	mov r11, rbp[-0x8]
+	mov r11[0x648], rax
+
+	lea rax, [rel global0202]
+	mov r11, rbp[-0x8]
+	mov r11[0x650], rax
+
+	lea rax, [rel global0203]
+	mov r11, rbp[-0x8]
+	mov r11[0x658], rax
+
+	lea rax, [rel global0204]
+	mov r11, rbp[-0x8]
+	mov r11[0x660], rax
+
+	lea rax, [rel global0205]
+	mov r11, rbp[-0x8]
+	mov r11[0x668], rax
+
+	lea rax, [rel global0206]
+	mov r11, rbp[-0x8]
+	mov r11[0x670], rax
+
+	lea rax, [rel global0207]
+	mov r11, rbp[-0x8]
+	mov r11[0x678], rax
+
+	lea rax, [rel global0208]
+	mov r11, rbp[-0x8]
+	mov r11[0x680], rax
+
+	lea rax, [rel global0209]
+	mov r11, rbp[-0x8]
+	mov r11[0x688], rax
+
+	lea rax, [rel global0210]
+	mov r11, rbp[-0x8]
+	mov r11[0x690], rax
+
+	lea rax, [rel global0211]
+	mov r11, rbp[-0x8]
+	mov r11[0x698], rax
+
+	lea rax, [rel global0212]
+	mov r11, rbp[-0x8]
+	mov r11[0x6a0], rax
+
+	lea rax, [rel global0213]
+	mov r11, rbp[-0x8]
+	mov r11[0x6a8], rax
+
+	lea rax, [rel global0214]
+	mov r11, rbp[-0x8]
+	mov r11[0x6b0], rax
+
+	lea rax, [rel global0215]
+	mov r11, rbp[-0x8]
+	mov r11[0x6b8], rax
+
+	lea rax, [rel global0216]
+	mov r11, rbp[-0x8]
+	mov r11[0x6c0], rax
+
+	lea rax, [rel global0217]
+	mov r11, rbp[-0x8]
+	mov r11[0x6c8], rax
+
+	lea rax, [rel global0218]
+	mov r11, rbp[-0x8]
+	mov r11[0x6d0], rax
+
+	lea rax, [rel global0219]
+	mov r11, rbp[-0x8]
+	mov r11[0x6d8], rax
+
+	lea rax, [rel global0220]
+	mov r11, rbp[-0x8]
+	mov r11[0x6e0], rax
+
+	lea rax, [rel global0221]
+	mov r11, rbp[-0x8]
+	mov r11[0x6e8], rax
+
+	lea rax, [rel global0222]
+	mov r11, rbp[-0x8]
+	mov r11[0x6f0], rax
+
+	lea rax, [rel global0223]
+	mov r11, rbp[-0x8]
+	mov r11[0x6f8], rax
+
+	lea rax, [rel global0224]
+	mov r11, rbp[-0x8]
+	mov r11[0x700], rax
+
+	lea rax, [rel global0225]
+	mov r11, rbp[-0x8]
+	mov r11[0x708], rax
+
+	lea rax, [rel global0226]
+	mov r11, rbp[-0x8]
+	mov r11[0x710], rax
+
+	lea rax, [rel global0227]
+	mov r11, rbp[-0x8]
+	mov r11[0x718], rax
+
+	lea rax, [rel global0228]
+	mov r11, rbp[-0x8]
+	mov r11[0x720], rax
+
+	lea rax, [rel global0229]
+	mov r11, rbp[-0x8]
+	mov r11[0x728], rax
+
+	lea rax, [rel global0230]
+	mov r11, rbp[-0x8]
+	mov r11[0x730], rax
+
+	lea rax, [rel global0231]
+	mov r11, rbp[-0x8]
+	mov r11[0x738], rax
+
+	lea rax, [rel global0232]
+	mov r11, rbp[-0x8]
+	mov r11[0x740], rax
+
+	lea rax, [rel global0233]
+	mov r11, rbp[-0x8]
+	mov r11[0x748], rax
+
+	lea rax, [rel global0234]
+	mov r11, rbp[-0x8]
+	mov r11[0x750], rax
+
+	lea rax, [rel global0235]
+	mov r11, rbp[-0x8]
+	mov r11[0x758], rax
+
+	lea rax, [rel global0236]
+	mov r11, rbp[-0x8]
+	mov r11[0x760], rax
+
+	lea rax, [rel global0237]
+	mov r11, rbp[-0x8]
+	mov r11[0x768], rax
+
+	lea rax, [rel global0238]
+	mov r11, rbp[-0x8]
+	mov r11[0x770], rax
+
+	lea rax, [rel global0239]
+	mov r11, rbp[-0x8]
+	mov r11[0x778], rax
+
+	lea rax, [rel global0240]
+	mov r11, rbp[-0x8]
+	mov r11[0x780], rax
+
+	lea rax, [rel global0241]
+	mov r11, rbp[-0x8]
+	mov r11[0x788], rax
+
+	lea rax, [rel global0242]
+	mov r11, rbp[-0x8]
+	mov r11[0x790], rax
+
+	lea rax, [rel global0243]
+	mov r11, rbp[-0x8]
+	mov r11[0x798], rax
+
+	lea rax, [rel global0244]
+	mov r11, rbp[-0x8]
+	mov r11[0x7a0], rax
+
+	lea rax, [rel global0245]
+	mov r11, rbp[-0x8]
+	mov r11[0x7a8], rax
+
+	lea rax, [rel global0246]
+	mov r11, rbp[-0x8]
+	mov r11[0x7b0], rax
+
+	lea rax, [rel global0247]
+	mov r11, rbp[-0x8]
+	mov r11[0x7b8], rax
+
+	lea rax, [rel global0248]
+	mov r11, rbp[-0x8]
+	mov r11[0x7c0], rax
+
+	lea rax, [rel global0249]
+	mov r11, rbp[-0x8]
+	mov r11[0x7c8], rax
+
+	lea rax, [rel global0250]
+	mov r11, rbp[-0x8]
+	mov r11[0x7d0], rax
+
+	lea rax, [rel global0251]
+	mov r11, rbp[-0x8]
+	mov r11[0x7d8], rax
+
+	lea rax, [rel global0252]
+	mov r11, rbp[-0x8]
+	mov r11[0x7e0], rax
+
+	lea rax, [rel global0253]
+	mov r11, rbp[-0x8]
+	mov r11[0x7e8], rax
+
+	lea rax, [rel global0254]
+	mov r11, rbp[-0x8]
+	mov r11[0x7f0], rax
+
+	lea rax, [rel global0255]
+	mov r11, rbp[-0x8]
+	mov r11[0x7f8], rax
+
+	lea rax, [rel global0256]
+	mov r11, rbp[-0x8]
+	mov r11[0x800], rax
+
+	lea rax, [rel global0257]
+	mov r11, rbp[-0x8]
+	mov r11[0x808], rax
+
+	lea rax, [rel global0258]
+	mov r11, rbp[-0x8]
+	mov r11[0x810], rax
+
+	lea rax, [rel global0259]
+	mov r11, rbp[-0x8]
+	mov r11[0x818], rax
+
+	lea rax, [rel global0260]
+	mov r11, rbp[-0x8]
+	mov r11[0x820], rax
+
+	lea rax, [rel global0261]
+	mov r11, rbp[-0x8]
+	mov r11[0x828], rax
+
+	lea rax, [rel global0262]
+	mov r11, rbp[-0x8]
+	mov r11[0x830], rax
+
+	lea rax, [rel global0263]
+	mov r11, rbp[-0x8]
+	mov r11[0x838], rax
+
+	lea rax, [rel global0264]
+	mov r11, rbp[-0x8]
+	mov r11[0x840], rax
+
+	lea rax, [rel global0265]
+	mov r11, rbp[-0x8]
+	mov r11[0x848], rax
+
+	lea rax, [rel global0266]
+	mov r11, rbp[-0x8]
+	mov r11[0x850], rax
+
+	lea rax, [rel global0267]
+	mov r11, rbp[-0x8]
+	mov r11[0x858], rax
+
+	lea rax, [rel global0268]
+	mov r11, rbp[-0x8]
+	mov r11[0x860], rax
+
+	lea rax, [rel global0269]
+	mov r11, rbp[-0x8]
+	mov r11[0x868], rax
+
+	lea rax, [rel global0270]
+	mov r11, rbp[-0x8]
+	mov r11[0x870], rax
+
+	lea rax, [rel global0271]
+	mov r11, rbp[-0x8]
+	mov r11[0x878], rax
+
+	lea rax, [rel global0272]
+	mov r11, rbp[-0x8]
+	mov r11[0x880], rax
+
+	lea rax, [rel global0273]
+	mov r11, rbp[-0x8]
+	mov r11[0x888], rax
+
+	lea rax, [rel global0274]
+	mov r11, rbp[-0x8]
+	mov r11[0x890], rax
+
+	lea rax, [rel global0275]
+	mov r11, rbp[-0x8]
+	mov r11[0x898], rax
+
+	lea rax, [rel global0276]
+	mov r11, rbp[-0x8]
+	mov r11[0x8a0], rax
+
+	lea rax, [rel global0277]
+	mov r11, rbp[-0x8]
+	mov r11[0x8a8], rax
+
+	lea rax, [rel global0278]
+	mov r11, rbp[-0x8]
+	mov r11[0x8b0], rax
+
+	lea rax, [rel global0279]
+	mov r11, rbp[-0x8]
+	mov r11[0x8b8], rax
+
+	lea rax, [rel global0280]
+	mov r11, rbp[-0x8]
+	mov r11[0x8c0], rax
+
+	lea rax, [rel global0281]
+	mov r11, rbp[-0x8]
+	mov r11[0x8c8], rax
+
+	lea rax, [rel global0282]
+	mov r11, rbp[-0x8]
+	mov r11[0x8d0], rax
+
+	lea rax, [rel global0283]
+	mov r11, rbp[-0x8]
+	mov r11[0x8d8], rax
+
+	lea rax, [rel global0284]
+	mov r11, rbp[-0x8]
+	mov r11[0x8e0], rax
+
+	lea rax, [rel global0285]
+	mov r11, rbp[-0x8]
+	mov r11[0x8e8], rax
+
+	lea rax, [rel global0286]
+	mov r11, rbp[-0x8]
+	mov r11[0x8f0], rax
+
+	lea rax, [rel global0287]
+	mov r11, rbp[-0x8]
+	mov r11[0x8f8], rax
+
+	lea rax, [rel global0288]
+	mov r11, rbp[-0x8]
+	mov r11[0x900], rax
+
+	lea rax, [rel global0289]
+	mov r11, rbp[-0x8]
+	mov r11[0x908], rax
+
+	lea rax, [rel global0290]
+	mov r11, rbp[-0x8]
+	mov r11[0x910], rax
+
+	lea rax, [rel global0291]
+	mov r11, rbp[-0x8]
+	mov r11[0x918], rax
+
+	lea rax, [rel global0292]
+	mov r11, rbp[-0x8]
+	mov r11[0x920], rax
+
+	lea rax, [rel global0293]
+	mov r11, rbp[-0x8]
+	mov r11[0x928], rax
+
+	lea rax, [rel global0294]
+	mov r11, rbp[-0x8]
+	mov r11[0x930], rax
+
+	lea rax, [rel global0295]
+	mov r11, rbp[-0x8]
+	mov r11[0x938], rax
+
+	lea rax, [rel global0296]
+	mov r11, rbp[-0x8]
+	mov r11[0x940], rax
+
+	lea rax, [rel global0297]
+	mov r11, rbp[-0x8]
+	mov r11[0x948], rax
+
+	lea rax, [rel global0298]
+	mov r11, rbp[-0x8]
+	mov r11[0x950], rax
+
+	lea rax, [rel global0299]
+	mov r11, rbp[-0x8]
+	mov r11[0x958], rax
+
+	lea rax, [rel global0300]
+	mov r11, rbp[-0x8]
+	mov r11[0x960], rax
+
+	lea rax, [rel global0301]
+	mov r11, rbp[-0x8]
+	mov r11[0x968], rax
+
+	lea rax, [rel global0302]
+	mov r11, rbp[-0x8]
+	mov r11[0x970], rax
+
+	lea rax, [rel global0303]
+	mov r11, rbp[-0x8]
+	mov r11[0x978], rax
+
+	lea rax, [rel global0304]
+	mov r11, rbp[-0x8]
+	mov r11[0x980], rax
+
+	lea rax, [rel global0305]
+	mov r11, rbp[-0x8]
+	mov r11[0x988], rax
+
+	lea rax, [rel global0306]
+	mov r11, rbp[-0x8]
+	mov r11[0x990], rax
+
+	lea rax, [rel global0307]
+	mov r11, rbp[-0x8]
+	mov r11[0x998], rax
+
+	lea rax, [rel global0308]
+	mov r11, rbp[-0x8]
+	mov r11[0x9a0], rax
+
+	lea rax, [rel global0309]
+	mov r11, rbp[-0x8]
+	mov r11[0x9a8], rax
+
+	lea rax, [rel global0310]
+	mov r11, rbp[-0x8]
+	mov r11[0x9b0], rax
+
+	lea rax, [rel global0311]
+	mov r11, rbp[-0x8]
+	mov r11[0x9b8], rax
+
+	lea rax, [rel global0312]
+	mov r11, rbp[-0x8]
+	mov r11[0x9c0], rax
+
+	lea rax, [rel global0313]
+	mov r11, rbp[-0x8]
+	mov r11[0x9c8], rax
+
+	lea rax, [rel global0314]
+	mov r11, rbp[-0x8]
+	mov r11[0x9d0], rax
+
+	lea rax, [rel global0315]
+	mov r11, rbp[-0x8]
+	mov r11[0x9d8], rax
+
+	lea rax, [rel global0316]
+	mov r11, rbp[-0x8]
+	mov r11[0x9e0], rax
+
+	lea rax, [rel global0317]
+	mov r11, rbp[-0x8]
+	mov r11[0x9e8], rax
+
+	lea rax, [rel global0318]
+	mov r11, rbp[-0x8]
+	mov r11[0x9f0], rax
+
+	lea rax, [rel global0319]
+	mov r11, rbp[-0x8]
+	mov r11[0x9f8], rax
+
+	lea rax, [rel global0320]
+	mov r11, rbp[-0x8]
+	mov r11[0xa00], rax
+
+	lea rax, [rel global0321]
+	mov r11, rbp[-0x8]
+	mov r11[0xa08], rax
+
+	lea rax, [rel global0322]
+	mov r11, rbp[-0x8]
+	mov r11[0xa10], rax
+
+	lea rax, [rel global0323]
+	mov r11, rbp[-0x8]
+	mov r11[0xa18], rax
+
+	lea rax, [rel global0324]
+	mov r11, rbp[-0x8]
+	mov r11[0xa20], rax
+
+	lea rax, [rel global0325]
+	mov r11, rbp[-0x8]
+	mov r11[0xa28], rax
+
+	lea rax, [rel global0326]
+	mov r11, rbp[-0x8]
+	mov r11[0xa30], rax
+
+	lea rax, [rel global0327]
+	mov r11, rbp[-0x8]
+	mov r11[0xa38], rax
+
+	lea rax, [rel global0328]
+	mov r11, rbp[-0x8]
+	mov r11[0xa40], rax
+
+	lea rax, [rel global0329]
+	mov r11, rbp[-0x8]
+	mov r11[0xa48], rax
+
+	lea rax, [rel global0330]
+	mov r11, rbp[-0x8]
+	mov r11[0xa50], rax
+
+	lea rax, [rel global0331]
+	mov r11, rbp[-0x8]
+	mov r11[0xa58], rax
+
+	lea rax, [rel global0332]
+	mov r11, rbp[-0x8]
+	mov r11[0xa60], rax
+
+	lea rax, [rel global0333]
+	mov r11, rbp[-0x8]
+	mov r11[0xa68], rax
+
+	lea rax, [rel global0334]
+	mov r11, rbp[-0x8]
+	mov r11[0xa70], rax
+
+	lea rax, [rel global0335]
+	mov r11, rbp[-0x8]
+	mov r11[0xa78], rax
+
+	lea rax, [rel global0336]
+	mov r11, rbp[-0x8]
+	mov r11[0xa80], rax
+
+	lea rax, [rel global0337]
+	mov r11, rbp[-0x8]
+	mov r11[0xa88], rax
+
+	lea rax, [rel global0338]
+	mov r11, rbp[-0x8]
+	mov r11[0xa90], rax
+
+	lea rax, [rel global0339]
+	mov r11, rbp[-0x8]
+	mov r11[0xa98], rax
+
+	lea rax, [rel global0340]
+	mov r11, rbp[-0x8]
+	mov r11[0xaa0], rax
+
+	lea rax, [rel global0341]
+	mov r11, rbp[-0x8]
+	mov r11[0xaa8], rax
+
+	lea rax, [rel global0342]
+	mov r11, rbp[-0x8]
+	mov r11[0xab0], rax
+
+	lea rax, [rel global0343]
+	mov r11, rbp[-0x8]
+	mov r11[0xab8], rax
+
+	lea rax, [rel global0344]
+	mov r11, rbp[-0x8]
+	mov r11[0xac0], rax
+
+	lea rax, [rel global0345]
+	mov r11, rbp[-0x8]
+	mov r11[0xac8], rax
+
+	lea rax, [rel global0346]
+	mov r11, rbp[-0x8]
+	mov r11[0xad0], rax
+
+	lea rax, [rel global0347]
+	mov r11, rbp[-0x8]
+	mov r11[0xad8], rax
+
+	lea rax, [rel global0348]
+	mov r11, rbp[-0x8]
+	mov r11[0xae0], rax
+
+	lea rax, [rel global0349]
+	mov r11, rbp[-0x8]
+	mov r11[0xae8], rax
+
+	lea rax, [rel global0350]
+	mov r11, rbp[-0x8]
+	mov r11[0xaf0], rax
+
+	lea rax, [rel global0351]
+	mov r11, rbp[-0x8]
+	mov r11[0xaf8], rax
+
+	lea rax, [rel global0352]
+	mov r11, rbp[-0x8]
+	mov r11[0xb00], rax
+
+	lea rax, [rel global0353]
+	mov r11, rbp[-0x8]
+	mov r11[0xb08], rax
+
+	lea rax, [rel global0354]
+	mov r11, rbp[-0x8]
+	mov r11[0xb10], rax
+
+	lea rax, [rel global0355]
+	mov r11, rbp[-0x8]
+	mov r11[0xb18], rax
+
+	lea rax, [rel global0356]
+	mov r11, rbp[-0x8]
+	mov r11[0xb20], rax
+
+	lea rax, [rel global0357]
+	mov r11, rbp[-0x8]
+	mov r11[0xb28], rax
+
+	lea rax, [rel global0358]
+	mov r11, rbp[-0x8]
+	mov r11[0xb30], rax
+
+	lea rax, [rel global0359]
+	mov r11, rbp[-0x8]
+	mov r11[0xb38], rax
+
+	lea rax, [rel global0360]
+	mov r11, rbp[-0x8]
+	mov r11[0xb40], rax
+
+	lea rax, [rel global0361]
+	mov r11, rbp[-0x8]
+	mov r11[0xb48], rax
+
+	lea rax, [rel global0362]
+	mov r11, rbp[-0x8]
+	mov r11[0xb50], rax
+
+	lea rax, [rel global0363]
+	mov r11, rbp[-0x8]
+	mov r11[0xb58], rax
+
+	lea rax, [rel global0364]
+	mov r11, rbp[-0x8]
+	mov r11[0xb60], rax
+
+	lea rax, [rel global0365]
+	mov r11, rbp[-0x8]
+	mov r11[0xb68], rax
+
+	lea rax, [rel global0366]
+	mov r11, rbp[-0x8]
+	mov r11[0xb70], rax
+
+	lea rax, [rel global0367]
+	mov r11, rbp[-0x8]
+	mov r11[0xb78], rax
+
+	lea rax, [rel global0368]
+	mov r11, rbp[-0x8]
+	mov r11[0xb80], rax
+
+	lea rax, [rel global0369]
+	mov r11, rbp[-0x8]
+	mov r11[0xb88], rax
+
+	lea rax, [rel global0370]
+	mov r11, rbp[-0x8]
+	mov r11[0xb90], rax
+
+	lea rax, [rel global0371]
+	mov r11, rbp[-0x8]
+	mov r11[0xb98], rax
+
+	lea rax, [rel global0372]
+	mov r11, rbp[-0x8]
+	mov r11[0xba0], rax
+
+	lea rax, [rel global0373]
+	mov r11, rbp[-0x8]
+	mov r11[0xba8], rax
+
+	lea rax, [rel global0374]
+	mov r11, rbp[-0x8]
+	mov r11[0xbb0], rax
+
+	lea rax, [rel global0375]
+	mov r11, rbp[-0x8]
+	mov r11[0xbb8], rax
+
+	lea rax, [rel global0376]
+	mov r11, rbp[-0x8]
+	mov r11[0xbc0], rax
+
+	lea rax, [rel global0377]
+	mov r11, rbp[-0x8]
+	mov r11[0xbc8], rax
+
+	lea rax, [rel global0378]
+	mov r11, rbp[-0x8]
+	mov r11[0xbd0], rax
+
+	lea rax, [rel global0379]
+	mov r11, rbp[-0x8]
+	mov r11[0xbd8], rax
+
+	lea rax, [rel global0380]
+	mov r11, rbp[-0x8]
+	mov r11[0xbe0], rax
+
+	lea rax, [rel global0381]
+	mov r11, rbp[-0x8]
+	mov r11[0xbe8], rax
+
+	lea rax, [rel global0382]
+	mov r11, rbp[-0x8]
+	mov r11[0xbf0], rax
+
+	lea rax, [rel global0383]
+	mov r11, rbp[-0x8]
+	mov r11[0xbf8], rax
+
+	lea rax, [rel global0384]
+	mov r11, rbp[-0x8]
+	mov r11[0xc00], rax
+
+	lea rax, [rel global0385]
+	mov r11, rbp[-0x8]
+	mov r11[0xc08], rax
+
+	lea rax, [rel global0386]
+	mov r11, rbp[-0x8]
+	mov r11[0xc10], rax
+
+	lea rax, [rel global0387]
+	mov r11, rbp[-0x8]
+	mov r11[0xc18], rax
+
+	lea rax, [rel global0388]
+	mov r11, rbp[-0x8]
+	mov r11[0xc20], rax
+
+	lea rax, [rel global0389]
+	mov r11, rbp[-0x8]
+	mov r11[0xc28], rax
+
+	lea rax, [rel global0390]
+	mov r11, rbp[-0x8]
+	mov r11[0xc30], rax
+
+	lea rax, [rel global0391]
+	mov r11, rbp[-0x8]
+	mov r11[0xc38], rax
+
+	lea rax, [rel global0392]
+	mov r11, rbp[-0x8]
+	mov r11[0xc40], rax
+
+	lea rax, [rel global0393]
+	mov r11, rbp[-0x8]
+	mov r11[0xc48], rax
+
+	lea rax, [rel global0394]
+	mov r11, rbp[-0x8]
+	mov r11[0xc50], rax
+
+	lea rax, [rel global0395]
+	mov r11, rbp[-0x8]
+	mov r11[0xc58], rax
+
+	lea rax, [rel global0396]
+	mov r11, rbp[-0x8]
+	mov r11[0xc60], rax
+
+	lea rax, [rel global0397]
+	mov r11, rbp[-0x8]
+	mov r11[0xc68], rax
+
+	lea rax, [rel global0398]
+	mov r11, rbp[-0x8]
+	mov r11[0xc70], rax
+
+	lea rax, [rel global0399]
+	mov r11, rbp[-0x8]
+	mov r11[0xc78], rax
+
+	lea rax, [rel global0400]
+	mov r11, rbp[-0x8]
+	mov r11[0xc80], rax
+
+	lea rax, [rel global0401]
+	mov r11, rbp[-0x8]
+	mov r11[0xc88], rax
+
+	lea rax, [rel global0402]
+	mov r11, rbp[-0x8]
+	mov r11[0xc90], rax
+
+	lea rax, [rel global0403]
+	mov r11, rbp[-0x8]
+	mov r11[0xc98], rax
+
+	lea rax, [rel global0404]
+	mov r11, rbp[-0x8]
+	mov r11[0xca0], rax
+
+	lea rax, [rel global0405]
+	mov r11, rbp[-0x8]
+	mov r11[0xca8], rax
+
+	lea rax, [rel global0406]
+	mov r11, rbp[-0x8]
+	mov r11[0xcb0], rax
+
+	lea rax, [rel global0407]
+	mov r11, rbp[-0x8]
+	mov r11[0xcb8], rax
+
+	lea rax, [rel global0408]
+	mov r11, rbp[-0x8]
+	mov r11[0xcc0], rax
+
+	lea rax, [rel global0409]
+	mov r11, rbp[-0x8]
+	mov r11[0xcc8], rax
+
+	lea rax, [rel global0410]
+	mov r11, rbp[-0x8]
+	mov r11[0xcd0], rax
+
+	lea rax, [rel global0411]
+	mov r11, rbp[-0x8]
+	mov r11[0xcd8], rax
+
+	lea rax, [rel global0412]
+	mov r11, rbp[-0x8]
+	mov r11[0xce0], rax
+
+	lea rax, [rel global0413]
+	mov r11, rbp[-0x8]
+	mov r11[0xce8], rax
+
+	lea rax, [rel global0414]
+	mov r11, rbp[-0x8]
+	mov r11[0xcf0], rax
+
+	lea rax, [rel global0415]
+	mov r11, rbp[-0x8]
+	mov r11[0xcf8], rax
+
+	lea rax, [rel global0416]
+	mov r11, rbp[-0x8]
+	mov r11[0xd00], rax
+
+	lea rax, [rel global0417]
+	mov r11, rbp[-0x8]
+	mov r11[0xd08], rax
+
+	lea rax, [rel global0418]
+	mov r11, rbp[-0x8]
+	mov r11[0xd10], rax
+
+	lea rax, [rel global0419]
+	mov r11, rbp[-0x8]
+	mov r11[0xd18], rax
+
+	lea rax, [rel global0420]
+	mov r11, rbp[-0x8]
+	mov r11[0xd20], rax
+
+	lea rax, [rel global0421]
+	mov r11, rbp[-0x8]
+	mov r11[0xd28], rax
+
+	lea rax, [rel global0422]
+	mov r11, rbp[-0x8]
+	mov r11[0xd30], rax
+
+	lea rax, [rel global0423]
+	mov r11, rbp[-0x8]
+	mov r11[0xd38], rax
+
+	lea rax, [rel global0424]
+	mov r11, rbp[-0x8]
+	mov r11[0xd40], rax
+
+	lea rax, [rel global0425]
+	mov r11, rbp[-0x8]
+	mov r11[0xd48], rax
+
+	lea rax, [rel global0426]
+	mov r11, rbp[-0x8]
+	mov r11[0xd50], rax
+
+	lea rax, [rel global0427]
+	mov r11, rbp[-0x8]
+	mov r11[0xd58], rax
+
+	lea rax, [rel global0428]
+	mov r11, rbp[-0x8]
+	mov r11[0xd60], rax
+
+	lea rax, [rel global0429]
+	mov r11, rbp[-0x8]
+	mov r11[0xd68], rax
+
+	lea rax, [rel global0430]
+	mov r11, rbp[-0x8]
+	mov r11[0xd70], rax
+
+	lea rax, [rel global0431]
+	mov r11, rbp[-0x8]
+	mov r11[0xd78], rax
+
+	lea rax, [rel global0432]
+	mov r11, rbp[-0x8]
+	mov r11[0xd80], rax
+
+	lea rax, [rel global0433]
+	mov r11, rbp[-0x8]
+	mov r11[0xd88], rax
+
+	lea rax, [rel global0434]
+	mov r11, rbp[-0x8]
+	mov r11[0xd90], rax
+
+	lea rax, [rel global0435]
+	mov r11, rbp[-0x8]
+	mov r11[0xd98], rax
+
+	lea rax, [rel global0436]
+	mov r11, rbp[-0x8]
+	mov r11[0xda0], rax
+
+	lea rax, [rel global0437]
+	mov r11, rbp[-0x8]
+	mov r11[0xda8], rax
+
+	lea rax, [rel global0438]
+	mov r11, rbp[-0x8]
+	mov r11[0xdb0], rax
+
+	lea rax, [rel global0439]
+	mov r11, rbp[-0x8]
+	mov r11[0xdb8], rax
+
+	lea rax, [rel global0440]
+	mov r11, rbp[-0x8]
+	mov r11[0xdc0], rax
+
+	lea rax, [rel global0441]
+	mov r11, rbp[-0x8]
+	mov r11[0xdc8], rax
+
+	lea rax, [rel global0442]
+	mov r11, rbp[-0x8]
+	mov r11[0xdd0], rax
+
+	lea rax, [rel global0443]
+	mov r11, rbp[-0x8]
+	mov r11[0xdd8], rax
+
+	lea rax, [rel global0444]
+	mov r11, rbp[-0x8]
+	mov r11[0xde0], rax
+
+	lea rax, [rel global0445]
+	mov r11, rbp[-0x8]
+	mov r11[0xde8], rax
+
+	lea rax, [rel global0446]
+	mov r11, rbp[-0x8]
+	mov r11[0xdf0], rax
+
+	lea rax, [rel global0447]
+	mov r11, rbp[-0x8]
+	mov r11[0xdf8], rax
+
+	lea rax, [rel global0448]
+	mov r11, rbp[-0x8]
+	mov r11[0xe00], rax
+
+	lea rax, [rel global0449]
+	mov r11, rbp[-0x8]
+	mov r11[0xe08], rax
+
+	lea rax, [rel global0450]
+	mov r11, rbp[-0x8]
+	mov r11[0xe10], rax
+
+	lea rax, [rel global0451]
+	mov r11, rbp[-0x8]
+	mov r11[0xe18], rax
+
+	lea rax, [rel global0452]
+	mov r11, rbp[-0x8]
+	mov r11[0xe20], rax
+
+	lea rax, [rel global0453]
+	mov r11, rbp[-0x8]
+	mov r11[0xe28], rax
+
+	lea rax, [rel global0454]
+	mov r11, rbp[-0x8]
+	mov r11[0xe30], rax
+
+	lea rax, [rel global0455]
+	mov r11, rbp[-0x8]
+	mov r11[0xe38], rax
+
+	lea rax, [rel global0456]
+	mov r11, rbp[-0x8]
+	mov r11[0xe40], rax
+
+	lea rax, [rel global0457]
+	mov r11, rbp[-0x8]
+	mov r11[0xe48], rax
+
+	lea rax, [rel global0458]
+	mov r11, rbp[-0x8]
+	mov r11[0xe50], rax
+
+	lea rax, [rel global0459]
+	mov r11, rbp[-0x8]
+	mov r11[0xe58], rax
+
+	lea rax, [rel global0460]
+	mov r11, rbp[-0x8]
+	mov r11[0xe60], rax
+
+	lea rax, [rel global0461]
+	mov r11, rbp[-0x8]
+	mov r11[0xe68], rax
+
+	lea rax, [rel global0462]
+	mov r11, rbp[-0x8]
+	mov r11[0xe70], rax
+
+	lea rax, [rel global0463]
+	mov r11, rbp[-0x8]
+	mov r11[0xe78], rax
+
+	lea rax, [rel global0464]
+	mov r11, rbp[-0x8]
+	mov r11[0xe80], rax
+
+	lea rax, [rel global0465]
+	mov r11, rbp[-0x8]
+	mov r11[0xe88], rax
+
+	lea rax, [rel global0466]
+	mov r11, rbp[-0x8]
+	mov r11[0xe90], rax
+
+	lea rax, [rel global0467]
+	mov r11, rbp[-0x8]
+	mov r11[0xe98], rax
+
+	lea rax, [rel global0468]
+	mov r11, rbp[-0x8]
+	mov r11[0xea0], rax
+
+	lea rax, [rel global0469]
+	mov r11, rbp[-0x8]
+	mov r11[0xea8], rax
+
+	lea rax, [rel global0470]
+	mov r11, rbp[-0x8]
+	mov r11[0xeb0], rax
+
+	lea rax, [rel global0471]
+	mov r11, rbp[-0x8]
+	mov r11[0xeb8], rax
+
+	lea rax, [rel global0472]
+	mov r11, rbp[-0x8]
+	mov r11[0xec0], rax
+
+	lea rax, [rel global0473]
+	mov r11, rbp[-0x8]
+	mov r11[0xec8], rax
+
+	lea rax, [rel global0474]
+	mov r11, rbp[-0x8]
+	mov r11[0xed0], rax
+
+	lea rax, [rel global0475]
+	mov r11, rbp[-0x8]
+	mov r11[0xed8], rax
+
+	lea rax, [rel global0476]
+	mov r11, rbp[-0x8]
+	mov r11[0xee0], rax
+
+	lea rax, [rel global0477]
+	mov r11, rbp[-0x8]
+	mov r11[0xee8], rax
+
+	lea rax, [rel global0478]
+	mov r11, rbp[-0x8]
+	mov r11[0xef0], rax
+
+	lea rax, [rel global0479]
+	mov r11, rbp[-0x8]
+	mov r11[0xef8], rax
+
+	lea rax, [rel global0480]
+	mov r11, rbp[-0x8]
+	mov r11[0xf00], rax
+
+	lea rax, [rel global0481]
+	mov r11, rbp[-0x8]
+	mov r11[0xf08], rax
+
+	lea rax, [rel global0482]
+	mov r11, rbp[-0x8]
+	mov r11[0xf10], rax
+
+	lea rax, [rel global0483]
+	mov r11, rbp[-0x8]
+	mov r11[0xf18], rax
+
+	lea rax, [rel global0484]
+	mov r11, rbp[-0x8]
+	mov r11[0xf20], rax
+
+	lea rax, [rel global0485]
+	mov r11, rbp[-0x8]
+	mov r11[0xf28], rax
+
+	lea rax, [rel global0486]
+	mov r11, rbp[-0x8]
+	mov r11[0xf30], rax
+
+	lea rax, [rel global0487]
+	mov r11, rbp[-0x8]
+	mov r11[0xf38], rax
+
+	lea rax, [rel global0488]
+	mov r11, rbp[-0x8]
+	mov r11[0xf40], rax
+
+	lea rax, [rel global0489]
+	mov r11, rbp[-0x8]
+	mov r11[0xf48], rax
+
+	lea rax, [rel global0490]
+	mov r11, rbp[-0x8]
+	mov r11[0xf50], rax
+
+	lea rax, [rel global0491]
+	mov r11, rbp[-0x8]
+	mov r11[0xf58], rax
+
+	lea rax, [rel global0492]
+	mov r11, rbp[-0x8]
+	mov r11[0xf60], rax
+
+	lea rax, [rel global0493]
+	mov r11, rbp[-0x8]
+	mov r11[0xf68], rax
+
+	lea rax, [rel global0494]
+	mov r11, rbp[-0x8]
+	mov r11[0xf70], rax
+
+	lea rax, [rel global0495]
+	mov r11, rbp[-0x8]
+	mov r11[0xf78], rax
+
+	lea rax, [rel global0496]
+	mov r11, rbp[-0x8]
+	mov r11[0xf80], rax
+
+	lea rax, [rel global0497]
+	mov r11, rbp[-0x8]
+	mov r11[0xf88], rax
+
+	lea rax, [rel global0498]
+	mov r11, rbp[-0x8]
+	mov r11[0xf90], rax
+
+	lea rax, [rel global0499]
+	mov r11, rbp[-0x8]
+	mov r11[0xf98], rax
+
+	lea rax, [rel global0500]
+	mov r11, rbp[-0x8]
+	mov r11[0xfa0], rax
+
+	lea rax, [rel global0501]
+	mov r11, rbp[-0x8]
+	mov r11[0xfa8], rax
+
+	lea rax, [rel global0502]
+	mov r11, rbp[-0x8]
+	mov r11[0xfb0], rax
+
+	lea rax, [rel global0503]
+	mov r11, rbp[-0x8]
+	mov r11[0xfb8], rax
+
+	lea rax, [rel global0504]
+	mov r11, rbp[-0x8]
+	mov r11[0xfc0], rax
+
+	lea rax, [rel global0505]
+	mov r11, rbp[-0x8]
+	mov r11[0xfc8], rax
+
+	lea rax, [rel global0506]
+	mov r11, rbp[-0x8]
+	mov r11[0xfd0], rax
+
+	lea rax, [rel global0507]
+	mov r11, rbp[-0x8]
+	mov r11[0xfd8], rax
+
+	lea rax, [rel global0508]
+	mov r11, rbp[-0x8]
+	mov r11[0xfe0], rax
+
+	lea rax, [rel global0509]
+	mov r11, rbp[-0x8]
+	mov r11[0xfe8], rax
+
+	lea rax, [rel global0510]
+	mov r11, rbp[-0x8]
+	mov r11[0xff0], rax
+
+	lea rax, [rel global0511]
+	mov r11, rbp[-0x8]
+	mov r11[0xff8], rax
+
+	lea rax, [rel global0512]
+	mov r11, rbp[-0x8]
+	mov r11[0x1000], rax
+
+	lea rax, [rel global0513]
+	mov r11, rbp[-0x8]
+	mov r11[0x1008], rax
+
+	lea rax, [rel global0514]
+	mov r11, rbp[-0x8]
+	mov r11[0x1010], rax
+
+	lea rax, [rel global0515]
+	mov r11, rbp[-0x8]
+	mov r11[0x1018], rax
+
+	lea rax, [rel global0516]
+	mov r11, rbp[-0x8]
+	mov r11[0x1020], rax
+
+	lea rax, [rel global0517]
+	mov r11, rbp[-0x8]
+	mov r11[0x1028], rax
+
+	lea rax, [rel global0518]
+	mov r11, rbp[-0x8]
+	mov r11[0x1030], rax
+
+	lea rax, [rel global0519]
+	mov r11, rbp[-0x8]
+	mov r11[0x1038], rax
+
+	lea rax, [rel global0520]
+	mov r11, rbp[-0x8]
+	mov r11[0x1040], rax
+
+	lea rax, [rel global0521]
+	mov r11, rbp[-0x8]
+	mov r11[0x1048], rax
+
+	lea rax, [rel global0522]
+	mov r11, rbp[-0x8]
+	mov r11[0x1050], rax
+
+	lea rax, [rel global0523]
+	mov r11, rbp[-0x8]
+	mov r11[0x1058], rax
+
+	lea rax, [rel global0524]
+	mov r11, rbp[-0x8]
+	mov r11[0x1060], rax
+
+	lea rax, [rel global0525]
+	mov r11, rbp[-0x8]
+	mov r11[0x1068], rax
+
+	lea rax, [rel global0526]
+	mov r11, rbp[-0x8]
+	mov r11[0x1070], rax
+
+	lea rax, [rel global0527]
+	mov r11, rbp[-0x8]
+	mov r11[0x1078], rax
+
+	lea rax, [rel global0528]
+	mov r11, rbp[-0x8]
+	mov r11[0x1080], rax
+
+	lea rax, [rel global0529]
+	mov r11, rbp[-0x8]
+	mov r11[0x1088], rax
+
+	lea rax, [rel global0530]
+	mov r11, rbp[-0x8]
+	mov r11[0x1090], rax
+
+	lea rax, [rel global0531]
+	mov r11, rbp[-0x8]
+	mov r11[0x1098], rax
+
+	lea rax, [rel global0532]
+	mov r11, rbp[-0x8]
+	mov r11[0x10a0], rax
+
+	lea rax, [rel global0533]
+	mov r11, rbp[-0x8]
+	mov r11[0x10a8], rax
+
+	lea rax, [rel global0534]
+	mov r11, rbp[-0x8]
+	mov r11[0x10b0], rax
+
+	lea rax, [rel global0535]
+	mov r11, rbp[-0x8]
+	mov r11[0x10b8], rax
+
+	lea rax, [rel global0536]
+	mov r11, rbp[-0x8]
+	mov r11[0x10c0], rax
+
+	lea rax, [rel global0537]
+	mov r11, rbp[-0x8]
+	mov r11[0x10c8], rax
+
+	lea rax, [rel global0538]
+	mov r11, rbp[-0x8]
+	mov r11[0x10d0], rax
+
+	lea rax, [rel global0539]
+	mov r11, rbp[-0x8]
+	mov r11[0x10d8], rax
+
+	lea rax, [rel global0540]
+	mov r11, rbp[-0x8]
+	mov r11[0x10e0], rax
+
+	lea rax, [rel global0541]
+	mov r11, rbp[-0x8]
+	mov r11[0x10e8], rax
+
+	lea rax, [rel global0542]
+	mov r11, rbp[-0x8]
+	mov r11[0x10f0], rax
+
+	lea rax, [rel global0543]
+	mov r11, rbp[-0x8]
+	mov r11[0x10f8], rax
+
+	lea rax, [rel global0544]
+	mov r11, rbp[-0x8]
+	mov r11[0x1100], rax
+
+	lea rax, [rel global0545]
+	mov r11, rbp[-0x8]
+	mov r11[0x1108], rax
+
+	lea rax, [rel global0546]
+	mov r11, rbp[-0x8]
+	mov r11[0x1110], rax
+
+	lea rax, [rel global0547]
+	mov r11, rbp[-0x8]
+	mov r11[0x1118], rax
+
+	lea rax, [rel global0548]
+	mov r11, rbp[-0x8]
+	mov r11[0x1120], rax
+
+	lea rax, [rel global0549]
+	mov r11, rbp[-0x8]
+	mov r11[0x1128], rax
+
+	lea rax, [rel global0550]
+	mov r11, rbp[-0x8]
+	mov r11[0x1130], rax
+
+	lea rax, [rel global0551]
+	mov r11, rbp[-0x8]
+	mov r11[0x1138], rax
+
+	lea rax, [rel global0552]
+	mov r11, rbp[-0x8]
+	mov r11[0x1140], rax
+
+	lea rax, [rel global0553]
+	mov r11, rbp[-0x8]
+	mov r11[0x1148], rax
+
+	lea rax, [rel global0554]
+	mov r11, rbp[-0x8]
+	mov r11[0x1150], rax
+
+	lea rax, [rel global0555]
+	mov r11, rbp[-0x8]
+	mov r11[0x1158], rax
+
+	lea rax, [rel global0556]
+	mov r11, rbp[-0x8]
+	mov r11[0x1160], rax
+
+	lea rax, [rel global0557]
+	mov r11, rbp[-0x8]
+	mov r11[0x1168], rax
+
+	lea rax, [rel global0558]
+	mov r11, rbp[-0x8]
+	mov r11[0x1170], rax
+
+	lea rax, [rel global0559]
+	mov r11, rbp[-0x8]
+	mov r11[0x1178], rax
+
+	lea rax, [rel global0560]
+	mov r11, rbp[-0x8]
+	mov r11[0x1180], rax
+
+	lea rax, [rel global0561]
+	mov r11, rbp[-0x8]
+	mov r11[0x1188], rax
+
+	lea rax, [rel global0562]
+	mov r11, rbp[-0x8]
+	mov r11[0x1190], rax
+
+	lea rax, [rel global0563]
+	mov r11, rbp[-0x8]
+	mov r11[0x1198], rax
+
+	lea rax, [rel global0564]
+	mov r11, rbp[-0x8]
+	mov r11[0x11a0], rax
+
+	lea rax, [rel global0565]
+	mov r11, rbp[-0x8]
+	mov r11[0x11a8], rax
+
+	lea rax, [rel global0566]
+	mov r11, rbp[-0x8]
+	mov r11[0x11b0], rax
+
+	lea rax, [rel global0567]
+	mov r11, rbp[-0x8]
+	mov r11[0x11b8], rax
+
+	lea rax, [rel global0568]
+	mov r11, rbp[-0x8]
+	mov r11[0x11c0], rax
+
+	lea rax, [rel global0569]
+	mov r11, rbp[-0x8]
+	mov r11[0x11c8], rax
+
+	lea rax, [rel global0570]
+	mov r11, rbp[-0x8]
+	mov r11[0x11d0], rax
+
+	lea rax, [rel global0571]
+	mov r11, rbp[-0x8]
+	mov r11[0x11d8], rax
+
+	lea rax, [rel global0572]
+	mov r11, rbp[-0x8]
+	mov r11[0x11e0], rax
+
+	lea rax, [rel global0573]
+	mov r11, rbp[-0x8]
+	mov r11[0x11e8], rax
+
+	lea rax, [rel global0574]
+	mov r11, rbp[-0x8]
+	mov r11[0x11f0], rax
+
+	lea rax, [rel global0575]
+	mov r11, rbp[-0x8]
+	mov r11[0x11f8], rax
+
+	lea rax, [rel global0576]
+	mov r11, rbp[-0x8]
+	mov r11[0x1200], rax
+
+	lea rax, [rel global0577]
+	mov r11, rbp[-0x8]
+	mov r11[0x1208], rax
+
+	lea rax, [rel global0578]
+	mov r11, rbp[-0x8]
+	mov r11[0x1210], rax
+
+	lea rax, [rel global0579]
+	mov r11, rbp[-0x8]
+	mov r11[0x1218], rax
+
+	lea rax, [rel global0580]
+	mov r11, rbp[-0x8]
+	mov r11[0x1220], rax
+
+	lea rax, [rel global0581]
+	mov r11, rbp[-0x8]
+	mov r11[0x1228], rax
+
+	lea rax, [rel global0582]
+	mov r11, rbp[-0x8]
+	mov r11[0x1230], rax
+
+	lea rax, [rel global0583]
+	mov r11, rbp[-0x8]
+	mov r11[0x1238], rax
+
+	lea rax, [rel global0584]
+	mov r11, rbp[-0x8]
+	mov r11[0x1240], rax
+
+	lea rax, [rel global0585]
+	mov r11, rbp[-0x8]
+	mov r11[0x1248], rax
+
+	lea rax, [rel global0586]
+	mov r11, rbp[-0x8]
+	mov r11[0x1250], rax
+
+	lea rax, [rel global0587]
+	mov r11, rbp[-0x8]
+	mov r11[0x1258], rax
+
+	lea rax, [rel global0588]
+	mov r11, rbp[-0x8]
+	mov r11[0x1260], rax
+
+	lea rax, [rel global0589]
+	mov r11, rbp[-0x8]
+	mov r11[0x1268], rax
+
+	lea rax, [rel global0590]
+	mov r11, rbp[-0x8]
+	mov r11[0x1270], rax
+
+	lea rax, [rel global0591]
+	mov r11, rbp[-0x8]
+	mov r11[0x1278], rax
+
+	lea rax, [rel global0592]
+	mov r11, rbp[-0x8]
+	mov r11[0x1280], rax
+
+	lea rax, [rel global0593]
+	mov r11, rbp[-0x8]
+	mov r11[0x1288], rax
+
+	lea rax, [rel global0594]
+	mov r11, rbp[-0x8]
+	mov r11[0x1290], rax
+
+	lea rax, [rel global0595]
+	mov r11, rbp[-0x8]
+	mov r11[0x1298], rax
+
+	lea rax, [rel global0596]
+	mov r11, rbp[-0x8]
+	mov r11[0x12a0], rax
+
+	lea rax, [rel global0597]
+	mov r11, rbp[-0x8]
+	mov r11[0x12a8], rax
+
+	lea rax, [rel global0598]
+	mov r11, rbp[-0x8]
+	mov r11[0x12b0], rax
+
+	lea rax, [rel global0599]
+	mov r11, rbp[-0x8]
+	mov r11[0x12b8], rax
+
+	lea rax, [rel global0600]
+	mov r11, rbp[-0x8]
+	mov r11[0x12c0], rax
+
+	lea rax, [rel global0601]
+	mov r11, rbp[-0x8]
+	mov r11[0x12c8], rax
+
+	lea rax, [rel global0602]
+	mov r11, rbp[-0x8]
+	mov r11[0x12d0], rax
+
+	lea rax, [rel global0603]
+	mov r11, rbp[-0x8]
+	mov r11[0x12d8], rax
+
+	lea rax, [rel global0604]
+	mov r11, rbp[-0x8]
+	mov r11[0x12e0], rax
+
+	lea rax, [rel global0605]
+	mov r11, rbp[-0x8]
+	mov r11[0x12e8], rax
+
+	lea rax, [rel global0606]
+	mov r11, rbp[-0x8]
+	mov r11[0x12f0], rax
+
+	lea rax, [rel global0607]
+	mov r11, rbp[-0x8]
+	mov r11[0x12f8], rax
+
+	lea rax, [rel global0608]
+	mov r11, rbp[-0x8]
+	mov r11[0x1300], rax
+
+	lea rax, [rel global0609]
+	mov r11, rbp[-0x8]
+	mov r11[0x1308], rax
+
+	lea rax, [rel global0610]
+	mov r11, rbp[-0x8]
+	mov r11[0x1310], rax
+
+	lea rax, [rel global0611]
+	mov r11, rbp[-0x8]
+	mov r11[0x1318], rax
+
+	lea rax, [rel global0612]
+	mov r11, rbp[-0x8]
+	mov r11[0x1320], rax
+
+	lea rax, [rel global0613]
+	mov r11, rbp[-0x8]
+	mov r11[0x1328], rax
+
+	lea rax, [rel global0614]
+	mov r11, rbp[-0x8]
+	mov r11[0x1330], rax
+
+	lea rax, [rel global0615]
+	mov r11, rbp[-0x8]
+	mov r11[0x1338], rax
+
+	lea rax, [rel global0616]
+	mov r11, rbp[-0x8]
+	mov r11[0x1340], rax
+
+	lea rax, [rel global0617]
+	mov r11, rbp[-0x8]
+	mov r11[0x1348], rax
+
+	lea rax, [rel global0618]
+	mov r11, rbp[-0x8]
+	mov r11[0x1350], rax
+
+	lea rax, [rel global0619]
+	mov r11, rbp[-0x8]
+	mov r11[0x1358], rax
+
+	lea rax, [rel global0620]
+	mov r11, rbp[-0x8]
+	mov r11[0x1360], rax
+
+	lea rax, [rel global0621]
+	mov r11, rbp[-0x8]
+	mov r11[0x1368], rax
+
+	lea rax, [rel global0622]
+	mov r11, rbp[-0x8]
+	mov r11[0x1370], rax
+
+	lea rax, [rel global0623]
+	mov r11, rbp[-0x8]
+	mov r11[0x1378], rax
+
+	lea rax, [rel global0624]
+	mov r11, rbp[-0x8]
+	mov r11[0x1380], rax
+
+	lea rax, [rel global0625]
+	mov r11, rbp[-0x8]
+	mov r11[0x1388], rax
+
+	lea rax, [rel global0626]
+	mov r11, rbp[-0x8]
+	mov r11[0x1390], rax
+
+	lea rax, [rel global0627]
+	mov r11, rbp[-0x8]
+	mov r11[0x1398], rax
+
+	lea rax, [rel global0628]
+	mov r11, rbp[-0x8]
+	mov r11[0x13a0], rax
+
+	lea rax, [rel global0629]
+	mov r11, rbp[-0x8]
+	mov r11[0x13a8], rax
+
+	lea rax, [rel global0630]
+	mov r11, rbp[-0x8]
+	mov r11[0x13b0], rax
+
+	lea rax, [rel global0631]
+	mov r11, rbp[-0x8]
+	mov r11[0x13b8], rax
+
+	lea rax, [rel global0632]
+	mov r11, rbp[-0x8]
+	mov r11[0x13c0], rax
+
+	lea rax, [rel global0633]
+	mov r11, rbp[-0x8]
+	mov r11[0x13c8], rax
+
+	lea rax, [rel global0634]
+	mov r11, rbp[-0x8]
+	mov r11[0x13d0], rax
+
+	lea rax, [rel global0635]
+	mov r11, rbp[-0x8]
+	mov r11[0x13d8], rax
+
+	lea rax, [rel global0636]
+	mov r11, rbp[-0x8]
+	mov r11[0x13e0], rax
+
+	lea rax, [rel global0637]
+	mov r11, rbp[-0x8]
+	mov r11[0x13e8], rax
+
+	lea rax, [rel global0638]
+	mov r11, rbp[-0x8]
+	mov r11[0x13f0], rax
+
+	lea rax, [rel global0639]
+	mov r11, rbp[-0x8]
+	mov r11[0x13f8], rax
+
+	lea rax, [rel global0640]
+	mov r11, rbp[-0x8]
+	mov r11[0x1400], rax
+
+	lea rax, [rel global0641]
+	mov r11, rbp[-0x8]
+	mov r11[0x1408], rax
+
+	lea rax, [rel global0642]
+	mov r11, rbp[-0x8]
+	mov r11[0x1410], rax
+
+	lea rax, [rel global0643]
+	mov r11, rbp[-0x8]
+	mov r11[0x1418], rax
+
+	lea rax, [rel global0644]
+	mov r11, rbp[-0x8]
+	mov r11[0x1420], rax
+
+	lea rax, [rel global0645]
+	mov r11, rbp[-0x8]
+	mov r11[0x1428], rax
+
+	lea rax, [rel global0646]
+	mov r11, rbp[-0x8]
+	mov r11[0x1430], rax
+
+	lea rax, [rel global0647]
+	mov r11, rbp[-0x8]
+	mov r11[0x1438], rax
+
+	lea rax, [rel global0648]
+	mov r11, rbp[-0x8]
+	mov r11[0x1440], rax
+
+	lea rax, [rel global0649]
+	mov r11, rbp[-0x8]
+	mov r11[0x1448], rax
+
+	lea rax, [rel global0650]
+	mov r11, rbp[-0x8]
+	mov r11[0x1450], rax
+
+	lea rax, [rel global0651]
+	mov r11, rbp[-0x8]
+	mov r11[0x1458], rax
+
+	lea rax, [rel global0652]
+	mov r11, rbp[-0x8]
+	mov r11[0x1460], rax
+
+	lea rax, [rel global0653]
+	mov r11, rbp[-0x8]
+	mov r11[0x1468], rax
+
+	lea rax, [rel global0654]
+	mov r11, rbp[-0x8]
+	mov r11[0x1470], rax
+
+	lea rax, [rel global0655]
+	mov r11, rbp[-0x8]
+	mov r11[0x1478], rax
+
+	lea rax, [rel global0656]
+	mov r11, rbp[-0x8]
+	mov r11[0x1480], rax
+
+	lea rax, [rel global0657]
+	mov r11, rbp[-0x8]
+	mov r11[0x1488], rax
+
+	lea rax, [rel global0658]
+	mov r11, rbp[-0x8]
+	mov r11[0x1490], rax
+
+	lea rax, [rel global0659]
+	mov r11, rbp[-0x8]
+	mov r11[0x1498], rax
+
+	lea rax, [rel global0660]
+	mov r11, rbp[-0x8]
+	mov r11[0x14a0], rax
+
+	lea rax, [rel global0661]
+	mov r11, rbp[-0x8]
+	mov r11[0x14a8], rax
+
+	lea rax, [rel global0662]
+	mov r11, rbp[-0x8]
+	mov r11[0x14b0], rax
+
+	lea rax, [rel global0663]
+	mov r11, rbp[-0x8]
+	mov r11[0x14b8], rax
+
+	lea rax, [rel global0664]
+	mov r11, rbp[-0x8]
+	mov r11[0x14c0], rax
+
+	lea rax, [rel global0665]
+	mov r11, rbp[-0x8]
+	mov r11[0x14c8], rax
+
+	lea rax, [rel global0666]
+	mov r11, rbp[-0x8]
+	mov r11[0x14d0], rax
+
+	lea rax, [rel global0667]
+	mov r11, rbp[-0x8]
+	mov r11[0x14d8], rax
+
+	lea rax, [rel global0668]
+	mov r11, rbp[-0x8]
+	mov r11[0x14e0], rax
+
+	lea rax, [rel global0669]
+	mov r11, rbp[-0x8]
+	mov r11[0x14e8], rax
+
+	lea rax, [rel global0670]
+	mov r11, rbp[-0x8]
+	mov r11[0x14f0], rax
+
+	lea rax, [rel global0671]
+	mov r11, rbp[-0x8]
+	mov r11[0x14f8], rax
+
+	lea rax, [rel global0672]
+	mov r11, rbp[-0x8]
+	mov r11[0x1500], rax
+
+	lea rax, [rel global0673]
+	mov r11, rbp[-0x8]
+	mov r11[0x1508], rax
+
+	lea rax, [rel global0674]
+	mov r11, rbp[-0x8]
+	mov r11[0x1510], rax
+
+	lea rax, [rel global0675]
+	mov r11, rbp[-0x8]
+	mov r11[0x1518], rax
+
+	lea rax, [rel global0676]
+	mov r11, rbp[-0x8]
+	mov r11[0x1520], rax
+
+	lea rax, [rel global0677]
+	mov r11, rbp[-0x8]
+	mov r11[0x1528], rax
+
+	lea rax, [rel global0678]
+	mov r11, rbp[-0x8]
+	mov r11[0x1530], rax
+
+	lea rax, [rel global0679]
+	mov r11, rbp[-0x8]
+	mov r11[0x1538], rax
+
+	lea rax, [rel global0680]
+	mov r11, rbp[-0x8]
+	mov r11[0x1540], rax
+
+	lea rax, [rel global0681]
+	mov r11, rbp[-0x8]
+	mov r11[0x1548], rax
+
+	lea rax, [rel global0682]
+	mov r11, rbp[-0x8]
+	mov r11[0x1550], rax
+
+	lea rax, [rel global0683]
+	mov r11, rbp[-0x8]
+	mov r11[0x1558], rax
+
+	lea rax, [rel global0684]
+	mov r11, rbp[-0x8]
+	mov r11[0x1560], rax
+
+	lea rax, [rel global0685]
+	mov r11, rbp[-0x8]
+	mov r11[0x1568], rax
+
+	lea rax, [rel global0686]
+	mov r11, rbp[-0x8]
+	mov r11[0x1570], rax
+
+	lea rax, [rel global0687]
+	mov r11, rbp[-0x8]
+	mov r11[0x1578], rax
+
+	lea rax, [rel global0688]
+	mov r11, rbp[-0x8]
+	mov r11[0x1580], rax
+
+	lea rax, [rel global0689]
+	mov r11, rbp[-0x8]
+	mov r11[0x1588], rax
+
+	lea rax, [rel global0690]
+	mov r11, rbp[-0x8]
+	mov r11[0x1590], rax
+
+	lea rax, [rel global0691]
+	mov r11, rbp[-0x8]
+	mov r11[0x1598], rax
+
+	lea rax, [rel global0692]
+	mov r11, rbp[-0x8]
+	mov r11[0x15a0], rax
+
+	lea rax, [rel global0693]
+	mov r11, rbp[-0x8]
+	mov r11[0x15a8], rax
+
+	lea rax, [rel global0694]
+	mov r11, rbp[-0x8]
+	mov r11[0x15b0], rax
+
+	lea rax, [rel global0695]
+	mov r11, rbp[-0x8]
+	mov r11[0x15b8], rax
+
+	lea rax, [rel global0696]
+	mov r11, rbp[-0x8]
+	mov r11[0x15c0], rax
+
+	lea rax, [rel global0697]
+	mov r11, rbp[-0x8]
+	mov r11[0x15c8], rax
+
+	lea rax, [rel global0698]
+	mov r11, rbp[-0x8]
+	mov r11[0x15d0], rax
+
+	lea rax, [rel global0699]
+	mov r11, rbp[-0x8]
+	mov r11[0x15d8], rax
+
+	lea rax, [rel global0700]
+	mov r11, rbp[-0x8]
+	mov r11[0x15e0], rax
+
+	lea rax, [rel global0701]
+	mov r11, rbp[-0x8]
+	mov r11[0x15e8], rax
+
+	lea rax, [rel global0702]
+	mov r11, rbp[-0x8]
+	mov r11[0x15f0], rax
+
+	lea rax, [rel global0703]
+	mov r11, rbp[-0x8]
+	mov r11[0x15f8], rax
+
+	lea rax, [rel global0704]
+	mov r11, rbp[-0x8]
+	mov r11[0x1600], rax
+
+	lea rax, [rel global0705]
+	mov r11, rbp[-0x8]
+	mov r11[0x1608], rax
+
+	lea rax, [rel global0706]
+	mov r11, rbp[-0x8]
+	mov r11[0x1610], rax
+
+	lea rax, [rel global0707]
+	mov r11, rbp[-0x8]
+	mov r11[0x1618], rax
+
+	lea rax, [rel global0708]
+	mov r11, rbp[-0x8]
+	mov r11[0x1620], rax
+
+	lea rax, [rel global0709]
+	mov r11, rbp[-0x8]
+	mov r11[0x1628], rax
+
+	lea rax, [rel global0710]
+	mov r11, rbp[-0x8]
+	mov r11[0x1630], rax
+
+	lea rax, [rel global0711]
+	mov r11, rbp[-0x8]
+	mov r11[0x1638], rax
+
+	lea rax, [rel global0712]
+	mov r11, rbp[-0x8]
+	mov r11[0x1640], rax
+
+	lea rax, [rel global0713]
+	mov r11, rbp[-0x8]
+	mov r11[0x1648], rax
+
+	lea rax, [rel global0714]
+	mov r11, rbp[-0x8]
+	mov r11[0x1650], rax
+
+	lea rax, [rel global0715]
+	mov r11, rbp[-0x8]
+	mov r11[0x1658], rax
+
+	lea rax, [rel global0716]
+	mov r11, rbp[-0x8]
+	mov r11[0x1660], rax
+
+	lea rax, [rel global0717]
+	mov r11, rbp[-0x8]
+	mov r11[0x1668], rax
+
+	lea rax, [rel global0718]
+	mov r11, rbp[-0x8]
+	mov r11[0x1670], rax
+
+	lea rax, [rel global0719]
+	mov r11, rbp[-0x8]
+	mov r11[0x1678], rax
+
+	lea rax, [rel global0720]
+	mov r11, rbp[-0x8]
+	mov r11[0x1680], rax
+
+	lea rax, [rel global0721]
+	mov r11, rbp[-0x8]
+	mov r11[0x1688], rax
+
+	lea rax, [rel global0722]
+	mov r11, rbp[-0x8]
+	mov r11[0x1690], rax
+
+	lea rax, [rel global0723]
+	mov r11, rbp[-0x8]
+	mov r11[0x1698], rax
+
+	lea rax, [rel global0724]
+	mov r11, rbp[-0x8]
+	mov r11[0x16a0], rax
+
+	lea rax, [rel global0725]
+	mov r11, rbp[-0x8]
+	mov r11[0x16a8], rax
+
+	lea rax, [rel global0726]
+	mov r11, rbp[-0x8]
+	mov r11[0x16b0], rax
+
+	lea rax, [rel global0727]
+	mov r11, rbp[-0x8]
+	mov r11[0x16b8], rax
+
+	lea rax, [rel global0728]
+	mov r11, rbp[-0x8]
+	mov r11[0x16c0], rax
+
+	lea rax, [rel global0729]
+	mov r11, rbp[-0x8]
+	mov r11[0x16c8], rax
+
+	lea rax, [rel global0730]
+	mov r11, rbp[-0x8]
+	mov r11[0x16d0], rax
+
+	lea rax, [rel global0731]
+	mov r11, rbp[-0x8]
+	mov r11[0x16d8], rax
+
+	lea rax, [rel global0732]
+	mov r11, rbp[-0x8]
+	mov r11[0x16e0], rax
+
+	lea rax, [rel global0733]
+	mov r11, rbp[-0x8]
+	mov r11[0x16e8], rax
+
+	lea rax, [rel global0734]
+	mov r11, rbp[-0x8]
+	mov r11[0x16f0], rax
+
+	lea rax, [rel global0735]
+	mov r11, rbp[-0x8]
+	mov r11[0x16f8], rax
+
+	lea rax, [rel global0736]
+	mov r11, rbp[-0x8]
+	mov r11[0x1700], rax
+
+	lea rax, [rel global0737]
+	mov r11, rbp[-0x8]
+	mov r11[0x1708], rax
+
+	lea rax, [rel global0738]
+	mov r11, rbp[-0x8]
+	mov r11[0x1710], rax
+
+	lea rax, [rel global0739]
+	mov r11, rbp[-0x8]
+	mov r11[0x1718], rax
+
+	lea rax, [rel global0740]
+	mov r11, rbp[-0x8]
+	mov r11[0x1720], rax
+
+	lea rax, [rel global0741]
+	mov r11, rbp[-0x8]
+	mov r11[0x1728], rax
+
+	lea rax, [rel global0742]
+	mov r11, rbp[-0x8]
+	mov r11[0x1730], rax
+
+	lea rax, [rel global0743]
+	mov r11, rbp[-0x8]
+	mov r11[0x1738], rax
+
+	lea rax, [rel global0744]
+	mov r11, rbp[-0x8]
+	mov r11[0x1740], rax
+
+	lea rax, [rel global0745]
+	mov r11, rbp[-0x8]
+	mov r11[0x1748], rax
+
+	lea rax, [rel global0746]
+	mov r11, rbp[-0x8]
+	mov r11[0x1750], rax
+
+	lea rax, [rel global0747]
+	mov r11, rbp[-0x8]
+	mov r11[0x1758], rax
+
+	lea rax, [rel global0748]
+	mov r11, rbp[-0x8]
+	mov r11[0x1760], rax
+
+	lea rax, [rel global0749]
+	mov r11, rbp[-0x8]
+	mov r11[0x1768], rax
+
+	lea rax, [rel global0750]
+	mov r11, rbp[-0x8]
+	mov r11[0x1770], rax
+
+	lea rax, [rel global0751]
+	mov r11, rbp[-0x8]
+	mov r11[0x1778], rax
+
+	lea rax, [rel global0752]
+	mov r11, rbp[-0x8]
+	mov r11[0x1780], rax
+
+	lea rax, [rel global0753]
+	mov r11, rbp[-0x8]
+	mov r11[0x1788], rax
+
+	lea rax, [rel global0754]
+	mov r11, rbp[-0x8]
+	mov r11[0x1790], rax
+
+	lea rax, [rel global0755]
+	mov r11, rbp[-0x8]
+	mov r11[0x1798], rax
+
+	lea rax, [rel global0756]
+	mov r11, rbp[-0x8]
+	mov r11[0x17a0], rax
+
+	lea rax, [rel global0757]
+	mov r11, rbp[-0x8]
+	mov r11[0x17a8], rax
+
+	lea rax, [rel global0758]
+	mov r11, rbp[-0x8]
+	mov r11[0x17b0], rax
+
+	lea rax, [rel global0759]
+	mov r11, rbp[-0x8]
+	mov r11[0x17b8], rax
+
+	lea rax, [rel global0760]
+	mov r11, rbp[-0x8]
+	mov r11[0x17c0], rax
+
+	lea rax, [rel global0761]
+	mov r11, rbp[-0x8]
+	mov r11[0x17c8], rax
+
+	lea rax, [rel global0762]
+	mov r11, rbp[-0x8]
+	mov r11[0x17d0], rax
+
+	lea rax, [rel global0763]
+	mov r11, rbp[-0x8]
+	mov r11[0x17d8], rax
+
+	lea rax, [rel global0764]
+	mov r11, rbp[-0x8]
+	mov r11[0x17e0], rax
+
+	lea rax, [rel global0765]
+	mov r11, rbp[-0x8]
+	mov r11[0x17e8], rax
+
+	lea rax, [rel global0766]
+	mov r11, rbp[-0x8]
+	mov r11[0x17f0], rax
+
+	lea rax, [rel global0767]
+	mov r11, rbp[-0x8]
+	mov r11[0x17f8], rax
+
+	lea rax, [rel global0768]
+	mov r11, rbp[-0x8]
+	mov r11[0x1800], rax
+
+	lea rax, [rel global0769]
+	mov r11, rbp[-0x8]
+	mov r11[0x1808], rax
+
+	lea rax, [rel global0770]
+	mov r11, rbp[-0x8]
+	mov r11[0x1810], rax
+
+	lea rax, [rel global0771]
+	mov r11, rbp[-0x8]
+	mov r11[0x1818], rax
+
+	lea rax, [rel global0772]
+	mov r11, rbp[-0x8]
+	mov r11[0x1820], rax
+
+	lea rax, [rel global0773]
+	mov r11, rbp[-0x8]
+	mov r11[0x1828], rax
+
+	lea rax, [rel global0774]
+	mov r11, rbp[-0x8]
+	mov r11[0x1830], rax
+
+	lea rax, [rel global0775]
+	mov r11, rbp[-0x8]
+	mov r11[0x1838], rax
+
+	lea rax, [rel global0776]
+	mov r11, rbp[-0x8]
+	mov r11[0x1840], rax
+
+	lea rax, [rel global0777]
+	mov r11, rbp[-0x8]
+	mov r11[0x1848], rax
+
+	lea rax, [rel global0778]
+	mov r11, rbp[-0x8]
+	mov r11[0x1850], rax
+
+	lea rax, [rel global0779]
+	mov r11, rbp[-0x8]
+	mov r11[0x1858], rax
+
+	lea rax, [rel global0780]
+	mov r11, rbp[-0x8]
+	mov r11[0x1860], rax
+
+	lea rax, [rel global0781]
+	mov r11, rbp[-0x8]
+	mov r11[0x1868], rax
+
+	lea rax, [rel global0782]
+	mov r11, rbp[-0x8]
+	mov r11[0x1870], rax
+
+	lea rax, [rel global0783]
+	mov r11, rbp[-0x8]
+	mov r11[0x1878], rax
+
+	lea rax, [rel global0784]
+	mov r11, rbp[-0x8]
+	mov r11[0x1880], rax
+
+	lea rax, [rel global0785]
+	mov r11, rbp[-0x8]
+	mov r11[0x1888], rax
+
+	lea rax, [rel global0786]
+	mov r11, rbp[-0x8]
+	mov r11[0x1890], rax
+
+	lea rax, [rel global0787]
+	mov r11, rbp[-0x8]
+	mov r11[0x1898], rax
+
+	lea rax, [rel global0788]
+	mov r11, rbp[-0x8]
+	mov r11[0x18a0], rax
+
+	lea rax, [rel global0789]
+	mov r11, rbp[-0x8]
+	mov r11[0x18a8], rax
+
+	lea rax, [rel global0790]
+	mov r11, rbp[-0x8]
+	mov r11[0x18b0], rax
+
+	lea rax, [rel global0791]
+	mov r11, rbp[-0x8]
+	mov r11[0x18b8], rax
+
+	lea rax, [rel global0792]
+	mov r11, rbp[-0x8]
+	mov r11[0x18c0], rax
+
+	lea rax, [rel global0793]
+	mov r11, rbp[-0x8]
+	mov r11[0x18c8], rax
+
+	lea rax, [rel global0794]
+	mov r11, rbp[-0x8]
+	mov r11[0x18d0], rax
+
+	lea rax, [rel global0795]
+	mov r11, rbp[-0x8]
+	mov r11[0x18d8], rax
+
+	lea rax, [rel global0796]
+	mov r11, rbp[-0x8]
+	mov r11[0x18e0], rax
+
+	lea rax, [rel global0797]
+	mov r11, rbp[-0x8]
+	mov r11[0x18e8], rax
+
+	lea rax, [rel global0798]
+	mov r11, rbp[-0x8]
+	mov r11[0x18f0], rax
+
+	lea rax, [rel global0799]
+	mov r11, rbp[-0x8]
+	mov r11[0x18f8], rax
+
+	lea rax, [rel global0800]
+	mov r11, rbp[-0x8]
+	mov r11[0x1900], rax
+
+	lea rax, [rel global0801]
+	mov r11, rbp[-0x8]
+	mov r11[0x1908], rax
+
+	lea rax, [rel global0802]
+	mov r11, rbp[-0x8]
+	mov r11[0x1910], rax
+
+	lea rax, [rel global0803]
+	mov r11, rbp[-0x8]
+	mov r11[0x1918], rax
+
+	lea rax, [rel global0804]
+	mov r11, rbp[-0x8]
+	mov r11[0x1920], rax
+
+	lea rax, [rel global0805]
+	mov r11, rbp[-0x8]
+	mov r11[0x1928], rax
+
+	lea rax, [rel global0806]
+	mov r11, rbp[-0x8]
+	mov r11[0x1930], rax
+
+	lea rax, [rel global0807]
+	mov r11, rbp[-0x8]
+	mov r11[0x1938], rax
+
+	lea rax, [rel global0808]
+	mov r11, rbp[-0x8]
+	mov r11[0x1940], rax
+
+	lea rax, [rel global0809]
+	mov r11, rbp[-0x8]
+	mov r11[0x1948], rax
+
+	lea rax, [rel global0810]
+	mov r11, rbp[-0x8]
+	mov r11[0x1950], rax
+
+	lea rax, [rel global0811]
+	mov r11, rbp[-0x8]
+	mov r11[0x1958], rax
+
+	lea rax, [rel global0812]
+	mov r11, rbp[-0x8]
+	mov r11[0x1960], rax
+
+	lea rax, [rel global0813]
+	mov r11, rbp[-0x8]
+	mov r11[0x1968], rax
+
+	lea rax, [rel global0814]
+	mov r11, rbp[-0x8]
+	mov r11[0x1970], rax
+
+	lea rax, [rel global0815]
+	mov r11, rbp[-0x8]
+	mov r11[0x1978], rax
+
+	lea rax, [rel global0816]
+	mov r11, rbp[-0x8]
+	mov r11[0x1980], rax
+
+	lea rax, [rel global0817]
+	mov r11, rbp[-0x8]
+	mov r11[0x1988], rax
+
+	lea rax, [rel global0818]
+	mov r11, rbp[-0x8]
+	mov r11[0x1990], rax
+
+	lea rax, [rel global0819]
+	mov r11, rbp[-0x8]
+	mov r11[0x1998], rax
+
+	lea rax, [rel global0820]
+	mov r11, rbp[-0x8]
+	mov r11[0x19a0], rax
+
+	lea rax, [rel global0821]
+	mov r11, rbp[-0x8]
+	mov r11[0x19a8], rax
+
+	lea rax, [rel global0822]
+	mov r11, rbp[-0x8]
+	mov r11[0x19b0], rax
+
+	lea rax, [rel global0823]
+	mov r11, rbp[-0x8]
+	mov r11[0x19b8], rax
+
+	lea rax, [rel global0824]
+	mov r11, rbp[-0x8]
+	mov r11[0x19c0], rax
+
+	lea rax, [rel global0825]
+	mov r11, rbp[-0x8]
+	mov r11[0x19c8], rax
+
+	lea rax, [rel global0826]
+	mov r11, rbp[-0x8]
+	mov r11[0x19d0], rax
+
+	lea rax, [rel global0827]
+	mov r11, rbp[-0x8]
+	mov r11[0x19d8], rax
+
+	lea rax, [rel global0828]
+	mov r11, rbp[-0x8]
+	mov r11[0x19e0], rax
+
+	lea rax, [rel global0829]
+	mov r11, rbp[-0x8]
+	mov r11[0x19e8], rax
+
+	lea rax, [rel global0830]
+	mov r11, rbp[-0x8]
+	mov r11[0x19f0], rax
+
+	lea rax, [rel global0831]
+	mov r11, rbp[-0x8]
+	mov r11[0x19f8], rax
+
+	lea rax, [rel global0832]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a00], rax
+
+	lea rax, [rel global0833]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a08], rax
+
+	lea rax, [rel global0834]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a10], rax
+
+	lea rax, [rel global0835]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a18], rax
+
+	lea rax, [rel global0836]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a20], rax
+
+	lea rax, [rel global0837]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a28], rax
+
+	lea rax, [rel global0838]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a30], rax
+
+	lea rax, [rel global0839]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a38], rax
+
+	lea rax, [rel global0840]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a40], rax
+
+	lea rax, [rel global0841]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a48], rax
+
+	lea rax, [rel global0842]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a50], rax
+
+	lea rax, [rel global0843]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a58], rax
+
+	lea rax, [rel global0844]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a60], rax
+
+	lea rax, [rel global0845]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a68], rax
+
+	lea rax, [rel global0846]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a70], rax
+
+	lea rax, [rel global0847]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a78], rax
+
+	lea rax, [rel global0848]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a80], rax
+
+	lea rax, [rel global0849]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a88], rax
+
+	lea rax, [rel global0850]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a90], rax
+
+	lea rax, [rel global0851]
+	mov r11, rbp[-0x8]
+	mov r11[0x1a98], rax
+
+	lea rax, [rel global0852]
+	mov r11, rbp[-0x8]
+	mov r11[0x1aa0], rax
+
+	lea rax, [rel global0853]
+	mov r11, rbp[-0x8]
+	mov r11[0x1aa8], rax
+
+	lea rax, [rel global0854]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ab0], rax
+
+	lea rax, [rel global0855]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ab8], rax
+
+	lea rax, [rel global0856]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ac0], rax
+
+	lea rax, [rel global0857]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ac8], rax
+
+	lea rax, [rel global0858]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ad0], rax
+
+	lea rax, [rel global0859]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ad8], rax
+
+	lea rax, [rel global0860]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ae0], rax
+
+	lea rax, [rel global0861]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ae8], rax
+
+	lea rax, [rel global0862]
+	mov r11, rbp[-0x8]
+	mov r11[0x1af0], rax
+
+	lea rax, [rel global0863]
+	mov r11, rbp[-0x8]
+	mov r11[0x1af8], rax
+
+	lea rax, [rel global0864]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b00], rax
+
+	lea rax, [rel global0865]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b08], rax
+
+	lea rax, [rel global0866]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b10], rax
+
+	lea rax, [rel global0867]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b18], rax
+
+	lea rax, [rel global0868]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b20], rax
+
+	lea rax, [rel global0869]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b28], rax
+
+	lea rax, [rel global0870]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b30], rax
+
+	lea rax, [rel global0871]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b38], rax
+
+	lea rax, [rel global0872]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b40], rax
+
+	lea rax, [rel global0873]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b48], rax
+
+	lea rax, [rel global0874]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b50], rax
+
+	lea rax, [rel global0875]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b58], rax
+
+	lea rax, [rel global0876]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b60], rax
+
+	lea rax, [rel global0877]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b68], rax
+
+	lea rax, [rel global0878]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b70], rax
+
+	lea rax, [rel global0879]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b78], rax
+
+	lea rax, [rel global0880]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b80], rax
+
+	lea rax, [rel global0881]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b88], rax
+
+	lea rax, [rel global0882]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b90], rax
+
+	lea rax, [rel global0883]
+	mov r11, rbp[-0x8]
+	mov r11[0x1b98], rax
+
+	lea rax, [rel global0884]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ba0], rax
+
+	lea rax, [rel global0885]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ba8], rax
+
+	lea rax, [rel global0886]
+	mov r11, rbp[-0x8]
+	mov r11[0x1bb0], rax
+
+	lea rax, [rel global0887]
+	mov r11, rbp[-0x8]
+	mov r11[0x1bb8], rax
+
+	lea rax, [rel global0888]
+	mov r11, rbp[-0x8]
+	mov r11[0x1bc0], rax
+
+	lea rax, [rel global0889]
+	mov r11, rbp[-0x8]
+	mov r11[0x1bc8], rax
+
+	lea rax, [rel global0890]
+	mov r11, rbp[-0x8]
+	mov r11[0x1bd0], rax
+
+	lea rax, [rel global0891]
+	mov r11, rbp[-0x8]
+	mov r11[0x1bd8], rax
+
+	lea rax, [rel global0892]
+	mov r11, rbp[-0x8]
+	mov r11[0x1be0], rax
+
+	lea rax, [rel global0893]
+	mov r11, rbp[-0x8]
+	mov r11[0x1be8], rax
+
+	lea rax, [rel global0894]
+	mov r11, rbp[-0x8]
+	mov r11[0x1bf0], rax
+
+	lea rax, [rel global0895]
+	mov r11, rbp[-0x8]
+	mov r11[0x1bf8], rax
+
+	lea rax, [rel global0896]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c00], rax
+
+	lea rax, [rel global0897]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c08], rax
+
+	lea rax, [rel global0898]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c10], rax
+
+	lea rax, [rel global0899]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c18], rax
+
+	lea rax, [rel global0900]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c20], rax
+
+	lea rax, [rel global0901]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c28], rax
+
+	lea rax, [rel global0902]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c30], rax
+
+	lea rax, [rel global0903]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c38], rax
+
+	lea rax, [rel global0904]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c40], rax
+
+	lea rax, [rel global0905]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c48], rax
+
+	lea rax, [rel global0906]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c50], rax
+
+	lea rax, [rel global0907]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c58], rax
+
+	lea rax, [rel global0908]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c60], rax
+
+	lea rax, [rel global0909]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c68], rax
+
+	lea rax, [rel global0910]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c70], rax
+
+	lea rax, [rel global0911]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c78], rax
+
+	lea rax, [rel global0912]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c80], rax
+
+	lea rax, [rel global0913]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c88], rax
+
+	lea rax, [rel global0914]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c90], rax
+
+	lea rax, [rel global0915]
+	mov r11, rbp[-0x8]
+	mov r11[0x1c98], rax
+
+	lea rax, [rel global0916]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ca0], rax
+
+	lea rax, [rel global0917]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ca8], rax
+
+	lea rax, [rel global0918]
+	mov r11, rbp[-0x8]
+	mov r11[0x1cb0], rax
+
+	lea rax, [rel global0919]
+	mov r11, rbp[-0x8]
+	mov r11[0x1cb8], rax
+
+	lea rax, [rel global0920]
+	mov r11, rbp[-0x8]
+	mov r11[0x1cc0], rax
+
+	lea rax, [rel global0921]
+	mov r11, rbp[-0x8]
+	mov r11[0x1cc8], rax
+
+	lea rax, [rel global0922]
+	mov r11, rbp[-0x8]
+	mov r11[0x1cd0], rax
+
+	lea rax, [rel global0923]
+	mov r11, rbp[-0x8]
+	mov r11[0x1cd8], rax
+
+	lea rax, [rel global0924]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ce0], rax
+
+	lea rax, [rel global0925]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ce8], rax
+
+	lea rax, [rel global0926]
+	mov r11, rbp[-0x8]
+	mov r11[0x1cf0], rax
+
+	lea rax, [rel global0927]
+	mov r11, rbp[-0x8]
+	mov r11[0x1cf8], rax
+
+	lea rax, [rel global0928]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d00], rax
+
+	lea rax, [rel global0929]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d08], rax
+
+	lea rax, [rel global0930]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d10], rax
+
+	lea rax, [rel global0931]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d18], rax
+
+	lea rax, [rel global0932]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d20], rax
+
+	lea rax, [rel global0933]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d28], rax
+
+	lea rax, [rel global0934]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d30], rax
+
+	lea rax, [rel global0935]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d38], rax
+
+	lea rax, [rel global0936]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d40], rax
+
+	lea rax, [rel global0937]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d48], rax
+
+	lea rax, [rel global0938]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d50], rax
+
+	lea rax, [rel global0939]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d58], rax
+
+	lea rax, [rel global0940]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d60], rax
+
+	lea rax, [rel global0941]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d68], rax
+
+	lea rax, [rel global0942]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d70], rax
+
+	lea rax, [rel global0943]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d78], rax
+
+	lea rax, [rel global0944]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d80], rax
+
+	lea rax, [rel global0945]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d88], rax
+
+	lea rax, [rel global0946]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d90], rax
+
+	lea rax, [rel global0947]
+	mov r11, rbp[-0x8]
+	mov r11[0x1d98], rax
+
+	lea rax, [rel global0948]
+	mov r11, rbp[-0x8]
+	mov r11[0x1da0], rax
+
+	lea rax, [rel global0949]
+	mov r11, rbp[-0x8]
+	mov r11[0x1da8], rax
+
+	lea rax, [rel global0950]
+	mov r11, rbp[-0x8]
+	mov r11[0x1db0], rax
+
+	lea rax, [rel global0951]
+	mov r11, rbp[-0x8]
+	mov r11[0x1db8], rax
+
+	lea rax, [rel global0952]
+	mov r11, rbp[-0x8]
+	mov r11[0x1dc0], rax
+
+	lea rax, [rel global0953]
+	mov r11, rbp[-0x8]
+	mov r11[0x1dc8], rax
+
+	lea rax, [rel global0954]
+	mov r11, rbp[-0x8]
+	mov r11[0x1dd0], rax
+
+	lea rax, [rel global0955]
+	mov r11, rbp[-0x8]
+	mov r11[0x1dd8], rax
+
+	lea rax, [rel global0956]
+	mov r11, rbp[-0x8]
+	mov r11[0x1de0], rax
+
+	lea rax, [rel global0957]
+	mov r11, rbp[-0x8]
+	mov r11[0x1de8], rax
+
+	lea rax, [rel global0958]
+	mov r11, rbp[-0x8]
+	mov r11[0x1df0], rax
+
+	lea rax, [rel global0959]
+	mov r11, rbp[-0x8]
+	mov r11[0x1df8], rax
+
+	lea rax, [rel global0960]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e00], rax
+
+	lea rax, [rel global0961]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e08], rax
+
+	lea rax, [rel global0962]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e10], rax
+
+	lea rax, [rel global0963]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e18], rax
+
+	lea rax, [rel global0964]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e20], rax
+
+	lea rax, [rel global0965]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e28], rax
+
+	lea rax, [rel global0966]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e30], rax
+
+	lea rax, [rel global0967]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e38], rax
+
+	lea rax, [rel global0968]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e40], rax
+
+	lea rax, [rel global0969]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e48], rax
+
+	lea rax, [rel global0970]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e50], rax
+
+	lea rax, [rel global0971]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e58], rax
+
+	lea rax, [rel global0972]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e60], rax
+
+	lea rax, [rel global0973]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e68], rax
+
+	lea rax, [rel global0974]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e70], rax
+
+	lea rax, [rel global0975]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e78], rax
+
+	lea rax, [rel global0976]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e80], rax
+
+	lea rax, [rel global0977]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e88], rax
+
+	lea rax, [rel global0978]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e90], rax
+
+	lea rax, [rel global0979]
+	mov r11, rbp[-0x8]
+	mov r11[0x1e98], rax
+
+	lea rax, [rel global0980]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ea0], rax
+
+	lea rax, [rel global0981]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ea8], rax
+
+	lea rax, [rel global0982]
+	mov r11, rbp[-0x8]
+	mov r11[0x1eb0], rax
+
+	lea rax, [rel global0983]
+	mov r11, rbp[-0x8]
+	mov r11[0x1eb8], rax
+
+	lea rax, [rel global0984]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ec0], rax
+
+	lea rax, [rel global0985]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ec8], rax
+
+	lea rax, [rel global0986]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ed0], rax
+
+	lea rax, [rel global0987]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ed8], rax
+
+	lea rax, [rel global0988]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ee0], rax
+
+	lea rax, [rel global0989]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ee8], rax
+
+	lea rax, [rel global0990]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ef0], rax
+
+	lea rax, [rel global0991]
+	mov r11, rbp[-0x8]
+	mov r11[0x1ef8], rax
+
+	lea rax, [rel global0992]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f00], rax
+
+	lea rax, [rel global0993]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f08], rax
+
+	lea rax, [rel global0994]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f10], rax
+
+	lea rax, [rel global0995]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f18], rax
+
+	lea rax, [rel global0996]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f20], rax
+
+	lea rax, [rel global0997]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f28], rax
+
+	lea rax, [rel global0998]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f30], rax
+
+	lea rax, [rel global0999]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f38], rax
+
+	lea rax, [rel global1000]
+	mov r11, rbp[-0x8]
+	mov r11[0x1f40], rax
+
+	mov rsp, rbp
+	pop rbp
 	ret

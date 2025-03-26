@@ -5881,7 +5881,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(calls_in_call, "d", 8);
 	ADD_TEST_OK(comment_above_block, "d", 8);
 	ADD_TEST_OK(comment_above_block_twice, "d", 8);
-	ADD_TEST_OK(comment_above_globals, "d", 20);
+	ADD_TEST_OK(comment_above_globals, "a", 20);
 	ADD_TEST_OK(comment_above_helper_fn, "d", 8);
 	ADD_TEST_OK(comment_above_on_fn, "d", 8);
 	ADD_TEST_OK(comment_between_globals, "a", 16);

@@ -18,7 +18,7 @@
 	mov [rax], r11
 %endmacro
 
-%macro init_fn_error_handling 0
+%macro init_globals_fn_error_handling 0
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call setjmp wrt ..plt
 	test eax, eax
