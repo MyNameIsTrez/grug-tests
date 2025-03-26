@@ -46,8 +46,6 @@ init_globals:
 
 	save_init_globals_fn_name_and_path
 
-	init_fn_error_handling
-
 	call game_fn_get_opponent wrt ..plt
 	mov r11, rbp[-0x8]
 	mov r11[byte 0x8], rax
