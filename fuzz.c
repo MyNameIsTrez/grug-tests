@@ -1,5 +1,7 @@
 #include "grug.h"
 
+#include "mod_api.h"
+
 #include <dlfcn.h>
 #include <err.h>
 #include <errno.h>
@@ -15,39 +17,6 @@
 
 // Forward declaration, since grug.h doesn't declare it
 bool grug_test_regenerate_dll(char *grug_file_path, char *dll_path, char *mod);
-
-void game_fn_define_a(void) {}
-void game_fn_define_b(int32_t x) {}
-void game_fn_define_c(int32_t x, int32_t y) {}
-void game_fn_define_d(void) {}
-void game_fn_define_e(void) {}
-void game_fn_define_f(void) {}
-void game_fn_define_g(void) {}
-void game_fn_define_h(int32_t x) {}
-void game_fn_define_i(int32_t x, int32_t y) {}
-void game_fn_define_j(void) {}
-void game_fn_define_k(int32_t age, char *name) {}
-void game_fn_define_l(char *group, char *name) {}
-void game_fn_define_m(int32_t w, char *group, bool b1, char *name, bool b2, int32_t z) {}
-void game_fn_define_n(int32_t u, int32_t v, int32_t w, int32_t x, int32_t y, int32_t z) {}
-void game_fn_define_o(char *u, char *v, char *w, char *x, char *y, char *z) {}
-void game_fn_define_p(char *x) {}
-void game_fn_define_q(char *a, char *b, char *c) {}
-void game_fn_define_r(void) {}
-void game_fn_define_s(void) {}
-void game_fn_define_t(float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8) {}
-void game_fn_define_u(char *sprite_path) {}
-void game_fn_define_v(char *foo, char *bar) {}
-void game_fn_define_w(char *sprite_path) {}
-void game_fn_define_x(char *projectile) {}
-void game_fn_define_y(char *foo, char *bar) {}
-void game_fn_define_z(char *projectile) {}
-void game_fn_define_a2(char *sprite_path, char *projectile) {}
-void game_fn_define_b2(char *sprite_path, char *projectile) {}
-void game_fn_define_c2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, int32_t i8, float f10) {}
-void game_fn_define_d2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, int32_t i8, float f9) {}
-void game_fn_define_e2(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, int32_t i8, int32_t i9, int32_t i10, int32_t i11, int32_t i12, int32_t i13, int32_t i14, int32_t i15, int32_t i16, int32_t i17, int32_t i18, int32_t i19, int32_t i20, int32_t i21, int32_t i22) {}
-void game_fn_define_f2(bool b) {}
 
 void game_fn_nothing(void) {}
 int32_t game_fn_magic(void) { return 0; }
@@ -80,6 +49,7 @@ void game_fn_offset_32_bit_f32(char *s1, char *s2, char *s3, char *s4, char *s5,
 void game_fn_offset_32_bit_i32(float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, float f10, float f11, float f12, float f13, float f14, float f15, float f16, float f17, float f18, float f19, float f20, float f21, float f22, float f23, float f24, float f25, float f26, float f27, float f28, float f29, float f30, int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t g) {}
 void game_fn_offset_32_bit_string(float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, float f10, float f11, float f12, float f13, float f14, float f15, float f16, float f17, float f18, float f19, float f20, float f21, float f22, float f23, float f24, float f25, float f26, float f27, float f28, float f29, float f30, char *s1, char *s2, char *s3, char *s4, char *s5, int32_t g) {}
 void game_fn_talk(char *message1, char *message2, char *message3, char *message4) {}
+uint64_t game_fn_get_position(uint64_t id) { return 0; }
 
 // Source: https://github.com/google/security-research-pocs/blob/d10780c3ddb8070dff6c5e5862c93c01392d1727/autofuzz/fuzz_utils.cc#L10
 int ignore_stdout(void) {
@@ -179,7 +149,10 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
 			return EXIT_FAILURE;
 		}
 
-		grug_init(runtime_error_handler, "mod_api.json", "fuzzing");
+		if (grug_init(runtime_error_handler, "mod_api.json", "fuzzing")) {
+			fprintf(stderr, "grug_init() error: %s (detected by grug.c:%d)\n", grug_error.msg, grug_error.grug_c_line_number);
+			exit(EXIT_FAILURE);
+		}
 
 		initialized = true;
 	}
@@ -200,14 +173,13 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
 		#pragma GCC diagnostic push
 		#pragma GCC diagnostic ignored "-Wpedantic"
 
-		grug_define_fn_t define = get(handle, "define");
-		define();
-
 		size_t globals_size = *(size_t *)get(handle, "globals_size");
 
 		void *g = malloc(globals_size);
 		grug_init_globals_fn_t init_globals = get(handle, "init_globals");
 		init_globals(g, 42);
+
+		#pragma GCC diagnostic pop
 
 		struct d_on_fns *on_fns = dlsym(handle, "on_fns");
 		if (on_fns && on_fns->a) {
@@ -215,8 +187,6 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
 		}
 
 		free(g);
-
-		#pragma GCC diagnostic pop
 
 		if (dlclose(handle)) {
 			fprintf(stderr, "dlclose: %s\n", dlerror());

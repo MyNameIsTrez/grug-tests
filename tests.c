@@ -167,6 +167,7 @@ static size_t game_fn_offset_32_bit_f32_call_count;
 static size_t game_fn_offset_32_bit_i32_call_count;
 static size_t game_fn_offset_32_bit_string_call_count;
 static size_t game_fn_talk_call_count;
+static size_t game_fn_get_position_call_count;
 
 static bool streq(char *a, char *b) {
 	return strcmp(a, b) == 0;
@@ -701,6 +702,15 @@ void game_fn_talk(char *message1, char *message2, char *message3, char *message4
 	game_fn_talk_message3 = message3;
 	game_fn_talk_message4 = message4;
 }
+static uint64_t game_fn_get_position_id;
+uint64_t game_fn_get_position(uint64_t id) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
+	game_fn_get_position_call_count++;
+
+	game_fn_get_position_id = id;
+
+	return 1337;
+}
 
 static void reset_call_counts(void) {
 	game_fn_nothing_call_count = 0;
@@ -734,6 +744,7 @@ static void reset_call_counts(void) {
 	game_fn_offset_32_bit_i32_call_count = 0;
 	game_fn_offset_32_bit_string_call_count = 0;
 	game_fn_talk_call_count = 0;
+	game_fn_get_position_call_count = 0;
 }
 
 static void check(int status, char *fn_name) {
@@ -3270,6 +3281,48 @@ static void ok_ge_true_2(void *on_fns, void *g, size_t resources_size, char **re
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/ge_true_2/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_global_call_using_me(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	(void)on_fns;
+
+	assert(game_fn_get_position_call_count == 1);
+
+	char *globals = g;
+	assert(*((uint64_t*)globals) == 42);
+	globals += sizeof(uint64_t);
+
+	assert(((uint64_t*)globals)[0] == 1337);
+
+	free(g);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_global_call_using_null_id(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	(void)on_fns;
+
+	assert(game_fn_get_position_call_count == 1);
+
+	char *globals = g;
+	assert(*((uint64_t*)globals) == 42);
+	globals += sizeof(uint64_t);
+
+	assert(((uint64_t*)globals)[0] == 1337);
+
+	free(g);
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5945,6 +5998,8 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(ge_false, "d", 8);
 	ADD_TEST_OK(ge_true_1, "d", 8);
 	ADD_TEST_OK(ge_true_2, "d", 8);
+	ADD_TEST_OK(global_call_using_me, "a", 16);
+	ADD_TEST_OK(global_call_using_null_id, "a", 16);
 	ADD_TEST_OK(global_can_use_earlier_global, "d", 16);
 	ADD_TEST_OK(global_containing_negation, "a", 12);
 	ADD_TEST_OK(global_id, "a", 16);

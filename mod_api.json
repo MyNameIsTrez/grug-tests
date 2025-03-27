@@ -981,6 +981,16 @@
 					"type": "string"
 				}
 			]
+		},
+		"get_position": {
+			"description": "foo",
+			"return_type": "id",
+			"arguments": [
+				{
+					"name": "id",
+					"type": "id"
+				}
+			]
 		}
 	}
 }

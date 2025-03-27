@@ -1,0 +1,1 @@
+Global variables can't be assigned null_id
