@@ -80,22 +80,37 @@ int delete_file(const char *pathname) {
 		warn("failed to delete \"%s\"", pathname);
 	}
 
-	free((void *)pathname);
-
 	return ret;
 }
 
 // Source: https://github.com/google/security-research-pocs/blob/d10780c3ddb8070dff6c5e5862c93c01392d1727/autofuzz/fuzz_utils.cc#L42
 char *buf_to_file(const uint8_t *buf, size_t size) {
-	char *pathname = strdup("/dev/shm/fuzz-XXXXXX");
-	if (pathname == NULL) {
-		return NULL;
-	}
+	// We want "/dev/shm/fuzz_XXXXXX"
+	static char p[] = "/dev/shm/fuzz_XXXXXX";
+	// static char p[] = "./lol/fuzz_XXXXXX";
+	static char suffix[] = "-d.grug";
+	static char pathname[sizeof(p) + sizeof(suffix) - 1];
+	memcpy(pathname, p, sizeof(p));
 
+	// We want "/dev/shm/fuzz_123456"
 	int fd = mkstemp(pathname);
 	if (fd == -1) {
 		warn("mkstemp(\"%s\")", pathname);
-		free(pathname);
+		return NULL;
+	}
+
+	static char old[sizeof(pathname)];
+	memcpy(old, pathname, sizeof(pathname));
+
+	// We want "/dev/shm/fuzz_123456-d.grug"
+	memcpy(pathname + sizeof(p) - 1, suffix, sizeof(suffix));
+	// fprintf(stderr, "pathname: %s\n", pathname);
+	// exit(EXIT_FAILURE);
+
+	// We need to rename "/dev/shm/fuzz_123456" to "/dev/shm/fuzz_123456-d.grug"
+	char *new = pathname;
+	if (rename(old, new) == -1) {
+		warn("rename(\"%s\", \"%s\")", old, new);
 		return NULL;
 	}
 
@@ -193,6 +208,9 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
 			exit(EXIT_FAILURE);
 		}
 	}
+
+	// fprintf(stderr, "grug_test_regenerate_dll() error: %s\n", grug_error.msg);
+	// exit(EXIT_FAILURE);
 
 	if (delete_file(grug_path) != 0) {
 		exit(EXIT_FAILURE);
