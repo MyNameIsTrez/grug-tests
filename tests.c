@@ -3318,26 +3318,6 @@ static void ok_global_containing_negation(void *on_fns, void *g, size_t resource
 	assert(entity_types == NULL);
 }
 
-static void ok_global_containing_null_id(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_set_target_call_count == 0);
-	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_set_target_call_count == 1);
-
-	free(g);
-
-	assert(game_fn_set_target_target == UINT64_MAX);
-
-	assert(streq(grug_fn_name, "on_a"));
-	assert(streq(grug_fn_path, "tests/ok/global_containing_null_id/input-d.grug"));
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
 static void ok_global_id(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	(void)on_fns;
 
@@ -3789,6 +3769,24 @@ static void ok_le_true_2(void *on_fns, void *g, size_t resources_size, char **re
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/le_true_2/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_local_id_can_be_reassigned(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_get_opponent_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_get_opponent_call_count == 2);
+
+	free(g);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/local_id_can_be_reassigned/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5379,7 +5377,7 @@ static void ok_sub_rsp_32_bits_global_variables_i32(void *on_fns, void *g, size_
 
 	free(g);
 
-	assert(game_fn_initialize_x == 65);
+	assert(game_fn_initialize_x == 0);
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/sub_rsp_32_bits_global_variables_i32/input-d.grug"));
@@ -5399,7 +5397,7 @@ static void ok_sub_rsp_32_bits_global_variables_id(void *on_fns, void *g, size_t
 
 	free(g);
 
-	assert(game_fn_set_target_target == UINT64_MAX);
+	assert(game_fn_set_target_target == 69);
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/sub_rsp_32_bits_global_variables_id/input-d.grug"));
@@ -5753,9 +5751,12 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(game_function_call_less_args_expected, "d");
 	ADD_TEST_ERROR(game_function_call_more_args_expected, "d");
 	ADD_TEST_ERROR(game_function_call_no_args_expected, "d");
+	ADD_TEST_ERROR(global_cant_be_me, "a");
+	ADD_TEST_ERROR(global_cant_be_null_id, "a");
 	ADD_TEST_ERROR(global_cant_call_helper_fn, "a");
 	ADD_TEST_ERROR(global_cant_call_on_fn, "d");
 	ADD_TEST_ERROR(global_cant_use_later_global, "a");
+	ADD_TEST_ERROR(global_id_cant_be_reassigned, "d");
 	ADD_TEST_ERROR(global_variable_after_on_fns, "d");
 	ADD_TEST_ERROR(global_variable_already_uses_local_variable_name, "d");
 	ADD_TEST_ERROR(global_variable_contains_double_negation, "a");
@@ -5954,7 +5955,6 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(ge_true_2, "d", 8);
 	ADD_TEST_OK(global_can_use_earlier_global, "d", 16);
 	ADD_TEST_OK(global_containing_negation, "a", 12);
-	ADD_TEST_OK(global_containing_null_id, "d", 16);
 	ADD_TEST_OK(global_id, "a", 16);
 	ADD_TEST_OK(globals, "a", 16);
 	ADD_TEST_OK(globals_1000, "a", 4008);
@@ -5978,6 +5978,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(le_false, "d", 8);
 	ADD_TEST_OK(le_true_1, "d", 8);
 	ADD_TEST_OK(le_true_2, "d", 8);
+	ADD_TEST_OK(local_id_can_be_reassigned, "d", 8);
 	ADD_TEST_OK(lt_false, "d", 8);
 	ADD_TEST_OK(lt_true, "d", 8);
 	ADD_TEST_OK(max_args, "d", 8);
