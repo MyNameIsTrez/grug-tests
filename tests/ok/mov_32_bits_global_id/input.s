@@ -10,7 +10,7 @@ on_fns:
 
 init_globals_fn_path:
 on_fn_path:
-	db "tests/ok/sub_rsp_32_bits_global_variables_id/input-d.grug", 0
+	db "tests/ok/mov_32_bits_global_id/input-d.grug", 0
 init_globals_fn_name:
 	db "init_globals", 0
 on_fn_name:
