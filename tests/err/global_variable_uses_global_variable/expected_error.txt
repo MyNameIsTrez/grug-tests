@@ -1,1 +1,0 @@
-The global variable 'bar' isn't allowed to use global variables

@@ -3279,6 +3279,26 @@ static void ok_ge_true_2(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entity_types == NULL);
 }
 
+static void ok_global_can_use_earlier_global(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_initialize_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_x == 5);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/global_can_use_earlier_global/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_global_containing_negation(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	(void)on_fns;
 
@@ -5737,19 +5757,14 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(global_cant_call_on_fn, "d");
 	ADD_TEST_ERROR(global_variable_after_on_fns, "d");
 	ADD_TEST_ERROR(global_variable_already_uses_local_variable_name, "d");
-	ADD_TEST_ERROR(global_variable_contains_addition, "a");
 	ADD_TEST_ERROR(global_variable_contains_double_negation, "a");
 	ADD_TEST_ERROR(global_variable_contains_double_not, "a");
 	ADD_TEST_ERROR(global_variable_contains_entity, "a");
-	ADD_TEST_ERROR(global_variable_contains_not, "a");
-	ADD_TEST_ERROR(global_variable_contains_parentheses, "a");
 	ADD_TEST_ERROR(global_variable_contains_resource, "a");
-	ADD_TEST_ERROR(global_variable_contains_subtraction, "a");
 	ADD_TEST_ERROR(global_variable_definition_cant_use_itself, "a");
 	ADD_TEST_ERROR(global_variable_definition_missing_type, "a");
 	ADD_TEST_ERROR(global_variable_definition_requires_value_i32, "d");
 	ADD_TEST_ERROR(global_variable_definition_requires_value_string, "d");
-	ADD_TEST_ERROR(global_variable_uses_global_variable, "a");
 	ADD_TEST_ERROR(helper_fn_defined_before_first_helper_fn_usage, "d");
 	ADD_TEST_ERROR(helper_fn_defined_between_on_fns, "e");
 	ADD_TEST_ERROR(helper_fn_does_not_exist, "d");
@@ -5781,7 +5796,6 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(local_variable_definition_missing_type, "d");
 	ADD_TEST_ERROR(max_expr_recursion_depth_exceeded, "d");
 	ADD_TEST_ERROR(max_statement_recursion_depth_exceeded, "d");
-	ADD_TEST_ERROR(me_cant_be_assigned_to_global, "d");
 	ADD_TEST_ERROR(me_cant_be_written_to, "d");
 	ADD_TEST_ERROR(me_plus_1, "d");
 	ADD_TEST_ERROR(me_plus_me, "d");
@@ -5937,6 +5951,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(ge_false, "d", 8);
 	ADD_TEST_OK(ge_true_1, "d", 8);
 	ADD_TEST_OK(ge_true_2, "d", 8);
+	ADD_TEST_OK(global_can_use_earlier_global, "d", 16);
 	ADD_TEST_OK(global_containing_negation, "a", 12);
 	ADD_TEST_OK(global_containing_null_id, "d", 16);
 	ADD_TEST_OK(global_id, "a", 16);
