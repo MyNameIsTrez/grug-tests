@@ -5405,11 +5405,11 @@ static void ok_string_ne_true(void *on_fns, void *g, size_t resources_size, char
 static void ok_sub_rsp_32_bits_local_variables_i32(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_initialize_call_count == 65);
+	assert(game_fn_initialize_call_count == 30);
 
 	free(g);
 
-	assert(game_fn_initialize_x == 65);
+	assert(game_fn_initialize_x == 30);
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/sub_rsp_32_bits_local_variables_i32/input-d.grug"));
@@ -5425,7 +5425,7 @@ static void ok_sub_rsp_32_bits_local_variables_i32(void *on_fns, void *g, size_t
 static void ok_sub_rsp_32_bits_local_variables_id(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_set_target_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_set_target_call_count == 65);
+	assert(game_fn_set_target_call_count == 15);
 
 	free(g);
 
