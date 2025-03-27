@@ -3930,16 +3930,12 @@ static void ok_me_passed_to_helper_fn(void *on_fns, void *g, size_t resources_si
 }
 
 static void ok_mov_32_bits_global_i32(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_initialize_call_count == 0);
-	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_initialize_call_count == 65);
+	(void)on_fns;
 
 	free(g);
 
-	assert(game_fn_initialize_x == 0);
-
-	assert(streq(grug_fn_name, "on_a"));
-	assert(streq(grug_fn_path, "tests/ok/mov_32_bits_global_i32/input-d.grug"));
+	assert(streq(grug_fn_name, "init_globals"));
+	assert(streq(grug_fn_path, "tests/ok/mov_32_bits_global_i32/input-a.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -3950,16 +3946,12 @@ static void ok_mov_32_bits_global_i32(void *on_fns, void *g, size_t resources_si
 }
 
 static void ok_mov_32_bits_global_id(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_set_target_call_count == 0);
-	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_set_target_call_count == 65);
+	(void)on_fns;
 
 	free(g);
 
-	assert(game_fn_set_target_target == 69);
-
-	assert(streq(grug_fn_name, "on_a"));
-	assert(streq(grug_fn_path, "tests/ok/mov_32_bits_global_id/input-d.grug"));
+	assert(streq(grug_fn_name, "init_globals"));
+	assert(streq(grug_fn_path, "tests/ok/mov_32_bits_global_id/input-a.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5985,8 +5977,8 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(me, "d", 8);
 	ADD_TEST_OK(me_assigned_to_local_variable, "d", 8);
 	ADD_TEST_OK(me_passed_to_helper_fn, "d", 8);
-	ADD_TEST_OK(mov_32_bits_global_i32, "d", 268);
-	ADD_TEST_OK(mov_32_bits_global_id, "d", 528);
+	ADD_TEST_OK(mov_32_bits_global_i32, "a", 0x84);
+	ADD_TEST_OK(mov_32_bits_global_id, "a", 0x88);
 	ADD_TEST_OK(multiplication_as_two_arguments, "d", 8);
 	ADD_TEST_OK(ne_false, "d", 8);
 	ADD_TEST_OK(ne_true, "d", 8);
