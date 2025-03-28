@@ -69,6 +69,37 @@ jobs:
           VALGRIND: 1
           SHUFFLES: 10
 
+  build-ubuntu-libfuzzer:
+    name: ubuntu-libfuzzer
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update apt
+        run: sudo apt-get update
+
+      - name: Clone the grug submodule
+        run: git submodule update --init
+
+      - name: Compile executable
+        run: clang grug/grug.c fuzz.c -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -Wno-language-extension-token -Wno-unused-parameter -g -rdynamic -fsanitize=address,undefined,fuzzer -Og -DCRASH_ON_UNREACHABLE
+
+      - name: Create test_corpus directory
+        run: mkdir -p test_corpus
+
+      - name: Copy tests to test_corpus
+        run: for d in tests/err/* tests/err_runtime/* tests/ok/*; do name=${d##*/}; cp $d/*.grug test_corpus/$name.grug; done
+
+      - name: Create corpus directory
+        run: mkdir -p corpus
+
+      - name: Merge test_corpus to corpus
+        run: ./a.out -merge=1 corpus test_corpus
+
+      - name: Fuzz for 1 minute
+        run: ./a.out corpus -timeout=1 -max_total_time=60
+
   build-ubuntu-gcc:
     name: ubuntu-gcc
     runs-on: ubuntu-latest
