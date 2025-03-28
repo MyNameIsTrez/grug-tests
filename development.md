@@ -37,6 +37,12 @@ mkdir -p corpus && \
 ./a.out corpus -timeout=1
 ```
 
+Here is how you minimize any crash reproducer:
+
+```bash
+./a.out -minimize_crash=1 -runs=1000 crash-*
+```
+
 ## Static code analysis with cppchecker
 
 See its [Wikipedia article](https://en.wikipedia.org/wiki/Cppcheck) for more information.

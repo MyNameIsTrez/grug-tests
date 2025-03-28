@@ -3290,6 +3290,26 @@ static void ok_ge_true_2(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entity_types == NULL);
 }
 
+static void ok_global_2_does_not_have_error_handling(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	(void)on_fns;
+
+	char *globals = g;
+	assert(*((uint64_t*)globals) == 42);
+	globals += sizeof(uint64_t);
+
+	assert(((int32_t*)globals)[0] == -1);
+	assert(((int32_t*)globals)[1] == 0);
+
+	free(g);
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_global_call_using_me(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	(void)on_fns;
 
@@ -5998,6 +6018,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(ge_false, "d", 8);
 	ADD_TEST_OK(ge_true_1, "d", 8);
 	ADD_TEST_OK(ge_true_2, "d", 8);
+	ADD_TEST_OK(global_2_does_not_have_error_handling, "a", 16);
 	ADD_TEST_OK(global_call_using_me, "a", 16);
 	ADD_TEST_OK(global_call_using_null_id, "a", 16);
 	ADD_TEST_OK(global_can_use_earlier_global, "d", 16);
