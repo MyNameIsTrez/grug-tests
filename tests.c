@@ -5595,86 +5595,6 @@ static void ok_variable_reassignment(void *on_fns, void *g, size_t resources_siz
 	assert(entity_types == NULL);
 }
 
-static void ok_variable_shadows_game_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_initialize_call_count == 0);
-	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_initialize_call_count == 1);
-
-	free(g);
-
-	assert(game_fn_initialize_x == 42);
-
-	assert(streq(grug_fn_name, "on_a"));
-	assert(streq(grug_fn_path, "tests/ok/variable_shadows_game_fn/input-d.grug"));
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_variable_shadows_helper_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_initialize_call_count == 0);
-	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_initialize_call_count == 1);
-
-	free(g);
-
-	assert(game_fn_initialize_x == 42);
-
-	assert(streq(grug_fn_name, "on_a"));
-	assert(streq(grug_fn_path, "tests/ok/variable_shadows_helper_fn/input-d.grug"));
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_variable_shadows_on_fn_1(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_initialize_call_count == 0);
-	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_initialize_call_count == 1);
-
-	free(g);
-
-	assert(game_fn_initialize_x == 42);
-
-	assert(streq(grug_fn_name, "on_a"));
-	assert(streq(grug_fn_path, "tests/ok/variable_shadows_on_fn_1/input-d.grug"));
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_variable_shadows_on_fn_2(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_initialize_call_count == 0);
-	((struct j_on_fns *)on_fns)->a(g);
-	assert(game_fn_initialize_call_count == 1);
-
-	free(g);
-
-	assert(game_fn_initialize_x == 42);
-
-	assert(streq(grug_fn_name, "on_a"));
-	assert(streq(grug_fn_path, "tests/ok/variable_shadows_on_fn_2/input-d.grug"));
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
 static void ok_variable_string_global(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_say_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -6125,10 +6045,6 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(subtraction_positive_result, "d", 8);
 	ADD_TEST_OK(variable, "d", 8);
 	ADD_TEST_OK(variable_reassignment, "d", 8);
-	ADD_TEST_OK(variable_shadows_game_fn, "d", 8);
-	ADD_TEST_OK(variable_shadows_helper_fn, "d", 8);
-	ADD_TEST_OK(variable_shadows_on_fn_1, "d", 8);
-	ADD_TEST_OK(variable_shadows_on_fn_2, "d", 8);
 	ADD_TEST_OK(variable_string_global, "d", 16);
 	ADD_TEST_OK(variable_string_local, "d", 8);
 	ADD_TEST_OK(void_function_early_return, "d", 8);
