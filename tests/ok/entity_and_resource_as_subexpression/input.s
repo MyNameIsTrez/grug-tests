@@ -82,7 +82,7 @@ on_a:
 	call game_fn_has_resource wrt ..plt
 
 	; AND 1, part 1
-	test eax, eax
+	test al, al
 	je strict .false
 
 	lea rax, [rel bar]
@@ -91,13 +91,13 @@ on_a:
 	call game_fn_has_string wrt ..plt
 
 	; AND 1, part 2
-	test eax, eax
+	test al, al
 	mov eax, 0
 	setne al
 
 	; AND 2, part 1
 .false:
-	test eax, eax
+	test al, al
 	je strict .false2
 
 	lea rax, [rel entity]
@@ -106,7 +106,7 @@ on_a:
 	call game_fn_has_entity wrt ..plt
 
 	; AND 2, part 2
-	test eax, eax
+	test al, al
 	mov eax, 0
 	setne al
 
@@ -127,7 +127,7 @@ on_a:
 	call game_fn_has_resource wrt ..plt
 
 	; AND 1, part 1
-	test eax, eax
+	test al, al
 	je strict .false_fast
 
 	lea rax, [rel bar]
@@ -136,13 +136,13 @@ on_a:
 	call game_fn_has_string wrt ..plt
 
 	; AND 1, part 2
-	test eax, eax
+	test al, al
 	mov eax, 0
 	setne al
 
 	; AND 2, part 1
 .false_fast:
-	test eax, eax
+	test al, al
 	je strict .false2_fast
 
 	lea rax, [rel entity]
@@ -151,7 +151,7 @@ on_a:
 	call game_fn_has_entity wrt ..plt
 
 	; AND 2, part 2
-	test eax, eax
+	test al, al
 	mov eax, 0
 	setne al
 

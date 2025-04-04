@@ -56,7 +56,7 @@ on_a:
 	call game_fn_nothing wrt ..plt
 
 	mov eax, 1
-	test eax, eax
+	test al, al
 	je strict .false
 	jmp strict .end
 .false:
@@ -73,7 +73,7 @@ on_a:
 	call game_fn_nothing wrt ..plt
 
 	mov eax, 1
-	test eax, eax
+	test al, al
 	je strict .false_fast
 	jmp strict .end_fast
 .false_fast:

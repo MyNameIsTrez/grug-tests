@@ -2103,6 +2103,42 @@ static void ok_bool_returned_global(void *on_fns, void *g, size_t resources_size
 	assert(entity_types == NULL);
 }
 
+static void ok_bool_zero_extended_if_statement(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 2);
+
+	free(g);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/bool_zero_extended_if_statement/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_bool_zero_extended_while_statement(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 2);
+
+	free(g);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/bool_zero_extended_while_statement/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_break(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -5899,6 +5935,8 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(bool_logical_not_true, "d", 8);
 	ADD_TEST_OK(bool_returned, "d", 8);
 	ADD_TEST_OK(bool_returned_global, "d", 9);
+	ADD_TEST_OK(bool_zero_extended_if_statement, "d", 8);
+	ADD_TEST_OK(bool_zero_extended_while_statement, "d", 8);
 	ADD_TEST_OK(break, "d", 8);
 	ADD_TEST_OK(calls_100, "d", 8);
 	ADD_TEST_OK(calls_1000, "d", 8);

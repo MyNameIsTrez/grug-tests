@@ -64,11 +64,11 @@ on_a:
 	call game_fn_nothing wrt ..plt
 .repeat_outer:
 	mov eax, 1
-	test eax, eax
+	test al, al
 	je strict .skip_outer
 .repeat_inner:
 	mov eax, 1
-	test eax, eax
+	test al, al
 	je strict .skip_inner
 	jmp strict .skip_inner
 	check_time_limit_exceeded
@@ -89,11 +89,11 @@ on_a:
 	call game_fn_nothing wrt ..plt
 .repeat_outer_fast:
 	mov eax, 1
-	test eax, eax
+	test al, al
 	je strict .skip_outer_fast
 .repeat_inner_fast:
 	mov eax, 1
-	test eax, eax
+	test al, al
 	je strict .skip_inner_fast
 	jmp strict .skip_inner_fast
 	jmp strict .repeat_inner_fast

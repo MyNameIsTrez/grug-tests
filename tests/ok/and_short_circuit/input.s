@@ -57,7 +57,7 @@ on_a:
 	on_fn_error_handling
 
 	xor eax, eax
-	test eax, eax
+	test al, al
 	je strict .and_false
 	xor eax, eax
 	push rax
@@ -73,7 +73,7 @@ on_a:
 	cmp rax, r11
 	mov eax, 0
 	sete al
-	test eax, eax
+	test al, al
 	mov eax, 0
 	setne al
 
@@ -89,7 +89,7 @@ on_a:
 
 .fast:
 	xor eax, eax
-	test eax, eax
+	test al, al
 	je strict .and_false_fast
 	xor eax, eax
 	push rax
@@ -103,7 +103,7 @@ on_a:
 	cmp rax, r11
 	mov eax, 0
 	sete al
-	test eax, eax
+	test al, al
 	mov eax, 0
 	setne al
 

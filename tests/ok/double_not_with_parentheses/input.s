@@ -50,10 +50,10 @@ on_a:
 	save_on_fn_name_and_path
 
 	mov eax, 1
-	test eax, eax
+	test al, al
 	mov eax, 0x0
 	sete al
-	test eax, eax
+	test al, al
 	mov eax, 0x0
 	sete al
 	push rax
@@ -67,10 +67,10 @@ on_a:
 
 .fast:
 	mov eax, 1
-	test eax, eax
+	test al, al
 	mov eax, 0x0
 	sete al
-	test eax, eax
+	test al, al
 	mov eax, 0x0
 	sete al
 	push rax

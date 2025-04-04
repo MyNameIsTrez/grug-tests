@@ -114,7 +114,7 @@ helper_fib_safe:
 	cmp rax, r11
 	mov eax, 0
 	sete al
-	test eax, eax
+	test al, al
 	je .or_false
 
 	; or n == 1
@@ -128,11 +128,11 @@ helper_fib_safe:
 	cmp rax, r11
 	mov eax, 0
 	sete al
-	test eax, eax
+	test al, al
 	mov eax, 0
 	setne al
 .early_return:
-	test eax, eax
+	test al, al
 	je strict .dont_early_return
 
 	; return n
@@ -205,7 +205,7 @@ helper_fib_fast:
 	cmp rax, r11
 	mov eax, 0
 	sete al
-	test eax, eax
+	test al, al
 	je .or_false_fast
 
 	; or n == 1
@@ -219,11 +219,11 @@ helper_fib_fast:
 	cmp rax, r11
 	mov eax, 0
 	sete al
-	test eax, eax
+	test al, al
 	mov eax, 0
 	setne al
 .early_return_fast:
-	test eax, eax
+	test al, al
 	je strict .dont_early_return
 
 	; return n

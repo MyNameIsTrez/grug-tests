@@ -56,13 +56,13 @@ on_a:
 	call game_fn_nothing wrt ..plt
 
 	xor eax, eax
-	test eax, eax
+	test al, al
 	je strict .false
 	jmp strict .end
 
 .false:
 	xor eax, eax
-	test eax, eax
+	test al, al
 	je strict .false2
 	jmp strict .end
 
@@ -80,13 +80,13 @@ on_a:
 	call game_fn_nothing wrt ..plt
 
 	xor eax, eax
-	test eax, eax
+	test al, al
 	je strict .false_fast
 	jmp strict .end_fast
 
 .false_fast:
 	xor eax, eax
-	test eax, eax
+	test al, al
 	je strict .false2_fast
 	jmp strict .end_fast
 

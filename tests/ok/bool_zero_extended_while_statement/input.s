@@ -9,7 +9,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/or_true_1/input-d.grug", 0
+	db "tests/ok/bool_zero_extended_while_statement/input-d.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -26,13 +26,18 @@ section .text
 %include "tests/utils/macros.s"
 
 extern grug_runtime_error_handler
+extern grug_max_time
 extern grug_fn_path
 extern grug_runtime_error_jmp_buffer
 extern grug_fn_name
 extern grug_on_fns_in_safe_mode
+extern grug_current_time
+extern clock_gettime
 extern setjmp
 extern grug_get_runtime_error_reason
-extern game_fn_initialize_bool
+extern game_fn_nothing
+extern game_fn_get_evil_false
+extern longjmp
 
 global init_globals
 init_globals:
@@ -53,44 +58,43 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	mov eax, 1
-	test al, al
-	je .or_false
-	mov eax, 1
-	jmp strict .or_true
-.or_false:
-	xor eax, eax
-	test al, al
-	mov eax, 0
-	setne al
+	set_time_limit
 
-.or_true:
-	push rax
+	on_fn_error_handling
 
-	pop rdi
-	call game_fn_initialize_bool wrt ..plt
+	call game_fn_nothing wrt ..plt
+
+.repeat_safe:
+	call game_fn_get_evil_false wrt ..plt
+	test al, al
+	je strict .skip_safe
+
+	call game_fn_nothing wrt ..plt
+
+	check_time_limit_exceeded
+	jmp strict .repeat_safe
+.skip_safe:
+
+	call game_fn_nothing wrt ..plt
 
 	mov rsp, rbp
 	pop rbp
 	ret
 
 .fast:
-	mov eax, 1
-	test al, al
-	je .or_false_fast
-	mov eax, 1
-	jmp strict .or_true_fast
-.or_false_fast:
-	xor eax, eax
-	test al, al
-	mov eax, 0
-	setne al
+	call game_fn_nothing wrt ..plt
 
-.or_true_fast:
-	push rax
+.repeat_fast:
+	call game_fn_get_evil_false wrt ..plt
+	test al, al
+	je strict .skip_fast
 
-	pop rdi
-	call game_fn_initialize_bool wrt ..plt
+	call game_fn_nothing wrt ..plt
+
+	jmp strict .repeat_fast
+.skip_fast:
+
+	call game_fn_nothing wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

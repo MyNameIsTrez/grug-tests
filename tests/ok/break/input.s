@@ -65,7 +65,7 @@ on_a:
 
 .repeat:
 	mov eax, 1
-	test eax, eax
+	test al, al
 	je strict .skip
 
 	call game_fn_nothing wrt ..plt
@@ -89,7 +89,7 @@ on_a:
 
 .repeat_fast:
 	mov eax, 1
-	test eax, eax
+	test al, al
 	je strict .skip_fast
 
 	call game_fn_nothing wrt ..plt

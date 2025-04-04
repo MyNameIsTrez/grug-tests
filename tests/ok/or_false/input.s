@@ -54,13 +54,13 @@ on_a:
 	save_on_fn_name_and_path
 
 	xor eax, eax
-	test eax, eax
+	test al, al
 	je .or_false
 	mov eax, 1
 	jmp strict .or_true
 .or_false:
 	xor eax, eax
-	test eax, eax
+	test al, al
 	mov eax, 0
 	setne al
 
@@ -76,13 +76,13 @@ on_a:
 
 .fast:
 	xor eax, eax
-	test eax, eax
+	test al, al
 	je .or_false_fast
 	mov eax, 1
 	jmp strict .or_true_fast
 .or_false_fast:
 	xor eax, eax
-	test eax, eax
+	test al, al
 	mov eax, 0
 	setne al
 

@@ -65,7 +65,7 @@ on_a:
 	on_fn_error_handling
 
 	mov eax, 1
-	test eax, eax
+	test al, al
 	je strict .false_safe
 
 	mov rax, rbp[-0x8]
@@ -80,7 +80,7 @@ on_a:
 
 .fast:
 	mov eax, 1
-	test eax, eax
+	test al, al
 	je strict .false_fast
 
 	mov rax, rbp[-0x8]

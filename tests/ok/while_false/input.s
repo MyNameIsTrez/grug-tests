@@ -63,16 +63,16 @@ on_a:
 
 	call game_fn_nothing wrt ..plt
 
-.repeat:
+.repeat_safe:
 	xor eax, eax
-	test eax, eax
-	je strict .skip
+	test al, al
+	je strict .skip_safe
 
 	call game_fn_nothing wrt ..plt
 
 	check_time_limit_exceeded
-	jmp strict .repeat
-.skip:
+	jmp strict .repeat_safe
+.skip_safe:
 
 	call game_fn_nothing wrt ..plt
 
@@ -85,7 +85,7 @@ on_a:
 
 .repeat_fast:
 	xor eax, eax
-	test eax, eax
+	test al, al
 	je strict .skip_fast
 
 	call game_fn_nothing wrt ..plt

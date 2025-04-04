@@ -75,7 +75,7 @@ on_a:
 	mov eax, 0x0
 	setl al
 
-	test eax, eax
+	test al, al
 	je strict .skip
 
 	call game_fn_nothing wrt ..plt
@@ -117,7 +117,7 @@ on_a:
 	mov eax, 0x0
 	setl al
 
-	test eax, eax
+	test al, al
 	je strict .skip_fast
 
 	call game_fn_nothing wrt ..plt

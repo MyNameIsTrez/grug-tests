@@ -66,7 +66,7 @@ on_a:
 
 .repeat_outer:
 	mov eax, 1
-	test eax, eax
+	test al, al
 	je strict .skip_outer
 	call game_fn_nothing wrt ..plt
 .repeat_inner:
@@ -77,7 +77,7 @@ on_a:
 	cmp rax, r11
 	mov eax, 0
 	setne al
-	test eax, eax
+	test al, al
 	je strict .skip_inner
 	mov eax, 1
 	push rax
@@ -93,7 +93,7 @@ on_a:
 	cmp rax, r11
 	mov eax, 0
 	sete al
-	test eax, eax
+	test al, al
 	je strict .skip_inner_if
 	check_time_limit_exceeded
 	jmp strict .repeat_inner
@@ -117,7 +117,7 @@ on_a:
 
 .repeat_outer_fast:
 	mov eax, 1
-	test eax, eax
+	test al, al
 	je strict .skip_outer_fast
 	call game_fn_nothing wrt ..plt
 .repeat_inner_fast:
@@ -128,7 +128,7 @@ on_a:
 	cmp rax, r11
 	mov eax, 0
 	setne al
-	test eax, eax
+	test al, al
 	je strict .skip_inner_fast
 	mov eax, 1
 	push rax
@@ -143,7 +143,7 @@ on_a:
 	cmp rax, r11
 	mov eax, 0
 	sete al
-	test eax, eax
+	test al, al
 	je strict .skip_inner_if_fast
 	jmp strict .repeat_inner_fast
 .skip_inner_if_fast:

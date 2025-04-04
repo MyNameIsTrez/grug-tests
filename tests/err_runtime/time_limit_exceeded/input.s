@@ -62,7 +62,7 @@ on_a:
 
 .repeat:
 	mov eax, 1
-	test eax, eax
+	test al, al
 	je strict .skip
 
 	check_time_limit_exceeded
@@ -76,7 +76,7 @@ on_a:
 .fast:
 .repeat_fast:
 	mov eax, 1
-	test eax, eax
+	test al, al
 	je strict .skip_fast
 
 	jmp strict .repeat_fast

@@ -57,7 +57,7 @@ on_a:
 	mov eax, 1
 
 	; !eax
-	test eax, eax
+	test al, al
 	mov eax, 0
 	sete al
 	push rax
@@ -74,7 +74,7 @@ on_a:
 	mov eax, 1
 
 	; !eax
-	test eax, eax
+	test al, al
 	mov eax, 0
 	sete al
 	push rax

@@ -57,7 +57,7 @@ on_a:
 	on_fn_error_handling
 
 	mov eax, 1
-	test eax, eax
+	test al, al
 	je .or_false
 	mov eax, 1
 	jmp strict .skip
@@ -76,7 +76,7 @@ on_a:
 	cmp rax, r11
 	mov eax, 0
 	sete al
-	test eax, eax
+	test al, al
 	mov eax, 0
 	setne al
 
@@ -92,7 +92,7 @@ on_a:
 
 .fast:
 	mov eax, 1
-	test eax, eax
+	test al, al
 	je .or_false_fast
 	mov eax, 1
 	jmp strict .skip_fast
@@ -109,7 +109,7 @@ on_a:
 	cmp rax, r11
 	mov eax, 0
 	sete al
-	test eax, eax
+	test al, al
 	mov eax, 0
 	setne al
 

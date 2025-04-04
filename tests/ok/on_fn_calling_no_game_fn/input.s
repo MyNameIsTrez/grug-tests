@@ -49,7 +49,7 @@ on_a:
 	save_on_fn_name_and_path
 
 	mov eax, 1
-	test eax, eax
+	test al, al
 	je strict .false_safe
 .false_safe:
 
@@ -59,7 +59,7 @@ on_a:
 
 .fast:
 	mov eax, 1
-	test eax, eax
+	test al, al
 	je strict .false_fast
 .false_fast:
 

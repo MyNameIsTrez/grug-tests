@@ -54,10 +54,10 @@ on_a:
 	save_on_fn_name_and_path
 
 	xor eax, eax
-	test eax, eax
+	test al, al
 	je strict .and_false
 	xor eax, eax
-	test eax, eax
+	test al, al
 	mov eax, 0
 	setne al
 
@@ -73,10 +73,10 @@ on_a:
 
 .fast:
 	xor eax, eax
-	test eax, eax
+	test al, al
 	je strict .and_false_fast
 	xor eax, eax
-	test eax, eax
+	test al, al
 	mov eax, 0
 	setne al
 
