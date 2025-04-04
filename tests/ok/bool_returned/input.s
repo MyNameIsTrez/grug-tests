@@ -33,7 +33,7 @@ extern grug_on_fns_in_safe_mode
 extern setjmp
 extern grug_get_runtime_error_reason
 extern game_fn_initialize_bool
-extern game_fn_is_friday
+extern game_fn_get_evil_false
 extern game_fn_set_is_happy
 
 global init_globals
@@ -55,7 +55,7 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	call game_fn_is_friday wrt ..plt
+	call game_fn_get_evil_false wrt ..plt
 
 	mov rbp[-0x9], al
 
@@ -70,7 +70,7 @@ on_a:
 	ret
 
 .fast:
-	call game_fn_is_friday wrt ..plt
+	call game_fn_get_evil_false wrt ..plt
 
 	mov rbp[-0x9], al
 

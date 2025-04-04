@@ -146,7 +146,7 @@ static size_t game_fn_say_call_count;
 static size_t game_fn_sin_call_count;
 static size_t game_fn_cos_call_count;
 static size_t game_fn_mega_call_count;
-static size_t game_fn_is_friday_call_count;
+static size_t game_fn_get_evil_false_call_count;
 static size_t game_fn_set_is_happy_call_count;
 static size_t game_fn_mega_f32_call_count;
 static size_t game_fn_mega_i32_call_count;
@@ -275,11 +275,11 @@ void game_fn_mega(float f1, int32_t i1, bool b1, float f2, float f3, float f4, b
 	game_fn_mega_id = id;
 	game_fn_mega_str = str;
 }
-bool game_fn_is_friday(void) {
+int game_fn_get_evil_false(void) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_is_friday_call_count++;
+	game_fn_get_evil_false_call_count++;
 
-	return true;
+	return 0xff00;
 }
 static bool game_fn_set_is_happy_is_happy;
 void game_fn_set_is_happy(bool is_happy) {
@@ -723,7 +723,7 @@ static void reset_call_counts(void) {
 	game_fn_sin_call_count = 0;
 	game_fn_cos_call_count = 0;
 	game_fn_mega_call_count = 0;
-	game_fn_is_friday_call_count = 0;
+	game_fn_get_evil_false_call_count = 0;
 	game_fn_set_is_happy_call_count = 0;
 	game_fn_mega_f32_call_count = 0;
 	game_fn_mega_i32_call_count = 0;
@@ -2061,14 +2061,14 @@ static void ok_bool_logical_not_true(void *on_fns, void *g, size_t resources_siz
 
 static void ok_bool_returned(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_set_is_happy_call_count == 0);
-	assert(game_fn_is_friday_call_count == 0);
+	assert(game_fn_get_evil_false_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_set_is_happy_call_count == 1);
-	assert(game_fn_is_friday_call_count == 1);
+	assert(game_fn_get_evil_false_call_count == 1);
 
 	free(g);
 
-	assert(game_fn_set_is_happy_is_happy == true);
+	assert(game_fn_set_is_happy_is_happy == false);
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/bool_returned/input-d.grug"));
@@ -2083,14 +2083,14 @@ static void ok_bool_returned(void *on_fns, void *g, size_t resources_size, char 
 
 static void ok_bool_returned_global(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_set_is_happy_call_count == 0);
-	assert(game_fn_is_friday_call_count == 0);
+	assert(game_fn_get_evil_false_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_set_is_happy_call_count == 1);
-	assert(game_fn_is_friday_call_count == 1);
+	assert(game_fn_get_evil_false_call_count == 1);
 
 	free(g);
 
-	assert(game_fn_set_is_happy_is_happy == true);
+	assert(game_fn_set_is_happy_is_happy == false);
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/bool_returned_global/input-d.grug"));

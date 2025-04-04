@@ -28,7 +28,7 @@ void game_fn_say(char *message) {}
 float game_fn_sin(float x) { return 0.0f; }
 float game_fn_cos(float x) { return 0.0f; }
 void game_fn_mega(float f1, int32_t i1, bool b1, float f2, float f3, float f4, bool b2, int32_t i2, float f5, float f6, float f7, float f8, uint64_t id, char *str) {}
-bool game_fn_is_friday(void) {  return false; }
+int game_fn_evil_false(void) { return 0xff00; }
 void game_fn_set_is_happy(bool is_happy) {}
 void game_fn_mega_f32(float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9) {}
 void game_fn_mega_i32(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7) {}

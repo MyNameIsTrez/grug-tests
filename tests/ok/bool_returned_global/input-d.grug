@@ -1,6 +1,6 @@
 getting_down: bool = false
 
 on_a() {
-    getting_down = is_friday()
+    getting_down = get_evil_false()
     set_is_happy(getting_down)
 }

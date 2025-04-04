@@ -241,7 +241,7 @@
 				}
 			]
 		},
-		"is_friday": {
+		"get_evil_false": {
 			"description": "foo",
 			"return_type": "bool"
 		},
