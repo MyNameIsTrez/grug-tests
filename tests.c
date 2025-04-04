@@ -2081,6 +2081,28 @@ static void ok_bool_returned(void *on_fns, void *g, size_t resources_size, char 
 	assert(entity_types == NULL);
 }
 
+static void ok_bool_returned_global(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_set_is_happy_call_count == 0);
+	assert(game_fn_is_friday_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_set_is_happy_call_count == 1);
+	assert(game_fn_is_friday_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_set_is_happy_is_happy == true);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/bool_returned_global/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_break(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -5876,6 +5898,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(bool_logical_not_false, "d", 8);
 	ADD_TEST_OK(bool_logical_not_true, "d", 8);
 	ADD_TEST_OK(bool_returned, "d", 8);
+	ADD_TEST_OK(bool_returned_global, "d", 9);
 	ADD_TEST_OK(break, "d", 8);
 	ADD_TEST_OK(calls_100, "d", 8);
 	ADD_TEST_OK(calls_1000, "d", 8);
