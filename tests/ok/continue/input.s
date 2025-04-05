@@ -70,7 +70,7 @@ on_a:
 
 	mov eax, rbp[-0xc]
 	pop r11
-	cmp rax, r11
+	cmp eax, r11d
 
 	mov eax, 0x0
 	setl al
@@ -112,7 +112,7 @@ on_a:
 
 	mov eax, rbp[-0xc]
 	pop r11
-	cmp rax, r11
+	cmp eax, r11d
 
 	mov eax, 0x0
 	setl al

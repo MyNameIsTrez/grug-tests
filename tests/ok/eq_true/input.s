@@ -57,7 +57,7 @@ on_a:
 	push rax
 	mov eax, 2
 	pop r11
-	cmp rax, r11
+	cmp eax, r11d
 	mov eax, 0
 	sete al
 	push rax
@@ -74,7 +74,7 @@ on_a:
 	push rax
 	mov eax, 2
 	pop r11
-	cmp rax, r11
+	cmp eax, r11d
 	mov eax, 0
 	sete al
 	push rax

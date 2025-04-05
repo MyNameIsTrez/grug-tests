@@ -111,7 +111,7 @@ helper_fib_safe:
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11
-	cmp rax, r11
+	cmp eax, r11d
 	mov eax, 0
 	sete al
 	test al, al
@@ -125,7 +125,7 @@ helper_fib_safe:
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11
-	cmp rax, r11
+	cmp eax, r11d
 	mov eax, 0
 	sete al
 	test al, al
@@ -202,7 +202,7 @@ helper_fib_fast:
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11
-	cmp rax, r11
+	cmp eax, r11d
 	mov eax, 0
 	sete al
 	test al, al
@@ -216,7 +216,7 @@ helper_fib_fast:
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11
-	cmp rax, r11
+	cmp eax, r11d
 	mov eax, 0
 	sete al
 	test al, al

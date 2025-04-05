@@ -74,7 +74,7 @@ on_a:
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11
-	cmp rax, r11
+	cmp eax, r11d
 	mov eax, 0
 	setne al
 	test al, al
@@ -90,7 +90,7 @@ on_a:
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11
-	cmp rax, r11
+	cmp eax, r11d
 	mov eax, 0
 	sete al
 	test al, al
@@ -125,7 +125,7 @@ on_a:
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11
-	cmp rax, r11
+	cmp eax, r11d
 	mov eax, 0
 	setne al
 	test al, al
@@ -140,7 +140,7 @@ on_a:
 	push rax
 	mov eax, rbp[-0xc]
 	pop r11
-	cmp rax, r11
+	cmp eax, r11d
 	mov eax, 0
 	sete al
 	test al, al

@@ -3791,6 +3791,26 @@ static void ok_i32_negated(void *on_fns, void *g, size_t resources_size, char **
 	assert(entity_types == NULL);
 }
 
+static void ok_i32_negative_is_smaller_than_positive(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/i32_negative_is_smaller_than_positive/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_id_local_variable_get_and_set(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_get_opponent_call_count == 0);
 	assert(game_fn_set_target_call_count == 0);
@@ -6021,6 +6041,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(i32_max, "d", 8);
 	ADD_TEST_OK(i32_min, "d", 8);
 	ADD_TEST_OK(i32_negated, "d", 8);
+	ADD_TEST_OK(i32_negative_is_smaller_than_positive, "d", 8);
 	ADD_TEST_OK(id_local_variable_get_and_set, "d", 8);
 	ADD_TEST_OK(if_false, "d", 8);
 	ADD_TEST_OK(if_true, "d", 8);

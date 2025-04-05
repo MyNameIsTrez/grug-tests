@@ -73,7 +73,7 @@ on_a:
 	cdq
 	idiv r11d
 	pop r11
-	cmp rax, r11
+	cmp eax, r11d
 	mov eax, 0
 	sete al
 	test al, al
@@ -106,7 +106,7 @@ on_a:
 	cdq
 	idiv r11d
 	pop r11
-	cmp rax, r11
+	cmp eax, r11d
 	mov eax, 0
 	sete al
 	test al, al

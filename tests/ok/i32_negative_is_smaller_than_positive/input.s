@@ -9,7 +9,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/gt_false/input-d.grug", 0
+	db "tests/ok/i32_negative_is_smaller_than_positive/input-d.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -32,6 +32,7 @@ extern grug_fn_name
 extern grug_on_fns_in_safe_mode
 extern setjmp
 extern grug_get_runtime_error_reason
+extern longjmp
 extern game_fn_initialize_bool
 
 global init_globals
@@ -53,13 +54,17 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	mov eax, 2
+	on_fn_error_handling
+
+	mov eax, 1
 	push rax
-	mov eax, 2
+	mov eax, 1
+	neg eax
+	check_overflow
 	pop r11
 	cmp eax, r11d
 	mov eax, 0
-	setg al
+	setl al
 	push rax
 
 	pop rdi
@@ -70,13 +75,14 @@ on_a:
 	ret
 
 .fast:
-	mov eax, 2
+	mov eax, 1
 	push rax
-	mov eax, 2
+	mov eax, 1
+	neg eax
 	pop r11
 	cmp eax, r11d
 	mov eax, 0
-	setg al
+	setl al
 	push rax
 
 	pop rdi
