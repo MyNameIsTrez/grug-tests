@@ -1,0 +1,10 @@
+on_a() {
+    if true {
+        initialize: i32 = 42
+        initialize(initialize)
+    }
+    if true {
+        initialize: i32 = 42
+        initialize(initialize)
+    }
+}

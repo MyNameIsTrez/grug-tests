@@ -5877,6 +5877,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(on_fn_duplicate, "d");
 	ADD_TEST_ERROR(on_fn_was_not_declared_in_entity, "a");
 	ADD_TEST_ERROR(on_fn_wrong_order, "e");
+	ADD_TEST_ERROR(on_function_gets_wrong_arg_name, "f");
 	ADD_TEST_ERROR(on_function_gets_wrong_arg_type, "f");
 	ADD_TEST_ERROR(on_function_less_args_expected, "f");
 	ADD_TEST_ERROR(on_function_more_args_expected, "g");
