@@ -3731,6 +3731,42 @@ static void ok_helper_fn_returning_void_returns_void(void *on_fns, void *g, size
 	assert(entity_types == NULL);
 }
 
+static void ok_helper_fn_same_param_name_as_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 1);
+
+	free(g);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/helper_fn_same_param_name_as_on_fn/input-f.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_helper_fn_same_param_name_as_other_helper_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_nothing_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_call_count == 2);
+
+	free(g);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/helper_fn_same_param_name_as_other_helper_fn/input-f.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_i32_max(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -6039,6 +6075,8 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(helper_fn_overwriting_param, "d", 8);
 	ADD_TEST_OK(helper_fn_returning_void_has_no_return, "d", 8);
 	ADD_TEST_OK(helper_fn_returning_void_returns_void, "d", 8);
+	ADD_TEST_OK(helper_fn_same_param_name_as_on_fn, "f", 8);
+	ADD_TEST_OK(helper_fn_same_param_name_as_other_helper_fn, "f", 8);
 	ADD_TEST_OK(i32_max, "d", 8);
 	ADD_TEST_OK(i32_min, "d", 8);
 	ADD_TEST_OK(i32_negated, "d", 8);
