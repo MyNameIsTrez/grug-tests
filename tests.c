@@ -5810,6 +5810,10 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(assign_to_unknown_variable, "d");
 	ADD_TEST_ERROR(assignment_isnt_expression, "d");
 	ADD_TEST_ERROR(bool_cant_be_initialized_with_1, "d");
+	ADD_TEST_ERROR(bool_ge, "d");
+	ADD_TEST_ERROR(bool_gt, "d");
+	ADD_TEST_ERROR(bool_le, "d");
+	ADD_TEST_ERROR(bool_lt, "d");
 	ADD_TEST_ERROR(bool_unary_minus, "d");
 	ADD_TEST_ERROR(cant_add_strings, "d");
 	ADD_TEST_ERROR(cant_break_outside_of_loop, "d");
