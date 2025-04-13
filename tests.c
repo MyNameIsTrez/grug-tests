@@ -5945,6 +5945,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(resource_type_for_helper_fn_return_type, "d");
 	ADD_TEST_ERROR(resource_type_for_local, "d");
 	ADD_TEST_ERROR(resource_type_for_on_fn_argument, "d");
+	ADD_TEST_ERROR(return_with_comment_after_it, "d");
 	ADD_TEST_ERROR(string_pointer_arithmetic, "d");
 	ADD_TEST_ERROR(trailing_space_in_comment, "d");
 	ADD_TEST_ERROR(unary_plus_does_not_exist, "d");

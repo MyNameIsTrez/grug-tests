@@ -1,1 +1,1 @@
-Function 'helper_fib' was supposed to return string
+Function 'helper_fib' is supposed to return string

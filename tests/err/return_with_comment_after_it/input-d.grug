@@ -1,0 +1,8 @@
+on_a() {
+    initialize(helper_foo())
+}
+
+helper_foo() i32 {
+    return 42
+    # foo
+}
