@@ -6179,7 +6179,7 @@ static void add_ok_tests(void) {
 }
 
 int main(int argc, char *argv[]) {
-	if (grug_init(runtime_error_handler, "mod_api.json", "tests")) {
+	if (grug_init(runtime_error_handler, "mod_api.json", "tests", 10)) {
 		fprintf(stderr, "grug_init() error: %s (detected by grug.c:%d)\n", grug_error.msg, grug_error.grug_c_line_number);
 		exit(EXIT_FAILURE);
 	}
