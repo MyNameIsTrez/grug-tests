@@ -83,11 +83,10 @@
 %endmacro
 
 %macro set_time_limit 0
+	; clock_gettime(CLOCK_PROCESS_CPUTIME_ID, grug_max_time);
 	mov rsi, [rel grug_max_time wrt ..got]
 	push rsi
 	mov edi, CLOCK_PROCESS_CPUTIME_ID
-
-	; Fill grug_max_time with the current time.
 	call clock_gettime wrt ..plt
 	pop rax
 
@@ -117,11 +116,10 @@
 %endmacro
 
 %macro check_time_limit_exceeded 0
+	; clock_gettime(CLOCK_PROCESS_CPUTIME_ID, grug_current_time);
 	mov rsi, [rel grug_current_time wrt ..got]
 	push rsi
 	mov edi, CLOCK_PROCESS_CPUTIME_ID
-
-	; Fill grug_current_time with the current time.
 	call clock_gettime wrt ..plt
 	pop rax
 	mov r11, [rel grug_max_time wrt ..got]
