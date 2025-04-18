@@ -86,12 +86,17 @@
 	mov rsi, [rel grug_max_time wrt ..got]
 	push rsi
 	mov edi, CLOCK_PROCESS_CPUTIME_ID
+	; Fill grug_max_time with the current time.
 	call clock_gettime wrt ..plt
 	pop rax
+	; grug_max_time.nsec += GRUG_ON_FN_TIME_LIMIT_MS * NS_PER_MS;
 	add qword [byte rax + TV_NSEC_OFFSET], GRUG_ON_FN_TIME_LIMIT_MS * NS_PER_MS
+	; if (grug_max_time.nsec < NS_PER_SEC) goto skip;
 	cmp qword [byte rax + TV_NSEC_OFFSET], NS_PER_SEC
 	jl %%skip
+	; grug_max_time.nsec -= NS_PER_SEC;
 	sub qword [byte rax + TV_NSEC_OFFSET], NS_PER_SEC
+	; grug_max_time.sec++;
 	inc qword [byte rax + TV_SEC_OFFSET]
 %%skip:
 %endmacro
@@ -110,19 +115,25 @@
 	mov rsi, [rel grug_current_time wrt ..got]
 	push rsi
 	mov edi, CLOCK_PROCESS_CPUTIME_ID
+	; Fill grug_current_time with the current time.
 	call clock_gettime wrt ..plt
 	pop rax
 	mov r11, [rel grug_max_time wrt ..got]
 
+	; if (grug_current_time.sec < grug_max_time.sec) goto skip;
 	mov r10, [byte r11 + TV_SEC_OFFSET]
 	cmp [byte rax + TV_SEC_OFFSET], r10
 	jl %%skip
+	; if (grug_current_time.sec > grug_max_time.sec) goto longjmp;
 	jg %%longjump
+	; if (grug_current_time.nsec > grug_max_time.nsec) goto longjmp;
 	mov r10, [byte r11 + TV_NSEC_OFFSET]
 	cmp [byte rax + TV_NSEC_OFFSET], r10
 	jg %%longjump
+	; goto skip;
 	jmp short %%skip
 %%longjump:
+	; longjmp(grug_runtime_error_jmp_buffer, 1 + GRUG_ON_FN_TIME_LIMIT_EXCEEDED);
 	mov esi, 1 + GRUG_ON_FN_TIME_LIMIT_EXCEEDED
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call longjmp wrt ..plt
