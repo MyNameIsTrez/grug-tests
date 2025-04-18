@@ -1,7 +1,0 @@
-on_a() {
-    helper_fib()
-}
-
-helper_fib() {
-    return 42
-}

@@ -1,1 +1,0 @@
-Function 'helper_fib' wasn't supposed to return any value
