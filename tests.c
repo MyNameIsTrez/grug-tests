@@ -5849,6 +5849,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(f32_too_close_to_zero_negative, "d");
 	ADD_TEST_ERROR(f32_too_close_to_zero_positive, "d");
 	ADD_TEST_ERROR(f32_too_small, "d");
+	ADD_TEST_ERROR(game_fn_call_gets_void, "d");
 	ADD_TEST_ERROR(game_fn_does_not_exist, "d");
 	ADD_TEST_ERROR(game_function_call_gets_wrong_arg_type, "d");
 	ADD_TEST_ERROR(game_function_call_less_args_expected, "d");
@@ -5870,6 +5871,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(global_variable_definition_missing_type, "a");
 	ADD_TEST_ERROR(global_variable_definition_requires_value_i32, "d");
 	ADD_TEST_ERROR(global_variable_definition_requires_value_string, "d");
+	ADD_TEST_ERROR(helper_fn_call_gets_void, "d");
 	ADD_TEST_ERROR(helper_fn_call_gets_wrong_arg_type, "d");
 	ADD_TEST_ERROR(helper_fn_call_less_args_expected, "d");
 	ADD_TEST_ERROR(helper_fn_call_more_args_expected, "d");
@@ -5886,7 +5888,6 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(helper_fn_is_not_called_5, "d");
 	ADD_TEST_ERROR(helper_fn_missing_return_statement, "d");
 	ADD_TEST_ERROR(helper_fn_no_return_value_expected, "d");
-	ADD_TEST_ERROR(helper_fn_no_return_value_expected_2, "d");
 	ADD_TEST_ERROR(helper_fn_return_with_comment_after_it, "d");
 	ADD_TEST_ERROR(i32_logical_not, "d");
 	ADD_TEST_ERROR(i32_too_big, "d");

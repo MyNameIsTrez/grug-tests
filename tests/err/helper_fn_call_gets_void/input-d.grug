@@ -1,0 +1,11 @@
+on_a() {
+    helper_foo(helper_bar())
+}
+
+helper_foo(x: i32) {
+    initialize(x)
+}
+
+helper_bar() {
+    return 42
+}
