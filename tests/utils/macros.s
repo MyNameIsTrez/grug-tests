@@ -90,8 +90,11 @@
 	call clock_gettime wrt ..plt
 	pop rax
 
-	; grug_max_time.nsec += GRUG_ON_FN_TIME_LIMIT_MS * NS_PER_MS;
-	add qword [byte rax + TV_NSEC_OFFSET], GRUG_ON_FN_TIME_LIMIT_MS * NS_PER_MS
+	; grug_max_time.sec += GRUG_ON_FN_TIME_LIMIT_SEC;
+	add qword [byte rax + TV_SEC_OFFSET], GRUG_ON_FN_TIME_LIMIT_SEC
+
+	; grug_max_time.nsec += GRUG_ON_FN_TIME_LIMIT_NS;
+	add qword [byte rax + TV_NSEC_OFFSET], GRUG_ON_FN_TIME_LIMIT_NS
 
 	; if (grug_max_time.nsec < NS_PER_SEC) goto skip;
 	cmp qword [byte rax + TV_NSEC_OFFSET], NS_PER_SEC
