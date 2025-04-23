@@ -54,6 +54,7 @@ extern grug_on_fns_in_safe_mode
 extern setjmp
 extern grug_get_runtime_error_reason
 extern game_fn_has_resource
+extern longjmp
 extern game_fn_has_string
 extern game_fn_has_entity
 extern game_fn_initialize_bool
@@ -77,10 +78,13 @@ on_a:
 
 	save_on_fn_name_and_path
 
+	error_handling
+
 	lea rax, [rel resource]
 	push rax
 	pop rdi
 	call game_fn_has_resource wrt ..plt
+	check_game_fn_error
 
 	; AND 1, part 1
 	test al, al
@@ -90,6 +94,7 @@ on_a:
 	push rax
 	pop rdi
 	call game_fn_has_string wrt ..plt
+	check_game_fn_error
 
 	; AND 1, part 2
 	test al, al
@@ -105,6 +110,7 @@ on_a:
 	push rax
 	pop rdi
 	call game_fn_has_entity wrt ..plt
+	check_game_fn_error
 
 	; AND 2, part 2
 	test al, al
@@ -116,6 +122,7 @@ on_a:
 
 	pop rdi
 	call game_fn_initialize_bool wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp
