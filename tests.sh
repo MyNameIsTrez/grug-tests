@@ -110,9 +110,10 @@ then
     valgrind --quiet ./tests.out "$@"
 else
     ./tests.out "$@"
-    if [ $? -ne 0 ]; then
-        exit 1
-    fi
+fi
+
+if [ $? -ne 0 ]; then
+    exit 1
 fi
 
 if [[ -v COVERAGE ]]
