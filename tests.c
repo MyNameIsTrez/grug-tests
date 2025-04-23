@@ -5,6 +5,7 @@
 #include "mod_api.h"
 
 #include <assert.h>
+#include <dirent.h>
 #include <dlfcn.h>
 #include <elf.h>
 #include <errno.h>
@@ -5878,6 +5879,66 @@ static void ok_write_to_global_variable(void *on_fns, void *g, size_t resources_
 	assert(entity_types == NULL);
 }
 
+static void check_that_every_ok_test_directory_has_a_function(void) {
+	size_t entries = 0;
+
+	DIR *dirp = opendir("tests/ok");
+	assert(dirp);
+
+	struct dirent *dp;
+	while ((dp = readdir(dirp))) {
+		if (streq(dp->d_name, ".") || streq(dp->d_name, "..")) {
+			continue;
+		}
+		entries++;
+	}
+
+	if (entries != ok_test_datas_size) {
+		fprintf(stderr, "The tests/ok/ directory contains %zu entries, which doesn't match there being %zu ok test functions\n", entries, ok_test_datas_size);
+		exit(EXIT_FAILURE);
+	}
+}
+
+static void check_that_every_error_runtime_test_directory_has_a_function(void) {
+	size_t entries = 0;
+
+	DIR *dirp = opendir("tests/err_runtime");
+	assert(dirp);
+
+	struct dirent *dp;
+	while ((dp = readdir(dirp))) {
+		if (streq(dp->d_name, ".") || streq(dp->d_name, "..")) {
+			continue;
+		}
+		entries++;
+	}
+
+	if (entries != runtime_error_test_datas_size) {
+		fprintf(stderr, "The tests/err_runtime/ directory contains %zu entries, which doesn't match there being %zu runtime error test functions\n", entries, runtime_error_test_datas_size);
+		exit(EXIT_FAILURE);
+	}
+}
+
+static void check_that_every_error_test_directory_has_a_function(void) {
+	size_t entries = 0;
+
+	DIR *dirp = opendir("tests/err");
+	assert(dirp);
+
+	struct dirent *dp;
+	while ((dp = readdir(dirp))) {
+		if (streq(dp->d_name, ".") || streq(dp->d_name, "..")) {
+			continue;
+		}
+		entries++;
+	}
+
+	if (entries != error_test_datas_size) {
+		fprintf(stderr, "The tests/err/ directory contains %zu entries, which doesn't match there being %zu error test functions\n", entries, error_test_datas_size);
+		exit(EXIT_FAILURE);
+	}
+}
+
 static void add_error_tests(void) {
 	ADD_TEST_ERROR(assign_to_unknown_variable, "d");
 	ADD_TEST_ERROR(assignment_isnt_expression, "d");
@@ -6267,6 +6328,10 @@ int main(int argc, char *argv[]) {
 	add_error_tests();
 	add_runtime_error_tests();
 	add_ok_tests();
+	
+	check_that_every_error_test_directory_has_a_function();
+	check_that_every_error_runtime_test_directory_has_a_function();
+	check_that_every_ok_test_directory_has_a_function();
 
 #ifdef SHUFFLES
 	// If a test failed, you can reproduce it

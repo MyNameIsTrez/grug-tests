@@ -1,5 +1,0 @@
-define() b {
-    return {
-        .x = -2,
-    }
-}
