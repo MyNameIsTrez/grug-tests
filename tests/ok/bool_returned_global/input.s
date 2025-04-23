@@ -36,8 +36,9 @@ extern grug_has_game_function_error_happened
 extern grug_on_fns_in_safe_mode
 extern setjmp
 extern grug_get_runtime_error_reason
-extern game_fn_initialize_bool
 extern game_fn_get_evil_false
+extern longjmp
+extern game_fn_initialize_bool
 extern game_fn_set_is_happy
 
 global init_globals
@@ -55,6 +56,8 @@ init_globals:
 	je strict .fast
 
 	save_init_globals_fn_name_and_path
+
+	init_globals_fn_error_handling
 
 	xor eax, eax
 	mov r11, rbp[-0x8]
@@ -87,7 +90,10 @@ on_a:
 
 	save_on_fn_name_and_path
 
+	error_handling
+
 	call game_fn_get_evil_false wrt ..plt
+	check_game_fn_error
 
 	mov r11, rbp[-0x8]
 	mov r11[0x8], al
@@ -98,6 +104,7 @@ on_a:
 
 	pop rdi
 	call game_fn_set_is_happy wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

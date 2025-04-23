@@ -37,8 +37,8 @@ extern clock_gettime
 extern setjmp
 extern grug_get_runtime_error_reason
 extern game_fn_nothing
-extern game_fn_get_evil_false
 extern longjmp
+extern game_fn_get_evil_false
 
 global init_globals
 init_globals:
@@ -64,19 +64,23 @@ on_a:
 	error_handling
 
 	call game_fn_nothing wrt ..plt
+	check_game_fn_error
 
 .repeat_safe:
 	call game_fn_get_evil_false wrt ..plt
+	check_game_fn_error
 	test al, al
 	je strict .skip_safe
 
 	call game_fn_nothing wrt ..plt
+	check_game_fn_error
 
 	check_time_limit_exceeded
 	jmp strict .repeat_safe
 .skip_safe:
 
 	call game_fn_nothing wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

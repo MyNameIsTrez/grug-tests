@@ -80,6 +80,7 @@ on_a:
 	je strict .skip
 
 	call game_fn_nothing wrt ..plt
+	check_game_fn_error
 
 	; i++
 	mov eax, 1
@@ -94,6 +95,7 @@ on_a:
 	jmp strict .repeat
 
 	call game_fn_nothing wrt ..plt
+	check_game_fn_error
 
 	check_time_limit_exceeded
 	jmp strict .repeat

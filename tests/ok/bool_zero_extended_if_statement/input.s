@@ -25,11 +25,16 @@ section .text
 %include "tests/utils/defines.s"
 %include "tests/utils/macros.s"
 
+extern grug_runtime_error_handler
 extern grug_fn_path
+extern grug_runtime_error_jmp_buffer
 extern grug_fn_name
 extern grug_has_game_function_error_happened
 extern grug_on_fns_in_safe_mode
+extern setjmp
+extern grug_get_runtime_error_reason
 extern game_fn_nothing
+extern longjmp
 extern game_fn_get_evil_false
 
 global init_globals
@@ -51,15 +56,21 @@ on_a:
 
 	save_on_fn_name_and_path
 
+	error_handling
+
 	call game_fn_nothing wrt ..plt
+	check_game_fn_error
 
 	call game_fn_get_evil_false wrt ..plt
+	check_game_fn_error
 	test al, al
 	je strict .false_safe
 	call game_fn_nothing wrt ..plt
+	check_game_fn_error
 
 .false_safe:
 	call game_fn_nothing wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp
