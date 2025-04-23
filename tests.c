@@ -6328,10 +6328,12 @@ int main(int argc, char *argv[]) {
 	add_error_tests();
 	add_runtime_error_tests();
 	add_ok_tests();
-	
-	check_that_every_error_test_directory_has_a_function();
-	check_that_every_error_runtime_test_directory_has_a_function();
-	check_that_every_ok_test_directory_has_a_function();
+
+	if (whitelisted_tests_size == 0) {
+		check_that_every_error_test_directory_has_a_function();
+		check_that_every_error_runtime_test_directory_has_a_function();
+		check_that_every_ok_test_directory_has_a_function();
+	}
 
 #ifdef SHUFFLES
 	// If a test failed, you can reproduce it
