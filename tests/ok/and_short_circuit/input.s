@@ -29,6 +29,7 @@ extern grug_runtime_error_handler
 extern grug_fn_path
 extern grug_runtime_error_jmp_buffer
 extern grug_fn_name
+extern grug_has_game_function_error_happened
 extern grug_on_fns_in_safe_mode
 extern setjmp
 extern grug_get_runtime_error_reason
@@ -54,7 +55,7 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	on_fn_error_handling
+	error_handling
 
 	xor eax, eax
 	test al, al
@@ -82,6 +83,7 @@ on_a:
 
 	pop rdi
 	call game_fn_initialize_bool wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

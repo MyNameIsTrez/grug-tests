@@ -39,6 +39,7 @@ section .text
 
 extern grug_fn_path
 extern grug_fn_name
+extern grug_has_game_function_error_happened
 extern grug_on_fns_in_safe_mode
 extern game_fn_spawn
 

@@ -168,6 +168,7 @@ static size_t game_fn_offset_32_bit_i32_call_count;
 static size_t game_fn_offset_32_bit_string_call_count;
 static size_t game_fn_talk_call_count;
 static size_t game_fn_get_position_call_count;
+static size_t game_fn_cause_game_fn_error_call_count;
 
 static bool streq(char *a, char *b) {
 	return strcmp(a, b) == 0;
@@ -711,6 +712,11 @@ uint64_t game_fn_get_position(uint64_t id) {
 
 	return 1337;
 }
+void game_fn_cause_game_fn_error(void) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
+	game_fn_cause_game_fn_error_call_count++;
+	grug_game_function_error_happened();
+}
 
 static void reset_call_counts(void) {
 	game_fn_nothing_call_count = 0;
@@ -745,6 +751,7 @@ static void reset_call_counts(void) {
 	game_fn_offset_32_bit_string_call_count = 0;
 	game_fn_talk_call_count = 0;
 	game_fn_get_position_call_count = 0;
+	game_fn_cause_game_fn_error_call_count = 0;
 }
 
 static void check(int status, char *fn_name) {
@@ -1427,6 +1434,71 @@ static void runtime_error_division_by_0(void *on_fns, void *g, size_t resources_
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/err_runtime/division_by_0/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void runtime_error_game_fn_error(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_cause_game_fn_error_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_cause_game_fn_error_call_count == 1);
+
+	assert(had_runtime_error);
+
+	free(g);
+
+	assert(runtime_error_type == GRUG_ON_FN_GAME_FN_ERROR);
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_GAME_FN_ERROR)));
+
+	assert(streq(runtime_error_on_fn_name, "on_a"));
+	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/game_fn_error/input-d.grug"));
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/err_runtime/game_fn_error/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void runtime_error_game_fn_error_once(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_cause_game_fn_error_call_count == 0);
+	((struct e_on_fns *)on_fns)->a(g);
+	assert(game_fn_cause_game_fn_error_call_count == 1);
+
+	assert(had_runtime_error);
+	
+	assert(runtime_error_type == GRUG_ON_FN_GAME_FN_ERROR);
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_GAME_FN_ERROR)));
+	
+	assert(streq(runtime_error_on_fn_name, "on_a"));
+	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/game_fn_error_once/input-e.grug"));
+	
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/err_runtime/game_fn_error_once/input-e.grug"));
+
+	had_runtime_error = false;
+
+	assert(game_fn_cause_game_fn_error_call_count == 1);
+	assert(game_fn_nothing_call_count == 0);
+	((struct e_on_fns *)on_fns)->b(g);
+	assert(game_fn_cause_game_fn_error_call_count == 1);
+	assert(game_fn_nothing_call_count == 1);
+
+	assert(!had_runtime_error);
+
+	free(g);
+
+	assert(streq(grug_fn_name, "on_b"));
+	assert(streq(grug_fn_path, "tests/err_runtime/game_fn_error_once/input-e.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -5968,6 +6040,8 @@ static void add_error_tests(void) {
 static void add_runtime_error_tests(void) {
 	ADD_TEST_RUNTIME_ERROR(all, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(division_by_0, "d", 8);
+	ADD_TEST_RUNTIME_ERROR(game_fn_error, "d", 8);
+	ADD_TEST_RUNTIME_ERROR(game_fn_error_once, "e", 8);
 	ADD_TEST_RUNTIME_ERROR(i32_overflow_addition, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(i32_overflow_division, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(i32_overflow_multiplication, "d", 8);

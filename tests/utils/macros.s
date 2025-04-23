@@ -47,7 +47,10 @@
 %%skip:
 %endmacro
 
-%macro on_fn_error_handling 0
+%macro error_handling 0
+	mov rax, [rel grug_has_game_function_error_happened wrt ..got]
+	mov [rax], byte 0
+
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call setjmp wrt ..plt
 	test eax, eax
@@ -173,6 +176,17 @@
 %macro check_overflow 0
 	jno %%skip
 	mov esi, 1 + GRUG_ON_FN_OVERFLOW
+	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
+	call longjmp wrt ..plt
+%%skip:
+%endmacro
+
+%macro check_game_fn_error 0
+	mov r11, [rel grug_has_game_function_error_happened wrt ..got]
+	mov r11b, [r11]
+	test r11b, r11b
+	je %%skip
+	mov esi, 1 + GRUG_ON_FN_GAME_FN_ERROR
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call longjmp wrt ..plt
 %%skip:
