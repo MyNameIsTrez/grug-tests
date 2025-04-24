@@ -88,7 +88,7 @@ struct error_test_data {
 	char *failed_file_path;
 };
 static struct error_test_data error_test_datas[420420];
-static size_t error_test_datas_size;
+static size_t err_test_datas_size;
 
 struct runtime_error_test_data {
 	void (*run)(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types);
@@ -112,7 +112,7 @@ struct runtime_error_test_data {
 	size_t expected_globals_size_value;
 };
 static struct runtime_error_test_data runtime_error_test_datas[420420];
-static size_t runtime_error_test_datas_size;
+static size_t err_runtime_test_datas_size;
 
 struct ok_test_data {
 	void (*run)(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types);
@@ -783,7 +783,7 @@ static bool is_whitelisted_test(char *name) {
 
 #define ADD_TEST_ERROR(test_name, entity_type) {\
 	if (whitelisted_tests_size == 0 || is_whitelisted_test(#test_name)) {\
-		error_test_datas[error_test_datas_size++] = (struct error_test_data){\
+		error_test_datas[err_test_datas_size++] = (struct error_test_data){\
 			.test_name_str = #test_name,\
 			.grug_path = "tests/err/"#test_name"/input-"entity_type".grug",\
 			.expected_error_path = "tests/err/"#test_name"/expected_error.txt",\
@@ -797,7 +797,7 @@ static bool is_whitelisted_test(char *name) {
 
 #define ADD_TEST_RUNTIME_ERROR(test_name, entity_type, expected_globals_size) {\
 	if (whitelisted_tests_size == 0 || is_whitelisted_test(#test_name)) {\
-		runtime_error_test_datas[runtime_error_test_datas_size++] = (struct runtime_error_test_data){\
+		runtime_error_test_datas[err_runtime_test_datas_size++] = (struct runtime_error_test_data){\
 			.run = runtime_error_##test_name,\
 			.test_name_str = #test_name,\
 			.grug_path = "tests/err_runtime/"#test_name"/input-"entity_type".grug",\
@@ -5879,64 +5879,26 @@ static void ok_write_to_global_variable(void *on_fns, void *g, size_t resources_
 	assert(entity_types == NULL);
 }
 
-static void check_that_every_ok_test_directory_has_a_function(void) {
-	size_t entries = 0;
-
-	DIR *dirp = opendir("tests/ok");
-	assert(dirp);
-
-	struct dirent *dp;
-	while ((dp = readdir(dirp))) {
-		if (streq(dp->d_name, ".") || streq(dp->d_name, "..")) {
-			continue;
-		}
-		entries++;
-	}
-
-	if (entries != ok_test_datas_size) {
-		fprintf(stderr, "The tests/ok/ directory contains %zu entries, which doesn't match there being %zu ok test functions\n", entries, ok_test_datas_size);
-		exit(EXIT_FAILURE);
-	}
-}
-
-static void check_that_every_error_runtime_test_directory_has_a_function(void) {
-	size_t entries = 0;
-
-	DIR *dirp = opendir("tests/err_runtime");
-	assert(dirp);
-
-	struct dirent *dp;
-	while ((dp = readdir(dirp))) {
-		if (streq(dp->d_name, ".") || streq(dp->d_name, "..")) {
-			continue;
-		}
-		entries++;
-	}
-
-	if (entries != runtime_error_test_datas_size) {
-		fprintf(stderr, "The tests/err_runtime/ directory contains %zu entries, which doesn't match there being %zu runtime error test functions\n", entries, runtime_error_test_datas_size);
-		exit(EXIT_FAILURE);
-	}
-}
-
-static void check_that_every_error_test_directory_has_a_function(void) {
-	size_t entries = 0;
-
-	DIR *dirp = opendir("tests/err");
-	assert(dirp);
-
-	struct dirent *dp;
-	while ((dp = readdir(dirp))) {
-		if (streq(dp->d_name, ".") || streq(dp->d_name, "..")) {
-			continue;
-		}
-		entries++;
-	}
-
-	if (entries != error_test_datas_size) {
-		fprintf(stderr, "The tests/err/ directory contains %zu entries, which doesn't match there being %zu error test functions\n", entries, error_test_datas_size);
-		exit(EXIT_FAILURE);
-	}
+#define CHECK_THAT_EVERY_TEST_DIRECTORY_HAS_A_FUNCTION(test_dirname) {\
+	size_t entries = 0;\
+	\
+	DIR *dirp = opendir("tests/" #test_dirname);\
+	assert(dirp);\
+	\
+	struct dirent *dp;\
+	while ((dp = readdir(dirp))) {\
+		if (streq(dp->d_name, ".") || streq(dp->d_name, "..")) {\
+			continue;\
+		}\
+		entries++;\
+	}\
+	\
+	if (entries != test_dirname ## _test_datas_size) {\
+		fprintf(stderr, "The tests/" #test_dirname "/ directory contains %zu entries, which doesn't match it having %zu test functions\n", entries, test_dirname ## _test_datas_size);\
+		exit(EXIT_FAILURE);\
+	}\
+	\
+	assert(closedir(dirp) == 0);\
 }
 
 static void add_error_tests(void) {
@@ -6330,9 +6292,9 @@ int main(int argc, char *argv[]) {
 	add_ok_tests();
 
 	if (whitelisted_tests_size == 0) {
-		check_that_every_error_test_directory_has_a_function();
-		check_that_every_error_runtime_test_directory_has_a_function();
-		check_that_every_ok_test_directory_has_a_function();
+		CHECK_THAT_EVERY_TEST_DIRECTORY_HAS_A_FUNCTION(err);
+		CHECK_THAT_EVERY_TEST_DIRECTORY_HAS_A_FUNCTION(err_runtime);
+		CHECK_THAT_EVERY_TEST_DIRECTORY_HAS_A_FUNCTION(ok);
 	}
 
 #ifdef SHUFFLES
@@ -6343,12 +6305,12 @@ int main(int argc, char *argv[]) {
 	srand(seed);
 
 	for (size_t shuffle = 0; shuffle < SHUFFLES; shuffle++) {
-	SHUFFLE(error_test_datas, error_test_datas_size, struct error_test_data);
-	SHUFFLE(runtime_error_test_datas, runtime_error_test_datas_size, struct runtime_error_test_data);
+	SHUFFLE(error_test_datas, err_test_datas_size, struct error_test_data);
+	SHUFFLE(runtime_error_test_datas, err_runtime_test_datas_size, struct runtime_error_test_data);
 	SHUFFLE(ok_test_datas, ok_test_datas_size, struct ok_test_data);
 #endif
 
-	for (size_t i = 0; i < error_test_datas_size; i++) {
+	for (size_t i = 0; i < err_test_datas_size; i++) {
 		struct error_test_data data = error_test_datas[i];
 
 		test_error(
@@ -6362,7 +6324,7 @@ int main(int argc, char *argv[]) {
 		);
 	}
 
-	for (size_t i = 0; i < runtime_error_test_datas_size; i++) {
+	for (size_t i = 0; i < err_runtime_test_datas_size; i++) {
 		struct runtime_error_test_data fn_data = runtime_error_test_datas[i];
 
 		struct test_data data = runtime_error_prologue(
