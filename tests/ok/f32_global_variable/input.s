@@ -37,6 +37,7 @@ extern grug_on_fns_in_safe_mode
 extern setjmp
 extern grug_get_runtime_error_reason
 extern game_fn_sin
+extern longjmp
 
 global init_globals
 init_globals:
@@ -53,6 +54,8 @@ init_globals:
 	je strict .fast
 
 	save_init_globals_fn_name_and_path
+
+	init_globals_fn_error_handling
 
 	mov eax, __?float32?__(0.0)
 	mov r11, rbp[-0x8]
@@ -85,6 +88,8 @@ on_a:
 
 	save_on_fn_name_and_path
 
+	error_handling
+
 	mov eax, __?float32?__(4.0)
 	mov r11, rbp[-0x8]
 	mov r11[byte 0x8], eax
@@ -97,6 +102,7 @@ on_a:
 	movd xmm0, eax
 	call game_fn_sin wrt ..plt
 	movd eax, xmm0
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

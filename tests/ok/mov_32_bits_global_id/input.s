@@ -21,10 +21,14 @@ section .text
 %include "tests/utils/defines.s"
 %include "tests/utils/macros.s"
 
+extern grug_runtime_error_handler
 extern grug_fn_path
+extern grug_runtime_error_jmp_buffer
 extern grug_fn_name
 extern grug_has_game_function_error_happened
 extern grug_on_fns_in_safe_mode
+extern setjmp
+extern grug_get_runtime_error_reason
 extern game_fn_get_opponent
 
 global init_globals
@@ -42,6 +46,8 @@ init_globals:
 	je strict .fast
 
 	save_init_globals_fn_name_and_path
+
+	init_globals_fn_error_handling
 
 	call game_fn_get_opponent wrt ..plt
 	mov r11, rbp[-0x8]

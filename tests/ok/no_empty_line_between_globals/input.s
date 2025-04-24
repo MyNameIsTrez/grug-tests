@@ -42,6 +42,8 @@ init_globals:
 
 	save_init_globals_fn_name_and_path
 
+	init_globals_fn_error_handling
+
 	mov eax, 420
 	mov r11, rbp[-0x8]
 	mov r11[byte 0x8], eax

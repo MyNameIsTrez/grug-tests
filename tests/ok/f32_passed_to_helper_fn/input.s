@@ -113,6 +113,7 @@ helper_foo_safe:
 	movd xmm0, eax
 	call game_fn_sin wrt ..plt
 	movd eax, xmm0
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

@@ -107,11 +107,14 @@ on_a:
 
 	save_on_fn_name_and_path
 
+	error_handling
+
 	mov rax, rbp[-0x8]
 	mov eax, rax[byte 0xc]
 	push rax
 	pop rdi
 	call game_fn_initialize wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp
