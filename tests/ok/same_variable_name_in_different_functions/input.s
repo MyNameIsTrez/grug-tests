@@ -49,6 +49,9 @@ section .text
 %endmacro
 
 %macro error_handling_on_a 0
+	mov rax, [rel grug_has_game_function_error_happened wrt ..got]
+	mov [rax], byte 0
+
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call setjmp wrt ..plt
 	test eax, eax
@@ -65,6 +68,38 @@ section .text
 	lea rcx, [rel on_fn_path]
 
 	lea rdx, [rel on_fn_name_a]
+
+	pop rsi
+
+	mov rax, [rel grug_runtime_error_handler wrt ..got]
+	call [rax]
+
+	mov rsp, rbp
+	pop rbp
+	ret
+%%skip:
+%endmacro
+
+%macro error_handling_on_b 0
+	mov rax, [rel grug_has_game_function_error_happened wrt ..got]
+	mov [rax], byte 0
+
+	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
+	call setjmp wrt ..plt
+	test eax, eax
+	je %%skip
+
+	dec eax
+	push rax
+	mov edi, eax
+	sub rsp, byte 0x8
+	call grug_get_runtime_error_reason wrt ..plt
+	add rsp, byte 0x8
+	mov rdi, rax
+
+	lea rcx, [rel on_fn_path]
+
+	lea rdx, [rel on_fn_name_b]
 
 	pop rsi
 
@@ -127,6 +162,7 @@ on_a:
 	push rax
 	pop rdi
 	call game_fn_initialize wrt ..plt
+	check_game_fn_error
 
 	; bar()
 	mov rax, rbp[-0x8]
@@ -173,6 +209,8 @@ on_b:
 
 	save_on_fn_name_and_path_on_b
 
+	error_handling_on_b
+
 	; foo: i32 = 1337
 	mov eax, 1337
 	mov rbp[-0xc], eax
@@ -182,6 +220,7 @@ on_b:
 	push rax
 	pop rdi
 	call game_fn_initialize wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp
@@ -220,6 +259,7 @@ helper_bar_safe:
 	push rax
 	pop rdi
 	call game_fn_initialize wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

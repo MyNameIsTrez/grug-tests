@@ -106,6 +106,7 @@ helper_foo_safe:
 	push rax
 	pop rdi
 	call game_fn_say wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

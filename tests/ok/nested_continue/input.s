@@ -70,6 +70,7 @@ on_a:
 	test al, al
 	je strict .skip_outer
 	call game_fn_nothing wrt ..plt
+	check_game_fn_error
 .repeat_inner:
 	mov eax, 2
 	push rax
@@ -100,6 +101,7 @@ on_a:
 	jmp strict .repeat_inner
 .skip_inner_if:
 	call game_fn_nothing wrt ..plt
+	check_game_fn_error
 	check_time_limit_exceeded
 	jmp strict .repeat_inner
 .skip_inner:

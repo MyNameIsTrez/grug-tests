@@ -65,6 +65,7 @@ on_a:
 	sub rsp, byte 0x8 ; Comment this out along with the `add rsp, 0x8` below the call to see the unaligned access crash
 	call game_fn_magic_aligned wrt ..plt
 	add rsp, byte 0x8
+	check_game_fn_error
 
 	pop r11
 	add eax, r11d
@@ -74,6 +75,7 @@ on_a:
 	; initialize_aligned(magic_aligned() + 42)
 	pop rdi
 	call game_fn_initialize_aligned wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

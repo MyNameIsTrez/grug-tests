@@ -67,9 +67,9 @@ extern grug_fn_name
 extern grug_has_game_function_error_happened
 extern grug_on_fns_in_safe_mode
 extern grug_current_time
-extern clock_gettime
 extern setjmp
 extern grug_get_runtime_error_reason
+extern clock_gettime
 extern longjmp
 extern game_fn_offset_32_bit_f32
 
@@ -404,6 +404,7 @@ helper_foo_safe:
 	movd xmm7, eax
 	call game_fn_offset_32_bit_f32 wrt ..plt
 	add rsp, byte 0x50
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

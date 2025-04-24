@@ -75,6 +75,7 @@ on_a:
 
 	pop rdi
 	call game_fn_initialize wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

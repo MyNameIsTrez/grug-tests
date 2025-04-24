@@ -76,6 +76,7 @@ on_a:
 	pop rdi
 	pop rsi
 	call game_fn_max wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

@@ -31,11 +31,16 @@ section .text
 %include "tests/utils/defines.s"
 %include "tests/utils/macros.s"
 
+extern grug_runtime_error_handler
 extern grug_fn_path
+extern grug_runtime_error_jmp_buffer
 extern grug_fn_name
 extern grug_has_game_function_error_happened
 extern grug_on_fns_in_safe_mode
+extern setjmp
+extern grug_get_runtime_error_reason
 extern game_fn_draw
+extern longjmp
 
 global init_globals
 init_globals:
@@ -56,10 +61,13 @@ on_a:
 
 	save_on_fn_name_and_path
 
+	error_handling
+
 	lea rax, [rel resource]
 	push rax
 	pop rdi
 	call game_fn_draw wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

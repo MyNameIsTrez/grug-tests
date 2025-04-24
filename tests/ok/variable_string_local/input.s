@@ -36,6 +36,7 @@ extern grug_on_fns_in_safe_mode
 extern setjmp
 extern grug_get_runtime_error_reason
 extern game_fn_say
+extern longjmp
 
 global init_globals
 init_globals:
@@ -56,6 +57,8 @@ on_a:
 
 	save_on_fn_name_and_path
 
+	error_handling
+
 	lea rax, [rel foo]
 	mov rbp[-0x10], rax
 
@@ -64,6 +67,7 @@ on_a:
 
 	pop rdi
 	call game_fn_say wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

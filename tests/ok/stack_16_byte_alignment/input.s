@@ -34,6 +34,7 @@ extern grug_on_fns_in_safe_mode
 extern setjmp
 extern grug_get_runtime_error_reason
 extern game_fn_nothing_aligned
+extern longjmp
 extern game_fn_initialize_aligned
 
 global init_globals
@@ -55,7 +56,10 @@ on_a:
 
 	save_on_fn_name_and_path
 
+	error_handling
+
 	call game_fn_nothing_aligned wrt ..plt
+	check_game_fn_error
 
 	; add rsp, 0x8 ; Uncomment to see the unaligned access crash
 
@@ -65,6 +69,7 @@ on_a:
 	push rax
 	pop rdi
 	call game_fn_initialize_aligned wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

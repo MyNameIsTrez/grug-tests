@@ -37,6 +37,7 @@ extern setjmp
 extern grug_get_runtime_error_reason
 extern strcmp
 extern game_fn_initialize_bool
+extern longjmp
 
 global init_globals
 init_globals:
@@ -57,6 +58,8 @@ on_a:
 
 	save_on_fn_name_and_path
 
+	error_handling
+
 	lea rax, [rel foo]
 	push rax
 
@@ -73,6 +76,7 @@ on_a:
 
 	pop rdi
 	call game_fn_initialize_bool wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

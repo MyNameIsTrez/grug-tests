@@ -36,6 +36,7 @@ extern grug_on_fns_in_safe_mode
 extern setjmp
 extern grug_get_runtime_error_reason
 extern game_fn_mega
+extern longjmp
 
 global init_globals
 init_globals:
@@ -55,6 +56,8 @@ on_a:
 	je strict .fast
 
 	save_on_fn_name_and_path
+
+	error_handling
 
 	; Pushing arguments
 
@@ -129,6 +132,7 @@ on_a:
 	; Calling function
 
 	call game_fn_mega wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

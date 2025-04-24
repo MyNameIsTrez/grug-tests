@@ -54,6 +54,8 @@ on_a:
 
 	save_on_fn_name_and_path
 
+	error_handling
+
 	mov rsp, rbp
 	pop rbp
 	ret

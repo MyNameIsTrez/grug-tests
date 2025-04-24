@@ -34,6 +34,7 @@ extern grug_on_fns_in_safe_mode
 extern setjmp
 extern grug_get_runtime_error_reason
 extern game_fn_set_target
+extern longjmp
 
 global init_globals
 init_globals:
@@ -54,96 +55,113 @@ on_a:
 
 	save_on_fn_name_and_path
 
+	error_handling
+
 	mov rax, -1
 	mov rbp[-0x10], rax
     mov rax, rbp[-0x10]
 	push rax
 	pop rdi
 	call game_fn_set_target wrt ..plt
+	check_game_fn_error
 	mov rax, -1
 	mov rbp[-0x18], rax
     mov rax, rbp[-0x18]
 	push rax
 	pop rdi
 	call game_fn_set_target wrt ..plt
+	check_game_fn_error
 	mov rax, -1
 	mov rbp[-0x20], rax
     mov rax, rbp[-0x20]
 	push rax
 	pop rdi
 	call game_fn_set_target wrt ..plt
+	check_game_fn_error
 	mov rax, -1
 	mov rbp[-0x28], rax
     mov rax, rbp[-0x28]
 	push rax
 	pop rdi
 	call game_fn_set_target wrt ..plt
+	check_game_fn_error
 	mov rax, -1
 	mov rbp[-0x30], rax
     mov rax, rbp[-0x30]
 	push rax
 	pop rdi
 	call game_fn_set_target wrt ..plt
+	check_game_fn_error
 	mov rax, -1
 	mov rbp[-0x38], rax
     mov rax, rbp[-0x38]
 	push rax
 	pop rdi
 	call game_fn_set_target wrt ..plt
+	check_game_fn_error
 	mov rax, -1
 	mov rbp[-0x40], rax
     mov rax, rbp[-0x40]
 	push rax
 	pop rdi
 	call game_fn_set_target wrt ..plt
+	check_game_fn_error
 	mov rax, -1
 	mov rbp[-0x48], rax
     mov rax, rbp[-0x48]
 	push rax
 	pop rdi
 	call game_fn_set_target wrt ..plt
+	check_game_fn_error
 	mov rax, -1
 	mov rbp[-0x50], rax
     mov rax, rbp[-0x50]
 	push rax
 	pop rdi
 	call game_fn_set_target wrt ..plt
+	check_game_fn_error
 	mov rax, -1
 	mov rbp[-0x58], rax
     mov rax, rbp[-0x58]
 	push rax
 	pop rdi
 	call game_fn_set_target wrt ..plt
+	check_game_fn_error
 	mov rax, -1
 	mov rbp[-0x60], rax
     mov rax, rbp[-0x60]
 	push rax
 	pop rdi
 	call game_fn_set_target wrt ..plt
+	check_game_fn_error
 	mov rax, -1
 	mov rbp[-0x68], rax
     mov rax, rbp[-0x68]
 	push rax
 	pop rdi
 	call game_fn_set_target wrt ..plt
+	check_game_fn_error
 	mov rax, -1
 	mov rbp[-0x70], rax
     mov rax, rbp[-0x70]
 	push rax
 	pop rdi
 	call game_fn_set_target wrt ..plt
+	check_game_fn_error
 	mov rax, -1
 	mov rbp[-0x78], rax
     mov rax, rbp[-0x78]
 	push rax
 	pop rdi
 	call game_fn_set_target wrt ..plt
+	check_game_fn_error
 	mov rax, -1
 	mov rbp[-0x80], rax
     mov rax, rbp[-0x80]
 	push rax
 	pop rdi
 	call game_fn_set_target wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

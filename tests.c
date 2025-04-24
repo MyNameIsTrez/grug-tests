@@ -5156,50 +5156,6 @@ static void ok_same_variable_name_in_different_functions(void *on_fns, void *g, 
 	assert(entity_types == NULL);
 }
 
-static void ok_stack_16_byte_alignment(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_nothing_aligned_call_count == 0);
-	assert(game_fn_initialize_aligned_call_count == 0);
-	((struct j_on_fns *)on_fns)->a(g);
-	assert(game_fn_nothing_aligned_call_count == 1);
-	assert(game_fn_initialize_aligned_call_count == 1);
-
-	free(g);
-
-	assert(game_fn_initialize_aligned_x == 42);
-
-	assert(streq(grug_fn_name, "on_a"));
-	assert(streq(grug_fn_path, "tests/ok/stack_16_byte_alignment/input-d.grug"));
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
-static void ok_stack_16_byte_alignment_midway(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_magic_aligned_call_count == 0);
-	assert(game_fn_initialize_aligned_call_count == 0);
-	((struct j_on_fns *)on_fns)->a(g);
-	assert(game_fn_magic_aligned_call_count == 1);
-	assert(game_fn_initialize_aligned_call_count == 1);
-
-	free(g);
-
-	assert(game_fn_initialize_aligned_x == 42 + 42);
-
-	assert(streq(grug_fn_name, "on_a"));
-	assert(streq(grug_fn_path, "tests/ok/stack_16_byte_alignment_midway/input-d.grug"));
-
-	assert(resources_size == 0);
-	assert(resources == NULL);
-
-	assert(entities_size == 0);
-	assert(entities == NULL);
-	assert(entity_types == NULL);
-}
-
 static void ok_spill_args_to_game_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_motherload_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -5490,6 +5446,50 @@ static void ok_spill_args_to_helper_fn_subless(void *on_fns, void *g, size_t res
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/spill_args_to_helper_fn_subless/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_stack_16_byte_alignment(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_nothing_aligned_call_count == 0);
+	assert(game_fn_initialize_aligned_call_count == 0);
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(game_fn_nothing_aligned_call_count == 1);
+	assert(game_fn_initialize_aligned_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_aligned_x == 42);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/stack_16_byte_alignment/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_stack_16_byte_alignment_midway(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_magic_aligned_call_count == 0);
+	assert(game_fn_initialize_aligned_call_count == 0);
+	((struct j_on_fns *)on_fns)->a(g);
+	assert(game_fn_magic_aligned_call_count == 1);
+	assert(game_fn_initialize_aligned_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_aligned_x == 42 + 42);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/stack_16_byte_alignment_midway/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -6285,8 +6285,6 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(return_from_on_fn_minimal, "d", 8);
 	ADD_TEST_OK(return_with_no_value, "d", 8);
 	ADD_TEST_OK(same_variable_name_in_different_functions, "e", 8);
-	ADD_TEST_OK(stack_16_byte_alignment, "d", 8);
-	ADD_TEST_OK(stack_16_byte_alignment_midway, "d", 8);
 	ADD_TEST_OK(spill_args_to_game_fn, "d", 8);
 	ADD_TEST_OK(spill_args_to_game_fn_subless, "d", 8);
 	ADD_TEST_OK(spill_args_to_helper_fn, "d", 12);
@@ -6294,6 +6292,8 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(spill_args_to_helper_fn_32_bit_i32, "d", 12);
 	ADD_TEST_OK(spill_args_to_helper_fn_32_bit_string, "d", 12);
 	ADD_TEST_OK(spill_args_to_helper_fn_subless, "d", 12);
+	ADD_TEST_OK(stack_16_byte_alignment, "d", 8);
+	ADD_TEST_OK(stack_16_byte_alignment_midway, "d", 8);
 	ADD_TEST_OK(string_can_be_passed_to_helper_fn, "d", 8);
 	ADD_TEST_OK(string_duplicate, "d", 8);
 	ADD_TEST_OK(string_eq_false, "d", 8);

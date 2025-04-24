@@ -63,6 +63,7 @@ on_a:
 	error_handling
 
 	call game_fn_nothing wrt ..plt
+	check_game_fn_error
 
 .repeat_safe:
 	xor eax, eax
@@ -70,12 +71,14 @@ on_a:
 	je strict .skip_safe
 
 	call game_fn_nothing wrt ..plt
+	check_game_fn_error
 
 	check_time_limit_exceeded
 	jmp strict .repeat_safe
 .skip_safe:
 
 	call game_fn_nothing wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

@@ -94,12 +94,14 @@ helper_foo_safe:
 	check_time_limit_exceeded
 
 	call game_fn_nothing wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp
 	ret
 
 	call game_fn_nothing wrt ..plt
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp
