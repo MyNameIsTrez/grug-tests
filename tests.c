@@ -716,7 +716,7 @@ uint64_t game_fn_get_position(uint64_t id) {
 void game_fn_cause_game_fn_error(void) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_cause_game_fn_error_call_count++;
-	grug_game_function_error_happened();
+	grug_game_function_error_happened("cause_game_fn_error(): Game function error");
 }
 
 static void reset_call_counts(void) {
