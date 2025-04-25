@@ -51,6 +51,7 @@ void game_fn_offset_32_bit_string(float f1, float f2, float f3, float f4, float 
 void game_fn_talk(char *message1, char *message2, char *message3, char *message4) {}
 uint64_t game_fn_get_position(uint64_t id) { return 0; }
 void game_fn_cause_game_fn_error(void) {}
+void game_fn_call_on_b(void) {}
 
 // Source: https://github.com/google/security-research-pocs/blob/d10780c3ddb8070dff6c5e5862c93c01392d1727/autofuzz/fuzz_utils.cc#L10
 int ignore_stdout(void) {
