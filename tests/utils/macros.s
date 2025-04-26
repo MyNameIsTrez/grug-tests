@@ -18,28 +18,17 @@
 	mov [rax], r11
 %endmacro
 
-%macro init_globals_fn_error_handling 0
+%macro runtime_error 1
 	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
-	mov [rax], byte 0
+	mov [rax], byte 1
 
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call setjmp wrt ..plt
-	test eax, eax
-	je %%skip
-
-	dec eax
-	push rax
-	mov edi, eax
-	sub rsp, byte 0x8
+	mov edi, %1
 	call grug_get_runtime_error_reason wrt ..plt
-	add rsp, byte 0x8
 	mov rdi, rax
 
-	lea rcx, [rel init_globals_fn_path]
-
-	lea rdx, [rel init_globals_fn_name]
-
-	pop rsi
+	lea rcx, [rel on_fn_path]
+	lea rdx, [rel on_fn_name]
+	mov esi, %1
 
 	mov rax, [rel grug_runtime_error_handler wrt ..got]
 	call [rax]
@@ -47,7 +36,6 @@
 	mov rsp, rbp
 	pop rbp
 	ret
-%%skip:
 %endmacro
 
 %macro set_max_rsp 0
@@ -86,24 +74,7 @@
 	mov rax, [rel grug_max_rsp wrt ..got]
 	cmp rsp, [rax]
 	jg %%skip
-
-	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
-	mov [rax], byte 1
-
-	mov edi, GRUG_ON_FN_STACK_OVERFLOW
-	call grug_get_runtime_error_reason wrt ..plt
-	mov rdi, rax
-
-	lea rcx, [rel on_fn_path]
-	lea rdx, [rel on_fn_name]
-	mov esi, GRUG_ON_FN_STACK_OVERFLOW
-
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
-
-	mov rsp, rbp
-	pop rbp
-	ret
+	runtime_error GRUG_ON_FN_STACK_OVERFLOW
 %%skip:
 %endmacro
 
@@ -132,24 +103,7 @@
 	; goto skip;
 	jmp short %%skip
 %%exceeded:
-
-	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
-	mov [rax], byte 1
-
-	mov edi, GRUG_ON_FN_TIME_LIMIT_EXCEEDED
-	call grug_get_runtime_error_reason wrt ..plt
-	mov rdi, rax
-
-	lea rcx, [rel on_fn_path]
-	lea rdx, [rel on_fn_name]
-	mov esi, GRUG_ON_FN_TIME_LIMIT_EXCEEDED
-
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
-
-	mov rsp, rbp
-	pop rbp
-	ret
+	runtime_error GRUG_ON_FN_TIME_LIMIT_EXCEEDED
 %%skip:
 %endmacro
 
@@ -158,71 +112,20 @@
 	jne %%skip
 	cmp r11d, -1
 	jne %%skip
-
-	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
-	mov [rax], byte 1
-
-	mov edi, GRUG_ON_FN_OVERFLOW
-	call grug_get_runtime_error_reason wrt ..plt
-	mov rdi, rax
-
-	lea rcx, [rel on_fn_path]
-	lea rdx, [rel on_fn_name]
-	mov esi, GRUG_ON_FN_OVERFLOW
-
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
-
-	mov rsp, rbp
-	pop rbp
-	ret
+	runtime_error GRUG_ON_FN_OVERFLOW
 %%skip:
 %endmacro
 
 %macro check_division_by_0 0
 	test r11, r11
 	jne %%skip
-
-	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
-	mov [rax], byte 1
-
-	mov edi, GRUG_ON_FN_DIVISION_BY_ZERO
-	call grug_get_runtime_error_reason wrt ..plt
-	mov rdi, rax
-
-	lea rcx, [rel on_fn_path]
-	lea rdx, [rel on_fn_name]
-	mov esi, GRUG_ON_FN_DIVISION_BY_ZERO
-
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
-
-	mov rsp, rbp
-	pop rbp
-	ret
+	runtime_error GRUG_ON_FN_DIVISION_BY_ZERO
 %%skip:
 %endmacro
 
 %macro check_overflow 0
 	jno %%skip
-
-	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
-	mov [rax], byte 1
-
-	mov edi, GRUG_ON_FN_OVERFLOW
-	call grug_get_runtime_error_reason wrt ..plt
-	mov rdi, rax
-
-	lea rcx, [rel on_fn_path]
-	lea rdx, [rel on_fn_name]
-	mov esi, GRUG_ON_FN_OVERFLOW
-
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
-
-	mov rsp, rbp
-	pop rbp
-	ret
+	runtime_error GRUG_ON_FN_OVERFLOW
 %%skip:
 %endmacro
 
@@ -231,21 +134,7 @@
 	mov r11b, [r11]
 	test r11b, r11b
 	je %%skip
-
-	mov edi, GRUG_ON_FN_GAME_FN_ERROR
-	call grug_get_runtime_error_reason wrt ..plt
-	mov rdi, rax
-
-	lea rcx, [rel on_fn_path]
-	lea rdx, [rel on_fn_name]
-	mov esi, GRUG_ON_FN_GAME_FN_ERROR
-
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
-
-	mov rsp, rbp
-	pop rbp
-	ret
+	runtime_error GRUG_ON_FN_GAME_FN_ERROR
 %%skip:
 %endmacro
 
