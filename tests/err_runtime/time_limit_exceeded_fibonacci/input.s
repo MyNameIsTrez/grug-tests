@@ -36,8 +36,8 @@ extern grug_on_fns_in_safe_mode
 extern grug_current_time
 extern clock_gettime
 extern setjmp
-extern grug_get_runtime_error_reason
 extern game_fn_initialize
+extern grug_get_runtime_error_reason
 extern longjmp
 
 global init_globals
@@ -63,7 +63,7 @@ on_a:
 
 	set_time_limit
 
-	error_handling
+	clear_has_runtime_error_happened
 
 	mov eax, 100
 	push rax
@@ -72,6 +72,7 @@ on_a:
 	pop rdi
 	pop rsi
 	call helper_fib_safe
+	return_if_runtime_error
 	push rax
 	pop rdi
 	call game_fn_initialize wrt ..plt
@@ -157,6 +158,7 @@ helper_fib_safe:
 	pop rdi
 	pop rsi
 	call helper_fib_safe
+	return_if_runtime_error
 	push rax
 
 	; helper_fib_safe(n - 1)
@@ -174,6 +176,7 @@ helper_fib_safe:
 	pop rsi
 	call helper_fib_safe
 	add rsp, byte 0x8
+	return_if_runtime_error
 	pop r11
 
 	; helper_fib_safe(n - 1) + helper_fib_safe(n - 2)

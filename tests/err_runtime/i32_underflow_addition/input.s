@@ -55,7 +55,7 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	error_handling
+	clear_has_runtime_error_happened
 
 	mov eax, 2
 	neg eax

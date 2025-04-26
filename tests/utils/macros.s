@@ -18,6 +18,26 @@
 	mov [rax], r11
 %endmacro
 
+%macro save_on_fn_name_and_path_on_a 0
+	mov rax, [rel grug_fn_path wrt ..got]
+	lea r11, [rel on_fn_path]
+	mov [rax], r11
+
+	mov rax, [rel grug_fn_name wrt ..got]
+	lea r11, [rel on_fn_name_a]
+	mov [rax], r11
+%endmacro
+
+%macro save_on_fn_name_and_path_on_b 0
+	mov rax, [rel grug_fn_path wrt ..got]
+	lea r11, [rel on_fn_path]
+	mov [rax], r11
+
+	mov rax, [rel grug_fn_name wrt ..got]
+	lea r11, [rel on_fn_name_b]
+	mov [rax], r11
+%endmacro
+
 %macro clear_has_runtime_error_happened 0
 	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
 	mov [rax], byte 0
@@ -160,6 +180,52 @@
 
 	lea rcx, [rel on_fn_path]
 	lea rdx, [rel on_fn_name]
+	mov esi, GRUG_ON_FN_GAME_FN_ERROR
+
+	mov rax, [rel grug_runtime_error_handler wrt ..got]
+	call [rax]
+
+	mov rsp, rbp
+	pop rbp
+	ret
+%%skip:
+%endmacro
+
+%macro check_game_fn_error_on_a 0
+	mov r11, [rel grug_has_runtime_error_happened wrt ..got]
+	mov r11b, [r11]
+	test r11b, r11b
+	je %%skip
+
+	mov edi, GRUG_ON_FN_GAME_FN_ERROR
+	call grug_get_runtime_error_reason wrt ..plt
+	mov rdi, rax
+
+	lea rcx, [rel on_fn_path]
+	lea rdx, [rel on_fn_name_a]
+	mov esi, GRUG_ON_FN_GAME_FN_ERROR
+
+	mov rax, [rel grug_runtime_error_handler wrt ..got]
+	call [rax]
+
+	mov rsp, rbp
+	pop rbp
+	ret
+%%skip:
+%endmacro
+
+%macro check_game_fn_error_on_b 0
+	mov r11, [rel grug_has_runtime_error_happened wrt ..got]
+	mov r11b, [r11]
+	test r11b, r11b
+	je %%skip
+
+	mov edi, GRUG_ON_FN_GAME_FN_ERROR
+	call grug_get_runtime_error_reason wrt ..plt
+	mov rdi, rax
+
+	lea rcx, [rel on_fn_path]
+	lea rdx, [rel on_fn_name_b]
 	mov esi, GRUG_ON_FN_GAME_FN_ERROR
 
 	mov rax, [rel grug_runtime_error_handler wrt ..got]

@@ -63,17 +63,19 @@ on_a:
 
 	set_time_limit
 
-	error_handling
+	clear_has_runtime_error_happened
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_a_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_a_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -107,11 +109,13 @@ helper_a_safe:
 	push rax
 	pop rdi
 	call helper_b_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_b_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -151,11 +155,13 @@ helper_b_safe:
 	push rax
 	pop rdi
 	call helper_c_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_c_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -195,11 +201,13 @@ helper_c_safe:
 	push rax
 	pop rdi
 	call helper_d_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_d_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -239,11 +247,13 @@ helper_d_safe:
 	push rax
 	pop rdi
 	call helper_e_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_e_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -283,11 +293,13 @@ helper_e_safe:
 	push rax
 	pop rdi
 	call helper_f_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_f_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -327,11 +339,13 @@ helper_f_safe:
 	push rax
 	pop rdi
 	call helper_g_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_g_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -371,11 +385,13 @@ helper_g_safe:
 	push rax
 	pop rdi
 	call helper_h_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_h_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -415,11 +431,13 @@ helper_h_safe:
 	push rax
 	pop rdi
 	call helper_i_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_i_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -459,11 +477,13 @@ helper_i_safe:
 	push rax
 	pop rdi
 	call helper_j_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_j_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -503,11 +523,13 @@ helper_j_safe:
 	push rax
 	pop rdi
 	call helper_k_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_k_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -547,11 +569,13 @@ helper_k_safe:
 	push rax
 	pop rdi
 	call helper_l_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_l_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -591,11 +615,13 @@ helper_l_safe:
 	push rax
 	pop rdi
 	call helper_m_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_m_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -635,11 +661,13 @@ helper_m_safe:
 	push rax
 	pop rdi
 	call helper_n_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_n_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -679,11 +707,13 @@ helper_n_safe:
 	push rax
 	pop rdi
 	call helper_o_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_o_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -723,11 +753,13 @@ helper_o_safe:
 	push rax
 	pop rdi
 	call helper_p_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_p_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -767,11 +799,13 @@ helper_p_safe:
 	push rax
 	pop rdi
 	call helper_q_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_q_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -811,11 +845,13 @@ helper_q_safe:
 	push rax
 	pop rdi
 	call helper_r_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_r_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -855,11 +891,13 @@ helper_r_safe:
 	push rax
 	pop rdi
 	call helper_s_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_s_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -899,11 +937,13 @@ helper_s_safe:
 	push rax
 	pop rdi
 	call helper_t_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_t_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -943,11 +983,13 @@ helper_t_safe:
 	push rax
 	pop rdi
 	call helper_u_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_u_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -987,11 +1029,13 @@ helper_u_safe:
 	push rax
 	pop rdi
 	call helper_v_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_v_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -1031,11 +1075,13 @@ helper_v_safe:
 	push rax
 	pop rdi
 	call helper_w_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_w_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -1075,11 +1121,13 @@ helper_w_safe:
 	push rax
 	pop rdi
 	call helper_x_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_x_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -1119,11 +1167,13 @@ helper_x_safe:
 	push rax
 	pop rdi
 	call helper_y_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_y_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -1163,11 +1213,13 @@ helper_y_safe:
 	push rax
 	pop rdi
 	call helper_z_safe
+	return_if_runtime_error
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_z_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
