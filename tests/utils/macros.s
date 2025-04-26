@@ -134,6 +134,8 @@
 %%skip:
 %endmacro
 
+; This is deliberately not using rax, as rax holds the return value
+; of the game/helper function that was just called.
 %macro check_game_fn_error 0
 	mov r11, [rel grug_has_runtime_error_happened wrt ..got]
 	mov r11b, [r11]
