@@ -153,6 +153,20 @@
 	mov r11b, [r11]
 	test r11b, r11b
 	je %%skip
-	runtime_error GRUG_ON_FN_GAME_FN_ERROR
+
+	mov edi, GRUG_ON_FN_GAME_FN_ERROR
+	call grug_get_runtime_error_reason wrt ..plt
+	mov rdi, rax
+
+	lea rcx, [rel on_fn_path]
+	lea rdx, [rel on_fn_name]
+	mov esi, GRUG_ON_FN_GAME_FN_ERROR
+
+	mov rax, [rel grug_runtime_error_handler wrt ..got]
+	call [rax]
+
+	mov rsp, rbp
+	pop rbp
+	ret
 %%skip:
 %endmacro

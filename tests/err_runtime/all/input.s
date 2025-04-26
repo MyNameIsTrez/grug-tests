@@ -63,7 +63,7 @@ on_a:
 
 	set_time_limit
 
-	error_handling
+	clear_has_runtime_error_happened
 
 	xor eax, eax
 	push rax
@@ -84,6 +84,7 @@ on_a:
 
 	pop rdi
 	call helper_foo_safe
+	return_if_runtime_error
 
 .repeat:
 	mov eax, 1
@@ -157,6 +158,7 @@ helper_foo_safe:
 
 	pop rdi
 	call helper_foo_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
