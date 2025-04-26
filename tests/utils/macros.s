@@ -43,6 +43,18 @@
 	ret
 %endmacro
 
+%macro return_if_runtime_error 0
+	mov r11, [rel grug_has_runtime_error_happened wrt ..got]
+	mov r11b, [r11]
+	test r11b, r11b
+	je %%skip
+
+	mov rsp, rbp
+	pop rbp
+	ret
+%%skip:
+%endmacro
+
 %macro set_max_rsp 0
 	mov rax, [rel grug_max_rsp wrt ..got]
 	mov [rax], rsp
@@ -142,17 +154,5 @@
 	test r11b, r11b
 	je %%skip
 	runtime_error GRUG_ON_FN_GAME_FN_ERROR
-%%skip:
-%endmacro
-
-%macro return_if_runtime_error 0
-	mov r11, [rel grug_has_runtime_error_happened wrt ..got]
-	mov r11b, [r11]
-	test r11b, r11b
-	je %%skip
-
-	mov rsp, rbp
-	pop rbp
-	ret
 %%skip:
 %endmacro

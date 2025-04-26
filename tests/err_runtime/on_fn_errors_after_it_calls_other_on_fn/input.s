@@ -100,11 +100,11 @@ extern grug_fn_name
 extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern setjmp
+extern game_fn_call_on_b_fn
 extern grug_get_runtime_error_reason
 extern game_fn_cause_game_fn_error
 extern longjmp
 extern game_fn_nothing
-extern game_fn_call_on_b_fn
 
 global init_globals
 init_globals:
