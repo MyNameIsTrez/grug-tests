@@ -48,28 +48,19 @@ section .text
 	mov [rax], r11
 %endmacro
 
-%macro error_handling_on_a 0
-	mov rax, [rel grug_has_game_function_error_happened wrt ..got]
-	mov [rax], byte 0
-
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call setjmp wrt ..plt
-	test eax, eax
+%macro check_game_fn_error_on_a 0
+	mov r11, [rel grug_has_game_function_error_happened wrt ..got]
+	mov r11b, [r11]
+	test r11b, r11b
 	je %%skip
 
-	dec eax
-	push rax
-	mov edi, eax
-	sub rsp, byte 0x8
+	mov edi, GRUG_ON_FN_GAME_FN_ERROR
 	call grug_get_runtime_error_reason wrt ..plt
-	add rsp, byte 0x8
 	mov rdi, rax
 
 	lea rcx, [rel on_fn_path]
-
 	lea rdx, [rel on_fn_name_a]
-
-	pop rsi
+	mov esi, GRUG_ON_FN_GAME_FN_ERROR
 
 	mov rax, [rel grug_runtime_error_handler wrt ..got]
 	call [rax]
@@ -80,28 +71,19 @@ section .text
 %%skip:
 %endmacro
 
-%macro error_handling_on_b 0
-	mov rax, [rel grug_has_game_function_error_happened wrt ..got]
-	mov [rax], byte 0
-
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call setjmp wrt ..plt
-	test eax, eax
+%macro check_game_fn_error_on_b 0
+	mov r11, [rel grug_has_game_function_error_happened wrt ..got]
+	mov r11b, [r11]
+	test r11b, r11b
 	je %%skip
 
-	dec eax
-	push rax
-	mov edi, eax
-	sub rsp, byte 0x8
+	mov edi, GRUG_ON_FN_GAME_FN_ERROR
 	call grug_get_runtime_error_reason wrt ..plt
-	add rsp, byte 0x8
 	mov rdi, rax
 
 	lea rcx, [rel on_fn_path]
-
 	lea rdx, [rel on_fn_name_b]
-
-	pop rsi
+	mov esi, GRUG_ON_FN_GAME_FN_ERROR
 
 	mov rax, [rel grug_runtime_error_handler wrt ..got]
 	call [rax]
@@ -114,7 +96,6 @@ section .text
 
 extern grug_runtime_error_handler
 extern grug_fn_path
-extern grug_runtime_error_jmp_buffer
 extern grug_fn_name
 extern grug_has_game_function_error_happened
 extern grug_on_fns_in_safe_mode
@@ -144,13 +125,14 @@ on_a:
 
 	save_on_fn_name_and_path_on_a
 
-	error_handling_on_a
+	mov rax, [rel grug_has_game_function_error_happened wrt ..got]
+	mov [rax], byte 0
 
 	call game_fn_call_on_b wrt ..plt
-	check_game_fn_error
+	check_game_fn_error_on_a
 
 	call game_fn_cause_game_fn_error wrt ..plt
-	check_game_fn_error
+	check_game_fn_error_on_a
 
 	mov rsp, rbp
 	pop rbp
@@ -178,10 +160,11 @@ on_b:
 
 	save_on_fn_name_and_path_on_b
 
-	error_handling_on_b
+	mov rax, [rel grug_has_game_function_error_happened wrt ..got]
+	mov [rax], byte 0
 
 	call game_fn_nothing wrt ..plt
-	check_game_fn_error
+	check_game_fn_error_on_b
 
 	mov rsp, rbp
 	pop rbp

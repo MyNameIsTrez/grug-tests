@@ -50,38 +50,6 @@
 %%skip:
 %endmacro
 
-%macro error_handling 0
-	mov rax, [rel grug_has_game_function_error_happened wrt ..got]
-	mov [rax], byte 0
-
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call setjmp wrt ..plt
-	test eax, eax
-	je %%skip
-
-	dec eax
-	push rax
-	mov edi, eax
-	sub rsp, byte 0x8
-	call grug_get_runtime_error_reason wrt ..plt
-	add rsp, byte 0x8
-	mov rdi, rax
-
-	lea rcx, [rel on_fn_path]
-
-	lea rdx, [rel on_fn_name]
-
-	pop rsi
-
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
-
-	mov rsp, rbp
-	pop rbp
-	ret
-%%skip:
-%endmacro
-
 %macro set_max_rsp 0
 	mov rax, [rel grug_max_rsp wrt ..got]
 	mov [rax], rsp
@@ -189,8 +157,20 @@
 	mov r11b, [r11]
 	test r11b, r11b
 	je %%skip
-	mov esi, 1 + GRUG_ON_FN_GAME_FN_ERROR
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call longjmp wrt ..plt
+
+	mov edi, GRUG_ON_FN_GAME_FN_ERROR
+	call grug_get_runtime_error_reason wrt ..plt
+	mov rdi, rax
+
+	lea rcx, [rel on_fn_path]
+	lea rdx, [rel on_fn_name]
+	mov esi, GRUG_ON_FN_GAME_FN_ERROR
+
+	mov rax, [rel grug_runtime_error_handler wrt ..got]
+	call [rax]
+
+	mov rsp, rbp
+	pop rbp
+	ret
 %%skip:
 %endmacro

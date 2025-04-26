@@ -1394,11 +1394,13 @@ static struct test_data runtime_error_prologue(
 }
 
 static bool had_runtime_error = false;
+static size_t error_handler_calls = 0;
 static enum grug_runtime_error_type runtime_error_type = -1;
 static char *runtime_error_on_fn_name = NULL;
 static char *runtime_error_on_fn_path = NULL;
 static void runtime_error_handler(char *reason, enum grug_runtime_error_type type, char *on_fn_name, char *on_fn_path) {
 	had_runtime_error = true;
+	error_handler_calls++;
 
 	runtime_error_reason = reason;
 	runtime_error_type = type;
@@ -1744,10 +1746,12 @@ static void runtime_error_on_fn_calls_erroring_on_fn(void *on_fns, void *g, size
 	assert(game_fn_call_on_b_call_count == 0);
 	assert(game_fn_cause_game_fn_error_call_count == 0);
 	assert(game_fn_nothing_call_count == 0);
+	assert(error_handler_calls == 0);
 	((struct e_on_fns *)on_fns)->a(g);
 	assert(game_fn_call_on_b_call_count == 1);
 	assert(game_fn_cause_game_fn_error_call_count == 1);
 	assert(game_fn_nothing_call_count == 0);
+	assert(error_handler_calls == 2);
 
 	assert(had_runtime_error);
 
@@ -1756,9 +1760,9 @@ static void runtime_error_on_fn_calls_erroring_on_fn(void *on_fns, void *g, size
 	assert(runtime_error_type == GRUG_ON_FN_GAME_FN_ERROR);
 	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_GAME_FN_ERROR)));
 
-	assert(streq(runtime_error_on_fn_name, "on_b"));
+	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/on_fn_calls_erroring_on_fn/input-e.grug"));
-	
+
 	assert(streq(grug_fn_name, "on_b"));
 	assert(streq(grug_fn_path, "tests/err_runtime/on_fn_calls_erroring_on_fn/input-e.grug"));
 
@@ -1777,10 +1781,12 @@ static void runtime_error_on_fn_errors_after_it_calls_other_on_fn(void *on_fns, 
 	assert(game_fn_call_on_b_call_count == 0);
 	assert(game_fn_nothing_call_count == 0);
 	assert(game_fn_cause_game_fn_error_call_count == 0);
+	assert(error_handler_calls == 0);
 	((struct e_on_fns *)on_fns)->a(g);
 	assert(game_fn_call_on_b_call_count == 1);
 	assert(game_fn_nothing_call_count == 1);
 	assert(game_fn_cause_game_fn_error_call_count == 1);
+	assert(error_handler_calls == 1);
 
 	assert(had_runtime_error);
 
@@ -1789,7 +1795,7 @@ static void runtime_error_on_fn_errors_after_it_calls_other_on_fn(void *on_fns, 
 	assert(runtime_error_type == GRUG_ON_FN_GAME_FN_ERROR);
 	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_GAME_FN_ERROR)));
 
-	assert(streq(runtime_error_on_fn_name, "on_b"));
+	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/on_fn_errors_after_it_calls_other_on_fn/input-e.grug"));
 	
 	assert(streq(grug_fn_name, "on_b"));
@@ -6426,6 +6432,7 @@ int main(int argc, char *argv[]) {
 		if (data.run) {
 			runtime_error_reason = NULL;
 			had_runtime_error = false;
+			error_handler_calls = 0;
 			runtime_error_type = -1;
 			runtime_error_on_fn_name = NULL;
 			runtime_error_on_fn_path = NULL;
