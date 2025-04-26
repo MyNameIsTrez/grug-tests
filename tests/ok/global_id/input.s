@@ -28,8 +28,8 @@ extern grug_fn_name
 extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern setjmp
-extern grug_get_runtime_error_reason
 extern game_fn_get_opponent
+extern grug_get_runtime_error_reason
 extern longjmp
 
 global init_globals
@@ -51,7 +51,7 @@ init_globals:
 	clear_has_runtime_error_happened
 
 	call game_fn_get_opponent wrt ..plt
-	check_game_fn_error
+	init_globals_check_game_fn_error
 
 	mov r11, rbp[-0x8]
 	mov r11[byte 0x8], rax

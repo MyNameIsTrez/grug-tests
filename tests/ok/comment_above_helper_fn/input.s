@@ -70,6 +70,7 @@ on_a:
 
 	pop rdi
 	call helper_foo_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp

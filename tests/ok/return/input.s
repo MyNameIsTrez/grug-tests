@@ -36,8 +36,8 @@ extern grug_on_fns_in_safe_mode
 extern grug_current_time
 extern clock_gettime
 extern setjmp
-extern grug_get_runtime_error_reason
 extern game_fn_initialize
+extern grug_get_runtime_error_reason
 extern longjmp
 
 global init_globals
@@ -70,6 +70,7 @@ on_a:
 
 	pop rdi
 	call helper_foo_safe
+	return_if_runtime_error
 
 	push rax
 

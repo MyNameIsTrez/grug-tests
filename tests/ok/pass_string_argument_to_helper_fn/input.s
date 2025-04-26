@@ -76,6 +76,7 @@ on_a:
 	pop rdi
 	pop rsi
 	call helper_shout_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp

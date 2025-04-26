@@ -52,8 +52,8 @@ extern grug_fn_name
 extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern setjmp
-extern grug_get_runtime_error_reason
 extern game_fn_has_resource
+extern grug_get_runtime_error_reason
 extern longjmp
 extern game_fn_has_string
 extern game_fn_has_entity

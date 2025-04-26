@@ -73,6 +73,7 @@ on_a:
 	pop rdi
 	pop rsi
 	call helper_foo_safe
+	return_if_runtime_error
 
 	mov eax, 69
 	push rax
@@ -81,6 +82,7 @@ on_a:
 	pop rdi
 	pop rsi
 	call helper_bar_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp

@@ -36,8 +36,8 @@ extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern setjmp
 extern grug_get_runtime_error_reason
-extern longjmp
 extern game_fn_initialize
+extern longjmp
 
 global init_globals
 init_globals:
@@ -67,7 +67,7 @@ init_globals:
 	mov eax, rax[byte 0x8]
 	pop r11
 	add eax, r11d
-	check_overflow
+	init_globals_check_overflow
 	mov r11, rbp[-0x8]
 	mov r11[byte 0xc], eax
 

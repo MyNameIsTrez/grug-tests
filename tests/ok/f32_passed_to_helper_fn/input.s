@@ -37,8 +37,8 @@ extern grug_current_time
 extern clock_gettime
 extern setjmp
 extern grug_get_runtime_error_reason
-extern longjmp
 extern game_fn_sin
+extern longjmp
 
 global init_globals
 init_globals:
@@ -75,6 +75,7 @@ on_a:
 	pop rax
 	movd xmm0, eax
 	call helper_foo_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp

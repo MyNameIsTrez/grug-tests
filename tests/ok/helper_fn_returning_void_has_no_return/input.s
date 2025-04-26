@@ -69,6 +69,7 @@ on_a:
 	push rax
 	pop rdi
 	call helper_foo_safe
+	return_if_runtime_error
 	call game_fn_nothing wrt ..plt
 	check_game_fn_error
 

@@ -28,88 +28,6 @@ section .text
 %include "tests/utils/defines.s"
 %include "tests/utils/macros.s"
 
-%macro save_on_fn_name_and_path_on_a 0
-	mov rax, [rel grug_fn_path wrt ..got]
-	lea r11, [rel on_fn_path]
-	mov [rax], r11
-
-	mov rax, [rel grug_fn_name wrt ..got]
-	lea r11, [rel on_fn_name_a]
-	mov [rax], r11
-%endmacro
-
-%macro save_on_fn_name_and_path_on_b 0
-	mov rax, [rel grug_fn_path wrt ..got]
-	lea r11, [rel on_fn_path]
-	mov [rax], r11
-
-	mov rax, [rel grug_fn_name wrt ..got]
-	lea r11, [rel on_fn_name_b]
-	mov [rax], r11
-%endmacro
-
-%macro error_handling_on_a 0
-	clear_has_runtime_error_happened
-
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call setjmp wrt ..plt
-	test eax, eax
-	je %%skip
-
-	dec eax
-	push rax
-	mov edi, eax
-	sub rsp, byte 0x8
-	call grug_get_runtime_error_reason wrt ..plt
-	add rsp, byte 0x8
-	mov rdi, rax
-
-	lea rcx, [rel on_fn_path]
-
-	lea rdx, [rel on_fn_name_a]
-
-	pop rsi
-
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
-
-	mov rsp, rbp
-	pop rbp
-	ret
-%%skip:
-%endmacro
-
-%macro error_handling_on_b 0
-	clear_has_runtime_error_happened
-
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call setjmp wrt ..plt
-	test eax, eax
-	je %%skip
-
-	dec eax
-	push rax
-	mov edi, eax
-	sub rsp, byte 0x8
-	call grug_get_runtime_error_reason wrt ..plt
-	add rsp, byte 0x8
-	mov rdi, rax
-
-	lea rcx, [rel on_fn_path]
-
-	lea rdx, [rel on_fn_name_b]
-
-	pop rsi
-
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
-
-	mov rsp, rbp
-	pop rbp
-	ret
-%%skip:
-%endmacro
-
 extern grug_runtime_error_handler
 extern grug_max_rsp
 extern grug_max_time
@@ -121,8 +39,8 @@ extern grug_on_fns_in_safe_mode
 extern grug_current_time
 extern clock_gettime
 extern setjmp
-extern grug_get_runtime_error_reason
 extern game_fn_initialize
+extern grug_get_runtime_error_reason
 extern longjmp
 extern game_fn_sin
 
@@ -149,7 +67,7 @@ on_a:
 
 	set_time_limit
 
-	error_handling_on_a
+	clear_has_runtime_error_happened
 
 	; foo: i32 = 42
 	mov eax, 42
@@ -160,13 +78,14 @@ on_a:
 	push rax
 	pop rdi
 	call game_fn_initialize wrt ..plt
-	check_game_fn_error
+	check_game_fn_error_on_a
 
 	; bar()
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_bar_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -207,7 +126,7 @@ on_b:
 
 	save_on_fn_name_and_path_on_b
 
-	error_handling_on_b
+	clear_has_runtime_error_happened
 
 	; foo: i32 = 1337
 	mov eax, 1337
@@ -218,7 +137,7 @@ on_b:
 	push rax
 	pop rdi
 	call game_fn_initialize wrt ..plt
-	check_game_fn_error
+	check_game_fn_error_on_b
 
 	mov rsp, rbp
 	pop rbp
@@ -245,8 +164,8 @@ helper_bar_safe:
 	mov rbp, rsp
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rdi
-	check_stack_overflow
-	check_time_limit_exceeded
+	check_stack_overflow_on_a
+	check_time_limit_exceeded_on_a
 
 	; foo: i32 = 69
 	mov eax, 69
@@ -257,7 +176,7 @@ helper_bar_safe:
 	push rax
 	pop rdi
 	call game_fn_initialize wrt ..plt
-	check_game_fn_error
+	check_game_fn_error_on_a
 
 	mov rsp, rbp
 	pop rbp

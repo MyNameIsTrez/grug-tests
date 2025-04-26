@@ -29,88 +29,6 @@ section .text
 %include "tests/utils/defines.s"
 %include "tests/utils/macros.s"
 
-%macro save_on_fn_name_and_path_on_a 0
-	mov rax, [rel grug_fn_path wrt ..got]
-	lea r11, [rel on_fn_path]
-	mov [rax], r11
-
-	mov rax, [rel grug_fn_name wrt ..got]
-	lea r11, [rel on_fn_name_a]
-	mov [rax], r11
-%endmacro
-
-%macro save_on_fn_name_and_path_on_c 0
-	mov rax, [rel grug_fn_path wrt ..got]
-	lea r11, [rel on_fn_path]
-	mov [rax], r11
-
-	mov rax, [rel grug_fn_name wrt ..got]
-	lea r11, [rel on_fn_name_c]
-	mov [rax], r11
-%endmacro
-
-%macro error_handling_on_a 0
-	clear_has_runtime_error_happened
-
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call setjmp wrt ..plt
-	test eax, eax
-	je %%skip
-
-	dec eax
-	push rax
-	mov edi, eax
-	sub rsp, byte 0x8
-	call grug_get_runtime_error_reason wrt ..plt
-	add rsp, byte 0x8
-	mov rdi, rax
-
-	lea rcx, [rel on_fn_path]
-
-	lea rdx, [rel on_fn_name_a]
-
-	pop rsi
-
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
-
-	mov rsp, rbp
-	pop rbp
-	ret
-%%skip:
-%endmacro
-
-%macro error_handling_on_c 0
-	clear_has_runtime_error_happened
-
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call setjmp wrt ..plt
-	test eax, eax
-	je %%skip
-
-	dec eax
-	push rax
-	mov edi, eax
-	sub rsp, byte 0x8
-	call grug_get_runtime_error_reason wrt ..plt
-	add rsp, byte 0x8
-	mov rdi, rax
-
-	lea rcx, [rel on_fn_path]
-
-	lea rdx, [rel on_fn_name_c]
-
-	pop rsi
-
-	mov rax, [rel grug_runtime_error_handler wrt ..got]
-	call [rax]
-
-	mov rsp, rbp
-	pop rbp
-	ret
-%%skip:
-%endmacro
-
 extern grug_runtime_error_handler
 extern grug_fn_path
 extern grug_runtime_error_jmp_buffer
@@ -118,9 +36,9 @@ extern grug_fn_name
 extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern setjmp
-extern grug_get_runtime_error_reason
 extern game_fn_initialize_bool
 extern game_fn_nothing
+extern grug_get_runtime_error_reason
 extern longjmp
 
 global init_globals
@@ -142,10 +60,10 @@ on_a:
 
 	save_on_fn_name_and_path_on_a
 
-	error_handling_on_a
+	clear_has_runtime_error_happened
 
 	call game_fn_nothing wrt ..plt
-	check_game_fn_error
+	check_game_fn_error_on_a
 
 	mov rsp, rbp
 	pop rbp
@@ -172,10 +90,10 @@ on_c:
 
 	save_on_fn_name_and_path_on_c
 
-	error_handling_on_c
+	clear_has_runtime_error_happened
 
 	call game_fn_nothing wrt ..plt
-	check_game_fn_error
+	check_game_fn_error_on_c
 
 	mov rsp, rbp
 	pop rbp

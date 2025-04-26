@@ -51,7 +51,7 @@ init_globals:
 
 	mov eax, 1
 	neg eax
-	check_overflow
+	init_globals_check_overflow
 	mov r11, rbp[-0x8]
 	mov r11[byte 0x8], eax
 

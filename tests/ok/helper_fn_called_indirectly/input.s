@@ -69,6 +69,7 @@ on_a:
 	push rax
 	pop rdi
 	call helper_foo_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -97,6 +98,7 @@ helper_foo_safe:
 	push rax
 	pop rdi
 	call helper_bar_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
