@@ -104,7 +104,7 @@ extern grug_get_runtime_error_reason
 extern game_fn_cause_game_fn_error
 extern longjmp
 extern game_fn_nothing
-extern game_fn_call_on_b
+extern game_fn_call_on_b_fn
 
 global init_globals
 init_globals:
@@ -127,7 +127,7 @@ on_a:
 
 	clear_has_runtime_error_happened
 
-	call game_fn_call_on_b wrt ..plt
+	call game_fn_call_on_b_fn wrt ..plt
 	check_game_fn_error_on_a
 
 	call game_fn_cause_game_fn_error wrt ..plt
@@ -138,7 +138,7 @@ on_a:
 	ret
 
 .fast:
-	call game_fn_call_on_b wrt ..plt
+	call game_fn_call_on_b_fn wrt ..plt
 	call game_fn_cause_game_fn_error wrt ..plt
 
 	mov rsp, rbp

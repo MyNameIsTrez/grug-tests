@@ -995,7 +995,7 @@
 		"cause_game_fn_error": {
 			"description": "foo"
 		},
-		"call_on_b": {
+		"call_on_b_fn": {
 			"description": "foo"
 		}
 	}

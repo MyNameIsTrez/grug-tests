@@ -1,5 +1,5 @@
 on_a() {
-    call_on_b()
+    call_on_b_fn()
     nothing()
 }
 

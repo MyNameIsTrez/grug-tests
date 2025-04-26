@@ -170,7 +170,7 @@ static size_t game_fn_offset_32_bit_string_call_count;
 static size_t game_fn_talk_call_count;
 static size_t game_fn_get_position_call_count;
 static size_t game_fn_cause_game_fn_error_call_count;
-static size_t game_fn_call_on_b_call_count;
+static size_t game_fn_call_on_b_fn_call_count;
 
 static void (*on_b)(void *globals);
 static void *g_for_on_b;
@@ -723,9 +723,9 @@ void game_fn_cause_game_fn_error(void) {
 
 	grug_game_function_error_happened("cause_game_fn_error(): Game function error");
 }
-void game_fn_call_on_b(void) {
+void game_fn_call_on_b_fn(void) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_call_on_b_call_count++;
+	game_fn_call_on_b_fn_call_count++;
 
 	on_b(g_for_on_b);
 }
@@ -764,7 +764,7 @@ static void reset_call_counts(void) {
 	game_fn_talk_call_count = 0;
 	game_fn_get_position_call_count = 0;
 	game_fn_cause_game_fn_error_call_count = 0;
-	game_fn_call_on_b_call_count = 0;
+	game_fn_call_on_b_fn_call_count = 0;
 }
 
 static void check(int status, char *fn_name) {
@@ -1743,12 +1743,12 @@ static void runtime_error_on_fn_calls_erroring_on_fn(void *on_fns, void *g, size
 	on_b = ((struct e_on_fns *)on_fns)->b;
 	g_for_on_b = g;
 
-	assert(game_fn_call_on_b_call_count == 0);
+	assert(game_fn_call_on_b_fn_call_count == 0);
 	assert(game_fn_cause_game_fn_error_call_count == 0);
 	assert(game_fn_nothing_call_count == 0);
 	assert(error_handler_calls == 0);
 	((struct e_on_fns *)on_fns)->a(g);
-	assert(game_fn_call_on_b_call_count == 1);
+	assert(game_fn_call_on_b_fn_call_count == 1);
 	assert(game_fn_cause_game_fn_error_call_count == 1);
 	assert(game_fn_nothing_call_count == 0);
 	assert(error_handler_calls == 2);
@@ -1778,12 +1778,12 @@ static void runtime_error_on_fn_errors_after_it_calls_other_on_fn(void *on_fns, 
 	on_b = ((struct e_on_fns *)on_fns)->b;
 	g_for_on_b = g;
 
-	assert(game_fn_call_on_b_call_count == 0);
+	assert(game_fn_call_on_b_fn_call_count == 0);
 	assert(game_fn_nothing_call_count == 0);
 	assert(game_fn_cause_game_fn_error_call_count == 0);
 	assert(error_handler_calls == 0);
 	((struct e_on_fns *)on_fns)->a(g);
-	assert(game_fn_call_on_b_call_count == 1);
+	assert(game_fn_call_on_b_fn_call_count == 1);
 	assert(game_fn_nothing_call_count == 1);
 	assert(game_fn_cause_game_fn_error_call_count == 1);
 	assert(error_handler_calls == 1);
