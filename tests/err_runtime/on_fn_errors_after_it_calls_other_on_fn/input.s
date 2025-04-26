@@ -10,7 +10,7 @@ on_fns:
 	dq on_b
 
 on_fn_path:
-	db "tests/err_runtime/game_fn_error_once/input-e.grug", 0
+	db "tests/err_runtime/on_fn_errors_after_it_calls_other_on_fn/input-e.grug", 0
 on_fn_name_a:
 	db "on_a", 0
 on_fn_name_b:
@@ -149,7 +149,7 @@ on_a:
 	call game_fn_call_on_b wrt ..plt
 	check_game_fn_error
 
-	call game_fn_nothing wrt ..plt
+	call game_fn_cause_game_fn_error wrt ..plt
 	check_game_fn_error
 
 	mov rsp, rbp
@@ -180,7 +180,7 @@ on_b:
 
 	error_handling_on_b
 
-	call game_fn_cause_game_fn_error wrt ..plt
+	call game_fn_nothing wrt ..plt
 	check_game_fn_error
 
 	mov rsp, rbp

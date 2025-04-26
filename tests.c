@@ -1742,6 +1742,39 @@ static void runtime_error_on_fn_calls_erroring_on_fn(void *on_fns, void *g, size
 	g_for_on_b = g;
 
 	assert(game_fn_call_on_b_call_count == 0);
+	assert(game_fn_cause_game_fn_error_call_count == 0);
+	assert(game_fn_nothing_call_count == 0);
+	((struct e_on_fns *)on_fns)->a(g);
+	assert(game_fn_call_on_b_call_count == 1);
+	assert(game_fn_cause_game_fn_error_call_count == 1);
+	assert(game_fn_nothing_call_count == 0);
+
+	assert(had_runtime_error);
+
+	free(g);
+
+	assert(runtime_error_type == GRUG_ON_FN_GAME_FN_ERROR);
+	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_GAME_FN_ERROR)));
+
+	assert(streq(runtime_error_on_fn_name, "on_b"));
+	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/on_fn_calls_erroring_on_fn/input-e.grug"));
+	
+	assert(streq(grug_fn_name, "on_b"));
+	assert(streq(grug_fn_path, "tests/err_runtime/on_fn_calls_erroring_on_fn/input-e.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void runtime_error_on_fn_errors_after_it_calls_other_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	on_b = ((struct e_on_fns *)on_fns)->b;
+	g_for_on_b = g;
+
+	assert(game_fn_call_on_b_call_count == 0);
 	assert(game_fn_nothing_call_count == 0);
 	assert(game_fn_cause_game_fn_error_call_count == 0);
 	((struct e_on_fns *)on_fns)->a(g);
@@ -1757,10 +1790,10 @@ static void runtime_error_on_fn_calls_erroring_on_fn(void *on_fns, void *g, size
 	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_GAME_FN_ERROR)));
 
 	assert(streq(runtime_error_on_fn_name, "on_b"));
-	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/on_fn_calls_erroring_on_fn/input-e.grug"));
+	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/on_fn_errors_after_it_calls_other_on_fn/input-e.grug"));
 	
 	assert(streq(grug_fn_name, "on_b"));
-	assert(streq(grug_fn_path, "tests/err_runtime/on_fn_calls_erroring_on_fn/input-e.grug"));
+	assert(streq(grug_fn_path, "tests/err_runtime/on_fn_errors_after_it_calls_other_on_fn/input-e.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -6120,6 +6153,7 @@ static void add_runtime_error_tests(void) {
 	ADD_TEST_RUNTIME_ERROR(i32_underflow_multiplication, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(i32_underflow_subtraction, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(on_fn_calls_erroring_on_fn, "e", 8);
+	ADD_TEST_RUNTIME_ERROR(on_fn_errors_after_it_calls_other_on_fn, "e", 8);
 	ADD_TEST_RUNTIME_ERROR(remainder_by_0, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(stack_overflow, "d", 8);
 	ADD_TEST_RUNTIME_ERROR(time_limit_exceeded, "d", 8);
