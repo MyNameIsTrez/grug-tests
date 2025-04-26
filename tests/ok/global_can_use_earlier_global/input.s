@@ -55,7 +55,7 @@ init_globals:
 
 	save_init_globals_fn_name_and_path
 
-	init_globals_fn_error_handling
+	clear_has_runtime_error_happened
 
 	mov eax, 2
 	mov r11, rbp[-0x8]
@@ -107,7 +107,7 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	error_handling
+	clear_has_runtime_error_happened
 
 	mov rax, rbp[-0x8]
 	mov eax, rax[byte 0xc]

@@ -48,7 +48,7 @@ init_globals:
 
 	save_init_globals_fn_name_and_path
 
-	init_globals_fn_error_handling
+	clear_has_runtime_error_happened
 
 	call game_fn_get_opponent wrt ..plt
 	check_game_fn_error

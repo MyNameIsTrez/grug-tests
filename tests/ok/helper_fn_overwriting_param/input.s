@@ -64,7 +64,7 @@ on_a:
 
 	set_time_limit
 
-	error_handling
+	clear_has_runtime_error_happened
 
 	; helper_foo_safe(2, 3.0)
 	mov eax, __?float32?__(3.0)

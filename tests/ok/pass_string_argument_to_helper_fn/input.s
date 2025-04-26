@@ -65,7 +65,7 @@ on_a:
 
 	set_time_limit
 
-	error_handling
+	clear_has_runtime_error_happened
 
 	lea rax, [rel foo]
 	push rax

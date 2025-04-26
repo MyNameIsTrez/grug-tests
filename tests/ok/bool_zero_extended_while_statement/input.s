@@ -35,8 +35,8 @@ extern grug_on_fns_in_safe_mode
 extern grug_current_time
 extern clock_gettime
 extern setjmp
-extern grug_get_runtime_error_reason
 extern game_fn_nothing
+extern grug_get_runtime_error_reason
 extern longjmp
 extern game_fn_get_evil_false
 
@@ -61,7 +61,7 @@ on_a:
 
 	set_time_limit
 
-	error_handling
+	clear_has_runtime_error_happened
 
 	call game_fn_nothing wrt ..plt
 	check_game_fn_error

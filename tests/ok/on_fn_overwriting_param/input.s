@@ -58,7 +58,7 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	error_handling
+	clear_has_runtime_error_happened
 
 	; i = 20
 	mov eax, 20

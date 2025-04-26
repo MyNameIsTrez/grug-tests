@@ -63,7 +63,7 @@ on_a:
 
 	set_time_limit
 
-	error_handling
+	clear_has_runtime_error_happened
 
 	mov rax, rbp[-0x8]
 	push rax

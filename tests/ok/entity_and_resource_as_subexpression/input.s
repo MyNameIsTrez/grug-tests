@@ -78,7 +78,7 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	error_handling
+	clear_has_runtime_error_happened
 
 	lea rax, [rel resource]
 	push rax

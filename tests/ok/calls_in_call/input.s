@@ -32,8 +32,8 @@ extern grug_fn_name
 extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern setjmp
-extern grug_get_runtime_error_reason
 extern game_fn_max
+extern grug_get_runtime_error_reason
 extern longjmp
 extern game_fn_initialize
 
@@ -56,7 +56,7 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	error_handling
+	clear_has_runtime_error_happened
 
 	mov eax, 4
 	push rax

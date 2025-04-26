@@ -55,7 +55,7 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	error_handling
+	clear_has_runtime_error_happened
 
 	mov rax, rbp[-0x8]
 	mov rax, rax[byte 0x0]

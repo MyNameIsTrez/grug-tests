@@ -59,7 +59,7 @@ init_globals:
 
 	save_init_globals_fn_name_and_path
 
-	init_globals_fn_error_handling
+	clear_has_runtime_error_happened
 
 	mov eax, 6
 	mov r11, rbp[-0x8]
@@ -96,7 +96,7 @@ on_a:
 
 	set_time_limit
 
-	error_handling
+	clear_has_runtime_error_happened
 
 	mov eax, __?float32?__(30.0)
     push rax

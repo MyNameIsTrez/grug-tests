@@ -2046,7 +2046,7 @@ init_globals:
 
 	save_init_globals_fn_name_and_path
 
-	init_globals_fn_error_handling
+	clear_has_runtime_error_happened
 
 	lea rax, [rel global0001]
 	mov r11, rbp[-0x8]

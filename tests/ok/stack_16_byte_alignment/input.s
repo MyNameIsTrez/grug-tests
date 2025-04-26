@@ -56,7 +56,7 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	error_handling
+	clear_has_runtime_error_happened
 
 	call game_fn_nothing_aligned wrt ..plt
 	check_game_fn_error
