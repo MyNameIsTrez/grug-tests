@@ -18,6 +18,11 @@
 	mov [rax], r11
 %endmacro
 
+%macro clear_has_runtime_error_happened 0
+	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
+	mov [rax], byte 0
+%endmacro
+
 %macro runtime_error 1
 	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
 	mov [rax], byte 1

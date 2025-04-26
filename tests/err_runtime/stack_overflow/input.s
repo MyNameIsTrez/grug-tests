@@ -61,8 +61,7 @@ on_a:
 
 	set_time_limit
 
-	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
-	mov [rax], byte 0
+	clear_has_runtime_error_happened
 
 	mov rax, rbp[-0x8]
 	push rax

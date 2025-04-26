@@ -50,8 +50,7 @@ section .text
 %endmacro
 
 %macro error_handling_on_b 0
-	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
-	mov [rax], byte 0
+	clear_has_runtime_error_happened
 
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call setjmp wrt ..plt
@@ -82,8 +81,7 @@ section .text
 %endmacro
 
 %macro error_handling_on_c 0
-	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
-	mov [rax], byte 0
+	clear_has_runtime_error_happened
 
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
 	call setjmp wrt ..plt

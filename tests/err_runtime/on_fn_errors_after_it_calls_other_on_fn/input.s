@@ -125,8 +125,7 @@ on_a:
 
 	save_on_fn_name_and_path_on_a
 
-	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
-	mov [rax], byte 0
+	clear_has_runtime_error_happened
 
 	call game_fn_call_on_b wrt ..plt
 	check_game_fn_error_on_a
@@ -160,8 +159,7 @@ on_b:
 
 	save_on_fn_name_and_path_on_b
 
-	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
-	mov [rax], byte 0
+	clear_has_runtime_error_happened
 
 	call game_fn_nothing wrt ..plt
 	check_game_fn_error_on_b
