@@ -35,7 +35,7 @@ extern grug_runtime_error_handler
 extern grug_fn_path
 extern grug_runtime_error_jmp_buffer
 extern grug_fn_name
-extern grug_has_game_function_error_happened
+extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern setjmp
 extern grug_get_runtime_error_reason

@@ -30,7 +30,7 @@ extern grug_max_time
 extern grug_fn_path
 extern grug_runtime_error_jmp_buffer
 extern grug_fn_name
-extern grug_has_game_function_error_happened
+extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern grug_current_time
 extern clock_gettime

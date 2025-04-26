@@ -29,9 +29,8 @@ extern grug_runtime_error_handler
 extern grug_max_rsp
 extern grug_max_time
 extern grug_fn_path
-extern grug_runtime_error_jmp_buffer
 extern grug_fn_name
-extern grug_has_game_function_error_happened
+extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern grug_current_time
 extern clock_gettime
@@ -62,12 +61,14 @@ on_a:
 
 	set_time_limit
 
-	error_handling
+	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
+	mov [rax], byte 0
 
 	mov rax, rbp[-0x8]
 	push rax
 	pop rdi
 	call helper_foo_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp
@@ -97,6 +98,7 @@ helper_foo_safe:
 	push rax
 	pop rdi
 	call helper_foo_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp

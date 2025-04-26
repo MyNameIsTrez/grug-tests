@@ -50,7 +50,7 @@ section .text
 %endmacro
 
 %macro error_handling_on_b 0
-	mov rax, [rel grug_has_game_function_error_happened wrt ..got]
+	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
 	mov [rax], byte 0
 
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
@@ -82,7 +82,7 @@ section .text
 %endmacro
 
 %macro error_handling_on_c 0
-	mov rax, [rel grug_has_game_function_error_happened wrt ..got]
+	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
 	mov [rax], byte 0
 
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
@@ -117,7 +117,7 @@ extern grug_runtime_error_handler
 extern grug_fn_path
 extern grug_runtime_error_jmp_buffer
 extern grug_fn_name
-extern grug_has_game_function_error_happened
+extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern setjmp
 extern grug_get_runtime_error_reason

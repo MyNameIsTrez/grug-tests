@@ -49,7 +49,7 @@ section .text
 %endmacro
 
 %macro check_game_fn_error_on_a 0
-	mov r11, [rel grug_has_game_function_error_happened wrt ..got]
+	mov r11, [rel grug_has_runtime_error_happened wrt ..got]
 	mov r11b, [r11]
 	test r11b, r11b
 	je %%skip
@@ -72,7 +72,7 @@ section .text
 %endmacro
 
 %macro check_game_fn_error_on_b 0
-	mov r11, [rel grug_has_game_function_error_happened wrt ..got]
+	mov r11, [rel grug_has_runtime_error_happened wrt ..got]
 	mov r11b, [r11]
 	test r11b, r11b
 	je %%skip
@@ -97,7 +97,7 @@ section .text
 extern grug_runtime_error_handler
 extern grug_fn_path
 extern grug_fn_name
-extern grug_has_game_function_error_happened
+extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern setjmp
 extern grug_get_runtime_error_reason
@@ -125,7 +125,7 @@ on_a:
 
 	save_on_fn_name_and_path_on_a
 
-	mov rax, [rel grug_has_game_function_error_happened wrt ..got]
+	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
 	mov [rax], byte 0
 
 	call game_fn_call_on_b wrt ..plt
@@ -160,7 +160,7 @@ on_b:
 
 	save_on_fn_name_and_path_on_b
 
-	mov rax, [rel grug_has_game_function_error_happened wrt ..got]
+	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
 	mov [rax], byte 0
 
 	call game_fn_cause_game_fn_error wrt ..plt

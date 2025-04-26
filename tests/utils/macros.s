@@ -19,7 +19,7 @@
 %endmacro
 
 %macro init_globals_fn_error_handling 0
-	mov rax, [rel grug_has_game_function_error_happened wrt ..got]
+	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
 	mov [rax], byte 0
 
 	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
@@ -86,9 +86,24 @@
 	mov rax, [rel grug_max_rsp wrt ..got]
 	cmp rsp, [rax]
 	jg %%skip
-	mov esi, 1 + GRUG_ON_FN_STACK_OVERFLOW
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call longjmp wrt ..plt
+
+	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
+	mov [rax], byte 1
+
+	mov edi, GRUG_ON_FN_STACK_OVERFLOW
+	call grug_get_runtime_error_reason wrt ..plt
+	mov rdi, rax
+
+	lea rcx, [rel on_fn_path]
+	lea rdx, [rel on_fn_name]
+	mov esi, GRUG_ON_FN_STACK_OVERFLOW
+
+	mov rax, [rel grug_runtime_error_handler wrt ..got]
+	call [rax]
+
+	mov rsp, rbp
+	pop rbp
+	ret
 %%skip:
 %endmacro
 
@@ -107,20 +122,34 @@
 	jl %%skip
 
 	; if (grug_current_time.sec > grug_max_time.sec) goto longjmp;
-	jg %%longjump
+	jg %%exceeded
 
 	; if (grug_current_time.nsec > grug_max_time.nsec) goto longjmp;
 	mov r10, [byte r11 + TV_NSEC_OFFSET]
 	cmp [byte rax + TV_NSEC_OFFSET], r10
-	jg %%longjump
+	jg %%exceeded
 
 	; goto skip;
 	jmp short %%skip
-%%longjump:
-	; longjmp(grug_runtime_error_jmp_buffer, 1 + GRUG_ON_FN_TIME_LIMIT_EXCEEDED);
-	mov esi, 1 + GRUG_ON_FN_TIME_LIMIT_EXCEEDED
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call longjmp wrt ..plt
+%%exceeded:
+
+	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
+	mov [rax], byte 1
+
+	mov edi, GRUG_ON_FN_TIME_LIMIT_EXCEEDED
+	call grug_get_runtime_error_reason wrt ..plt
+	mov rdi, rax
+
+	lea rcx, [rel on_fn_path]
+	lea rdx, [rel on_fn_name]
+	mov esi, GRUG_ON_FN_TIME_LIMIT_EXCEEDED
+
+	mov rax, [rel grug_runtime_error_handler wrt ..got]
+	call [rax]
+
+	mov rsp, rbp
+	pop rbp
+	ret
 %%skip:
 %endmacro
 
@@ -129,31 +158,76 @@
 	jne %%skip
 	cmp r11d, -1
 	jne %%skip
-	mov esi, 1 + GRUG_ON_FN_OVERFLOW
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call longjmp wrt ..plt
+
+	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
+	mov [rax], byte 1
+
+	mov edi, GRUG_ON_FN_OVERFLOW
+	call grug_get_runtime_error_reason wrt ..plt
+	mov rdi, rax
+
+	lea rcx, [rel on_fn_path]
+	lea rdx, [rel on_fn_name]
+	mov esi, GRUG_ON_FN_OVERFLOW
+
+	mov rax, [rel grug_runtime_error_handler wrt ..got]
+	call [rax]
+
+	mov rsp, rbp
+	pop rbp
+	ret
 %%skip:
 %endmacro
 
 %macro check_division_by_0 0
 	test r11, r11
 	jne %%skip
-	mov esi, 1 + GRUG_ON_FN_DIVISION_BY_ZERO
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call longjmp wrt ..plt
+
+	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
+	mov [rax], byte 1
+
+	mov edi, GRUG_ON_FN_DIVISION_BY_ZERO
+	call grug_get_runtime_error_reason wrt ..plt
+	mov rdi, rax
+
+	lea rcx, [rel on_fn_path]
+	lea rdx, [rel on_fn_name]
+	mov esi, GRUG_ON_FN_DIVISION_BY_ZERO
+
+	mov rax, [rel grug_runtime_error_handler wrt ..got]
+	call [rax]
+
+	mov rsp, rbp
+	pop rbp
+	ret
 %%skip:
 %endmacro
 
 %macro check_overflow 0
 	jno %%skip
-	mov esi, 1 + GRUG_ON_FN_OVERFLOW
-	mov rdi, [rel grug_runtime_error_jmp_buffer wrt ..got]
-	call longjmp wrt ..plt
+
+	mov rax, [rel grug_has_runtime_error_happened wrt ..got]
+	mov [rax], byte 1
+
+	mov edi, GRUG_ON_FN_OVERFLOW
+	call grug_get_runtime_error_reason wrt ..plt
+	mov rdi, rax
+
+	lea rcx, [rel on_fn_path]
+	lea rdx, [rel on_fn_name]
+	mov esi, GRUG_ON_FN_OVERFLOW
+
+	mov rax, [rel grug_runtime_error_handler wrt ..got]
+	call [rax]
+
+	mov rsp, rbp
+	pop rbp
+	ret
 %%skip:
 %endmacro
 
 %macro check_game_fn_error 0
-	mov r11, [rel grug_has_game_function_error_happened wrt ..got]
+	mov r11, [rel grug_has_runtime_error_happened wrt ..got]
 	mov r11b, [r11]
 	test r11b, r11b
 	je %%skip
@@ -168,6 +242,18 @@
 
 	mov rax, [rel grug_runtime_error_handler wrt ..got]
 	call [rax]
+
+	mov rsp, rbp
+	pop rbp
+	ret
+%%skip:
+%endmacro
+
+%macro return_if_runtime_error 0
+	mov r11, [rel grug_has_runtime_error_happened wrt ..got]
+	mov r11b, [r11]
+	test r11b, r11b
+	je %%skip
 
 	mov rsp, rbp
 	pop rbp
