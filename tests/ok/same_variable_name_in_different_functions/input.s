@@ -28,11 +28,9 @@ section .text
 %include "tests/utils/defines.s"
 %include "tests/utils/macros.s"
 
-extern grug_runtime_error_handler
 extern grug_max_rsp
 extern grug_max_time
 extern grug_fn_path
-extern grug_runtime_error_jmp_buffer
 extern grug_fn_name
 extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
@@ -40,7 +38,7 @@ extern grug_current_time
 extern clock_gettime
 extern setjmp
 extern game_fn_initialize
-extern grug_get_runtime_error_reason
+extern grug_call_runtime_error_handler
 extern longjmp
 extern game_fn_sin
 
@@ -78,7 +76,7 @@ on_a:
 	push rax
 	pop rdi
 	call game_fn_initialize wrt ..plt
-	check_game_fn_error_on_a
+	check_game_fn_error
 
 	; bar()
 	mov rax, rbp[-0x8]
@@ -137,7 +135,7 @@ on_b:
 	push rax
 	pop rdi
 	call game_fn_initialize wrt ..plt
-	check_game_fn_error_on_b
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp
@@ -164,8 +162,8 @@ helper_bar_safe:
 	mov rbp, rsp
 	sub rsp, byte 0x10
 	mov rbp[-0x8], rdi
-	check_stack_overflow_on_a
-	check_time_limit_exceeded_on_a
+	check_stack_overflow
+	check_time_limit_exceeded
 
 	; foo: i32 = 69
 	mov eax, 69
@@ -176,7 +174,7 @@ helper_bar_safe:
 	push rax
 	pop rdi
 	call game_fn_initialize wrt ..plt
-	check_game_fn_error_on_a
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp

@@ -1408,8 +1408,6 @@ static void runtime_error_handler(char *reason, enum grug_runtime_error_type typ
 	runtime_error_on_fn_path = on_fn_path;
 }
 
-char *grug_get_runtime_error_reason(enum grug_runtime_error_type type);
-
 static void runtime_error_all(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
@@ -1418,7 +1416,6 @@ static void runtime_error_all(void *on_fns, void *g, size_t resources_size, char
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_DIVISION_BY_ZERO);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_DIVISION_BY_ZERO)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/all/input-d.grug"));
@@ -1442,7 +1439,6 @@ static void runtime_error_division_by_0(void *on_fns, void *g, size_t resources_
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_DIVISION_BY_ZERO);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_DIVISION_BY_ZERO)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/division_by_0/input-d.grug"));
@@ -1468,7 +1464,6 @@ static void runtime_error_game_fn_error(void *on_fns, void *g, size_t resources_
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_GAME_FN_ERROR);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_GAME_FN_ERROR)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/game_fn_error/input-d.grug"));
@@ -1492,7 +1487,6 @@ static void runtime_error_game_fn_error_once(void *on_fns, void *g, size_t resou
 	assert(had_runtime_error);
 
 	assert(runtime_error_type == GRUG_ON_FN_GAME_FN_ERROR);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_GAME_FN_ERROR)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/game_fn_error_once/input-e.grug"));
@@ -1531,7 +1525,6 @@ static void runtime_error_i32_overflow_addition(void *on_fns, void *g, size_t re
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_OVERFLOW);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_OVERFLOW)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_overflow_addition/input-d.grug"));
@@ -1555,7 +1548,6 @@ static void runtime_error_i32_overflow_division(void *on_fns, void *g, size_t re
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_OVERFLOW);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_OVERFLOW)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_overflow_division/input-d.grug"));
@@ -1579,7 +1571,6 @@ static void runtime_error_i32_overflow_multiplication(void *on_fns, void *g, siz
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_OVERFLOW);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_OVERFLOW)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_overflow_multiplication/input-d.grug"));
@@ -1603,7 +1594,6 @@ static void runtime_error_i32_overflow_negation(void *on_fns, void *g, size_t re
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_OVERFLOW);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_OVERFLOW)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_overflow_negation/input-d.grug"));
@@ -1627,7 +1617,6 @@ static void runtime_error_i32_overflow_remainder(void *on_fns, void *g, size_t r
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_OVERFLOW);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_OVERFLOW)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_overflow_remainder/input-d.grug"));
@@ -1651,7 +1640,6 @@ static void runtime_error_i32_overflow_subtraction(void *on_fns, void *g, size_t
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_OVERFLOW);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_OVERFLOW)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_overflow_subtraction/input-d.grug"));
@@ -1675,7 +1663,6 @@ static void runtime_error_i32_underflow_addition(void *on_fns, void *g, size_t r
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_OVERFLOW);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_OVERFLOW)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_underflow_addition/input-d.grug"));
@@ -1699,7 +1686,6 @@ static void runtime_error_i32_underflow_multiplication(void *on_fns, void *g, si
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_OVERFLOW);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_OVERFLOW)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_underflow_multiplication/input-d.grug"));
@@ -1723,7 +1709,6 @@ static void runtime_error_i32_underflow_subtraction(void *on_fns, void *g, size_
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_OVERFLOW);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_OVERFLOW)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/i32_underflow_subtraction/input-d.grug"));
@@ -1758,9 +1743,8 @@ static void runtime_error_on_fn_calls_erroring_on_fn(void *on_fns, void *g, size
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_GAME_FN_ERROR);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_GAME_FN_ERROR)));
 
-	assert(streq(runtime_error_on_fn_name, "on_a"));
+	assert(streq(runtime_error_on_fn_name, "on_b"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/on_fn_calls_erroring_on_fn/input-e.grug"));
 
 	assert(streq(grug_fn_name, "on_b"));
@@ -1793,9 +1777,8 @@ static void runtime_error_on_fn_errors_after_it_calls_other_on_fn(void *on_fns, 
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_GAME_FN_ERROR);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_GAME_FN_ERROR)));
 
-	assert(streq(runtime_error_on_fn_name, "on_a"));
+	assert(streq(runtime_error_on_fn_name, "on_b"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/on_fn_errors_after_it_calls_other_on_fn/input-e.grug"));
 	
 	assert(streq(grug_fn_name, "on_b"));
@@ -1817,7 +1800,6 @@ static void runtime_error_remainder_by_0(void *on_fns, void *g, size_t resources
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_DIVISION_BY_ZERO);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_DIVISION_BY_ZERO)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/remainder_by_0/input-d.grug"));
@@ -1841,7 +1823,6 @@ static void runtime_error_stack_overflow(void *on_fns, void *g, size_t resources
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_STACK_OVERFLOW);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_STACK_OVERFLOW)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/stack_overflow/input-d.grug"));
@@ -1865,7 +1846,6 @@ static void runtime_error_time_limit_exceeded(void *on_fns, void *g, size_t reso
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_TIME_LIMIT_EXCEEDED);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_TIME_LIMIT_EXCEEDED)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/time_limit_exceeded/input-d.grug"));
@@ -1889,7 +1869,6 @@ static void runtime_error_time_limit_exceeded_exponential_calls(void *on_fns, vo
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_TIME_LIMIT_EXCEEDED);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_TIME_LIMIT_EXCEEDED)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/time_limit_exceeded_exponential_calls/input-d.grug"));
@@ -1913,7 +1892,6 @@ static void runtime_error_time_limit_exceeded_fibonacci(void *on_fns, void *g, s
 	free(g);
 
 	assert(runtime_error_type == GRUG_ON_FN_TIME_LIMIT_EXCEEDED);
-	assert(streq(runtime_error_reason, grug_get_runtime_error_reason(GRUG_ON_FN_TIME_LIMIT_EXCEEDED)));
 
 	assert(streq(runtime_error_on_fn_name, "on_a"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/time_limit_exceeded_fibonacci/input-d.grug"));

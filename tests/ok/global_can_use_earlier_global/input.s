@@ -28,14 +28,12 @@ section .text
 %include "tests/utils/defines.s"
 %include "tests/utils/macros.s"
 
-extern grug_runtime_error_handler
+extern grug_call_runtime_error_handler
 extern grug_fn_path
-extern grug_runtime_error_jmp_buffer
 extern grug_fn_name
 extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern setjmp
-extern grug_get_runtime_error_reason
 extern game_fn_initialize
 extern longjmp
 
@@ -67,7 +65,7 @@ init_globals:
 	mov eax, rax[byte 0x8]
 	pop r11
 	add eax, r11d
-	init_globals_check_overflow
+	check_overflow
 	mov r11, rbp[-0x8]
 	mov r11[byte 0xc], eax
 

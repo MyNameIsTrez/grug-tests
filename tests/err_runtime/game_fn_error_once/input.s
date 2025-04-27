@@ -28,15 +28,13 @@ section .text
 %include "tests/utils/defines.s"
 %include "tests/utils/macros.s"
 
-extern grug_runtime_error_handler
 extern grug_fn_path
-extern grug_runtime_error_jmp_buffer
 extern grug_fn_name
 extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern setjmp
 extern game_fn_cause_game_fn_error
-extern grug_get_runtime_error_reason
+extern grug_call_runtime_error_handler
 extern longjmp
 extern game_fn_nothing
 
@@ -62,7 +60,7 @@ on_a:
 	clear_has_runtime_error_happened
 
 	call game_fn_cause_game_fn_error wrt ..plt
-	check_game_fn_error_on_a
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp
@@ -92,7 +90,7 @@ on_b:
 	clear_has_runtime_error_happened
 
 	call game_fn_nothing wrt ..plt
-	check_game_fn_error_on_b
+	check_game_fn_error
 
 	mov rsp, rbp
 	pop rbp
