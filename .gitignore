@@ -10,6 +10,7 @@ a.out
 ast.json
 coverage.css
 coverage.functions.html
+coverage.fuzz.c.*.html
 coverage.grug.c.*.html
 coverage.html
 coverage.tests.c.*.html

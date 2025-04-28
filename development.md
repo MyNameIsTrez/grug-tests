@@ -25,7 +25,7 @@ You should see that the program has nearly 100% line coverage.
 
 This uses [libFuzzer](https://llvm.org/docs/LibFuzzer.html), which requires [Clang](https://en.wikipedia.org/wiki/Clang) to be installed.
 
-If you replace `-fsanitize=address,undefined,fuzzer -Og` with `-fsanitize=fuzzer -Ofast -march=native -DNDEBUG` here, the numbers of executions per second goes up from 5000 to 15000 on my computer:
+First you compile the fuzzer, and create its input corpus:
 
 ```bash
 clear && \
@@ -33,7 +33,14 @@ clang grug/grug.c fuzz.c -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wst
 mkdir -p test_corpus && \
 for d in tests/err/* tests/err_runtime/* tests/ok/*; do name=${d##*/}; cp $d/*.grug test_corpus/$name.grug; done && \
 mkdir -p corpus && \
-./a.out -merge=1 corpus test_corpus && \
+./a.out -merge=1 corpus test_corpus
+```
+
+In my case, replacing `-fsanitize=address,undefined,fuzzer -Og` with `-fsanitize=fuzzer -Ofast -march=native -DNDEBUG` in the above command ups the numbers of executions per second from 5000 to 15000 on my computer.
+
+You then run the fuzzer like so:
+
+```bash
 ./a.out corpus -use_value_profile=1 -timeout=1
 ```
 
@@ -43,11 +50,21 @@ Here is how you minimize any crash reproducer:
 ./a.out -minimize_crash=1 -runs=1000 crash-*
 ```
 
-To get an overview of the fuzzing progress, you can run this in a second terminal to generate a `coverage.html` file that you can open in your browser:
+### Generating fuzzing coverage
+
+> [!IMPORTANT]
+> Make sure you have [gcovr](https://gcovr.com/en/stable/installation.html) (`pip install gcovr`) and [llvm-cov](https://llvm.org/docs/CommandGuide/llvm-cov.html) (`apt install llvm`)
+
+To get an overview of the fuzzing progress, you use Ctrl+C to stop the fuzzing for a moment (since running gcovr simultaneously crashes the fuzzer).
+
+You then run this to generate a `coverage.html` file that you can open in your browser:
 
 ```bash
+./a.out -runs=0 corpus && \
 gcovr --gcov-executable "llvm-cov gcov" --html-details coverage.html --html-theme github.green
 ```
+
+You can then resume fuzzing with the `./a.out corpus -use_value_profile=1 -timeout=1` command.
 
 ## Static code analysis with cppchecker
 
