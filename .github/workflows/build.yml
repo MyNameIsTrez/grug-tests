@@ -98,7 +98,7 @@ jobs:
         run: ./a.out -merge=1 corpus test_corpus
 
       - name: Fuzz for 1 minute
-        run: ./a.out corpus -timeout=1 -max_total_time=60
+        run: ./a.out corpus -use_value_profile=1 -timeout=1 -max_total_time=60
 
   build-ubuntu-gcc:
     name: ubuntu-gcc

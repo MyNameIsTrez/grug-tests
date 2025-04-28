@@ -34,7 +34,7 @@ mkdir -p test_corpus && \
 for d in tests/err/* tests/err_runtime/* tests/ok/*; do name=${d##*/}; cp $d/*.grug test_corpus/$name.grug; done && \
 mkdir -p corpus && \
 ./a.out -merge=1 corpus test_corpus && \
-./a.out corpus -timeout=1
+./a.out corpus -use_value_profile=1 -timeout=1
 ```
 
 Here is how you minimize any crash reproducer:
