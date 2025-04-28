@@ -28,7 +28,6 @@ section .text
 %include "tests/utils/defines.s"
 %include "tests/utils/macros.s"
 
-extern grug_call_runtime_error_handler
 extern grug_max_rsp
 extern grug_max_time
 extern grug_fn_path
@@ -38,6 +37,7 @@ extern grug_on_fns_in_safe_mode
 extern grug_current_time
 extern setjmp
 extern clock_gettime
+extern grug_call_runtime_error_handler
 extern longjmp
 extern game_fn_motherload
 
@@ -158,6 +158,7 @@ on_a:
 	movd xmm7, eax
 	call helper_foo_safe
 	add rsp, byte 0x20
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp

@@ -25,7 +25,6 @@ section .text
 %include "tests/utils/defines.s"
 %include "tests/utils/macros.s"
 
-extern grug_call_runtime_error_handler
 extern grug_max_rsp
 extern grug_max_time
 extern grug_fn_path
@@ -34,6 +33,7 @@ extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern grug_current_time
 extern clock_gettime
+extern grug_call_runtime_error_handler
 extern setjmp
 extern longjmp
 extern game_fn_nothing
@@ -67,6 +67,7 @@ on_a:
 	push rax
 	pop rdi
 	call helper_foo_safe
+	return_if_runtime_error
 
 	mov rsp, rbp
 	pop rbp

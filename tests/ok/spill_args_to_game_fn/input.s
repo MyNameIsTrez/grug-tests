@@ -25,13 +25,13 @@ section .text
 %include "tests/utils/defines.s"
 %include "tests/utils/macros.s"
 
-extern grug_call_runtime_error_handler
 extern grug_fn_path
 extern grug_fn_name
 extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern setjmp
 extern game_fn_motherload
+extern grug_call_runtime_error_handler
 extern longjmp
 
 global init_globals

@@ -25,7 +25,6 @@ section .text
 %include "tests/utils/defines.s"
 %include "tests/utils/macros.s"
 
-extern grug_call_runtime_error_handler
 extern grug_max_time
 extern grug_fn_path
 extern grug_fn_name
@@ -35,6 +34,7 @@ extern grug_current_time
 extern clock_gettime
 extern setjmp
 extern game_fn_nothing
+extern grug_call_runtime_error_handler
 extern longjmp
 extern game_fn_get_evil_false
 
