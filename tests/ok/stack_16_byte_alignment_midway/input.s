@@ -30,10 +30,10 @@ extern grug_fn_name
 extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern setjmp
-extern game_fn_magic_aligned
+extern game_fn_magic
 extern grug_call_runtime_error_handler
 extern longjmp
-extern game_fn_initialize_aligned
+extern game_fn_initialize
 
 global init_globals
 init_globals:
@@ -56,12 +56,12 @@ on_a:
 
 	clear_has_runtime_error_happened
 
-	; magic_aligned() + 42
+	; magic() + 42
 	mov eax, 42
 	push rax
 
 	sub rsp, byte 0x8 ; Comment this out along with the `add rsp, 0x8` below the call to see the unaligned access crash
-	call game_fn_magic_aligned wrt ..plt
+	call game_fn_magic wrt ..plt
 	add rsp, byte 0x8
 	check_game_fn_error
 
@@ -70,9 +70,9 @@ on_a:
 	check_overflow
 	push rax
 
-	; initialize_aligned(magic_aligned() + 42)
+	; initialize(magic() + 42)
 	pop rdi
-	call game_fn_initialize_aligned wrt ..plt
+	call game_fn_initialize wrt ..plt
 	check_game_fn_error
 
 	mov rsp, rbp
@@ -80,21 +80,21 @@ on_a:
 	ret
 
 .fast:
-	; magic_aligned() + 42
+	; magic() + 42
 	mov eax, 42
 	push rax
 
 	sub rsp, byte 0x8 ; Comment this out along with the `add rsp, 0x8` below the call to see the unaligned access crash
-	call game_fn_magic_aligned wrt ..plt
+	call game_fn_magic wrt ..plt
 	add rsp, byte 0x8
 
 	pop r11
 	add eax, r11d
 	push rax
 
-	; initialize_aligned(magic_aligned() + 42)
+	; initialize(magic() + 42)
 	pop rdi
-	call game_fn_initialize_aligned wrt ..plt
+	call game_fn_initialize wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

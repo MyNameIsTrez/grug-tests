@@ -153,9 +153,7 @@ static size_t game_fn_mega_f32_call_count;
 static size_t game_fn_mega_i32_call_count;
 static size_t game_fn_draw_call_count;
 static size_t game_fn_blocked_alrm_call_count;
-static size_t game_fn_nothing_aligned_call_count;
-static size_t game_fn_magic_aligned_call_count;
-static size_t game_fn_initialize_aligned_call_count;
+static size_t game_fn_nothing_call_count;
 static size_t game_fn_spawn_call_count;
 static size_t game_fn_has_resource_call_count;
 static size_t game_fn_has_entity_call_count;
@@ -345,21 +343,6 @@ void game_fn_draw(char *sprite_path) {
 void game_fn_blocked_alrm(void) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_blocked_alrm_call_count++;
-}
-void game_fn_nothing_aligned(void) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_nothing_aligned_call_count++;
-}
-int32_t game_fn_magic_aligned(void) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_magic_aligned_call_count++;
-	return 42;
-}
-static int32_t game_fn_initialize_aligned_x;
-void game_fn_initialize_aligned(int32_t x) {
-	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_initialize_aligned_call_count++;
-	game_fn_initialize_aligned_x = x;
 }
 static char *game_fn_spawn_name;
 void game_fn_spawn(char *name) {
@@ -747,9 +730,7 @@ static void reset_call_counts(void) {
 	game_fn_mega_i32_call_count = 0;
 	game_fn_draw_call_count = 0;
 	game_fn_blocked_alrm_call_count = 0;
-	game_fn_nothing_aligned_call_count = 0;
-	game_fn_magic_aligned_call_count = 0;
-	game_fn_initialize_aligned_call_count = 0;
+	game_fn_nothing_call_count = 0;
 	game_fn_spawn_call_count = 0;
 	game_fn_has_resource_call_count = 0;
 	game_fn_has_entity_call_count = 0;
@@ -5518,15 +5499,15 @@ static void ok_spill_args_to_helper_fn_subless(void *on_fns, void *g, size_t res
 }
 
 static void ok_stack_16_byte_alignment(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_nothing_aligned_call_count == 0);
-	assert(game_fn_initialize_aligned_call_count == 0);
+	assert(game_fn_nothing_call_count == 0);
+	assert(game_fn_initialize_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
-	assert(game_fn_nothing_aligned_call_count == 1);
-	assert(game_fn_initialize_aligned_call_count == 1);
+	assert(game_fn_nothing_call_count == 1);
+	assert(game_fn_initialize_call_count == 1);
 
 	free(g);
 
-	assert(game_fn_initialize_aligned_x == 42);
+	assert(game_fn_initialize_x == 42);
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/stack_16_byte_alignment/input-d.grug"));
@@ -5540,15 +5521,15 @@ static void ok_stack_16_byte_alignment(void *on_fns, void *g, size_t resources_s
 }
 
 static void ok_stack_16_byte_alignment_midway(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
-	assert(game_fn_magic_aligned_call_count == 0);
-	assert(game_fn_initialize_aligned_call_count == 0);
+	assert(game_fn_magic_call_count == 0);
+	assert(game_fn_initialize_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
-	assert(game_fn_magic_aligned_call_count == 1);
-	assert(game_fn_initialize_aligned_call_count == 1);
+	assert(game_fn_magic_call_count == 1);
+	assert(game_fn_initialize_call_count == 1);
 
 	free(g);
 
-	assert(game_fn_initialize_aligned_x == 42 + 42);
+	assert(game_fn_initialize_x == 42 + 42);
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/stack_16_byte_alignment_midway/input-d.grug"));

@@ -30,10 +30,10 @@ extern grug_fn_name
 extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern setjmp
-extern game_fn_nothing_aligned
+extern game_fn_nothing
 extern grug_call_runtime_error_handler
 extern longjmp
-extern game_fn_initialize_aligned
+extern game_fn_initialize
 
 global init_globals
 init_globals:
@@ -56,7 +56,7 @@ on_a:
 
 	clear_has_runtime_error_happened
 
-	call game_fn_nothing_aligned wrt ..plt
+	call game_fn_nothing wrt ..plt
 	check_game_fn_error
 
 	; add rsp, 0x8 ; Uncomment to see the unaligned access crash
@@ -66,7 +66,7 @@ on_a:
 	mov eax, 42
 	push rax
 	pop rdi
-	call game_fn_initialize_aligned wrt ..plt
+	call game_fn_initialize wrt ..plt
 	check_game_fn_error
 
 	mov rsp, rbp
@@ -74,7 +74,7 @@ on_a:
 	ret
 
 .fast:
-	call game_fn_nothing_aligned wrt ..plt
+	call game_fn_nothing wrt ..plt
 
 	; add rsp, 0x8 ; Uncomment to see the unaligned access crash
 
@@ -83,7 +83,7 @@ on_a:
 	mov eax, 42
 	push rax
 	pop rdi
-	call game_fn_initialize_aligned wrt ..plt
+	call game_fn_initialize wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

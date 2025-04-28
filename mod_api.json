@@ -341,22 +341,6 @@
 		"blocked_alrm": {
 			"description": "foo"
 		},
-		"nothing_aligned": {
-			"description": "foo"
-		},
-		"magic_aligned": {
-			"description": "foo",
-			"return_type": "i32"
-		},
-		"initialize_aligned": {
-			"description": "foo",
-			"arguments": [
-				{
-					"name": "x",
-					"type": "i32"
-				}
-			]
-		},
 		"spawn": {
 			"description": "foo",
 			"arguments": [

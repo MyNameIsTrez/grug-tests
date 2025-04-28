@@ -1,4 +1,4 @@
 on_a() {
-    nothing_aligned()
-    initialize_aligned(42)
+    nothing()
+    initialize(42)
 }
