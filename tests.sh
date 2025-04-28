@@ -118,5 +118,5 @@ fi
 
 if [[ -v COVERAGE ]]
 then
-	gcovr --gcov-executable "llvm-cov gcov" --html-details coverage.html
+	gcovr --gcov-executable "llvm-cov gcov" --html-details coverage.html --html-theme github.green
 fi

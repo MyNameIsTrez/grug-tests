@@ -29,7 +29,7 @@ If you replace `-fsanitize=address,undefined,fuzzer -Og` with `-fsanitize=fuzzer
 
 ```bash
 clear && \
-clang grug/grug.c fuzz.c -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -Wno-language-extension-token -Wno-unused-parameter -g -rdynamic -fsanitize=address,undefined,fuzzer -Og -DCRASH_ON_UNREACHABLE && \
+clang grug/grug.c fuzz.c -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -Wno-language-extension-token -Wno-unused-parameter -g -rdynamic -fsanitize=address,undefined,fuzzer --coverage -Og -DCRASH_ON_UNREACHABLE && \
 mkdir -p test_corpus && \
 for d in tests/err/* tests/err_runtime/* tests/ok/*; do name=${d##*/}; cp $d/*.grug test_corpus/$name.grug; done && \
 mkdir -p corpus && \
@@ -41,6 +41,12 @@ Here is how you minimize any crash reproducer:
 
 ```bash
 ./a.out -minimize_crash=1 -runs=1000 crash-*
+```
+
+To get an overview of the fuzzing progress, you can run this in a second terminal to generate a `coverage.html` file that you can open in your browser:
+
+```bash
+gcovr --gcov-executable "llvm-cov gcov" --html-details coverage.html --html-theme github.green
 ```
 
 ## Static code analysis with cppchecker
