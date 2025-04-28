@@ -4902,7 +4902,7 @@ static void ok_pass_string_argument_to_helper_fn(void *on_fns, void *g, size_t r
 	assert(entity_types == NULL);
 }
 
-static void ok_remainder_negative_result(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_remainder_negative_positive(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -4912,7 +4912,7 @@ static void ok_remainder_negative_result(void *on_fns, void *g, size_t resources
 	assert(game_fn_initialize_x == -1);
 
 	assert(streq(grug_fn_name, "on_a"));
-	assert(streq(grug_fn_path, "tests/ok/remainder_negative_result/input-d.grug"));
+	assert(streq(grug_fn_path, "tests/ok/remainder_negative_positive/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4922,7 +4922,7 @@ static void ok_remainder_negative_result(void *on_fns, void *g, size_t resources
 	assert(entity_types == NULL);
 }
 
-static void ok_remainder_positive_result(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_remainder_positive_positive(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -4932,7 +4932,7 @@ static void ok_remainder_positive_result(void *on_fns, void *g, size_t resources
 	assert(game_fn_initialize_x == 1);
 
 	assert(streq(grug_fn_name, "on_a"));
-	assert(streq(grug_fn_path, "tests/ok/remainder_positive_result/input-d.grug"));
+	assert(streq(grug_fn_path, "tests/ok/remainder_positive_positive/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -6277,8 +6277,8 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(or_true_3, "d", 8);
 	ADD_TEST_OK(pass_string_argument_to_game_fn, "d", 8);
 	ADD_TEST_OK(pass_string_argument_to_helper_fn, "d", 8);
-	ADD_TEST_OK(remainder_negative_result, "d", 8);
-	ADD_TEST_OK(remainder_positive_result, "d", 8);
+	ADD_TEST_OK(remainder_negative_positive, "d", 8);
+	ADD_TEST_OK(remainder_positive_positive, "d", 8);
 	ADD_TEST_OK(resource_and_entity, "d", 8);
 	ADD_TEST_OK(resource_can_contain_dot_1, "d", 8);
 	ADD_TEST_OK(resource_can_contain_dot_2, "d", 8);

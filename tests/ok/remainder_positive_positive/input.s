@@ -9,7 +9,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/remainder_negative_result/input-d.grug", 0
+	db "tests/ok/remainder_positive_positive/input-d.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -58,8 +58,6 @@ on_a:
 	mov eax, 2
 	push rax
 	mov eax, 5
-	neg eax
-	check_overflow
 	pop r11
 	check_division_by_0
 	check_division_overflow
@@ -80,7 +78,6 @@ on_a:
 	mov eax, 2
 	push rax
 	mov eax, 5
-	neg eax
 	pop r11
 	cdq
 	idiv r11d
