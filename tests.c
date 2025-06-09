@@ -5845,6 +5845,26 @@ static void ok_variable(void *on_fns, void *g, size_t resources_size, char **res
 	assert(entity_types == NULL);
 }
 
+static void ok_variable_does_not_shadow_in_different_if_statement(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+	assert(game_fn_initialize_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_call_count == 2);
+
+	free(g);
+
+	assert(game_fn_initialize_x == 69);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/variable_does_not_shadow_in_different_if_statement/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_variable_reassignment(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -6070,13 +6090,13 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(i32_logical_not, "d");
 	ADD_TEST_ERROR(i32_too_big, "d");
 	ADD_TEST_ERROR(i32_too_small, "d");
+	ADD_TEST_ERROR(indentation_going_down_by_2, "d");
 	ADD_TEST_ERROR(indented_call_argument, "d");
 	ADD_TEST_ERROR(indented_call_arguments, "d");
 	ADD_TEST_ERROR(indented_helper_fn_parameter, "d");
 	ADD_TEST_ERROR(indented_helper_fn_parameters, "d");
 	ADD_TEST_ERROR(indented_on_fn_parameter, "f");
 	ADD_TEST_ERROR(indented_on_fn_parameters, "g");
-	ADD_TEST_ERROR(indentation_going_down_by_2, "d");
 	ADD_TEST_ERROR(local_variable_already_exists, "d");
 	ADD_TEST_ERROR(local_variable_definition_cant_use_itself, "d");
 	ADD_TEST_ERROR(local_variable_definition_missing_type, "d");
@@ -6135,6 +6155,10 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(variable_assignment_before_definition, "d");
 	ADD_TEST_ERROR(variable_definition_requires_value_i32, "d");
 	ADD_TEST_ERROR(variable_definition_requires_value_string, "d");
+	ADD_TEST_ERROR(variable_not_accessible, "d");
+	ADD_TEST_ERROR(variable_same_name_missing_type, "d");
+	ADD_TEST_ERROR(variable_shadows_argument, "f");
+	ADD_TEST_ERROR(variable_shadows_variable, "f");
 	ADD_TEST_ERROR(variable_statement_missing_assignment, "d");
 	ADD_TEST_ERROR(variable_used_before_definition, "d");
 	ADD_TEST_ERROR(wrong_type_global_assignment, "d");
@@ -6356,6 +6380,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(subtraction_negative_result, "d", 8);
 	ADD_TEST_OK(subtraction_positive_result, "d", 8);
 	ADD_TEST_OK(variable, "d", 8);
+	ADD_TEST_OK(variable_does_not_shadow_in_different_if_statement, "d", 8);
 	ADD_TEST_OK(variable_reassignment, "d", 8);
 	ADD_TEST_OK(variable_string_global, "d", 16);
 	ADD_TEST_OK(variable_string_local, "d", 8);
