@@ -7,11 +7,6 @@
 - If you want to allow your compiler to optimize `grug.c` hard, run `OPTIMIZED= ./tests.sh`.
 - If you want to allow your compiler to statically analyze `grug.c` for problems, run `ANALYZE= ./tests.sh`.
 
-## Run tests.sh on save
-
-1. Install this [Run on Save](https://marketplace.visualstudio.com/items?itemName=emeraldwalk.RunOnSave) extension for VS Code.
-2. In the Output window, which is one of the buttons next to the Terminal button, press the dropdown on the right and select `Run On Save`. Here you will see the output of the tests every time you save.
-
 ## Generating coverage
 
 > [!IMPORTANT]
