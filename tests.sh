@@ -68,9 +68,6 @@ fi
 
 compiler_flags+=' -DCRASH_ON_UNREACHABLE'
 
-# -rdynamic allows the .so to call functions from test.c
-linker_flags='-rdynamic -lm'
-
 CC="${CC:=clang}"
 echo "Compilation will use $CC"
 
@@ -93,6 +90,14 @@ then
     echo "Recompiling tests.o..."
     "$CC" tests.c -c -o tests.o $compiler_flags || { echo 'Recompiling tests.o failed :('; exit 1; }
 fi
+
+# `-rdynamic` allows the .so to call functions from test.c
+# `-lm` links against libm.so/libm.a to get access to math functions
+# `-z execstack` is necessary in order for Arch Linux to not complain when dlopen()ing expected.so
+#   about a missing GNU_STACK program header. I don't want to add GNU_STACK, as grug's output doesn't need it either.
+#   Instead, it would have also been possible to pass `-z execnostack` to `ld` in regenerate_expected_dll(),
+#   and to update grug.c so it outputs a GNU_STACK program header.
+linker_flags='-rdynamic -lm -z execstack'
 
 if (! [[ tests.o -ot tests.out ]]) || (! [[ grug.o -ot tests.out ]]) || (! [[ tests.sh -ot tests.out ]])
 then
