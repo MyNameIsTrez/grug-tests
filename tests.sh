@@ -93,11 +93,7 @@ fi
 
 # `-rdynamic` allows the .so to call functions from test.c
 # `-lm` links against libm.so/libm.a to get access to math functions
-# `-z execstack` is necessary in order for Arch Linux to not complain when dlopen()ing expected.so
-#   about a missing GNU_STACK program header. I don't want to add GNU_STACK, as grug's output doesn't need it either.
-#   Instead, it would have also been possible to pass `-z execnostack` to `ld` in regenerate_expected_dll(),
-#   and to update grug.c so it outputs a GNU_STACK program header.
-linker_flags='-rdynamic -lm -z execstack'
+linker_flags='-rdynamic -lm'
 
 if (! [[ tests.o -ot tests.out ]]) || (! [[ grug.o -ot tests.out ]]) || (! [[ tests.sh -ot tests.out ]])
 then

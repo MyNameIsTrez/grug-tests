@@ -1251,9 +1251,13 @@ static void regenerate_expected_dll(
 #ifdef __x86_64__
 	run((char *[]){"nasm", nasm_path, "-felf64", "-O0", "-o", nasm_o_path, NULL});
 	// run((char *[]){"nasm", nasm_path, "-felf64", "-g", "-O0", "-o", nasm_o_path, NULL});
-	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-x", "-shared", "--hash-style=sysv", NULL});
+
+	// `-z noexecstack` is necessary in order for Arch Linux to not complain when dlopen()ing expected.so
+	//   about a missing GNU_STACK program header.
+	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-x", "-shared", "--hash-style=sysv", "-z", "noexecstack", NULL});
 #elif __aarch64__
 	run((char *[]){"nasm", nasm_path, "-fmacho64", "-O0", "-o", nasm_o_path, NULL});
+
 	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-x", "-dylib", NULL});
 #else
 #error Unsupported or unrecognized architecture
@@ -1761,7 +1765,7 @@ static void runtime_error_on_fn_errors_after_it_calls_other_on_fn(void *on_fns, 
 
 	assert(streq(runtime_error_on_fn_name, "on_b"));
 	assert(streq(runtime_error_on_fn_path, "tests/err_runtime/on_fn_errors_after_it_calls_other_on_fn/input-e.grug"));
-	
+
 	assert(streq(grug_fn_name, "on_b"));
 	assert(streq(grug_fn_path, "tests/err_runtime/on_fn_errors_after_it_calls_other_on_fn/input-e.grug"));
 
