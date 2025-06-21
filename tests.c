@@ -6009,7 +6009,6 @@ static void ok_write_to_global_variable(void *on_fns, void *g, size_t resources_
 }
 
 static void add_error_tests(void) {
-	ADD_TEST_ERROR(assign_to_unknown_variable, "d");
 	ADD_TEST_ERROR(assignment_isnt_expression, "d");
 	ADD_TEST_ERROR(bool_cant_be_initialized_with_1, "d");
 	ADD_TEST_ERROR(bool_ge, "d");
@@ -6162,7 +6161,8 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(variable_not_accessible, "d");
 	ADD_TEST_ERROR(variable_same_name_missing_type, "d");
 	ADD_TEST_ERROR(variable_shadows_argument, "f");
-	ADD_TEST_ERROR(variable_shadows_variable, "f");
+	ADD_TEST_ERROR(variable_shadows_global_variable, "d");
+	ADD_TEST_ERROR(variable_shadows_local_variable, "d");
 	ADD_TEST_ERROR(variable_statement_missing_assignment, "d");
 	ADD_TEST_ERROR(variable_used_before_definition, "d");
 	ADD_TEST_ERROR(wrong_type_global_assignment, "d");
@@ -6411,6 +6411,11 @@ int main(int argc, char *argv[]) {
 		CHECK_THAT_EVERY_TEST_DIRECTORY_HAS_A_FUNCTION(err);
 		CHECK_THAT_EVERY_TEST_DIRECTORY_HAS_A_FUNCTION(err_runtime);
 		CHECK_THAT_EVERY_TEST_DIRECTORY_HAS_A_FUNCTION(ok);
+	}
+
+	if (err_test_datas_size + err_runtime_test_datas_size + ok_test_datas_size == 0) {
+		fprintf(stderr, "No tests to execute\n");
+		exit(EXIT_FAILURE);
 	}
 
 #ifdef SHUFFLES

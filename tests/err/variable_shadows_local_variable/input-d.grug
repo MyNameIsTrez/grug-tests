@@ -1,0 +1,8 @@
+on_a() {
+    x: i32 = 42
+
+    if true {
+        x: i32 = 69
+        initialize(x)
+    }
+}

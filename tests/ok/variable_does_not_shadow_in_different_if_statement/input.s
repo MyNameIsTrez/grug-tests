@@ -75,9 +75,9 @@ on_a:
 	je strict .false_2_safe
 
 	mov eax, 69
-	mov rbp[-0x10], eax
+	mov rbp[-0xc], eax
 
-	mov eax, rbp[-0x10]
+	mov eax, rbp[-0xc]
 	push rax
 
 	pop rdi
@@ -109,9 +109,9 @@ on_a:
 	je strict .false_2_fast
 
 	mov eax, 69
-	mov rbp[-0x10], eax
+	mov rbp[-0xc], eax
 
-	mov eax, rbp[-0x10]
+	mov eax, rbp[-0xc]
 	push rax
 
 	pop rdi

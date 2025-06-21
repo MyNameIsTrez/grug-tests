@@ -1,5 +1,6 @@
-on_a(x: i32) {
-    x: i32 = 42
+x: i32 = 42
+
+on_a() {
     if true {
         x: i32 = 69
         initialize(x)
