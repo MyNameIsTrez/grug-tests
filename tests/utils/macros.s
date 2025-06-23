@@ -78,7 +78,18 @@
 %endmacro
 
 %macro set_max_rsp 0
-	mov rax, [rel grug_max_rsp wrt ..got]
+    ; Prepare TLS descriptor in rdi
+	;
+	; A simple `mov rax, [rel grug_max_rsp wrt ..got]` doesn't work,
+	; as `grug_max_rsp` is marked `thread_local` in grug.c.
+	;
+	; There is unfortunately no NASM equivalent to GAS its `grug_max_rsp@TLSGD`.
+	;
+	; This is necessary for Minecraft, as grug sporadically and incorrectly reported a stack overflow,
+	; which is caused by multiple threads calling grug on_ functions simultaneously.
+    call grug_get_max_rsp_addr wrt ..plt
+
+	; Set the max grug stack limit to the current rsp, minus GRUG_STACK_LIMIT
 	mov [rax], rsp
 	sub qword [rax], GRUG_STACK_LIMIT
 %endmacro
@@ -110,8 +121,8 @@
 %endmacro
 
 %macro check_stack_overflow 0
-	mov rax, [rel grug_max_rsp wrt ..got]
-	cmp rsp, [rax]
+    call grug_get_max_rsp wrt ..plt
+	cmp rsp, rax
 	jg %%skip
 	runtime_error GRUG_ON_FN_STACK_OVERFLOW
 %%skip:

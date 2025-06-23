@@ -25,18 +25,19 @@ section .text
 %include "tests/utils/defines.s"
 %include "tests/utils/macros.s"
 
-extern grug_max_rsp
 extern grug_max_time
 extern grug_fn_path
 extern grug_fn_name
 extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern grug_current_time
+extern grug_get_max_rsp_addr
 extern clock_gettime
 extern grug_call_runtime_error_handler
+extern game_fn_initialize
+extern grug_get_max_rsp
 extern setjmp
 extern longjmp
-extern game_fn_initialize
 
 global init_globals
 init_globals:
