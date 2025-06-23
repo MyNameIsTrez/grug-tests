@@ -31,10 +31,12 @@ extern grug_fn_name
 extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern grug_current_time
-extern clock_gettime
+extern grug_set_time_limit
 extern setjmp
 extern game_fn_nothing
 extern grug_call_runtime_error_handler
+extern grug_is_time_limit_exceeded
+extern clock_gettime
 extern longjmp
 
 global init_globals
@@ -56,7 +58,7 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	set_time_limit
+	call grug_set_time_limit wrt ..plt
 
 	clear_has_runtime_error_happened
 

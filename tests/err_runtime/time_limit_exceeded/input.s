@@ -25,12 +25,12 @@ section .text
 %include "tests/utils/defines.s"
 %include "tests/utils/macros.s"
 
-extern grug_max_time
 extern grug_fn_path
 extern grug_fn_name
 extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
-extern grug_current_time
+extern grug_set_time_limit
+extern grug_is_time_limit_exceeded
 extern clock_gettime
 extern grug_call_runtime_error_handler
 extern setjmp
@@ -55,7 +55,7 @@ on_a:
 
 	save_on_fn_name_and_path
 
-	set_time_limit
+	call grug_set_time_limit wrt ..plt
 
 	clear_has_runtime_error_happened
 

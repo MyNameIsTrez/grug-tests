@@ -32,10 +32,12 @@ extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern grug_current_time
 extern grug_get_max_rsp_addr
-extern clock_gettime
+extern grug_set_time_limit
 extern game_fn_initialize
 extern grug_call_runtime_error_handler
 extern grug_get_max_rsp
+extern grug_is_time_limit_exceeded
+extern clock_gettime
 extern setjmp
 extern longjmp
 
@@ -60,7 +62,7 @@ on_a:
 
 	set_max_rsp
 
-	set_time_limit
+	call grug_set_time_limit wrt ..plt
 
 	clear_has_runtime_error_happened
 
