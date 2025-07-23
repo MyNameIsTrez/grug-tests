@@ -37,8 +37,6 @@ extern grug_get_max_rsp
 extern grug_call_runtime_error_handler
 extern grug_is_time_limit_exceeded
 extern clock_gettime
-extern setjmp
-extern longjmp
 extern game_fn_initialize
 extern game_fn_sin
 

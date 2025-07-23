@@ -29,8 +29,6 @@ extern grug_fn_path
 extern grug_fn_name
 extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
-extern setjmp
-extern longjmp
 extern grug_call_runtime_error_handler
 extern game_fn_initialize
 

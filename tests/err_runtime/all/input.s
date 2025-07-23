@@ -38,8 +38,6 @@ extern game_fn_initialize
 extern grug_is_time_limit_exceeded
 extern clock_gettime
 extern grug_get_max_rsp
-extern setjmp
-extern longjmp
 
 global init_globals
 init_globals:

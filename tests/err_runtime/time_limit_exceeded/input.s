@@ -33,8 +33,6 @@ extern grug_set_time_limit
 extern grug_is_time_limit_exceeded
 extern clock_gettime
 extern grug_call_runtime_error_handler
-extern setjmp
-extern longjmp
 
 global init_globals
 init_globals:

@@ -26,8 +26,6 @@ extern grug_fn_name
 extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern grug_call_runtime_error_handler
-extern setjmp
-extern longjmp
 
 global init_globals
 init_globals:
