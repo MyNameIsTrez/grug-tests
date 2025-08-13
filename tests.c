@@ -20,7 +20,7 @@
 #include <unistd.h>
 
 // Forward declaration, since grug.h doesn't declare it
-bool grug_test_regenerate_dll(char *grug_file_path, char *dll_path, char *mod);
+bool grug_test_regenerate_dll(const char *grug_file_path, const char *dll_path, const char *mod);
 
 // From https://stackoverflow.com/a/2114249/13279557
 #ifdef __x86_64__
@@ -71,67 +71,67 @@ struct test_data {
 	void *on_fns;
 	void *g;
 	size_t resources_size;
-	char **resources;
+	const char **resources;
 	size_t entities_size;
-	char **entities;
-	char **entity_types;
+	const char **entities;
+	const char **entity_types;
 	void *dll;
 };
 
 struct error_test_data {
-	char *test_name_str;
-	char *grug_path;
-	char *expected_error_path;
-	char *results_path;
-	char *output_dll_path;
-	char *grug_output_path;
-	char *failed_file_path;
+	const char *test_name_str;
+	const char *grug_path;
+	const char *expected_error_path;
+	const char *results_path;
+	const char *output_dll_path;
+	const char *grug_output_path;
+	const char *failed_file_path;
 };
 static struct error_test_data error_test_datas[420420];
 static size_t err_test_datas_size;
 
 struct runtime_error_test_data {
-	void (*run)(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types);
-	char *test_name_str;
-	char *grug_path;
-	char *nasm_path;
-	char *expected_error_path;
-	char *results_path;
-	char *output_dll_path;
-	char *expected_dll_path;
-	char *nasm_o_path;
-	char *output_xxd_path;
-	char *expected_xxd_path;
-	char *output_readelf_path;
-	char *expected_readelf_path;
-	char *output_objdump_path;
-	char *expected_objdump_path;
-	char *dump_path;
-	char *applied_path;
-	char *failed_file_path;
+	void (*run)(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types);
+	const char *test_name_str;
+	const char *grug_path;
+	const char *nasm_path;
+	const char *expected_error_path;
+	const char *results_path;
+	const char *output_dll_path;
+	const char *expected_dll_path;
+	const char *nasm_o_path;
+	const char *output_xxd_path;
+	const char *expected_xxd_path;
+	const char *output_readelf_path;
+	const char *expected_readelf_path;
+	const char *output_objdump_path;
+	const char *expected_objdump_path;
+	const char *dump_path;
+	const char *applied_path;
+	const char *failed_file_path;
 	size_t expected_globals_size_value;
 };
 static struct runtime_error_test_data runtime_error_test_datas[420420];
 static size_t err_runtime_test_datas_size;
 
 struct ok_test_data {
-	void (*run)(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types);
-	char *test_name_str;
-	char *grug_path;
-	char *nasm_path;
-	char *results_path;
-	char *output_dll_path;
-	char *expected_dll_path;
-	char *nasm_o_path;
-	char *output_xxd_path;
-	char *expected_xxd_path;
-	char *output_readelf_path;
-	char *expected_readelf_path;
-	char *output_objdump_path;
-	char *expected_objdump_path;
-	char *dump_path;
-	char *applied_path;
-	char *failed_file_path;
+	void (*run)(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types);
+	const char *test_name_str;
+	const char *grug_path;
+	const char *nasm_path;
+	const char *results_path;
+	const char *output_dll_path;
+	const char *expected_dll_path;
+	const char *nasm_o_path;
+	const char *output_xxd_path;
+	const char *expected_xxd_path;
+	const char *output_readelf_path;
+	const char *expected_readelf_path;
+	const char *output_objdump_path;
+	const char *expected_objdump_path;
+	const char *dump_path;
+	const char *applied_path;
+	const char *failed_file_path;
 	size_t expected_globals_size_value;
 };
 static struct ok_test_data ok_test_datas[420420];
@@ -173,7 +173,7 @@ static size_t game_fn_call_on_b_fn_call_count;
 static void (*on_b)(void *globals);
 static void *g_for_on_b;
 
-static bool streq(char *a, char *b) {
+static bool streq(const char *a, const char *b) {
 	return strcmp(a, b) == 0;
 }
 
@@ -221,8 +221,8 @@ int32_t game_fn_max(int32_t x, int32_t y) {
 
 	return x > y ? x : y;
 }
-static char *game_fn_say_message;
-void game_fn_say(char *message) {
+static const char *game_fn_say_message;
+void game_fn_say(const char *message) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_say_call_count++;
 
@@ -259,8 +259,8 @@ static float game_fn_mega_f6;
 static float game_fn_mega_f7;
 static float game_fn_mega_f8;
 static int32_t game_fn_mega_id;
-static char *game_fn_mega_str;
-void game_fn_mega(float f1, int32_t i1, bool b1, float f2, float f3, float f4, bool b2, int32_t i2, float f5, float f6, float f7, float f8, uint64_t id, char *str) {
+static const char *game_fn_mega_str;
+void game_fn_mega(float f1, int32_t i1, bool b1, float f2, float f3, float f4, bool b2, int32_t i2, float f5, float f6, float f7, float f8, uint64_t id, const char *str) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_mega_call_count++;
 
@@ -334,8 +334,8 @@ void game_fn_mega_i32(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5
 	game_fn_mega_i32_i6 = i6;
 	game_fn_mega_i32_i7 = i7;
 }
-static char *game_fn_draw_sprite_path;
-void game_fn_draw(char *sprite_path) {
+static const char *game_fn_draw_sprite_path;
+void game_fn_draw(const char *sprite_path) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_draw_call_count++;
 	game_fn_draw_sprite_path = sprite_path;
@@ -344,15 +344,15 @@ void game_fn_blocked_alrm(void) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_blocked_alrm_call_count++;
 }
-static char *game_fn_spawn_name;
-void game_fn_spawn(char *name) {
+static const char *game_fn_spawn_name;
+void game_fn_spawn(const char *name) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_spawn_call_count++;
 
 	game_fn_spawn_name = name;
 }
-static char *game_fn_has_resource_path;
-bool game_fn_has_resource(char *path) {
+static const char *game_fn_has_resource_path;
+bool game_fn_has_resource(const char *path) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_has_resource_call_count++;
 
@@ -360,8 +360,8 @@ bool game_fn_has_resource(char *path) {
 
 	return true;
 }
-static char *game_fn_has_entity_name;
-bool game_fn_has_entity(char *name) {
+static const char *game_fn_has_entity_name;
+bool game_fn_has_entity(const char *name) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_has_entity_call_count++;
 
@@ -369,8 +369,8 @@ bool game_fn_has_entity(char *name) {
 
 	return true;
 }
-static char *game_fn_has_string_str;
-bool game_fn_has_string(char *str) {
+static const char *game_fn_has_string_str;
+bool game_fn_has_string(const char *str) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_has_string_call_count++;
 
@@ -471,21 +471,21 @@ void game_fn_motherload_subless(int32_t i1, int32_t i2, int32_t i3, int32_t i4, 
 	game_fn_motherload_subless_id = id;
 	game_fn_motherload_subless_f10 = f10;
 }
-static char *game_fn_offset_32_bit_f32_s1;
-static char *game_fn_offset_32_bit_f32_s2;
-static char *game_fn_offset_32_bit_f32_s3;
-static char *game_fn_offset_32_bit_f32_s4;
-static char *game_fn_offset_32_bit_f32_s5;
-static char *game_fn_offset_32_bit_f32_s6;
-static char *game_fn_offset_32_bit_f32_s7;
-static char *game_fn_offset_32_bit_f32_s8;
-static char *game_fn_offset_32_bit_f32_s9;
-static char *game_fn_offset_32_bit_f32_s10;
-static char *game_fn_offset_32_bit_f32_s11;
-static char *game_fn_offset_32_bit_f32_s12;
-static char *game_fn_offset_32_bit_f32_s13;
-static char *game_fn_offset_32_bit_f32_s14;
-static char *game_fn_offset_32_bit_f32_s15;
+static const char *game_fn_offset_32_bit_f32_s1;
+static const char *game_fn_offset_32_bit_f32_s2;
+static const char *game_fn_offset_32_bit_f32_s3;
+static const char *game_fn_offset_32_bit_f32_s4;
+static const char *game_fn_offset_32_bit_f32_s5;
+static const char *game_fn_offset_32_bit_f32_s6;
+static const char *game_fn_offset_32_bit_f32_s7;
+static const char *game_fn_offset_32_bit_f32_s8;
+static const char *game_fn_offset_32_bit_f32_s9;
+static const char *game_fn_offset_32_bit_f32_s10;
+static const char *game_fn_offset_32_bit_f32_s11;
+static const char *game_fn_offset_32_bit_f32_s12;
+static const char *game_fn_offset_32_bit_f32_s13;
+static const char *game_fn_offset_32_bit_f32_s14;
+static const char *game_fn_offset_32_bit_f32_s15;
 static float game_fn_offset_32_bit_f32_f1;
 static float game_fn_offset_32_bit_f32_f2;
 static float game_fn_offset_32_bit_f32_f3;
@@ -495,7 +495,7 @@ static float game_fn_offset_32_bit_f32_f6;
 static float game_fn_offset_32_bit_f32_f7;
 static float game_fn_offset_32_bit_f32_f8;
 static int32_t game_fn_offset_32_bit_f32_g;
-void game_fn_offset_32_bit_f32(char *s1, char *s2, char *s3, char *s4, char *s5, char *s6, char *s7, char *s8, char *s9, char *s10, char *s11, char *s12, char *s13, char *s14, char *s15, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, int32_t g) {
+void game_fn_offset_32_bit_f32(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6, const char *s7, const char *s8, const char *s9, const char *s10, const char *s11, const char *s12, const char *s13, const char *s14, const char *s15, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, int32_t g) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_offset_32_bit_f32_call_count++;
 
@@ -631,13 +631,13 @@ static float game_fn_offset_32_bit_string_f27;
 static float game_fn_offset_32_bit_string_f28;
 static float game_fn_offset_32_bit_string_f29;
 static float game_fn_offset_32_bit_string_f30;
-static char *game_fn_offset_32_bit_string_s1;
-static char *game_fn_offset_32_bit_string_s2;
-static char *game_fn_offset_32_bit_string_s3;
-static char *game_fn_offset_32_bit_string_s4;
-static char *game_fn_offset_32_bit_string_s5;
+static const char *game_fn_offset_32_bit_string_s1;
+static const char *game_fn_offset_32_bit_string_s2;
+static const char *game_fn_offset_32_bit_string_s3;
+static const char *game_fn_offset_32_bit_string_s4;
+static const char *game_fn_offset_32_bit_string_s5;
 static int32_t game_fn_offset_32_bit_string_g;
-void game_fn_offset_32_bit_string(float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, float f10, float f11, float f12, float f13, float f14, float f15, float f16, float f17, float f18, float f19, float f20, float f21, float f22, float f23, float f24, float f25, float f26, float f27, float f28, float f29, float f30, char *s1, char *s2, char *s3, char *s4, char *s5, int32_t g) {
+void game_fn_offset_32_bit_string(float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, float f10, float f11, float f12, float f13, float f14, float f15, float f16, float f17, float f18, float f19, float f20, float f21, float f22, float f23, float f24, float f25, float f26, float f27, float f28, float f29, float f30, const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, int32_t g) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_offset_32_bit_string_call_count++;
 
@@ -678,11 +678,11 @@ void game_fn_offset_32_bit_string(float f1, float f2, float f3, float f4, float 
 	game_fn_offset_32_bit_string_s5 = s5;
 	game_fn_offset_32_bit_string_g = g;
 }
-static char *game_fn_talk_message1;
-static char *game_fn_talk_message2;
-static char *game_fn_talk_message3;
-static char *game_fn_talk_message4;
-void game_fn_talk(char *message1, char *message2, char *message3, char *message4) {
+static const char *game_fn_talk_message1;
+static const char *game_fn_talk_message2;
+static const char *game_fn_talk_message3;
+static const char *game_fn_talk_message4;
+void game_fn_talk(const char *message1, const char *message2, const char *message3, const char *message4) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
 	game_fn_talk_call_count++;
 
@@ -748,14 +748,14 @@ static void reset_call_counts(void) {
 	game_fn_call_on_b_fn_call_count = 0;
 }
 
-static void check(int status, char *fn_name) {
+static void check(int status, const char *fn_name) {
 	if (status < 0) {
 		perror(fn_name);
 		exit(EXIT_FAILURE);
 	}
 }
 
-static void check_null(void *ptr, char *fn_name) {
+static void check_null(void *ptr, const char *fn_name) {
 	if (ptr == NULL) {
 		perror(fn_name);
 		exit(EXIT_FAILURE);
@@ -763,9 +763,9 @@ static void check_null(void *ptr, char *fn_name) {
 }
 
 #define MAX_WHITELISTED_TESTS 420420
-static char *whitelisted_tests[MAX_WHITELISTED_TESTS];
+static const char *whitelisted_tests[MAX_WHITELISTED_TESTS];
 static size_t whitelisted_tests_size;
-static bool is_whitelisted_test(char *name) {
+static bool is_whitelisted_test(const char *name) {
 	for (size_t i = 0; i < whitelisted_tests_size; i++) {
 		if (streq(whitelisted_tests[i], name)) {
 			return true;
@@ -854,7 +854,7 @@ static bool is_whitelisted_test(char *name) {
 }
 #endif
 
-static size_t read_file(char *path, uint8_t *bytes) {
+static size_t read_file(const char *path, uint8_t *bytes) {
 	FILE *f = fopen(path, "r");
 	check_null(f, "fopen");
 
@@ -879,7 +879,7 @@ static size_t read_file(char *path, uint8_t *bytes) {
 	return len;
 }
 
-static void *get(void *dll, char *label) {
+static void *get(void *dll, const char *label) {
 	void *p = dlsym(dll, label);
 	if (!p) {
 		printf("dlsym: %s\n", dlerror());
@@ -888,7 +888,7 @@ static void *get(void *dll, char *label) {
 	return p;
 }
 
-static void wait_on_child(char *child_name) {
+static void wait_on_child(const char *child_name) {
 	int status;
 	check(wait(&status), "wait");
 
@@ -907,12 +907,12 @@ static void wait_on_child(char *child_name) {
 	}
 }
 
-static void run(char *const *argv) {
+static void run(const char *const *argv) {
 	pid_t pid = fork();
 	check(pid, "fork");
 
 	if (pid == 0) {
-		execvp(argv[0], argv);
+		execvp(argv[0], (char *const *)argv);
 		printf("execvp: %s: %s\n", argv[0], strerror(errno));
 		exit(EXIT_FAILURE);
 	}
@@ -921,7 +921,7 @@ static void run(char *const *argv) {
 }
 
 #ifdef OUTPUT_DLL_INFO
-static void run_and_write(char *const *argv, char *written_path) {
+static void run_and_write(const char *const *argv, const char *written_path) {
 	pid_t pid = fork();
 	check(pid, "fork");
 
@@ -941,7 +941,7 @@ static void run_and_write(char *const *argv, char *written_path) {
 	wait_on_child(argv[0]);
 }
 
-static void output_dll_info(char *dll_path, char *xxd_path, char *readelf_path, char *objdump_path) {
+static void output_dll_info(const char *dll_path, const char *xxd_path, const char *readelf_path, const char *objdump_path) {
 	pid_t pid = fork();
 	check(pid, "fork");
 
@@ -956,20 +956,20 @@ static void output_dll_info(char *dll_path, char *xxd_path, char *readelf_path, 
 
 		check(close(fd), "close");
 
-		execvp("xxd", (char *[]){"xxd", dll_path, NULL});
+		execvp("xxd", (const char *[]){"xxd", dll_path, NULL});
 		printf("execvp: xxd: %s\n", strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 
 	wait_on_child("xxd");
 
-	run_and_write((char *[]){"readelf", "--wide", "-a", dll_path, NULL}, readelf_path);
+	run_and_write((const char *[]){"readelf", "--wide", "-a", dll_path, NULL}, readelf_path);
 
-	run_and_write((char *[]){"objdump", "-d", dll_path, "-Mintel", NULL}, objdump_path);
+	run_and_write((const char *[]){"objdump", "-d", dll_path, "-Mintel", NULL}, objdump_path);
 }
 #endif
 
-static bool newer(char *path1, char *path2) {
+static bool newer(const char *path1, const char *path2) {
 	struct stat s1;
 	if (stat(path1, &s1) == -1) {
 		if (errno != ENOENT) {
@@ -990,7 +990,7 @@ static bool newer(char *path1, char *path2) {
 	return s1.st_mtime >= s2.st_mtime;
 }
 
-static char *get_expected_error(char *expected_error_path) {
+static const char *get_expected_error(const char *expected_error_path) {
 	static char expected_error[420420];
 	size_t expected_error_len = read_file(expected_error_path, (uint8_t *)expected_error);
 
@@ -1006,18 +1006,18 @@ static char *get_expected_error(char *expected_error_path) {
 	return expected_error;
 }
 
-static void create_failed_file(char *failed_file_path) {
+static void create_failed_file(const char *failed_file_path) {
 	int fd = open(failed_file_path, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	check(fd, "open");
 	close(fd);
 }
 
-static bool failed_file_doesnt_exist(char *failed_file_path) {
+static bool failed_file_doesnt_exist(const char *failed_file_path) {
 	errno = 0;
 	return access(failed_file_path, F_OK) == -1 && errno == ENOENT;
 }
 
-static void make_results_dir(char *results_path) {
+static void make_results_dir(const char *results_path) {
 	if (mkdir(results_path, 0755) == -1 && errno != EEXIST) {
 		perror("mkdir");
 		exit(EXIT_FAILURE);
@@ -1036,7 +1036,7 @@ static int remove_callback(const char *entry_path, const struct stat *entry_info
 	return rv;
 }
 
-static int rm_rf(char *path) {
+static int rm_rf(const char *path) {
 	return nftw(path, remove_callback, 42, FTW_DEPTH | FTW_PHYS);
 }
 
@@ -1048,13 +1048,13 @@ static bool shuffles_was_not_defined(void) {
 }
 
 static void test_error(
-	char *test_name,
-	char *grug_path,
-	char *expected_error_path,
-	char *results_path,
-	char *output_dll_path,
-	char *grug_output_path,
-	char *failed_file_path
+	const char *test_name,
+	const char *grug_path,
+	const char *expected_error_path,
+	const char *results_path,
+	const char *output_dll_path,
+	const char *grug_output_path,
+	const char *failed_file_path
 ) {
 	if (failed_file_doesnt_exist(failed_file_path)
 	 && shuffles_was_not_defined()
@@ -1094,7 +1094,7 @@ static void test_error(
 		exit(EXIT_FAILURE);
 	}
 
-	char *expected_error = get_expected_error(expected_error_path);
+	const char *expected_error = get_expected_error(expected_error_path);
 	size_t expected_error_len = strlen(expected_error);
 
 	if (expected_error_len != grug_error_msg_len || memcmp(grug_error.msg, expected_error, expected_error_len) != 0) {
@@ -1112,9 +1112,9 @@ static void test_error(
 }
 
 static void diff_dump_and_apply(
-	char *grug_path,
-	char *dump_path,
-	char *applied_path
+	const char *grug_path,
+	const char *dump_path,
+	const char *applied_path
 ) {
 	if (grug_dump_file_to_json(grug_path, dump_path)) {
 		printf("Failed to dump file AST: %s: %s (detected by grug.c:%d)\n", grug_error.path, grug_error.msg, grug_error.grug_c_line_number);
@@ -1147,15 +1147,15 @@ static void diff_dump_and_apply(
 }
 
 static void generate_and_compare_output_dll(
-	char *grug_path,
-	char *output_dll_path,
-	char *expected_dll_path,
-	char *output_xxd_path,
-	char *output_readelf_path,
-	char *output_objdump_path,
-	char *dump_path,
-	char *applied_path,
-	char *failed_file_path
+	const char *grug_path,
+	const char *output_dll_path,
+	const char *expected_dll_path,
+	const char *output_xxd_path,
+	const char *output_readelf_path,
+	const char *output_objdump_path,
+	const char *dump_path,
+	const char *applied_path,
+	const char *failed_file_path
 ) {
 	if (grug_test_regenerate_dll(grug_path, output_dll_path, "ok")) {
 		printf("The test wasn't supposed to print anything, but did:\n");
@@ -1196,23 +1196,23 @@ static void generate_and_compare_output_dll(
 	unlink(failed_file_path);
 }
 
-static char *runtime_error_reason = NULL;
+static const char *runtime_error_reason = NULL;
 
 static void runtime_error_epilogue(
-	char *grug_path,
-	char *expected_error_path,
-	char *output_dll_path,
-	char *expected_dll_path,
-	char *output_xxd_path,
-	char *output_readelf_path,
-	char *output_objdump_path,
-	char *dump_path,
-	char *applied_path,
-	char *failed_file_path
+	const char *grug_path,
+	const char *expected_error_path,
+	const char *output_dll_path,
+	const char *expected_dll_path,
+	const char *output_xxd_path,
+	const char *output_readelf_path,
+	const char *output_objdump_path,
+	const char *dump_path,
+	const char *applied_path,
+	const char *failed_file_path
 ) {
 	size_t grug_error_msg_len = strlen(runtime_error_reason);
 
-	char *expected_error = get_expected_error(expected_error_path);
+	const char *expected_error = get_expected_error(expected_error_path);
 	size_t expected_error_len = strlen(expected_error);
 
 	if (expected_error_len != grug_error_msg_len || memcmp(runtime_error_reason, expected_error, expected_error_len) != 0) {
@@ -1229,8 +1229,8 @@ static void runtime_error_epilogue(
 	generate_and_compare_output_dll(grug_path, output_dll_path, expected_dll_path, output_xxd_path, output_readelf_path, output_objdump_path, dump_path, applied_path, failed_file_path);
 }
 
-static void handle_dlerror(char *function_name) {
-	char *err = dlerror();
+static void handle_dlerror(const char *function_name) {
+	const char *err = dlerror();
 	if (!err) {
 		printf("dlerror() was asked to find an error string for %s(), but it couldn't find one", function_name);
 		exit(EXIT_FAILURE);
@@ -1241,24 +1241,24 @@ static void handle_dlerror(char *function_name) {
 }
 
 static void regenerate_expected_dll(
-	char *nasm_path,
-	char *expected_dll_path,
-	char *nasm_o_path,
-	char *expected_xxd_path,
-	char *expected_readelf_path,
-	char *expected_objdump_path
+	const char *nasm_path,
+	const char *expected_dll_path,
+	const char *nasm_o_path,
+	const char *expected_xxd_path,
+	const char *expected_readelf_path,
+	const char *expected_objdump_path
 ) {
 #ifdef __x86_64__
-	run((char *[]){"nasm", nasm_path, "-felf64", "-O0", "-o", nasm_o_path, NULL});
-	// run((char *[]){"nasm", nasm_path, "-felf64", "-g", "-O0", "-o", nasm_o_path, NULL});
+	run((const char *[]){"nasm", nasm_path, "-felf64", "-O0", "-o", nasm_o_path, NULL});
+	// run((const char *[]){"nasm", nasm_path, "-felf64", "-g", "-O0", "-o", nasm_o_path, NULL});
 
 	// `-z noexecstack` is necessary in order for Arch Linux to not complain when dlopen()ing expected.so
 	//   about a missing GNU_STACK program header.
-	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-x", "-shared", "--hash-style=sysv", "-z", "noexecstack", NULL});
+	run((const char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-x", "-shared", "--hash-style=sysv", "-z", "noexecstack", NULL});
 #elif __aarch64__
-	run((char *[]){"nasm", nasm_path, "-fmacho64", "-O0", "-o", nasm_o_path, NULL});
+	run((const char *[]){"nasm", nasm_path, "-fmacho64", "-O0", "-o", nasm_o_path, NULL});
 
-	run((char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-x", "-dylib", NULL});
+	run((const char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-x", "-dylib", NULL});
 #else
 #error Unsupported or unrecognized architecture
 #endif
@@ -1272,14 +1272,14 @@ static void regenerate_expected_dll(
 }
 
 static struct test_data get_expected_test_data(
-	char *nasm_path,
-	char *results_path,
-	char *expected_dll_path,
-	char *nasm_o_path,
-	char *expected_xxd_path,
-	char *expected_readelf_path,
-	char *expected_objdump_path,
-	char *failed_file_path,
+	const char *nasm_path,
+	const char *results_path,
+	const char *expected_dll_path,
+	const char *nasm_o_path,
+	const char *expected_xxd_path,
+	const char *expected_readelf_path,
+	const char *expected_objdump_path,
+	const char *failed_file_path,
 	size_t expected_globals_size
 ) {
 	reset_call_counts();
@@ -1311,7 +1311,7 @@ static struct test_data get_expected_test_data(
 	void *on_fns = dlsym(dll, "on_fns");
 
 	size_t *resources_size_ptr = get(dll, "resources_size");
-	char **resources = NULL;
+	const char **resources = NULL;
 	if (*resources_size_ptr > 0) {
 		resources = get(dll, "resources");
 	} else {
@@ -1319,8 +1319,8 @@ static struct test_data get_expected_test_data(
 	}
 
 	size_t *entities_size_ptr = get(dll, "entities_size");
-	char **entities = NULL;
-	char **entity_types = NULL;
+	const char **entities = NULL;
+	const char **entity_types = NULL;
 	if (*entities_size_ptr > 0) {
 		entities = get(dll, "entities");
 		entity_types = get(dll, "entity_types");
@@ -1343,18 +1343,18 @@ static struct test_data get_expected_test_data(
 }
 
 static struct test_data runtime_error_prologue(
-	char *test_name,
-	char *grug_path,
-	char *nasm_path,
-	char *expected_error_path,
-	char *results_path,
-	char *output_dll_path,
-	char *expected_dll_path,
-	char *nasm_o_path,
-	char *expected_xxd_path,
-	char *expected_readelf_path,
-	char *expected_objdump_path,
-	char *failed_file_path,
+	const char *test_name,
+	const char *grug_path,
+	const char *nasm_path,
+	const char *expected_error_path,
+	const char *results_path,
+	const char *output_dll_path,
+	const char *expected_dll_path,
+	const char *nasm_o_path,
+	const char *expected_xxd_path,
+	const char *expected_readelf_path,
+	const char *expected_objdump_path,
+	const char *failed_file_path,
 	size_t expected_globals_size
 ) {
 	if (failed_file_doesnt_exist(failed_file_path)
@@ -1381,9 +1381,9 @@ static struct test_data runtime_error_prologue(
 static bool had_runtime_error = false;
 static size_t error_handler_calls = 0;
 static enum grug_runtime_error_type runtime_error_type = -1;
-static char *runtime_error_on_fn_name = NULL;
-static char *runtime_error_on_fn_path = NULL;
-static void runtime_error_handler(char *reason, enum grug_runtime_error_type type, char *on_fn_name, char *on_fn_path) {
+static const char *runtime_error_on_fn_name = NULL;
+static const char *runtime_error_on_fn_path = NULL;
+static void runtime_error_handler(const char *reason, enum grug_runtime_error_type type, const char *on_fn_name, const char *on_fn_path) {
 	had_runtime_error = true;
 	error_handler_calls++;
 
@@ -1393,7 +1393,7 @@ static void runtime_error_handler(char *reason, enum grug_runtime_error_type typ
 	runtime_error_on_fn_path = on_fn_path;
 }
 
-static void runtime_error_all(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_all(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
@@ -1416,7 +1416,7 @@ static void runtime_error_all(void *on_fns, void *g, size_t resources_size, char
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_division_by_0(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_division_by_0(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
@@ -1439,7 +1439,7 @@ static void runtime_error_division_by_0(void *on_fns, void *g, size_t resources_
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_game_fn_error(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_game_fn_error(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_cause_game_fn_error_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_cause_game_fn_error_call_count == 1);
@@ -1464,7 +1464,7 @@ static void runtime_error_game_fn_error(void *on_fns, void *g, size_t resources_
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_game_fn_error_once(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_game_fn_error_once(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_cause_game_fn_error_call_count == 0);
 	((struct e_on_fns *)on_fns)->a(g);
 	assert(game_fn_cause_game_fn_error_call_count == 1);
@@ -1502,7 +1502,7 @@ static void runtime_error_game_fn_error_once(void *on_fns, void *g, size_t resou
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_i32_overflow_addition(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_i32_overflow_addition(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
@@ -1525,7 +1525,7 @@ static void runtime_error_i32_overflow_addition(void *on_fns, void *g, size_t re
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_i32_overflow_division(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_i32_overflow_division(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
@@ -1548,7 +1548,7 @@ static void runtime_error_i32_overflow_division(void *on_fns, void *g, size_t re
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_i32_overflow_multiplication(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_i32_overflow_multiplication(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
@@ -1571,7 +1571,7 @@ static void runtime_error_i32_overflow_multiplication(void *on_fns, void *g, siz
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_i32_overflow_negation(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_i32_overflow_negation(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
@@ -1594,7 +1594,7 @@ static void runtime_error_i32_overflow_negation(void *on_fns, void *g, size_t re
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_i32_overflow_remainder(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_i32_overflow_remainder(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
@@ -1617,7 +1617,7 @@ static void runtime_error_i32_overflow_remainder(void *on_fns, void *g, size_t r
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_i32_overflow_subtraction(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_i32_overflow_subtraction(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
@@ -1640,7 +1640,7 @@ static void runtime_error_i32_overflow_subtraction(void *on_fns, void *g, size_t
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_i32_underflow_addition(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_i32_underflow_addition(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
@@ -1663,7 +1663,7 @@ static void runtime_error_i32_underflow_addition(void *on_fns, void *g, size_t r
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_i32_underflow_multiplication(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_i32_underflow_multiplication(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
@@ -1686,7 +1686,7 @@ static void runtime_error_i32_underflow_multiplication(void *on_fns, void *g, si
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_i32_underflow_subtraction(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_i32_underflow_subtraction(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
@@ -1709,7 +1709,7 @@ static void runtime_error_i32_underflow_subtraction(void *on_fns, void *g, size_
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_on_fn_calls_erroring_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_on_fn_calls_erroring_on_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	on_b = ((struct e_on_fns *)on_fns)->b;
 	g_for_on_b = g;
 
@@ -1743,7 +1743,7 @@ static void runtime_error_on_fn_calls_erroring_on_fn(void *on_fns, void *g, size
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_on_fn_errors_after_it_calls_other_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_on_fn_errors_after_it_calls_other_on_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	on_b = ((struct e_on_fns *)on_fns)->b;
 	g_for_on_b = g;
 
@@ -1777,7 +1777,7 @@ static void runtime_error_on_fn_errors_after_it_calls_other_on_fn(void *on_fns, 
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_remainder_by_0(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_remainder_by_0(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
@@ -1800,7 +1800,7 @@ static void runtime_error_remainder_by_0(void *on_fns, void *g, size_t resources
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_stack_overflow(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_stack_overflow(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
@@ -1823,7 +1823,7 @@ static void runtime_error_stack_overflow(void *on_fns, void *g, size_t resources
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_time_limit_exceeded(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_time_limit_exceeded(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
@@ -1846,7 +1846,7 @@ static void runtime_error_time_limit_exceeded(void *on_fns, void *g, size_t reso
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_time_limit_exceeded_exponential_calls(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_time_limit_exceeded_exponential_calls(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
@@ -1869,7 +1869,7 @@ static void runtime_error_time_limit_exceeded_exponential_calls(void *on_fns, vo
 	assert(entity_types == NULL);
 }
 
-static void runtime_error_time_limit_exceeded_fibonacci(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void runtime_error_time_limit_exceeded_fibonacci(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	assert(had_runtime_error);
@@ -1893,31 +1893,31 @@ static void runtime_error_time_limit_exceeded_fibonacci(void *on_fns, void *g, s
 }
 
 static void ok_epilogue(
-	char *grug_path,
-	char *output_dll_path,
-	char *expected_dll_path,
-	char *output_xxd_path,
-	char *output_readelf_path,
-	char *output_objdump_path,
-	char *dump_path,
-	char *applied_path,
-	char *failed_file_path
+	const char *grug_path,
+	const char *output_dll_path,
+	const char *expected_dll_path,
+	const char *output_xxd_path,
+	const char *output_readelf_path,
+	const char *output_objdump_path,
+	const char *dump_path,
+	const char *applied_path,
+	const char *failed_file_path
 ) {
 	generate_and_compare_output_dll(grug_path, output_dll_path, expected_dll_path, output_xxd_path, output_readelf_path, output_objdump_path, dump_path, applied_path, failed_file_path);
 }
 
 static struct test_data ok_prologue(
-	char *test_name,
-	char *grug_path,
-	char *nasm_path,
-	char *results_path,
-	char *output_dll_path,
-	char *expected_dll_path,
-	char *nasm_o_path,
-	char *expected_xxd_path,
-	char *expected_readelf_path,
-	char *expected_objdump_path,
-	char *failed_file_path,
+	const char *test_name,
+	const char *grug_path,
+	const char *nasm_path,
+	const char *results_path,
+	const char *output_dll_path,
+	const char *expected_dll_path,
+	const char *nasm_o_path,
+	const char *expected_xxd_path,
+	const char *expected_readelf_path,
+	const char *expected_objdump_path,
+	const char *failed_file_path,
 	size_t expected_globals_size
 ) {
 	if (failed_file_doesnt_exist(failed_file_path)
@@ -1940,7 +1940,7 @@ static struct test_data ok_prologue(
 	return get_expected_test_data(nasm_path, results_path, expected_dll_path, nasm_o_path, expected_xxd_path, expected_readelf_path, expected_objdump_path, failed_file_path, expected_globals_size);
 }
 
-static void ok_addition_as_argument(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_addition_as_argument(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -1960,7 +1960,7 @@ static void ok_addition_as_argument(void *on_fns, void *g, size_t resources_size
 	assert(entity_types == NULL);
 }
 
-static void ok_addition_as_two_arguments(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_addition_as_two_arguments(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_max_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_max_call_count == 1);
@@ -1981,7 +1981,7 @@ static void ok_addition_as_two_arguments(void *on_fns, void *g, size_t resources
 	assert(entity_types == NULL);
 }
 
-static void ok_addition_with_multiplication(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_addition_with_multiplication(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2001,7 +2001,7 @@ static void ok_addition_with_multiplication(void *on_fns, void *g, size_t resour
 	assert(entity_types == NULL);
 }
 
-static void ok_addition_with_multiplication_2(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_addition_with_multiplication_2(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2021,7 +2021,7 @@ static void ok_addition_with_multiplication_2(void *on_fns, void *g, size_t reso
 	assert(entity_types == NULL);
 }
 
-static void ok_and_false_1(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_and_false_1(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2041,7 +2041,7 @@ static void ok_and_false_1(void *on_fns, void *g, size_t resources_size, char **
 	assert(entity_types == NULL);
 }
 
-static void ok_and_false_2(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_and_false_2(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2061,7 +2061,7 @@ static void ok_and_false_2(void *on_fns, void *g, size_t resources_size, char **
 	assert(entity_types == NULL);
 }
 
-static void ok_and_false_3(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_and_false_3(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2081,7 +2081,7 @@ static void ok_and_false_3(void *on_fns, void *g, size_t resources_size, char **
 	assert(entity_types == NULL);
 }
 
-static void ok_and_short_circuit(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_and_short_circuit(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2101,7 +2101,7 @@ static void ok_and_short_circuit(void *on_fns, void *g, size_t resources_size, c
 	assert(entity_types == NULL);
 }
 
-static void ok_and_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_and_true(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2121,7 +2121,7 @@ static void ok_and_true(void *on_fns, void *g, size_t resources_size, char **res
 	assert(entity_types == NULL);
 }
 
-static void ok_blocked_alrm(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_blocked_alrm(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_blocked_alrm_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_blocked_alrm_call_count == 1);
@@ -2139,7 +2139,7 @@ static void ok_blocked_alrm(void *on_fns, void *g, size_t resources_size, char *
 	assert(entity_types == NULL);
 }
 
-static void ok_bool_logical_not_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_bool_logical_not_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2159,7 +2159,7 @@ static void ok_bool_logical_not_false(void *on_fns, void *g, size_t resources_si
 	assert(entity_types == NULL);
 }
 
-static void ok_bool_logical_not_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_bool_logical_not_true(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2179,7 +2179,7 @@ static void ok_bool_logical_not_true(void *on_fns, void *g, size_t resources_siz
 	assert(entity_types == NULL);
 }
 
-static void ok_bool_returned(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_bool_returned(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_set_is_happy_call_count == 0);
 	assert(game_fn_get_evil_false_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -2201,7 +2201,7 @@ static void ok_bool_returned(void *on_fns, void *g, size_t resources_size, char 
 	assert(entity_types == NULL);
 }
 
-static void ok_bool_returned_global(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_bool_returned_global(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_set_is_happy_call_count == 0);
 	assert(game_fn_get_evil_false_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -2223,7 +2223,7 @@ static void ok_bool_returned_global(void *on_fns, void *g, size_t resources_size
 	assert(entity_types == NULL);
 }
 
-static void ok_bool_zero_extended_if_statement(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_bool_zero_extended_if_statement(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -2241,7 +2241,7 @@ static void ok_bool_zero_extended_if_statement(void *on_fns, void *g, size_t res
 	assert(entity_types == NULL);
 }
 
-static void ok_bool_zero_extended_while_statement(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_bool_zero_extended_while_statement(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -2259,7 +2259,7 @@ static void ok_bool_zero_extended_while_statement(void *on_fns, void *g, size_t 
 	assert(entity_types == NULL);
 }
 
-static void ok_break(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_break(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 3);
@@ -2277,7 +2277,7 @@ static void ok_break(void *on_fns, void *g, size_t resources_size, char **resour
 	assert(entity_types == NULL);
 }
 
-static void ok_calls_100(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_calls_100(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 100);
@@ -2295,7 +2295,7 @@ static void ok_calls_100(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entity_types == NULL);
 }
 
-static void ok_calls_1000(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_calls_1000(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1000);
@@ -2313,7 +2313,7 @@ static void ok_calls_1000(void *on_fns, void *g, size_t resources_size, char **r
 	assert(entity_types == NULL);
 }
 
-static void ok_calls_in_call(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_calls_in_call(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_max_call_count == 0);
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -2337,7 +2337,7 @@ static void ok_calls_in_call(void *on_fns, void *g, size_t resources_size, char 
 	assert(entity_types == NULL);
 }
 
-static void ok_comment_above_block(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_comment_above_block(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1);
@@ -2355,7 +2355,7 @@ static void ok_comment_above_block(void *on_fns, void *g, size_t resources_size,
 	assert(entity_types == NULL);
 }
 
-static void ok_comment_above_block_twice(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_comment_above_block_twice(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1);
@@ -2373,10 +2373,10 @@ static void ok_comment_above_block_twice(void *on_fns, void *g, size_t resources
 	assert(entity_types == NULL);
 }
 
-static void ok_comment_above_globals(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_comment_above_globals(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	(void)on_fns;
 
-	char *globals = g;
+	const char *globals = g;
 	assert(*((uint64_t*)globals) == 42);
 	globals += sizeof(uint64_t);
 
@@ -2394,7 +2394,7 @@ static void ok_comment_above_globals(void *on_fns, void *g, size_t resources_siz
 	assert(entity_types == NULL);
 }
 
-static void ok_comment_above_helper_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_comment_above_helper_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1);
@@ -2412,7 +2412,7 @@ static void ok_comment_above_helper_fn(void *on_fns, void *g, size_t resources_s
 	assert(entity_types == NULL);
 }
 
-static void ok_comment_above_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_comment_above_on_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	free(g);
@@ -2428,10 +2428,10 @@ static void ok_comment_above_on_fn(void *on_fns, void *g, size_t resources_size,
 	assert(entity_types == NULL);
 }
 
-static void ok_comment_between_globals(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_comment_between_globals(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	(void)on_fns;
 
-	char *globals = g;
+	const char *globals = g;
 	assert(*((uint64_t*)globals) == 42);
 	globals += sizeof(uint64_t);
 
@@ -2448,7 +2448,7 @@ static void ok_comment_between_globals(void *on_fns, void *g, size_t resources_s
 	assert(entity_types == NULL);
 }
 
-static void ok_comment_between_statements(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_comment_between_statements(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -2466,7 +2466,7 @@ static void ok_comment_between_statements(void *on_fns, void *g, size_t resource
 	assert(entity_types == NULL);
 }
 
-static void ok_comment_lone_block(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_comment_lone_block(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1);
@@ -2484,7 +2484,7 @@ static void ok_comment_lone_block(void *on_fns, void *g, size_t resources_size, 
 	assert(entity_types == NULL);
 }
 
-static void ok_comment_lone_block_at_end(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_comment_lone_block_at_end(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	free(g);
@@ -2500,7 +2500,7 @@ static void ok_comment_lone_block_at_end(void *on_fns, void *g, size_t resources
 	assert(entity_types == NULL);
 }
 
-static void ok_comment_lone_global(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_comment_lone_global(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	free(g);
@@ -2516,7 +2516,7 @@ static void ok_comment_lone_global(void *on_fns, void *g, size_t resources_size,
 	assert(entity_types == NULL);
 }
 
-static void ok_continue(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_continue(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -2534,7 +2534,7 @@ static void ok_continue(void *on_fns, void *g, size_t resources_size, char **res
 	assert(entity_types == NULL);
 }
 
-static void ok_division_negative_result(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_division_negative_result(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2554,7 +2554,7 @@ static void ok_division_negative_result(void *on_fns, void *g, size_t resources_
 	assert(entity_types == NULL);
 }
 
-static void ok_division_positive_result(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_division_positive_result(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2574,7 +2574,7 @@ static void ok_division_positive_result(void *on_fns, void *g, size_t resources_
 	assert(entity_types == NULL);
 }
 
-static void ok_double_negation_with_parentheses(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_double_negation_with_parentheses(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -2594,7 +2594,7 @@ static void ok_double_negation_with_parentheses(void *on_fns, void *g, size_t re
 	assert(entity_types == NULL);
 }
 
-static void ok_double_not_with_parentheses(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_double_not_with_parentheses(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2614,7 +2614,7 @@ static void ok_double_not_with_parentheses(void *on_fns, void *g, size_t resourc
 	assert(entity_types == NULL);
 }
 
-static void ok_else_after_else_if_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_else_after_else_if_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -2632,7 +2632,7 @@ static void ok_else_after_else_if_false(void *on_fns, void *g, size_t resources_
 	assert(entity_types == NULL);
 }
 
-static void ok_else_after_else_if_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_else_after_else_if_true(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 3);
@@ -2650,7 +2650,7 @@ static void ok_else_after_else_if_true(void *on_fns, void *g, size_t resources_s
 	assert(entity_types == NULL);
 }
 
-static void ok_else_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_else_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -2668,7 +2668,7 @@ static void ok_else_false(void *on_fns, void *g, size_t resources_size, char **r
 	assert(entity_types == NULL);
 }
 
-static void ok_else_if_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_else_if_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -2686,7 +2686,7 @@ static void ok_else_if_false(void *on_fns, void *g, size_t resources_size, char 
 	assert(entity_types == NULL);
 }
 
-static void ok_else_if_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_else_if_true(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 3);
@@ -2704,7 +2704,7 @@ static void ok_else_if_true(void *on_fns, void *g, size_t resources_size, char *
 	assert(entity_types == NULL);
 }
 
-static void ok_else_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_else_true(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 3);
@@ -2722,7 +2722,7 @@ static void ok_else_true(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entity_types == NULL);
 }
 
-static void ok_empty_file(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_empty_file(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	(void)on_fns;
 
 	free(g);
@@ -2735,7 +2735,7 @@ static void ok_empty_file(void *on_fns, void *g, size_t resources_size, char **r
 	assert(entity_types == NULL);
 }
 
-static void ok_empty_line(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_empty_line(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -2753,7 +2753,7 @@ static void ok_empty_line(void *on_fns, void *g, size_t resources_size, char **r
 	assert(entity_types == NULL);
 }
 
-static void ok_entity_and_resource_as_subexpression(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_entity_and_resource_as_subexpression(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_has_resource_call_count == 0);
 	assert(game_fn_has_entity_call_count == 0);
 	assert(game_fn_has_string_call_count == 0);
@@ -2779,7 +2779,7 @@ static void ok_entity_and_resource_as_subexpression(void *on_fns, void *g, size_
 	assert(streq(entity_types[0], ""));
 }
 
-static void ok_entity_duplicate(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_entity_duplicate(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_spawn_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_spawn_call_count == 4);
@@ -2805,7 +2805,7 @@ static void ok_entity_duplicate(void *on_fns, void *g, size_t resources_size, ch
 	assert(streq(entity_types[3], ""));
 }
 
-static void ok_entity_in_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_entity_in_on_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_spawn_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_spawn_call_count == 1);
@@ -2825,7 +2825,7 @@ static void ok_entity_in_on_fn(void *on_fns, void *g, size_t resources_size, cha
 	assert(streq(entity_types[0], ""));
 }
 
-static void ok_entity_in_on_fn_with_mod_specified(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_entity_in_on_fn_with_mod_specified(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_spawn_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_spawn_call_count == 1);
@@ -2845,7 +2845,7 @@ static void ok_entity_in_on_fn_with_mod_specified(void *on_fns, void *g, size_t 
 	assert(streq(entity_types[0], ""));
 }
 
-static void ok_eq_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_eq_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2865,7 +2865,7 @@ static void ok_eq_false(void *on_fns, void *g, size_t resources_size, char **res
 	assert(entity_types == NULL);
 }
 
-static void ok_eq_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_eq_true(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2885,7 +2885,7 @@ static void ok_eq_true(void *on_fns, void *g, size_t resources_size, char **reso
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_addition(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_addition(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_sin_call_count == 1);
@@ -2905,7 +2905,7 @@ static void ok_f32_addition(void *on_fns, void *g, size_t resources_size, char *
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_argument(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_argument(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_sin_call_count == 1);
@@ -2925,7 +2925,7 @@ static void ok_f32_argument(void *on_fns, void *g, size_t resources_size, char *
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_division(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_division(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_sin_call_count == 1);
@@ -2945,7 +2945,7 @@ static void ok_f32_division(void *on_fns, void *g, size_t resources_size, char *
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_eq_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_eq_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2965,7 +2965,7 @@ static void ok_f32_eq_false(void *on_fns, void *g, size_t resources_size, char *
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_eq_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_eq_true(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -2985,7 +2985,7 @@ static void ok_f32_eq_true(void *on_fns, void *g, size_t resources_size, char **
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_ge_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_ge_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -3005,7 +3005,7 @@ static void ok_f32_ge_false(void *on_fns, void *g, size_t resources_size, char *
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_ge_true_1(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_ge_true_1(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -3025,7 +3025,7 @@ static void ok_f32_ge_true_1(void *on_fns, void *g, size_t resources_size, char 
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_ge_true_2(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_ge_true_2(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -3045,7 +3045,7 @@ static void ok_f32_ge_true_2(void *on_fns, void *g, size_t resources_size, char 
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_global_variable(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_global_variable(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_sin_call_count == 1);
@@ -3065,7 +3065,7 @@ static void ok_f32_global_variable(void *on_fns, void *g, size_t resources_size,
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_gt_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_gt_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -3085,7 +3085,7 @@ static void ok_f32_gt_false(void *on_fns, void *g, size_t resources_size, char *
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_gt_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_gt_true(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -3105,7 +3105,7 @@ static void ok_f32_gt_true(void *on_fns, void *g, size_t resources_size, char **
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_le_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_le_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -3125,7 +3125,7 @@ static void ok_f32_le_false(void *on_fns, void *g, size_t resources_size, char *
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_le_true_1(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_le_true_1(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -3145,7 +3145,7 @@ static void ok_f32_le_true_1(void *on_fns, void *g, size_t resources_size, char 
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_le_true_2(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_le_true_2(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -3165,7 +3165,7 @@ static void ok_f32_le_true_2(void *on_fns, void *g, size_t resources_size, char 
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_local_variable(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_local_variable(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_sin_call_count == 1);
@@ -3185,7 +3185,7 @@ static void ok_f32_local_variable(void *on_fns, void *g, size_t resources_size, 
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_lt_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_lt_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -3205,7 +3205,7 @@ static void ok_f32_lt_false(void *on_fns, void *g, size_t resources_size, char *
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_lt_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_lt_true(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -3225,7 +3225,7 @@ static void ok_f32_lt_true(void *on_fns, void *g, size_t resources_size, char **
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_multiplication(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_multiplication(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_sin_call_count == 1);
@@ -3245,7 +3245,7 @@ static void ok_f32_multiplication(void *on_fns, void *g, size_t resources_size, 
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_ne_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_ne_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -3265,7 +3265,7 @@ static void ok_f32_ne_false(void *on_fns, void *g, size_t resources_size, char *
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_negated(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_negated(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_sin_call_count == 1);
@@ -3285,7 +3285,7 @@ static void ok_f32_negated(void *on_fns, void *g, size_t resources_size, char **
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_ne_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_ne_true(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -3305,7 +3305,7 @@ static void ok_f32_ne_true(void *on_fns, void *g, size_t resources_size, char **
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_passed_to_helper_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_passed_to_helper_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_sin_call_count == 1);
@@ -3325,7 +3325,7 @@ static void ok_f32_passed_to_helper_fn(void *on_fns, void *g, size_t resources_s
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_passed_to_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_passed_to_on_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_sin_call_count == 0);
 	((struct r_on_fns *)on_fns)->a(g, 42.0f);
 	assert(game_fn_sin_call_count == 1);
@@ -3345,7 +3345,7 @@ static void ok_f32_passed_to_on_fn(void *on_fns, void *g, size_t resources_size,
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_passing_sin_to_cos(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_passing_sin_to_cos(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_sin_call_count == 0);
 	assert(game_fn_cos_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -3368,7 +3368,7 @@ static void ok_f32_passing_sin_to_cos(void *on_fns, void *g, size_t resources_si
 	assert(entity_types == NULL);
 }
 
-static void ok_f32_subtraction(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_f32_subtraction(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_sin_call_count == 1);
@@ -3388,7 +3388,7 @@ static void ok_f32_subtraction(void *on_fns, void *g, size_t resources_size, cha
 	assert(entity_types == NULL);
 }
 
-static void ok_fibonacci(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_fibonacci(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -3408,7 +3408,7 @@ static void ok_fibonacci(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entity_types == NULL);
 }
 
-static void ok_ge_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_ge_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -3428,7 +3428,7 @@ static void ok_ge_false(void *on_fns, void *g, size_t resources_size, char **res
 	assert(entity_types == NULL);
 }
 
-static void ok_ge_true_1(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_ge_true_1(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -3448,7 +3448,7 @@ static void ok_ge_true_1(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entity_types == NULL);
 }
 
-static void ok_ge_true_2(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_ge_true_2(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -3468,10 +3468,10 @@ static void ok_ge_true_2(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entity_types == NULL);
 }
 
-static void ok_global_2_does_not_have_error_handling(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_global_2_does_not_have_error_handling(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	(void)on_fns;
 
-	char *globals = g;
+	const char *globals = g;
 	assert(*((uint64_t*)globals) == 42);
 	globals += sizeof(uint64_t);
 
@@ -3488,12 +3488,12 @@ static void ok_global_2_does_not_have_error_handling(void *on_fns, void *g, size
 	assert(entity_types == NULL);
 }
 
-static void ok_global_call_using_me(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_global_call_using_me(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	(void)on_fns;
 
 	assert(game_fn_get_position_call_count == 1);
 
-	char *globals = g;
+	const char *globals = g;
 	assert(*((uint64_t*)globals) == 42);
 	globals += sizeof(uint64_t);
 
@@ -3509,12 +3509,12 @@ static void ok_global_call_using_me(void *on_fns, void *g, size_t resources_size
 	assert(entity_types == NULL);
 }
 
-static void ok_global_call_using_null_id(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_global_call_using_null_id(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	(void)on_fns;
 
 	assert(game_fn_get_position_call_count == 1);
 
-	char *globals = g;
+	const char *globals = g;
 	assert(*((uint64_t*)globals) == 42);
 	globals += sizeof(uint64_t);
 
@@ -3530,7 +3530,7 @@ static void ok_global_call_using_null_id(void *on_fns, void *g, size_t resources
 	assert(entity_types == NULL);
 }
 
-static void ok_global_can_use_earlier_global(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_global_can_use_earlier_global(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -3550,10 +3550,10 @@ static void ok_global_can_use_earlier_global(void *on_fns, void *g, size_t resou
 	assert(entity_types == NULL);
 }
 
-static void ok_global_containing_negation(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_global_containing_negation(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	(void)on_fns;
 
-	char *globals = g;
+	const char *globals = g;
 	assert(*((uint64_t*)globals) == 42);
 	globals += sizeof(uint64_t);
 
@@ -3569,12 +3569,12 @@ static void ok_global_containing_negation(void *on_fns, void *g, size_t resource
 	assert(entity_types == NULL);
 }
 
-static void ok_global_id(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_global_id(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	(void)on_fns;
 
 	assert(game_fn_get_opponent_call_count == 1);
 
-	char *globals = g;
+	const char *globals = g;
 	assert(*((uint64_t*)globals) == 42);
 	globals += sizeof(uint64_t);
 
@@ -3590,10 +3590,10 @@ static void ok_global_id(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entity_types == NULL);
 }
 
-static void ok_globals(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_globals(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	(void)on_fns;
 
-	char *globals = g;
+	const char *globals = g;
 	assert(*((uint64_t*)globals) == 42);
 	globals += sizeof(uint64_t);
 
@@ -3610,10 +3610,10 @@ static void ok_globals(void *on_fns, void *g, size_t resources_size, char **reso
 	assert(entity_types == NULL);
 }
 
-static void ok_globals_1000(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_globals_1000(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	(void)on_fns;
 
-	char *globals = g;
+	const char *globals = g;
 	assert(*((uint64_t *)globals) == 42);
 	globals += sizeof(uint64_t);
 
@@ -3631,10 +3631,10 @@ static void ok_globals_1000(void *on_fns, void *g, size_t resources_size, char *
 	assert(entity_types == NULL);
 }
 
-static void ok_globals_1000_string(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_globals_1000_string(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	(void)on_fns;
 
-	char *globals = g;
+	const char *globals = g;
 	assert(*((uint64_t *)globals) == 42);
 	globals += sizeof(uint64_t);
 
@@ -3643,7 +3643,7 @@ static void ok_globals_1000_string(void *on_fns, void *g, size_t resources_size,
 
 	for (int32_t i = 0; i < 1000; i++) {
 		snprintf(expected + sizeof("global") - 1, sizeof("0001"), "%.4d", i + 1);
-		assert(streq(((char **)globals)[i], expected));
+		assert(streq(((const char **)globals)[i], expected));
 	}
 
 	free(g);
@@ -3656,10 +3656,10 @@ static void ok_globals_1000_string(void *on_fns, void *g, size_t resources_size,
 	assert(entity_types == NULL);
 }
 
-static void ok_globals_32(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_globals_32(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	(void)on_fns;
 
-	char *globals = g;
+	const char *globals = g;
 	assert(*((uint64_t*)globals) == 42);
 	globals += sizeof(uint64_t);
 
@@ -3677,10 +3677,10 @@ static void ok_globals_32(void *on_fns, void *g, size_t resources_size, char **r
 	assert(entity_types == NULL);
 }
 
-static void ok_globals_64(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_globals_64(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	(void)on_fns;
 
-	char *globals = g;
+	const char *globals = g;
 	assert(*((uint64_t*)globals) == 42);
 	globals += sizeof(uint64_t);
 
@@ -3698,7 +3698,7 @@ static void ok_globals_64(void *on_fns, void *g, size_t resources_size, char **r
 	assert(entity_types == NULL);
 }
 
-static void ok_gt_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_gt_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -3718,7 +3718,7 @@ static void ok_gt_false(void *on_fns, void *g, size_t resources_size, char **res
 	assert(entity_types == NULL);
 }
 
-static void ok_gt_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_gt_true(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -3738,7 +3738,7 @@ static void ok_gt_true(void *on_fns, void *g, size_t resources_size, char **reso
 	assert(entity_types == NULL);
 }
 
-static void ok_helper_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_helper_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1);
@@ -3756,7 +3756,7 @@ static void ok_helper_fn(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entity_types == NULL);
 }
 
-static void ok_helper_fn_called_in_if(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_helper_fn_called_in_if(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1);
@@ -3774,7 +3774,7 @@ static void ok_helper_fn_called_in_if(void *on_fns, void *g, size_t resources_si
 	assert(entity_types == NULL);
 }
 
-static void ok_helper_fn_called_indirectly(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_helper_fn_called_indirectly(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1);
@@ -3792,7 +3792,7 @@ static void ok_helper_fn_called_indirectly(void *on_fns, void *g, size_t resourc
 	assert(entity_types == NULL);
 }
 
-static void ok_helper_fn_overwriting_param(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_helper_fn_overwriting_param(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	assert(game_fn_sin_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -3815,7 +3815,7 @@ static void ok_helper_fn_overwriting_param(void *on_fns, void *g, size_t resourc
 	assert(entity_types == NULL);
 }
 
-static void ok_helper_fn_returning_void_has_no_return(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_helper_fn_returning_void_has_no_return(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -3833,7 +3833,7 @@ static void ok_helper_fn_returning_void_has_no_return(void *on_fns, void *g, siz
 	assert(entity_types == NULL);
 }
 
-static void ok_helper_fn_returning_void_returns_void(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_helper_fn_returning_void_returns_void(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -3851,7 +3851,7 @@ static void ok_helper_fn_returning_void_returns_void(void *on_fns, void *g, size
 	assert(entity_types == NULL);
 }
 
-static void ok_helper_fn_same_param_name_as_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_helper_fn_same_param_name_as_on_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1);
@@ -3869,7 +3869,7 @@ static void ok_helper_fn_same_param_name_as_on_fn(void *on_fns, void *g, size_t 
 	assert(entity_types == NULL);
 }
 
-static void ok_helper_fn_same_param_name_as_other_helper_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_helper_fn_same_param_name_as_other_helper_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -3887,7 +3887,7 @@ static void ok_helper_fn_same_param_name_as_other_helper_fn(void *on_fns, void *
 	assert(entity_types == NULL);
 }
 
-static void ok_i32_max(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_i32_max(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -3907,7 +3907,7 @@ static void ok_i32_max(void *on_fns, void *g, size_t resources_size, char **reso
 	assert(entity_types == NULL);
 }
 
-static void ok_i32_min(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_i32_min(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -3927,7 +3927,7 @@ static void ok_i32_min(void *on_fns, void *g, size_t resources_size, char **reso
 	assert(entity_types == NULL);
 }
 
-static void ok_i32_negated(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_i32_negated(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -3947,7 +3947,7 @@ static void ok_i32_negated(void *on_fns, void *g, size_t resources_size, char **
 	assert(entity_types == NULL);
 }
 
-static void ok_i32_negative_is_smaller_than_positive(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_i32_negative_is_smaller_than_positive(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -3967,7 +3967,7 @@ static void ok_i32_negative_is_smaller_than_positive(void *on_fns, void *g, size
 	assert(entity_types == NULL);
 }
 
-static void ok_id_local_variable_get_and_set(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_id_local_variable_get_and_set(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_get_opponent_call_count == 0);
 	assert(game_fn_set_target_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -3989,7 +3989,7 @@ static void ok_id_local_variable_get_and_set(void *on_fns, void *g, size_t resou
 	assert(entity_types == NULL);
 }
 
-static void ok_if_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_if_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -4007,7 +4007,7 @@ static void ok_if_false(void *on_fns, void *g, size_t resources_size, char **res
 	assert(entity_types == NULL);
 }
 
-static void ok_if_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_if_true(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 3);
@@ -4025,7 +4025,7 @@ static void ok_if_true(void *on_fns, void *g, size_t resources_size, char **reso
 	assert(entity_types == NULL);
 }
 
-static void ok_le_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_le_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -4045,7 +4045,7 @@ static void ok_le_false(void *on_fns, void *g, size_t resources_size, char **res
 	assert(entity_types == NULL);
 }
 
-static void ok_le_true_1(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_le_true_1(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -4065,7 +4065,7 @@ static void ok_le_true_1(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entity_types == NULL);
 }
 
-static void ok_le_true_2(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_le_true_2(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -4085,7 +4085,7 @@ static void ok_le_true_2(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entity_types == NULL);
 }
 
-static void ok_local_id_can_be_reassigned(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_local_id_can_be_reassigned(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_get_opponent_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_get_opponent_call_count == 2);
@@ -4103,7 +4103,7 @@ static void ok_local_id_can_be_reassigned(void *on_fns, void *g, size_t resource
 	assert(entity_types == NULL);
 }
 
-static void ok_lt_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_lt_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -4123,7 +4123,7 @@ static void ok_lt_false(void *on_fns, void *g, size_t resources_size, char **res
 	assert(entity_types == NULL);
 }
 
-static void ok_lt_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_lt_true(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -4143,7 +4143,7 @@ static void ok_lt_true(void *on_fns, void *g, size_t resources_size, char **reso
 	assert(entity_types == NULL);
 }
 
-static void ok_max_args(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_max_args(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_mega_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_mega_call_count == 1);
@@ -4176,7 +4176,7 @@ static void ok_max_args(void *on_fns, void *g, size_t resources_size, char **res
 	assert(entity_types == NULL);
 }
 
-static void ok_me(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_me(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_set_target_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_set_target_call_count == 1);
@@ -4196,7 +4196,7 @@ static void ok_me(void *on_fns, void *g, size_t resources_size, char **resources
 	assert(entity_types == NULL);
 }
 
-static void ok_me_assigned_to_local_variable(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_me_assigned_to_local_variable(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_set_target_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_set_target_call_count == 1);
@@ -4216,7 +4216,7 @@ static void ok_me_assigned_to_local_variable(void *on_fns, void *g, size_t resou
 	assert(entity_types == NULL);
 }
 
-static void ok_me_passed_to_helper_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_me_passed_to_helper_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_set_target_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_set_target_call_count == 1);
@@ -4236,7 +4236,7 @@ static void ok_me_passed_to_helper_fn(void *on_fns, void *g, size_t resources_si
 	assert(entity_types == NULL);
 }
 
-static void ok_mov_32_bits_global_i32(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_mov_32_bits_global_i32(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	(void)on_fns;
 
 	free(g);
@@ -4252,7 +4252,7 @@ static void ok_mov_32_bits_global_i32(void *on_fns, void *g, size_t resources_si
 	assert(entity_types == NULL);
 }
 
-static void ok_mov_32_bits_global_id(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_mov_32_bits_global_id(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	(void)on_fns;
 
 	free(g);
@@ -4268,7 +4268,7 @@ static void ok_mov_32_bits_global_id(void *on_fns, void *g, size_t resources_siz
 	assert(entity_types == NULL);
 }
 
-static void ok_multiplication_as_two_arguments(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_multiplication_as_two_arguments(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_max_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_max_call_count == 1);
@@ -4289,7 +4289,7 @@ static void ok_multiplication_as_two_arguments(void *on_fns, void *g, size_t res
 	assert(entity_types == NULL);
 }
 
-static void ok_ne_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_ne_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -4309,7 +4309,7 @@ static void ok_ne_false(void *on_fns, void *g, size_t resources_size, char **res
 	assert(entity_types == NULL);
 }
 
-static void ok_ne_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_ne_true(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -4329,7 +4329,7 @@ static void ok_ne_true(void *on_fns, void *g, size_t resources_size, char **reso
 	assert(entity_types == NULL);
 }
 
-static void ok_negate_parenthesized_expr(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_negate_parenthesized_expr(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -4349,7 +4349,7 @@ static void ok_negate_parenthesized_expr(void *on_fns, void *g, size_t resources
 	assert(entity_types == NULL);
 }
 
-static void ok_negative_literal(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_negative_literal(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -4369,7 +4369,7 @@ static void ok_negative_literal(void *on_fns, void *g, size_t resources_size, ch
 	assert(entity_types == NULL);
 }
 
-static void ok_nested_break(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_nested_break(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 3);
@@ -4387,7 +4387,7 @@ static void ok_nested_break(void *on_fns, void *g, size_t resources_size, char *
 	assert(entity_types == NULL);
 }
 
-static void ok_nested_continue(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_nested_continue(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -4405,7 +4405,7 @@ static void ok_nested_continue(void *on_fns, void *g, size_t resources_size, cha
 	assert(entity_types == NULL);
 }
 
-static void ok_null_id_initializing_local(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_null_id_initializing_local(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_set_target_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_set_target_call_count == 1);
@@ -4425,10 +4425,10 @@ static void ok_null_id_initializing_local(void *on_fns, void *g, size_t resource
 	assert(entity_types == NULL);
 }
 
-static void ok_no_empty_line_between_globals(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_no_empty_line_between_globals(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	(void)on_fns;
 
-	char *globals = g;
+	const char *globals = g;
 	assert(*((uint64_t*)globals) == 42);
 	globals += sizeof(uint64_t);
 
@@ -4445,7 +4445,7 @@ static void ok_no_empty_line_between_globals(void *on_fns, void *g, size_t resou
 	assert(entity_types == NULL);
 }
 
-static void ok_no_empty_line_between_statements(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_no_empty_line_between_statements(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -4463,7 +4463,7 @@ static void ok_no_empty_line_between_statements(void *on_fns, void *g, size_t re
 	assert(entity_types == NULL);
 }
 
-static void ok_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_on_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1);
@@ -4481,7 +4481,7 @@ static void ok_on_fn(void *on_fns, void *g, size_t resources_size, char **resour
 	assert(entity_types == NULL);
 }
 
-static void ok_on_fn_calling_game_fn_nothing(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_on_fn_calling_game_fn_nothing(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1);
@@ -4499,7 +4499,7 @@ static void ok_on_fn_calling_game_fn_nothing(void *on_fns, void *g, size_t resou
 	assert(entity_types == NULL);
 }
 
-static void ok_on_fn_calling_game_fn_nothing_twice(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_on_fn_calling_game_fn_nothing_twice(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -4517,7 +4517,7 @@ static void ok_on_fn_calling_game_fn_nothing_twice(void *on_fns, void *g, size_t
 	assert(entity_types == NULL);
 }
 
-static void ok_on_fn_calling_game_fn_plt_order(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_on_fn_calling_game_fn_plt_order(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	assert(game_fn_magic_call_count == 0);
 	assert(game_fn_initialize_call_count == 0);
@@ -4548,7 +4548,7 @@ static void ok_on_fn_calling_game_fn_plt_order(void *on_fns, void *g, size_t res
 	assert(entity_types == NULL);
 }
 
-static void ok_on_fn_calling_helper_fns(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_on_fn_calling_helper_fns(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -4570,7 +4570,7 @@ static void ok_on_fn_calling_helper_fns(void *on_fns, void *g, size_t resources_
 	assert(entity_types == NULL);
 }
 
-static void ok_on_fn_calling_no_game_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_on_fn_calling_no_game_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	free(g);
@@ -4586,7 +4586,7 @@ static void ok_on_fn_calling_no_game_fn(void *on_fns, void *g, size_t resources_
 	assert(entity_types == NULL);
 }
 
-static void ok_on_fn_calling_no_game_fn_but_with_addition(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_on_fn_calling_no_game_fn_but_with_addition(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	free(g);
@@ -4602,7 +4602,7 @@ static void ok_on_fn_calling_no_game_fn_but_with_addition(void *on_fns, void *g,
 	assert(entity_types == NULL);
 }
 
-static void ok_on_fn_calling_no_game_fn_but_with_global(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_on_fn_calling_no_game_fn_but_with_global(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct d_on_fns *)on_fns)->a(g);
 
 	free(g);
@@ -4618,7 +4618,7 @@ static void ok_on_fn_calling_no_game_fn_but_with_global(void *on_fns, void *g, s
 	assert(entity_types == NULL);
 }
 
-static void ok_on_fn_overwriting_param(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_on_fn_overwriting_param(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	assert(game_fn_sin_call_count == 0);
 	((struct s_on_fns *)on_fns)->a(g, 2, 3.0f);
@@ -4641,7 +4641,7 @@ static void ok_on_fn_overwriting_param(void *on_fns, void *g, size_t resources_s
 	assert(entity_types == NULL);
 }
 
-static void ok_on_fn_passing_argument_to_helper_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_on_fn_passing_argument_to_helper_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -4661,7 +4661,7 @@ static void ok_on_fn_passing_argument_to_helper_fn(void *on_fns, void *g, size_t
 	assert(entity_types == NULL);
 }
 
-static void ok_on_fn_passing_magic_to_initialize(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_on_fn_passing_magic_to_initialize(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_magic_call_count == 0);
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -4681,7 +4681,7 @@ static void ok_on_fn_passing_magic_to_initialize(void *on_fns, void *g, size_t r
 	assert(entity_types == NULL);
 }
 
-static void ok_on_fn_three(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_on_fn_three(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/on_fn_three/input-j.grug"));
@@ -4704,7 +4704,7 @@ static void ok_on_fn_three(void *on_fns, void *g, size_t resources_size, char **
 	assert(entity_types == NULL);
 }
 
-static void ok_on_fn_three_unused_first(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_on_fn_three_unused_first(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(((struct j_on_fns *)on_fns)->a == NULL);
 	((struct j_on_fns *)on_fns)->b(g);
 	assert(streq(grug_fn_name, "on_b"));
@@ -4724,7 +4724,7 @@ static void ok_on_fn_three_unused_first(void *on_fns, void *g, size_t resources_
 	assert(entity_types == NULL);
 }
 
-static void ok_on_fn_three_unused_second(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_on_fn_three_unused_second(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/on_fn_three_unused_second/input-j.grug"));
@@ -4745,7 +4745,7 @@ static void ok_on_fn_three_unused_second(void *on_fns, void *g, size_t resources
 	assert(entity_types == NULL);
 }
 
-static void ok_on_fn_three_unused_third(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_on_fn_three_unused_third(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/on_fn_three_unused_third/input-j.grug"));
@@ -4766,7 +4766,7 @@ static void ok_on_fn_three_unused_third(void *on_fns, void *g, size_t resources_
 	assert(entity_types == NULL);
 }
 
-static void ok_or_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_or_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -4786,7 +4786,7 @@ static void ok_or_false(void *on_fns, void *g, size_t resources_size, char **res
 	assert(entity_types == NULL);
 }
 
-static void ok_or_short_circuit(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_or_short_circuit(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -4806,7 +4806,7 @@ static void ok_or_short_circuit(void *on_fns, void *g, size_t resources_size, ch
 	assert(entity_types == NULL);
 }
 
-static void ok_or_true_1(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_or_true_1(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -4826,7 +4826,7 @@ static void ok_or_true_1(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entity_types == NULL);
 }
 
-static void ok_or_true_2(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_or_true_2(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -4846,7 +4846,7 @@ static void ok_or_true_2(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entity_types == NULL);
 }
 
-static void ok_or_true_3(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_or_true_3(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -4866,7 +4866,7 @@ static void ok_or_true_3(void *on_fns, void *g, size_t resources_size, char **re
 	assert(entity_types == NULL);
 }
 
-static void ok_pass_string_argument_to_game_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_pass_string_argument_to_game_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_say_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_say_call_count == 1);
@@ -4886,7 +4886,7 @@ static void ok_pass_string_argument_to_game_fn(void *on_fns, void *g, size_t res
 	assert(entity_types == NULL);
 }
 
-static void ok_pass_string_argument_to_helper_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_pass_string_argument_to_helper_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_say_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_say_call_count == 1);
@@ -4906,7 +4906,7 @@ static void ok_pass_string_argument_to_helper_fn(void *on_fns, void *g, size_t r
 	assert(entity_types == NULL);
 }
 
-static void ok_remainder_negative_negative(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_remainder_negative_negative(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -4926,7 +4926,7 @@ static void ok_remainder_negative_negative(void *on_fns, void *g, size_t resourc
 	assert(entity_types == NULL);
 }
 
-static void ok_remainder_negative_positive(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_remainder_negative_positive(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -4946,7 +4946,7 @@ static void ok_remainder_negative_positive(void *on_fns, void *g, size_t resourc
 	assert(entity_types == NULL);
 }
 
-static void ok_remainder_positive_negative(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_remainder_positive_negative(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -4966,7 +4966,7 @@ static void ok_remainder_positive_negative(void *on_fns, void *g, size_t resourc
 	assert(entity_types == NULL);
 }
 
-static void ok_remainder_positive_positive(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_remainder_positive_positive(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -4986,7 +4986,7 @@ static void ok_remainder_positive_positive(void *on_fns, void *g, size_t resourc
 	assert(entity_types == NULL);
 }
 
-static void ok_resource_and_entity(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_resource_and_entity(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_draw_call_count == 0);
 	assert(game_fn_spawn_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -5009,7 +5009,7 @@ static void ok_resource_and_entity(void *on_fns, void *g, size_t resources_size,
 	assert(streq(entity_types[0], ""));
 }
 
-static void ok_resource_can_contain_dot_1(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_resource_can_contain_dot_1(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_draw_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_draw_call_count == 1);
@@ -5029,7 +5029,7 @@ static void ok_resource_can_contain_dot_1(void *on_fns, void *g, size_t resource
 	assert(entity_types == NULL);
 }
 
-static void ok_resource_can_contain_dot_2(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_resource_can_contain_dot_2(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_draw_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_draw_call_count == 1);
@@ -5049,7 +5049,7 @@ static void ok_resource_can_contain_dot_2(void *on_fns, void *g, size_t resource
 	assert(entity_types == NULL);
 }
 
-static void ok_resource_can_contain_dot_3(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_resource_can_contain_dot_3(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_draw_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_draw_call_count == 1);
@@ -5069,7 +5069,7 @@ static void ok_resource_can_contain_dot_3(void *on_fns, void *g, size_t resource
 	assert(entity_types == NULL);
 }
 
-static void ok_resource_can_contain_dot_dot_1(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_resource_can_contain_dot_dot_1(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_draw_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_draw_call_count == 1);
@@ -5089,7 +5089,7 @@ static void ok_resource_can_contain_dot_dot_1(void *on_fns, void *g, size_t reso
 	assert(entity_types == NULL);
 }
 
-static void ok_resource_can_contain_dot_dot_2(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_resource_can_contain_dot_dot_2(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_draw_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_draw_call_count == 1);
@@ -5109,7 +5109,7 @@ static void ok_resource_can_contain_dot_dot_2(void *on_fns, void *g, size_t reso
 	assert(entity_types == NULL);
 }
 
-static void ok_resource_can_contain_dot_dot_3(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_resource_can_contain_dot_dot_3(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_draw_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_draw_call_count == 1);
@@ -5129,7 +5129,7 @@ static void ok_resource_can_contain_dot_dot_3(void *on_fns, void *g, size_t reso
 	assert(entity_types == NULL);
 }
 
-static void ok_resource_duplicate(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_resource_duplicate(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_draw_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_draw_call_count == 4);
@@ -5151,7 +5151,7 @@ static void ok_resource_duplicate(void *on_fns, void *g, size_t resources_size, 
 	assert(entity_types == NULL);
 }
 
-static void ok_return(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_return(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -5171,7 +5171,7 @@ static void ok_return(void *on_fns, void *g, size_t resources_size, char **resou
 	assert(entity_types == NULL);
 }
 
-static void ok_return_from_on_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_return_from_on_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1);
@@ -5189,7 +5189,7 @@ static void ok_return_from_on_fn(void *on_fns, void *g, size_t resources_size, c
 	assert(entity_types == NULL);
 }
 
-static void ok_return_from_on_fn_minimal(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_return_from_on_fn_minimal(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	((struct j_on_fns *)on_fns)->a(g);
 
 	free(g);
@@ -5205,7 +5205,7 @@ static void ok_return_from_on_fn_minimal(void *on_fns, void *g, size_t resources
 	assert(entity_types == NULL);
 }
 
-static void ok_return_with_no_value(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_return_with_no_value(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1);
@@ -5223,7 +5223,7 @@ static void ok_return_with_no_value(void *on_fns, void *g, size_t resources_size
 	assert(entity_types == NULL);
 }
 
-static void ok_same_variable_name_in_different_functions(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_same_variable_name_in_different_functions(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 2);
@@ -5243,7 +5243,7 @@ static void ok_same_variable_name_in_different_functions(void *on_fns, void *g, 
 	assert(entity_types == NULL);
 }
 
-static void ok_spill_args_to_game_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_spill_args_to_game_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_motherload_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_motherload_call_count == 1);
@@ -5279,7 +5279,7 @@ static void ok_spill_args_to_game_fn(void *on_fns, void *g, size_t resources_siz
 	assert(entity_types == NULL);
 }
 
-static void ok_spill_args_to_game_fn_subless(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_spill_args_to_game_fn_subless(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_motherload_subless_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_motherload_subless_call_count == 1);
@@ -5316,7 +5316,7 @@ static void ok_spill_args_to_game_fn_subless(void *on_fns, void *g, size_t resou
 	assert(entity_types == NULL);
 }
 
-static void ok_spill_args_to_helper_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_spill_args_to_helper_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_motherload_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_motherload_call_count == 1);
@@ -5352,7 +5352,7 @@ static void ok_spill_args_to_helper_fn(void *on_fns, void *g, size_t resources_s
 	assert(entity_types == NULL);
 }
 
-static void ok_spill_args_to_helper_fn_32_bit_f32(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_spill_args_to_helper_fn_32_bit_f32(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_offset_32_bit_f32_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_offset_32_bit_f32_call_count == 1);
@@ -5395,7 +5395,7 @@ static void ok_spill_args_to_helper_fn_32_bit_f32(void *on_fns, void *g, size_t 
 	assert(entity_types == NULL);
 }
 
-static void ok_spill_args_to_helper_fn_32_bit_i32(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_spill_args_to_helper_fn_32_bit_i32(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_offset_32_bit_i32_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_offset_32_bit_i32_call_count == 1);
@@ -5450,7 +5450,7 @@ static void ok_spill_args_to_helper_fn_32_bit_i32(void *on_fns, void *g, size_t 
 	assert(entity_types == NULL);
 }
 
-static void ok_spill_args_to_helper_fn_32_bit_string(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_spill_args_to_helper_fn_32_bit_string(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_offset_32_bit_string_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_offset_32_bit_string_call_count == 1);
@@ -5505,7 +5505,7 @@ static void ok_spill_args_to_helper_fn_32_bit_string(void *on_fns, void *g, size
 	assert(entity_types == NULL);
 }
 
-static void ok_spill_args_to_helper_fn_subless(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_spill_args_to_helper_fn_subless(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_motherload_subless_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_motherload_subless_call_count == 1);
@@ -5542,7 +5542,7 @@ static void ok_spill_args_to_helper_fn_subless(void *on_fns, void *g, size_t res
 	assert(entity_types == NULL);
 }
 
-static void ok_stack_16_byte_alignment(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_stack_16_byte_alignment(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	assert(game_fn_initialize_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
@@ -5564,7 +5564,7 @@ static void ok_stack_16_byte_alignment(void *on_fns, void *g, size_t resources_s
 	assert(entity_types == NULL);
 }
 
-static void ok_stack_16_byte_alignment_midway(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_stack_16_byte_alignment_midway(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_magic_call_count == 0);
 	assert(game_fn_initialize_call_count == 0);
 	((struct j_on_fns *)on_fns)->a(g);
@@ -5586,7 +5586,7 @@ static void ok_stack_16_byte_alignment_midway(void *on_fns, void *g, size_t reso
 	assert(entity_types == NULL);
 }
 
-static void ok_string_can_be_passed_to_helper_fn(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_string_can_be_passed_to_helper_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_say_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_say_call_count == 1);
@@ -5606,7 +5606,7 @@ static void ok_string_can_be_passed_to_helper_fn(void *on_fns, void *g, size_t r
 	assert(entity_types == NULL);
 }
 
-static void ok_string_duplicate(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_string_duplicate(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_talk_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_talk_call_count == 1);
@@ -5629,7 +5629,7 @@ static void ok_string_duplicate(void *on_fns, void *g, size_t resources_size, ch
 	assert(entity_types == NULL);
 }
 
-static void ok_string_eq_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_string_eq_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -5649,7 +5649,7 @@ static void ok_string_eq_false(void *on_fns, void *g, size_t resources_size, cha
 	assert(entity_types == NULL);
 }
 
-static void ok_string_eq_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_string_eq_true(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -5669,7 +5669,7 @@ static void ok_string_eq_true(void *on_fns, void *g, size_t resources_size, char
 	assert(entity_types == NULL);
 }
 
-static void ok_string_eq_true_empty(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_string_eq_true_empty(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -5689,7 +5689,7 @@ static void ok_string_eq_true_empty(void *on_fns, void *g, size_t resources_size
 	assert(entity_types == NULL);
 }
 
-static void ok_string_ne_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_string_ne_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -5709,7 +5709,7 @@ static void ok_string_ne_false(void *on_fns, void *g, size_t resources_size, cha
 	assert(entity_types == NULL);
 }
 
-static void ok_string_ne_false_empty(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_string_ne_false_empty(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -5729,7 +5729,7 @@ static void ok_string_ne_false_empty(void *on_fns, void *g, size_t resources_siz
 	assert(entity_types == NULL);
 }
 
-static void ok_string_ne_true(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_string_ne_true(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_bool_call_count == 1);
@@ -5749,7 +5749,7 @@ static void ok_string_ne_true(void *on_fns, void *g, size_t resources_size, char
 	assert(entity_types == NULL);
 }
 
-static void ok_sub_rsp_32_bits_local_variables_i32(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_sub_rsp_32_bits_local_variables_i32(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 30);
@@ -5769,7 +5769,7 @@ static void ok_sub_rsp_32_bits_local_variables_i32(void *on_fns, void *g, size_t
 	assert(entity_types == NULL);
 }
 
-static void ok_sub_rsp_32_bits_local_variables_id(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_sub_rsp_32_bits_local_variables_id(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_set_target_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_set_target_call_count == 15);
@@ -5789,7 +5789,7 @@ static void ok_sub_rsp_32_bits_local_variables_id(void *on_fns, void *g, size_t 
 	assert(entity_types == NULL);
 }
 
-static void ok_subtraction_negative_result(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_subtraction_negative_result(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -5809,7 +5809,7 @@ static void ok_subtraction_negative_result(void *on_fns, void *g, size_t resourc
 	assert(entity_types == NULL);
 }
 
-static void ok_subtraction_positive_result(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_subtraction_positive_result(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -5829,7 +5829,7 @@ static void ok_subtraction_positive_result(void *on_fns, void *g, size_t resourc
 	assert(entity_types == NULL);
 }
 
-static void ok_variable(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_variable(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -5849,7 +5849,7 @@ static void ok_variable(void *on_fns, void *g, size_t resources_size, char **res
 	assert(entity_types == NULL);
 }
 
-static void ok_variable_does_not_shadow_in_different_if_statement(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_variable_does_not_shadow_in_different_if_statement(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 2);
@@ -5869,7 +5869,7 @@ static void ok_variable_does_not_shadow_in_different_if_statement(void *on_fns, 
 	assert(entity_types == NULL);
 }
 
-static void ok_variable_reassignment(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_variable_reassignment(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -5889,7 +5889,7 @@ static void ok_variable_reassignment(void *on_fns, void *g, size_t resources_siz
 	assert(entity_types == NULL);
 }
 
-static void ok_variable_reassignment_does_not_dealloc_outer_variable(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_variable_reassignment_does_not_dealloc_outer_variable(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_initialize_call_count == 1);
@@ -5909,7 +5909,7 @@ static void ok_variable_reassignment_does_not_dealloc_outer_variable(void *on_fn
 	assert(entity_types == NULL);
 }
 
-static void ok_variable_string_global(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_variable_string_global(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_say_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_say_call_count == 1);
@@ -5929,7 +5929,7 @@ static void ok_variable_string_global(void *on_fns, void *g, size_t resources_si
 	assert(entity_types == NULL);
 }
 
-static void ok_variable_string_local(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_variable_string_local(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_say_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_say_call_count == 1);
@@ -5949,7 +5949,7 @@ static void ok_variable_string_local(void *on_fns, void *g, size_t resources_siz
 	assert(entity_types == NULL);
 }
 
-static void ok_void_function_early_return(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_void_function_early_return(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 1);
@@ -5967,7 +5967,7 @@ static void ok_void_function_early_return(void *on_fns, void *g, size_t resource
 	assert(entity_types == NULL);
 }
 
-static void ok_while_false(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_while_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_nothing_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_nothing_call_count == 2);
@@ -5985,7 +5985,7 @@ static void ok_while_false(void *on_fns, void *g, size_t resources_size, char **
 	assert(entity_types == NULL);
 }
 
-static void ok_write_to_global_variable(void *on_fns, void *g, size_t resources_size, char **resources, size_t entities_size, char **entities, char **entity_types) {
+static void ok_write_to_global_variable(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_max_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
 	assert(game_fn_max_call_count == 1);
@@ -6414,7 +6414,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(write_to_global_variable, "d", 16);
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, const char *argv[]) {
 	if (grug_init(runtime_error_handler, "mod_api.json", "tests", "mod_dlls", 10)) {
 		fprintf(stderr, "grug_init() error: %s (detected by grug.c:%d)\n", grug_error.msg, grug_error.grug_c_line_number);
 		exit(EXIT_FAILURE);
