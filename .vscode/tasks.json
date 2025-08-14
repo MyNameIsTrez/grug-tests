@@ -1,0 +1,40 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build",
+      "command": "gcc",
+      "type": "shell",
+      "args": [
+        "grug/grug.c",
+        "tests.c",
+        "-o",
+        "tests.out",
+        "-DOUTPUT_DLL_INFO",
+        "-Igrug",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wpedantic",
+        "-Wstrict-prototypes",
+        "-Wmissing-prototypes",
+        "-Wshadow",
+        "-Wuninitialized",
+        "-Wunused-macros",
+        "-Wfatal-errors",
+        "-Wno-pragmas",
+        "-rdynamic",
+        "-lm"
+      ],
+      "problemMatcher": [
+        "$tsc"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "clear": true
+      },
+      "group": "build"
+    }
+  ]
+}

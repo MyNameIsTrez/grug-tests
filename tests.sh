@@ -61,6 +61,7 @@ then
     fi
 fi
 
+# TODO: Can this be removed, or is it still relevant?
 if [ "$(uname)" == "Darwin" ]; then # If Mac OS X
     echo "Detected macOS"
     compiler_flags+=' -I.' # For `#include <elf.h>`

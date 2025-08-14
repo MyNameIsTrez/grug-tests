@@ -8,7 +8,7 @@ This is the test suite of [my programming language called grug](https://github.c
 
 1. Clone this repository and `cd` into it.
 2. Run `git submodule update --init` to clone the `grug.c` and `grug.h` files (for your own game you can just drop these files directly into your project).
-3. Run the tests with `./tests.sh`.
+3. Run the tests by hitting F5, or running `./tests.sh`.
 
 You can get more info in the test its generated `results` directory (from objdump, readelf and xxd) by running `OUTPUT_DLL_INFO= ./tests.sh`.
 

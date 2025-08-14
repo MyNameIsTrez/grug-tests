@@ -1,5 +1,6 @@
 .vscode/*
-!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
 corpus
 test_corpus
 results
