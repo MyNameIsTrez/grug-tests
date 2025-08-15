@@ -153,13 +153,13 @@ static size_t game_fn_mega_f32_call_count;
 static size_t game_fn_mega_i32_call_count;
 static size_t game_fn_draw_call_count;
 static size_t game_fn_blocked_alrm_call_count;
-static size_t game_fn_nothing_call_count;
 static size_t game_fn_spawn_call_count;
 static size_t game_fn_has_resource_call_count;
 static size_t game_fn_has_entity_call_count;
 static size_t game_fn_has_string_call_count;
 static size_t game_fn_get_opponent_call_count;
-static size_t game_fn_set_target_call_count;
+static size_t game_fn_set_d_call_count;
+static size_t game_fn_set_opponent_call_count;
 static size_t game_fn_motherload_call_count;
 static size_t game_fn_motherload_subless_call_count;
 static size_t game_fn_offset_32_bit_f32_call_count;
@@ -384,12 +384,19 @@ uint64_t game_fn_get_opponent(void) {
 
 	return 69;
 }
-static uint64_t game_fn_set_target_target;
-void game_fn_set_target(uint64_t target) {
+static uint64_t game_fn_set_d_target;
+void game_fn_set_d(uint64_t target) {
 	ASSERT_16_BYTE_STACK_ALIGNED();
-	game_fn_set_target_call_count++;
+	game_fn_set_d_call_count++;
 
-	game_fn_set_target_target = target;
+	game_fn_set_d_target = target;
+}
+static uint64_t game_fn_set_opponent_target;
+void game_fn_set_opponent(uint64_t target) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
+	game_fn_set_opponent_call_count++;
+
+	game_fn_set_opponent_target = target;
 }
 static int32_t game_fn_motherload_i1;
 static int32_t game_fn_motherload_i2;
@@ -730,13 +737,13 @@ static void reset_call_counts(void) {
 	game_fn_mega_i32_call_count = 0;
 	game_fn_draw_call_count = 0;
 	game_fn_blocked_alrm_call_count = 0;
-	game_fn_nothing_call_count = 0;
 	game_fn_spawn_call_count = 0;
 	game_fn_has_resource_call_count = 0;
 	game_fn_has_entity_call_count = 0;
 	game_fn_has_string_call_count = 0;
 	game_fn_get_opponent_call_count = 0;
-	game_fn_set_target_call_count = 0;
+	game_fn_set_d_call_count = 0;
+	game_fn_set_opponent_call_count = 0;
 	game_fn_motherload_call_count = 0;
 	game_fn_motherload_subless_call_count = 0;
 	game_fn_offset_32_bit_f32_call_count = 0;
@@ -2534,6 +2541,28 @@ static void ok_continue(void *on_fns, void *g, size_t resources_size, const char
 	assert(entity_types == NULL);
 }
 
+static void ok_custom_id_type_transfer_between_globals(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	assert(game_fn_get_opponent_call_count == 1); // Called by init_globals()
+	assert(game_fn_set_opponent_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_get_opponent_call_count == 1);
+	assert(game_fn_set_opponent_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_set_opponent_target == 69);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/custom_id_type_transfer_between_globals/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_division_negative_result(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -3967,16 +3996,56 @@ static void ok_i32_negative_is_smaller_than_positive(void *on_fns, void *g, size
 	assert(entity_types == NULL);
 }
 
-static void ok_id_local_variable_get_and_set(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
-	assert(game_fn_get_opponent_call_count == 0);
-	assert(game_fn_set_target_call_count == 0);
+static void ok_id_binary_expr_false(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_get_opponent_call_count == 1);
-	assert(game_fn_set_target_call_count == 1);
+	assert(game_fn_initialize_bool_call_count == 1);
 
 	free(g);
 
-	assert(game_fn_set_target_target == 69);
+	assert(game_fn_initialize_bool_b == false);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/id_binary_expr_false/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_id_binary_expr_true(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/id_binary_expr_true/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_id_local_variable_get_and_set(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	assert(game_fn_get_opponent_call_count == 0);
+	assert(game_fn_set_opponent_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_get_opponent_call_count == 1);
+	assert(game_fn_set_opponent_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_set_opponent_target == 69);
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/id_local_variable_get_and_set/input-d.grug"));
@@ -4177,13 +4246,13 @@ static void ok_max_args(void *on_fns, void *g, size_t resources_size, const char
 }
 
 static void ok_me(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
-	assert(game_fn_set_target_call_count == 0);
+	assert(game_fn_set_d_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_set_target_call_count == 1);
+	assert(game_fn_set_d_call_count == 1);
 
 	free(g);
 
-	assert(game_fn_set_target_target == 42);
+	assert(game_fn_set_d_target == 42);
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/me/input-d.grug"));
@@ -4197,13 +4266,13 @@ static void ok_me(void *on_fns, void *g, size_t resources_size, const char **res
 }
 
 static void ok_me_assigned_to_local_variable(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
-	assert(game_fn_set_target_call_count == 0);
+	assert(game_fn_set_d_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_set_target_call_count == 1);
+	assert(game_fn_set_d_call_count == 1);
 
 	free(g);
 
-	assert(game_fn_set_target_target == 42);
+	assert(game_fn_set_d_target == 42);
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/me_assigned_to_local_variable/input-d.grug"));
@@ -4217,13 +4286,13 @@ static void ok_me_assigned_to_local_variable(void *on_fns, void *g, size_t resou
 }
 
 static void ok_me_passed_to_helper_fn(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
-	assert(game_fn_set_target_call_count == 0);
+	assert(game_fn_set_d_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_set_target_call_count == 1);
+	assert(game_fn_set_d_call_count == 1);
 
 	free(g);
 
-	assert(game_fn_set_target_target == 42);
+	assert(game_fn_set_d_target == 42);
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/me_passed_to_helper_fn/input-d.grug"));
@@ -4405,14 +4474,34 @@ static void ok_nested_continue(void *on_fns, void *g, size_t resources_size, con
 	assert(entity_types == NULL);
 }
 
-static void ok_null_id_initializing_local(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
-	assert(game_fn_set_target_call_count == 0);
+static void ok_null_id_equals_itself(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_set_target_call_count == 1);
+	assert(game_fn_initialize_bool_call_count == 1);
 
 	free(g);
 
-	assert(game_fn_set_target_target == UINT64_MAX);
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/null_id_equals_itself/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_null_id_initializing_local(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	assert(game_fn_set_d_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_set_d_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_set_d_target == UINT64_MAX);
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/null_id_initializing_local/input-d.grug"));
@@ -5770,13 +5859,13 @@ static void ok_sub_rsp_32_bits_local_variables_i32(void *on_fns, void *g, size_t
 }
 
 static void ok_sub_rsp_32_bits_local_variables_id(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
-	assert(game_fn_set_target_call_count == 0);
+	assert(game_fn_set_d_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
-	assert(game_fn_set_target_call_count == 15);
+	assert(game_fn_set_d_call_count == 15);
 
 	free(g);
 
-	assert(game_fn_set_target_target == UINT64_MAX);
+	assert(game_fn_set_d_target == UINT64_MAX);
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/sub_rsp_32_bits_local_variables_id/input-d.grug"));
@@ -6113,6 +6202,7 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(i32_logical_not, "d");
 	ADD_TEST_ERROR(i32_too_big, "d");
 	ADD_TEST_ERROR(i32_too_small, "d");
+	ADD_TEST_ERROR(id_invalid_binary_op, "d");
 	ADD_TEST_ERROR(indentation_going_down_by_2, "d");
 	ADD_TEST_ERROR(indented_call_argument, "d");
 	ADD_TEST_ERROR(indented_call_arguments, "d");
@@ -6130,6 +6220,16 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(me_plus_me, "d");
 	ADD_TEST_ERROR(missing_empty_line_between_global_and_on_fn, "d");
 	ADD_TEST_ERROR(missing_empty_line_between_on_fn_and_helper_fn, "d");
+	ADD_TEST_ERROR(mixing_custom_id_types_binary_expr, "d");
+	ADD_TEST_ERROR(mixing_custom_id_types_game_fn_param_type, "d");
+	ADD_TEST_ERROR(mixing_custom_id_types_game_fn_return_type, "d");
+	ADD_TEST_ERROR(mixing_custom_id_types_global_new, "a");
+	ADD_TEST_ERROR(mixing_custom_id_types_global_to_local, "d");
+	ADD_TEST_ERROR(mixing_custom_id_types_helper_fn_param_type, "d");
+	ADD_TEST_ERROR(mixing_custom_id_types_helper_fn_return_type, "d");
+	ADD_TEST_ERROR(mixing_custom_id_types_local_existing, "d");
+	ADD_TEST_ERROR(mixing_custom_id_types_local_new, "d");
+	ADD_TEST_ERROR(mixing_custom_id_types_on_fn_param_type, "t");
 	ADD_TEST_ERROR(newline_statement, "d");
 	ADD_TEST_ERROR(no_space_between_comment_character_and_comment, "d");
 	ADD_TEST_ERROR(not_followed_by_negation, "d");
@@ -6246,6 +6346,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(comment_lone_block_at_end, "d", 8);
 	ADD_TEST_OK(comment_lone_global, "d", 8);
 	ADD_TEST_OK(continue, "d", 8);
+	ADD_TEST_OK(custom_id_type_transfer_between_globals, "d", 24);
 	ADD_TEST_OK(division_negative_result, "d", 8);
 	ADD_TEST_OK(division_positive_result, "d", 8);
 	ADD_TEST_OK(double_negation_with_parentheses, "d", 8);
@@ -6318,6 +6419,8 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(i32_min, "d", 8);
 	ADD_TEST_OK(i32_negated, "d", 8);
 	ADD_TEST_OK(i32_negative_is_smaller_than_positive, "d", 8);
+	ADD_TEST_OK(id_binary_expr_false, "d", 8);
+	ADD_TEST_OK(id_binary_expr_true, "d", 8);
 	ADD_TEST_OK(id_local_variable_get_and_set, "d", 8);
 	ADD_TEST_OK(if_false, "d", 8);
 	ADD_TEST_OK(if_true, "d", 8);
@@ -6340,6 +6443,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(negative_literal, "d", 8);
 	ADD_TEST_OK(nested_break, "d", 8);
 	ADD_TEST_OK(nested_continue, "d", 8);
+	ADD_TEST_OK(null_id_equals_itself, "d", 8);
 	ADD_TEST_OK(null_id_initializing_local, "d", 8);
 	ADD_TEST_OK(no_empty_line_between_globals, "a", 16);
 	ADD_TEST_OK(no_empty_line_between_statements, "d", 8);

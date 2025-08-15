@@ -39,7 +39,8 @@ bool game_fn_has_resource(const char *path) { return false; }
 bool game_fn_has_entity(const char *name) { return false; }
 bool game_fn_has_string(const char *str) { return false; }
 uint64_t game_fn_get_opponent(void) { return 0; }
-void game_fn_set_target(uint64_t target) {}
+void game_fn_set_d(uint64_t target) {}
+void game_fn_set_opponent(uint64_t target) {}
 void game_fn_motherload(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, uint64_t id, float f9) {}
 void game_fn_motherload_subless(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, uint64_t id, float f10) {}
 void game_fn_offset_32_bit_f32(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6, const char *s7, const char *s8, const char *s9, const char *s10, const char *s11, const char *s12, const char *s13, const char *s14, const char *s15, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, int32_t g) {}

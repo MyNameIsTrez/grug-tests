@@ -66,6 +66,7 @@ init_globals:
 	push rax
 	pop rdi
 	call game_fn_get_position wrt ..plt
+
 	mov r11, rbp[-0x8]
 	mov r11[byte 0x8], rax
 

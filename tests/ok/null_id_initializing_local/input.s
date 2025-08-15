@@ -30,7 +30,7 @@ extern grug_fn_name
 extern grug_has_runtime_error_happened
 extern grug_on_fns_in_safe_mode
 extern setjmp
-extern game_fn_set_target
+extern game_fn_set_d
 extern grug_call_runtime_error_handler
 extern longjmp
 
@@ -61,7 +61,7 @@ on_a:
 	mov rax, rbp[byte -0x10]
 	push rax
 	pop rdi
-	call game_fn_set_target wrt ..plt
+	call game_fn_set_d wrt ..plt
 	check_game_fn_error
 
 	mov rsp, rbp
@@ -75,7 +75,7 @@ on_a:
 	mov rax, rbp[byte -0x10]
 	push rax
 	pop rdi
-	call game_fn_set_target wrt ..plt
+	call game_fn_set_d wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

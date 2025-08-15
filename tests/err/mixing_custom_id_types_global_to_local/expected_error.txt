@@ -1,0 +1,1 @@
+Can't assign opponent to 'bar', which has type a

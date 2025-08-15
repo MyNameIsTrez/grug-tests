@@ -99,6 +99,20 @@
 					]
 				}
 			}
+		},
+		"t": {
+			"description": "foo",
+			"on_functions": {
+				"on_a": {
+					"description": "foo",
+					"arguments": [
+						{
+							"name": "timer",
+							"type": "timer"
+						}
+					]
+				}
+			}
 		}
 	},
 	"game_functions": {
@@ -387,12 +401,21 @@
 			"description": "foo",
 			"return_type": "opponent"
 		},
-		"set_target": {
+		"set_d": {
 			"description": "foo",
 			"arguments": [
 				{
 					"name": "target",
-					"type": "target"
+					"type": "d"
+				}
+			]
+		},
+		"set_opponent": {
+			"description": "foo",
+			"arguments": [
+				{
+					"name": "target",
+					"type": "opponent"
 				}
 			]
 		},

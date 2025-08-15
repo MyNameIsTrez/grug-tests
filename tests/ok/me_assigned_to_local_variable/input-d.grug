@@ -1,4 +1,4 @@
 on_a() {
     foo: d = me
-    set_target(foo)
+    set_d(foo)
 }

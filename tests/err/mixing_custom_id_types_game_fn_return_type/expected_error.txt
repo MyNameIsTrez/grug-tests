@@ -1,0 +1,1 @@
+Can't assign opponent to 'foo', which has type a

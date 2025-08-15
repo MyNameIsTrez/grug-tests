@@ -10,26 +10,10 @@ struct e_on_fns {
     void (*a)(void *globals);
     void (*b)(void *globals);
 };
-struct f_on_fns {
-    void (*a)(void *globals, int32_t x);
-};
-struct g_on_fns {
-    void (*a)(void *globals, int32_t x, int32_t y);
-};
-struct h_on_fns {
-    void (*a)(void *globals, int32_t x);
-};
-struct i_on_fns {
-    void (*a)(void *globals, int32_t x);
-    void (*b)(void *globals, int32_t x, int32_t y);
-};
 struct j_on_fns {
     void (*a)(void *globals);
     void (*b)(void *globals);
     void (*c)(void *globals);
-};
-struct p_on_fns {
-    void (*a)(void *globals);
 };
 struct r_on_fns {
     void (*a)(void *globals, float f);
@@ -37,14 +21,8 @@ struct r_on_fns {
 struct s_on_fns {
     void (*a)(void *globals, int32_t i, float f);
 };
-struct w_on_fns {
-    void (*a)(void *globals, int32_t x);
-};
-struct z_on_fns {
-    void (*a)(void *globals, int32_t x);
-};
-struct a2_on_fns {
-    void (*a)(void *globals, int32_t x);
+struct t_on_fns {
+    void (*a)(void *globals, uint64_t timer);
 };
 
 void game_fn_nothing(void);
@@ -69,7 +47,8 @@ bool game_fn_has_resource(const char *path);
 bool game_fn_has_entity(const char *name);
 bool game_fn_has_string(const char *str);
 uint64_t game_fn_get_opponent(void);
-void game_fn_set_target(uint64_t target);
+void game_fn_set_d(uint64_t target);
+void game_fn_set_opponent(uint64_t target);
 void game_fn_motherload(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, uint64_t id, float f9);
 void game_fn_motherload_subless(int32_t i1, int32_t i2, int32_t i3, int32_t i4, int32_t i5, int32_t i6, int32_t i7, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, float f9, uint64_t id, float f10);
 void game_fn_offset_32_bit_f32(const char *s1, const char *s2, const char *s3, const char *s4, const char *s5, const char *s6, const char *s7, const char *s8, const char *s9, const char *s10, const char *s11, const char *s12, const char *s13, const char *s14, const char *s15, float f1, float f2, float f3, float f4, float f5, float f6, float f7, float f8, int32_t g);

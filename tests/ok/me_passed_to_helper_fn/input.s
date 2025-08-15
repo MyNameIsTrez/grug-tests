@@ -37,7 +37,7 @@ extern grug_get_max_rsp
 extern grug_call_runtime_error_handler
 extern grug_is_time_limit_exceeded
 extern clock_gettime
-extern game_fn_set_target
+extern game_fn_set_d
 
 global init_globals
 init_globals:
@@ -109,7 +109,7 @@ helper_foo_safe:
 	mov rax, rbp[-0x10]
 	push rax
 	pop rdi
-	call game_fn_set_target wrt ..plt
+	call game_fn_set_d wrt ..plt
 	check_game_fn_error
 
 	mov rsp, rbp
@@ -127,7 +127,7 @@ helper_foo_fast:
 	mov rax, rbp[-0x10]
 	push rax
 	pop rdi
-	call game_fn_set_target wrt ..plt
+	call game_fn_set_d wrt ..plt
 
 	mov rsp, rbp
 	pop rbp

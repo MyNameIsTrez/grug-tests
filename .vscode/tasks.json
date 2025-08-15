@@ -25,7 +25,9 @@
         "-Wfatal-errors",
         "-Wno-pragmas",
         "-rdynamic",
-        "-lm"
+        "-lm",
+        // "-fsanitize=address,undefined",
+        // "-DSHUFFLES=10",
       ],
       "problemMatcher": [
         "$tsc"

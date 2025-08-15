@@ -1,0 +1,7 @@
+on_a() {
+    helper_foo(me)
+}
+
+helper_foo(foo: opponent) {
+    set_opponent(foo)
+}
