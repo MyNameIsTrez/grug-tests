@@ -933,7 +933,7 @@ static void run_and_write(const char *const *argv, const char *written_path) {
 
 		close(fd);
 
-		execvp(argv[0], argv);
+		execvp(argv[0], (char *const *)argv);
 		printf("execvp: %s: %s\n", argv[0], strerror(errno));
 		exit(EXIT_FAILURE);
 	}
@@ -956,7 +956,7 @@ static void output_dll_info(const char *dll_path, const char *xxd_path, const ch
 
 		check(close(fd), "close");
 
-		execvp("xxd", (const char *[]){"xxd", dll_path, NULL});
+		execvp("xxd", (char *[]){"xxd", (char *)dll_path, NULL});
 		printf("execvp: xxd: %s\n", strerror(errno));
 		exit(EXIT_FAILURE);
 	}

@@ -1,4 +1,4 @@
 on_a() {
-    opponent: id = get_opponent()
+    opponent: oponent = get_opponent()
     set_target(opponent)
 }

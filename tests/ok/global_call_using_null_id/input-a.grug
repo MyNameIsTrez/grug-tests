@@ -1,1 +1,1 @@
-pos: id = get_position(null_id)
+pos: position = get_position(null_id)

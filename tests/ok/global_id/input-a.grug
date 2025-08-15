@@ -1,1 +1,1 @@
-opponent: id = get_opponent()
+opponent: opponent = get_opponent()

@@ -8,7 +8,7 @@
       "cwd": ".",
       "program": "${workspaceRoot}/tests.out",
       "args": [
-        "me_assigned_to_local_variable"
+        // "me_assigned_to_local_variable"
       ],
       "preLaunchTask": "Build"
     }

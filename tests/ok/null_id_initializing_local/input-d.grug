@@ -1,4 +1,4 @@
 on_a() {
-    foo: id = null_id
+    foo: d = null_id
     set_target(foo)
 }

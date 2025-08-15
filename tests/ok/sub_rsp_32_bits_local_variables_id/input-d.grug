@@ -1,35 +1,35 @@
 on_a() {
-    v1: id = null_id
+    v1: target = null_id
     set_target(v1)
-    v2: id = null_id
+    v2: target = null_id
     set_target(v2)
-    v3: id = null_id
+    v3: target = null_id
     set_target(v3)
-    v4: id = null_id
+    v4: target = null_id
     set_target(v4)
-    v5: id = null_id
+    v5: target = null_id
     set_target(v5)
-    v6: id = null_id
+    v6: target = null_id
     set_target(v6)
-    v7: id = null_id
+    v7: target = null_id
     set_target(v7)
-    v8: id = null_id
+    v8: target = null_id
     set_target(v8)
-    v9: id = null_id
+    v9: target = null_id
     set_target(v9)
-    v10: id = null_id
+    v10: target = null_id
     set_target(v10)
-    v11: id = null_id
+    v11: target = null_id
     set_target(v11)
-    v12: id = null_id
+    v12: target = null_id
     set_target(v12)
-    v13: id = null_id
+    v13: target = null_id
     set_target(v13)
-    v14: id = null_id
+    v14: target = null_id
     set_target(v14)
 
     # This causes SUB_RSP_32_BITS to be used in the function prologue,
     # instead of SUB_RSP_8_BITS, since there are now over 256 variable bytes
-    v15: id = null_id
+    v15: target = null_id
     set_target(v15)
 }

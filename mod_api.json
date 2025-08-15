@@ -233,7 +233,7 @@
 				},
 				{
 					"name": "id",
-					"type": "id"
+					"type": "d"
 				},
 				{
 					"name": "str",
@@ -385,14 +385,14 @@
 		},
 		"get_opponent": {
 			"description": "foo",
-			"return_type": "id"
+			"return_type": "opponent"
 		},
 		"set_target": {
 			"description": "foo",
 			"arguments": [
 				{
 					"name": "target",
-					"type": "id"
+					"type": "target"
 				}
 			]
 		},
@@ -461,7 +461,7 @@
 				},
 				{
 					"name": "id",
-					"type": "id"
+					"type": "d"
 				},
 				{
 					"name": "f9",
@@ -538,7 +538,7 @@
 				},
 				{
 					"name": "id",
-					"type": "id"
+					"type": "d"
 				},
 				{
 					"name": "f10",
@@ -968,11 +968,11 @@
 		},
 		"get_position": {
 			"description": "foo",
-			"return_type": "id",
+			"return_type": "position",
 			"arguments": [
 				{
 					"name": "id",
-					"type": "id"
+					"type": "a"
 				}
 			]
 		},

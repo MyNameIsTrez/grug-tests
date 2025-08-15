@@ -1,4 +1,4 @@
-foo: id = get_opponent()
+foo: opponent = get_opponent()
 
 on_a() {
     foo = get_opponent()
