@@ -9,7 +9,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/any_equals_2/input-d.grug", 0
+	db "tests/ok/any_ne_1/input-d.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -54,15 +54,17 @@ on_a:
 
 	clear_has_runtime_error_happened
 
-	call game_fn_retrieve wrt ..plt
-	check_game_fn_error
-	push rax
 	mov rax, rbp[-0x8]
 	mov rax, rax[byte 0x0]
+	push rax
+	sub rsp, byte 0x8
+	call game_fn_retrieve wrt ..plt
+	add rsp, byte 0x8
+	check_game_fn_error
 	pop r11
 	cmp rax, r11
 	mov eax, 0
-	sete al
+	setne al
 	push rax
 
 	pop rdi
@@ -74,14 +76,16 @@ on_a:
 	ret
 
 .fast:
-	call game_fn_retrieve wrt ..plt
-	push rax
 	mov rax, rbp[-0x8]
 	mov rax, rax[byte 0x0]
+	push rax
+	sub rsp, byte 0x8
+	call game_fn_retrieve wrt ..plt
+	add rsp, byte 0x8
 	pop r11
 	cmp rax, r11
 	mov eax, 0
-	sete al
+	setne al
 	push rax
 
 	pop rdi

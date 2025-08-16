@@ -2152,7 +2152,7 @@ static void ok_and_true(void *on_fns, void *g, size_t resources_size, const char
 	assert(entity_types == NULL);
 }
 
-static void ok_any_equals_1(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+static void ok_any_eq_1(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	assert(game_fn_retrieve_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -2164,7 +2164,7 @@ static void ok_any_equals_1(void *on_fns, void *g, size_t resources_size, const 
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_fn_name, "on_a"));
-	assert(streq(grug_fn_path, "tests/ok/any_equals_1/input-d.grug"));
+	assert(streq(grug_fn_path, "tests/ok/any_eq_1/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2174,7 +2174,7 @@ static void ok_any_equals_1(void *on_fns, void *g, size_t resources_size, const 
 	assert(entity_types == NULL);
 }
 
-static void ok_any_equals_2(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+static void ok_any_eq_2(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	assert(game_fn_retrieve_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -2186,7 +2186,7 @@ static void ok_any_equals_2(void *on_fns, void *g, size_t resources_size, const 
 	assert(game_fn_initialize_bool_b == false);
 
 	assert(streq(grug_fn_name, "on_a"));
-	assert(streq(grug_fn_path, "tests/ok/any_equals_2/input-d.grug"));
+	assert(streq(grug_fn_path, "tests/ok/any_eq_2/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -2275,6 +2275,50 @@ static void ok_any_in_local_var_2(void *on_fns, void *g, size_t resources_size, 
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/any_in_local_var_2/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_any_ne_1(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	assert(game_fn_retrieve_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+	assert(game_fn_retrieve_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/any_ne_1/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_any_ne_2(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	assert(game_fn_retrieve_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+	assert(game_fn_retrieve_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == true);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/any_ne_2/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -6544,12 +6588,14 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(and_false_3, "d", 8);
 	ADD_TEST_OK(and_short_circuit, "d", 8);
 	ADD_TEST_OK(and_true, "d", 8);
-	ADD_TEST_OK(any_equals_1, "d", 8);
-	ADD_TEST_OK(any_equals_2, "d", 8);
+	ADD_TEST_OK(any_eq_1, "d", 8);
+	ADD_TEST_OK(any_eq_2, "d", 8);
 	ADD_TEST_OK(any_helper_fn_param, "d", 8);
 	ADD_TEST_OK(any_in_global_var, "d", 16);
 	ADD_TEST_OK(any_in_local_var, "d", 8);
 	ADD_TEST_OK(any_in_local_var_2, "d", 8);
+	ADD_TEST_OK(any_ne_1, "d", 8);
+	ADD_TEST_OK(any_ne_2, "d", 8);
 	ADD_TEST_OK(any_on_fn_param, "u", 8);
 	ADD_TEST_OK(blocked_alrm, "d", 8);
 	ADD_TEST_OK(bool_logical_not_false, "d", 8);
