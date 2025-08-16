@@ -113,6 +113,20 @@
 					]
 				}
 			}
+		},
+		"u": {
+			"description": "foo",
+			"on_functions": {
+				"on_a": {
+					"description": "foo",
+					"arguments": [
+						{
+							"name": "id",
+							"type": "any"
+						}
+					]
+				}
+			}
 		}
 	},
 	"game_functions": {
@@ -1004,6 +1018,19 @@
 		},
 		"call_on_b_fn": {
 			"description": "foo"
+		},
+		"store": {
+			"description": "foo",
+			"arguments": [
+				{
+					"name": "id",
+					"type": "any"
+				}
+			]
+		},
+		"retrieve": {
+			"description": "foo",
+			"return_type": "any"
 		}
 	}
 }

@@ -61,6 +61,12 @@ then
     fi
 fi
 
+if [[ ${DEBUG_EXPECTED_NASM+x} ]]
+then
+    echo "- DEBUG_EXPECTED_NASM was turned on"
+    compiler_flags+=' -DDEBUG_EXPECTED_NASM'
+fi
+
 # TODO: Can this be removed, or is it still relevant?
 if [ "$(uname)" == "Darwin" ]; then # If Mac OS X
     echo "Detected macOS"

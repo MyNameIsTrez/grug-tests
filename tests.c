@@ -169,6 +169,8 @@ static size_t game_fn_talk_call_count;
 static size_t game_fn_get_position_call_count;
 static size_t game_fn_cause_game_fn_error_call_count;
 static size_t game_fn_call_on_b_fn_call_count;
+static size_t game_fn_store_call_count;
+static size_t game_fn_retrieve_call_count;
 
 static void (*on_b)(void *globals);
 static void *g_for_on_b;
@@ -719,6 +721,19 @@ void game_fn_call_on_b_fn(void) {
 
 	on_b(g_for_on_b);
 }
+static uint64_t game_fn_store_id;
+void game_fn_store(uint64_t id) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
+	game_fn_store_call_count++;
+
+	game_fn_store_id = id;
+}
+uint64_t game_fn_retrieve(void) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
+	game_fn_retrieve_call_count++;
+
+	return 123;
+}
 
 static void reset_call_counts(void) {
 	game_fn_nothing_call_count = 0;
@@ -753,6 +768,8 @@ static void reset_call_counts(void) {
 	game_fn_get_position_call_count = 0;
 	game_fn_cause_game_fn_error_call_count = 0;
 	game_fn_call_on_b_fn_call_count = 0;
+	game_fn_store_call_count = 0;
+	game_fn_retrieve_call_count = 0;
 }
 
 static void check(int status, const char *fn_name) {
@@ -1256,14 +1273,21 @@ static void regenerate_expected_dll(
 	const char *expected_objdump_path
 ) {
 #ifdef __x86_64__
+	#ifdef DEBUG_EXPECTED_NASM
+	run((const char *[]){"nasm", nasm_path, "-felf64", "-g", "-O0", "-o", nasm_o_path, NULL});
+	#else
 	run((const char *[]){"nasm", nasm_path, "-felf64", "-O0", "-o", nasm_o_path, NULL});
-	// run((const char *[]){"nasm", nasm_path, "-felf64", "-g", "-O0", "-o", nasm_o_path, NULL});
+	#endif
 
 	// `-z noexecstack` is necessary in order for Arch Linux to not complain when dlopen()ing expected.so
 	//   about a missing GNU_STACK program header.
 	run((const char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-x", "-shared", "--hash-style=sysv", "-z", "noexecstack", NULL});
 #elif __aarch64__
+	#ifdef DEBUG_EXPECTED_NASM
+	run((const char *[]){"nasm", nasm_path, "-fmacho64", "-g", "-O0", "-o", nasm_o_path, NULL});
+	#else
 	run((const char *[]){"nasm", nasm_path, "-fmacho64", "-O0", "-o", nasm_o_path, NULL});
+	#endif
 
 	run((const char *[]){"ld", nasm_o_path, "-o", expected_dll_path, "-x", "-dylib", NULL});
 #else
@@ -2128,6 +2152,158 @@ static void ok_and_true(void *on_fns, void *g, size_t resources_size, const char
 	assert(entity_types == NULL);
 }
 
+static void ok_any_equals_1(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	assert(game_fn_retrieve_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+	assert(game_fn_retrieve_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == false);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/any_equals_1/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_any_equals_2(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	assert(game_fn_initialize_bool_call_count == 0);
+	assert(game_fn_retrieve_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_initialize_bool_call_count == 1);
+	assert(game_fn_retrieve_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_initialize_bool_b == false);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/any_equals_2/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_any_helper_fn_param(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	assert(game_fn_retrieve_call_count == 0);
+	assert(game_fn_store_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_retrieve_call_count == 1);
+	assert(game_fn_store_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_store_id == 123);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/any_helper_fn_param/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_any_in_global_var(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	assert(game_fn_retrieve_call_count == 1); // Called by init_globals()
+	assert(game_fn_store_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_retrieve_call_count == 1);
+	assert(game_fn_store_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_store_id == 123);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/any_in_global_var/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_any_in_local_var(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	assert(game_fn_retrieve_call_count == 0);
+	assert(game_fn_store_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_retrieve_call_count == 1);
+	assert(game_fn_store_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_store_id == 123);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/any_in_local_var/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_any_in_local_var_2(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	assert(game_fn_retrieve_call_count == 0);
+	assert(game_fn_store_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_retrieve_call_count == 1);
+	assert(game_fn_store_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_store_id == 123);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/any_in_local_var_2/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_any_on_fn_param(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	assert(game_fn_store_call_count == 0);
+	((struct u_on_fns *)on_fns)->a(g, 77);
+	assert(game_fn_store_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_store_id == 77);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/any_on_fn_param/input-u.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_blocked_alrm(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_blocked_alrm_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -2541,7 +2717,27 @@ static void ok_continue(void *on_fns, void *g, size_t resources_size, const char
 	assert(entity_types == NULL);
 }
 
-static void ok_custom_id_type_transfer_between_globals(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+static void ok_custom_id_decays_to_any(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	assert(game_fn_store_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_store_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_store_id == 42);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/custom_id_decays_to_any/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_custom_id_transfer_between_globals(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_get_opponent_call_count == 1); // Called by init_globals()
 	assert(game_fn_set_opponent_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -2553,7 +2749,7 @@ static void ok_custom_id_type_transfer_between_globals(void *on_fns, void *g, si
 	assert(game_fn_set_opponent_target == 69);
 
 	assert(streq(grug_fn_name, "on_a"));
-	assert(streq(grug_fn_path, "tests/ok/custom_id_type_transfer_between_globals/input-d.grug"));
+	assert(streq(grug_fn_path, "tests/ok/custom_id_transfer_between_globals/input-d.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -4474,6 +4670,26 @@ static void ok_nested_continue(void *on_fns, void *g, size_t resources_size, con
 	assert(entity_types == NULL);
 }
 
+static void ok_null_id_decays_to_any(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	assert(game_fn_store_call_count == 0);
+	((struct d_on_fns *)on_fns)->a(g);
+	assert(game_fn_store_call_count == 1);
+
+	free(g);
+
+	assert(game_fn_store_id == UINT64_MAX);
+
+	assert(streq(grug_fn_name, "on_a"));
+	assert(streq(grug_fn_path, "tests/ok/null_id_decays_to_any/input-d.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
 static void ok_null_id_equals_itself(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	assert(game_fn_initialize_bool_call_count == 0);
 	((struct d_on_fns *)on_fns)->a(g);
@@ -6118,6 +6334,10 @@ static void ok_write_to_global_variable(void *on_fns, void *g, size_t resources_
 }
 
 static void add_error_tests(void) {
+	ADD_TEST_ERROR(any_return, "d");
+	ADD_TEST_ERROR(any_store_in_non_any_global, "a");
+	ADD_TEST_ERROR(any_store_in_non_any_local, "d");
+	ADD_TEST_ERROR(any_store_in_non_any_local_2, "d");
 	ADD_TEST_ERROR(assignment_isnt_expression, "d");
 	ADD_TEST_ERROR(bool_cant_be_initialized_with_1, "d");
 	ADD_TEST_ERROR(bool_ge, "d");
@@ -6220,16 +6440,16 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(me_plus_me, "d");
 	ADD_TEST_ERROR(missing_empty_line_between_global_and_on_fn, "d");
 	ADD_TEST_ERROR(missing_empty_line_between_on_fn_and_helper_fn, "d");
-	ADD_TEST_ERROR(mixing_custom_id_types_binary_expr, "d");
-	ADD_TEST_ERROR(mixing_custom_id_types_game_fn_param_type, "d");
-	ADD_TEST_ERROR(mixing_custom_id_types_game_fn_return_type, "d");
-	ADD_TEST_ERROR(mixing_custom_id_types_global_new, "a");
-	ADD_TEST_ERROR(mixing_custom_id_types_global_to_local, "d");
-	ADD_TEST_ERROR(mixing_custom_id_types_helper_fn_param_type, "d");
-	ADD_TEST_ERROR(mixing_custom_id_types_helper_fn_return_type, "d");
-	ADD_TEST_ERROR(mixing_custom_id_types_local_existing, "d");
-	ADD_TEST_ERROR(mixing_custom_id_types_local_new, "d");
-	ADD_TEST_ERROR(mixing_custom_id_types_on_fn_param_type, "t");
+	ADD_TEST_ERROR(mixing_custom_ids_binary_expr, "d");
+	ADD_TEST_ERROR(mixing_custom_ids_game_fn_param_type, "d");
+	ADD_TEST_ERROR(mixing_custom_ids_game_fn_return_type, "d");
+	ADD_TEST_ERROR(mixing_custom_ids_global_new, "a");
+	ADD_TEST_ERROR(mixing_custom_ids_global_to_local, "d");
+	ADD_TEST_ERROR(mixing_custom_ids_helper_fn_param_type, "d");
+	ADD_TEST_ERROR(mixing_custom_ids_helper_fn_return_type, "d");
+	ADD_TEST_ERROR(mixing_custom_ids_local_existing, "d");
+	ADD_TEST_ERROR(mixing_custom_ids_local_new, "d");
+	ADD_TEST_ERROR(mixing_custom_ids_on_fn_param_type, "t");
 	ADD_TEST_ERROR(newline_statement, "d");
 	ADD_TEST_ERROR(no_space_between_comment_character_and_comment, "d");
 	ADD_TEST_ERROR(not_followed_by_negation, "d");
@@ -6324,6 +6544,13 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(and_false_3, "d", 8);
 	ADD_TEST_OK(and_short_circuit, "d", 8);
 	ADD_TEST_OK(and_true, "d", 8);
+	ADD_TEST_OK(any_equals_1, "d", 8);
+	ADD_TEST_OK(any_equals_2, "d", 8);
+	ADD_TEST_OK(any_helper_fn_param, "d", 8);
+	ADD_TEST_OK(any_in_global_var, "d", 16);
+	ADD_TEST_OK(any_in_local_var, "d", 8);
+	ADD_TEST_OK(any_in_local_var_2, "d", 8);
+	ADD_TEST_OK(any_on_fn_param, "u", 8);
 	ADD_TEST_OK(blocked_alrm, "d", 8);
 	ADD_TEST_OK(bool_logical_not_false, "d", 8);
 	ADD_TEST_OK(bool_logical_not_true, "d", 8);
@@ -6346,7 +6573,8 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(comment_lone_block_at_end, "d", 8);
 	ADD_TEST_OK(comment_lone_global, "d", 8);
 	ADD_TEST_OK(continue, "d", 8);
-	ADD_TEST_OK(custom_id_type_transfer_between_globals, "d", 24);
+	ADD_TEST_OK(custom_id_decays_to_any, "d", 8);
+	ADD_TEST_OK(custom_id_transfer_between_globals, "d", 24);
 	ADD_TEST_OK(division_negative_result, "d", 8);
 	ADD_TEST_OK(division_positive_result, "d", 8);
 	ADD_TEST_OK(double_negation_with_parentheses, "d", 8);
@@ -6443,6 +6671,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(negative_literal, "d", 8);
 	ADD_TEST_OK(nested_break, "d", 8);
 	ADD_TEST_OK(nested_continue, "d", 8);
+	ADD_TEST_OK(null_id_decays_to_any, "d", 8);
 	ADD_TEST_OK(null_id_equals_itself, "d", 8);
 	ADD_TEST_OK(null_id_initializing_local, "d", 8);
 	ADD_TEST_OK(no_empty_line_between_globals, "a", 16);

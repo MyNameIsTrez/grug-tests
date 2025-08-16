@@ -21,8 +21,8 @@ struct r_on_fns {
 struct s_on_fns {
     void (*a)(void *globals, int32_t i, float f);
 };
-struct t_on_fns {
-    void (*a)(void *globals, uint64_t timer);
+struct u_on_fns {
+    void (*a)(void *globals, uint64_t id);
 };
 
 void game_fn_nothing(void);
@@ -58,3 +58,5 @@ void game_fn_talk(const char *message1, const char *message2, const char *messag
 uint64_t game_fn_get_position(uint64_t id);
 void game_fn_cause_game_fn_error(void);
 void game_fn_call_on_b_fn(void);
+void game_fn_store(uint64_t id);
+uint64_t game_fn_retrieve(void);

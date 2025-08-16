@@ -1,0 +1,5 @@
+foo: any = retrieve()
+
+on_a() {
+    store(foo)
+}

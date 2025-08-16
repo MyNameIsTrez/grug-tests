@@ -50,6 +50,8 @@ void game_fn_talk(const char *message1, const char *message2, const char *messag
 uint64_t game_fn_get_position(uint64_t id) { return 0; }
 void game_fn_cause_game_fn_error(void) {}
 void game_fn_call_on_b_fn(void) {}
+void game_fn_store(uint64_t id) {}
+uint64_t game_fn_retrieve(void) { return 0; }
 
 // Source: https://github.com/google/security-research-pocs/blob/d10780c3ddb8070dff6c5e5862c93c01392d1727/autofuzz/fuzz_utils.cc#L10
 int ignore_stdout(void) {
