@@ -6,6 +6,7 @@
 - If you want the tests to be run in a shuffled order twice (within the same process), run `SHUFFLES=10 ./tests.sh`.
 - If you want to allow your compiler to optimize `grug.c` hard, run `OPTIMIZED= ./tests.sh`.
 - If you want to allow your compiler to statically analyze `grug.c` for problems, run `ANALYZE= ./tests.sh`.
+- If you want to debug the expected NASM output, run `DEBUG_EXPECTED_NASM= ./tests.sh`.
 
 ## Generating coverage
 

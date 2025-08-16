@@ -10,7 +10,7 @@ on_fns:
 
 init_globals_fn_path:
 on_fn_path:
-	db "tests/ok/custom_id_type_transfer_between_globals/input-d.grug", 0
+	db "tests/ok/custom_id_transfer_between_globals/input-d.grug", 0
 init_globals_fn_name:
 	db "init_globals", 0
 on_fn_name:
@@ -105,6 +105,7 @@ on_a:
 	mov rax, rbp[-0x8]
 	mov rax, rax[0x10]
 	push rax
+
 	pop rdi
 	call game_fn_set_opponent wrt ..plt
 	check_game_fn_error
@@ -117,6 +118,7 @@ on_a:
 	mov rax, rbp[-0x8]
 	mov rax, rax[0x10]
 	push rax
+
 	pop rdi
 	call game_fn_set_opponent wrt ..plt
 
