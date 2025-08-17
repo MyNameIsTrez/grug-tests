@@ -122,7 +122,7 @@
 					"arguments": [
 						{
 							"name": "id",
-							"type": "any"
+							"type": "id"
 						}
 					]
 				}
@@ -1024,13 +1024,13 @@
 			"arguments": [
 				{
 					"name": "id",
-					"type": "any"
+					"type": "id"
 				}
 			]
 		},
 		"retrieve": {
 			"description": "foo",
-			"return_type": "any"
+			"return_type": "id"
 		},
 		"box_i32": {
 			"description": "foo",

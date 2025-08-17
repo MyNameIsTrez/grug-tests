@@ -1,1 +1,0 @@
-Function 'helper_foo' is supposed to return Opponent, not any

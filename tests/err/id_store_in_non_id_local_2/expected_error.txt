@@ -1,0 +1,1 @@
+Can't assign id to 'foo', which has type D

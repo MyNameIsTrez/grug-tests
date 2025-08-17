@@ -1,1 +1,0 @@
-Can't assign any to 'foo', which has type D
