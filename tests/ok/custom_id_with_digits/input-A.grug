@@ -1,0 +1,1 @@
+foo: BoxedI32 = box_i32(42)

@@ -1031,6 +1031,16 @@
 		"retrieve": {
 			"description": "foo",
 			"return_type": "any"
+		},
+		"box_i32": {
+			"description": "foo",
+			"return_type": "BoxedI32",
+			"arguments": [
+				{
+					"name": "n",
+					"type": "i32"
+				}
+			]
 		}
 	}
 }

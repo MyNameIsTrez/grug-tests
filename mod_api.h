@@ -60,3 +60,4 @@ void game_fn_cause_game_fn_error(void);
 void game_fn_call_on_b_fn(void);
 void game_fn_store(uint64_t id);
 uint64_t game_fn_retrieve(void);
+uint64_t game_fn_box_i32(int32_t n);

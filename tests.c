@@ -171,6 +171,7 @@ static size_t game_fn_cause_game_fn_error_call_count;
 static size_t game_fn_call_on_b_fn_call_count;
 static size_t game_fn_store_call_count;
 static size_t game_fn_retrieve_call_count;
+static size_t game_fn_box_i32_call_count;
 
 static void (*on_b)(void *globals);
 static void *g_for_on_b;
@@ -734,6 +735,12 @@ uint64_t game_fn_retrieve(void) {
 
 	return 123;
 }
+uint64_t game_fn_box_i32(int32_t n) {
+	ASSERT_16_BYTE_STACK_ALIGNED();
+	game_fn_box_i32_call_count++;
+
+	return n;
+}
 
 static void reset_call_counts(void) {
 	game_fn_nothing_call_count = 0;
@@ -770,6 +777,7 @@ static void reset_call_counts(void) {
 	game_fn_call_on_b_fn_call_count = 0;
 	game_fn_store_call_count = 0;
 	game_fn_retrieve_call_count = 0;
+	game_fn_box_i32_call_count = 0;
 }
 
 static void check(int status, const char *fn_name) {
@@ -2856,6 +2864,24 @@ static void ok_custom_id_transfer_between_globals(void *on_fns, void *g, size_t 
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/custom_id_transfer_between_globals/input-D.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_custom_id_with_digits(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	(void)on_fns;
+
+	assert(game_fn_box_i32_call_count == 1);
+
+	free(g);
+
+	assert(streq(grug_fn_name, "init_globals"));
+	assert(streq(grug_fn_path, "tests/ok/custom_id_with_digits/input-A.grug"));
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -6602,6 +6628,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(continue, "D", 8);
 	ADD_TEST_OK(custom_id_decays_to_any, "D", 8);
 	ADD_TEST_OK(custom_id_transfer_between_globals, "D", 24);
+	ADD_TEST_OK(custom_id_with_digits, "A", 16);
 	ADD_TEST_OK(division_negative_result, "D", 8);
 	ADD_TEST_OK(division_positive_result, "D", 8);
 	ADD_TEST_OK(double_negation_with_parentheses, "D", 8);
