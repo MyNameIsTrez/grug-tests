@@ -11,7 +11,7 @@ on_fns:
 entity_type:
 	db 0
 on_fn_path:
-	db "tests/ok/entity_in_on_fn_with_mod_specified/input-d.grug", 0
+	db "tests/ok/entity_in_on_fn_with_mod_specified/input-D.grug", 0
 on_fn_name:
 	db "on_a", 0
 entity:

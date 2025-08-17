@@ -9,7 +9,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/helper_fn_returning_void_returns_void/input-d.grug", 0
+	db "tests/ok/helper_fn_returning_void_returns_void/input-D.grug", 0
 on_fn_name:
 	db "on_a", 0
 

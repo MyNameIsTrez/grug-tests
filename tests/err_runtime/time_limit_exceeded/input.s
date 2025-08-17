@@ -9,7 +9,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/err_runtime/time_limit_exceeded/input-d.grug", 0
+	db "tests/err_runtime/time_limit_exceeded/input-D.grug", 0
 on_fn_name:
 	db "on_a", 0
 

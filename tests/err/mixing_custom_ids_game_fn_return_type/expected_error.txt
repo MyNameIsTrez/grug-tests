@@ -1,1 +1,1 @@
-Can't assign opponent to 'foo', which has type a
+Can't assign Opponent to 'foo', which has type A

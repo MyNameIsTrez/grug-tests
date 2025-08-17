@@ -1,9 +1,9 @@
 {
 	"entities": {
-		"a": {
+		"A": {
 			"description": "foo"
 		},
-		"d": {
+		"D": {
 			"description": "foo",
 			"on_functions": {
 				"on_a": {
@@ -11,7 +11,7 @@
 				}
 			}
 		},
-		"e": {
+		"E": {
 			"description": "foo",
 			"on_functions": {
 				"on_a": {
@@ -22,7 +22,7 @@
 				}
 			}
 		},
-		"f": {
+		"F": {
 			"description": "foo",
 			"on_functions": {
 				"on_a": {
@@ -36,7 +36,7 @@
 				}
 			}
 		},
-		"g": {
+		"G": {
 			"description": "foo",
 			"on_functions": {
 				"on_a": {
@@ -54,7 +54,7 @@
 				}
 			}
 		},
-		"j": {
+		"J": {
 			"description": "foo",
 			"on_functions": {
 				"on_a": {
@@ -68,7 +68,7 @@
 				}
 			}
 		},
-		"r": {
+		"R": {
 			"description": "foo",
 			"on_functions": {
 				"on_a": {
@@ -82,7 +82,7 @@
 				}
 			}
 		},
-		"s": {
+		"S": {
 			"description": "foo",
 			"on_functions": {
 				"on_a": {
@@ -100,7 +100,7 @@
 				}
 			}
 		},
-		"t": {
+		"T": {
 			"description": "foo",
 			"on_functions": {
 				"on_a": {
@@ -108,13 +108,13 @@
 					"arguments": [
 						{
 							"name": "timer",
-							"type": "timer"
+							"type": "Timer"
 						}
 					]
 				}
 			}
 		},
-		"u": {
+		"U": {
 			"description": "foo",
 			"on_functions": {
 				"on_a": {
@@ -261,7 +261,7 @@
 				},
 				{
 					"name": "id",
-					"type": "d"
+					"type": "D"
 				},
 				{
 					"name": "str",
@@ -413,14 +413,14 @@
 		},
 		"get_opponent": {
 			"description": "foo",
-			"return_type": "opponent"
+			"return_type": "Opponent"
 		},
 		"set_d": {
 			"description": "foo",
 			"arguments": [
 				{
 					"name": "target",
-					"type": "d"
+					"type": "D"
 				}
 			]
 		},
@@ -429,7 +429,7 @@
 			"arguments": [
 				{
 					"name": "target",
-					"type": "opponent"
+					"type": "Opponent"
 				}
 			]
 		},
@@ -498,7 +498,7 @@
 				},
 				{
 					"name": "id",
-					"type": "d"
+					"type": "D"
 				},
 				{
 					"name": "f9",
@@ -575,7 +575,7 @@
 				},
 				{
 					"name": "id",
-					"type": "d"
+					"type": "D"
 				},
 				{
 					"name": "f10",
@@ -1005,11 +1005,11 @@
 		},
 		"get_position": {
 			"description": "foo",
-			"return_type": "position",
+			"return_type": "Position",
 			"arguments": [
 				{
 					"name": "id",
-					"type": "a"
+					"type": "A"
 				}
 			]
 		},

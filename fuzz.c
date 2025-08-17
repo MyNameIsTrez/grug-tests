@@ -90,7 +90,7 @@ const char *buf_to_file(const uint8_t *buf, size_t size) {
 	// We want "/dev/shm/fuzz_XXXXXX"
 	static char p[] = "/dev/shm/fuzz_XXXXXX";
 	// static char p[] = "./lol/fuzz_XXXXXX";
-	static char suffix[] = "-d.grug";
+	static char suffix[] = "-D.grug";
 	static char pathname[sizeof(p) + sizeof(suffix) - 1];
 	memcpy(pathname, p, sizeof(p));
 
@@ -104,12 +104,12 @@ const char *buf_to_file(const uint8_t *buf, size_t size) {
 	static char old[sizeof(pathname)];
 	memcpy(old, pathname, sizeof(pathname));
 
-	// We want "/dev/shm/fuzz_123456-d.grug"
+	// We want "/dev/shm/fuzz_123456-D.grug"
 	memcpy(pathname + sizeof(p) - 1, suffix, sizeof(suffix));
 	// fprintf(stderr, "pathname: %s\n", pathname);
 	// exit(EXIT_FAILURE);
 
-	// We need to rename "/dev/shm/fuzz_123456" to "/dev/shm/fuzz_123456-d.grug"
+	// We need to rename "/dev/shm/fuzz_123456" to "/dev/shm/fuzz_123456-D.grug"
 	const char *new = pathname;
 	if (rename(old, new) == -1) {
 		warn("rename(\"%s\", \"%s\")", old, new);

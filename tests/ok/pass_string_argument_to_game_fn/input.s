@@ -9,7 +9,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/pass_string_argument_to_game_fn/input-d.grug", 0
+	db "tests/ok/pass_string_argument_to_game_fn/input-D.grug", 0
 on_fn_name:
 	db "on_a", 0
 foo:

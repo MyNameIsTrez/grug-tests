@@ -11,7 +11,7 @@ on_fns:
 entity_type:
 	db 0
 on_fn_path:
-	db "tests/ok/entity_and_resource_as_subexpression/input-d.grug", 0
+	db "tests/ok/entity_and_resource_as_subexpression/input-D.grug", 0
 on_fn_name:
 	db "on_a", 0
 resource:

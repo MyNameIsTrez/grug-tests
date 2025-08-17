@@ -9,7 +9,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/bool_zero_extended_if_statement/input-d.grug", 0
+	db "tests/ok/bool_zero_extended_if_statement/input-D.grug", 0
 on_fn_name:
 	db "on_a", 0
 

@@ -1,1 +1,1 @@
-The function 'on_b' needs to be moved before/after a different on_ function, according to the entity 'e' in mod_api.json
+The function 'on_b' needs to be moved before/after a different on_ function, according to the entity 'E' in mod_api.json

@@ -9,7 +9,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/sub_rsp_32_bits_local_variables_id/input-d.grug", 0
+	db "tests/ok/sub_rsp_32_bits_local_variables_id/input-D.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -55,105 +55,120 @@ on_a:
 
 	clear_has_runtime_error_happened
 
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x10], rax
     mov rax, rbp[-0x10]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
 	check_game_fn_error
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x18], rax
     mov rax, rbp[-0x18]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
 	check_game_fn_error
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x20], rax
     mov rax, rbp[-0x20]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
 	check_game_fn_error
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x28], rax
     mov rax, rbp[-0x28]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
 	check_game_fn_error
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x30], rax
     mov rax, rbp[-0x30]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
 	check_game_fn_error
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x38], rax
     mov rax, rbp[-0x38]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
 	check_game_fn_error
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x40], rax
     mov rax, rbp[-0x40]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
 	check_game_fn_error
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x48], rax
     mov rax, rbp[-0x48]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
 	check_game_fn_error
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x50], rax
     mov rax, rbp[-0x50]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
 	check_game_fn_error
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x58], rax
     mov rax, rbp[-0x58]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
 	check_game_fn_error
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x60], rax
     mov rax, rbp[-0x60]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
 	check_game_fn_error
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x68], rax
     mov rax, rbp[-0x68]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
 	check_game_fn_error
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x70], rax
     mov rax, rbp[-0x70]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
 	check_game_fn_error
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x78], rax
     mov rax, rbp[-0x78]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
 	check_game_fn_error
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x80], rax
     mov rax, rbp[-0x80]
 	push rax
@@ -166,91 +181,106 @@ on_a:
 	ret
 
 .fast:
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x10], rax
     mov rax, rbp[-0x10]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x18], rax
     mov rax, rbp[-0x18]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x20], rax
     mov rax, rbp[-0x20]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x28], rax
     mov rax, rbp[-0x28]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x30], rax
     mov rax, rbp[-0x30]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x38], rax
     mov rax, rbp[-0x38]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x40], rax
     mov rax, rbp[-0x40]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x48], rax
     mov rax, rbp[-0x48]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x50], rax
     mov rax, rbp[-0x50]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x58], rax
     mov rax, rbp[-0x58]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x60], rax
     mov rax, rbp[-0x60]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x68], rax
     mov rax, rbp[-0x68]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x70], rax
     mov rax, rbp[-0x70]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x78], rax
     mov rax, rbp[-0x78]
 	push rax
 	pop rdi
 	call game_fn_set_d wrt ..plt
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	mov rbp[-0x80], rax
     mov rax, rbp[-0x80]
 	push rax

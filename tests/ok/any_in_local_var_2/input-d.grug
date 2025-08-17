@@ -1,5 +1,0 @@
-on_a() {
-    foo: any = null_id
-    foo = retrieve()
-    store(foo)
-}

@@ -1,5 +1,0 @@
-foo: opponent = get_opponent()
-
-on_a() {
-    bar: a = foo
-}

@@ -1,1 +1,1 @@
-Can't assign opponent to 'bar', which has type a
+Can't assign Opponent to 'bar', which has type A

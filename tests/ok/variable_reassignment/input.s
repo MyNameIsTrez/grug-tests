@@ -9,7 +9,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/variable_reassignment/input-d.grug", 0
+	db "tests/ok/variable_reassignment/input-D.grug", 0
 on_fn_name:
 	db "on_a", 0
 

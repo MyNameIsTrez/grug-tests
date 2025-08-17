@@ -9,7 +9,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/comment_lone_global/input-d.grug", 0
+	db "tests/ok/comment_lone_global/input-D.grug", 0
 on_fn_name:
 	db "on_a", 0
 

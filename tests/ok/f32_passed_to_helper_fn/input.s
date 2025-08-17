@@ -9,7 +9,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/f32_passed_to_helper_fn/input-d.grug", 0
+	db "tests/ok/f32_passed_to_helper_fn/input-D.grug", 0
 on_fn_name:
 	db "on_a", 0
 

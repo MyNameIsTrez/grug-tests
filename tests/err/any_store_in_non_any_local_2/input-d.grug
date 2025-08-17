@@ -1,4 +1,0 @@
-on_a() {
-    foo: d = null_id
-    foo = retrieve()
-}

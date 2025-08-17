@@ -9,7 +9,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/id_binary_expr_false/input-d.grug", 0
+	db "tests/ok/id_binary_expr_false/input-D.grug", 0
 on_fn_name:
 	db "on_a", 0
 
@@ -55,7 +55,8 @@ on_a:
 
 	clear_has_runtime_error_happened
 
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	push rax
 
 	mov rax, rbp[-0x8]
@@ -64,7 +65,7 @@ on_a:
 
 	cmp rax, r11
 	mov eax, 0
-	sete al
+	setne al
 	push rax
 
 	pop rdi
@@ -76,7 +77,8 @@ on_a:
 	ret
 
 .fast:
-	mov rax, -1
+	mov rax, rbp[-0x8]
+	mov rax, rax[byte 0x0]
 	push rax
 
 	mov rax, rbp[-0x8]
@@ -85,7 +87,7 @@ on_a:
 
 	cmp rax, r11
 	mov eax, 0
-	sete al
+	setne al
 	push rax
 
 	pop rdi

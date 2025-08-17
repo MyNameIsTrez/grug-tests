@@ -1,3 +1,0 @@
-on_a(timer: d) {
-    set_d(timer)
-}

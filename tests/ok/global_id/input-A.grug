@@ -1,0 +1,1 @@
+opponent: Opponent = get_opponent()

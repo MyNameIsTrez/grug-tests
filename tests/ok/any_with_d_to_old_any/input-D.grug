@@ -1,0 +1,5 @@
+on_a() {
+    foo: any = me
+    foo = me
+    store(foo)
+}

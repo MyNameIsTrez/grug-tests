@@ -5,7 +5,7 @@ global globals_size
 globals_size: dq 12
 
 init_globals_fn_path:
-	db "tests/ok/global_containing_negation/input-a.grug", 0
+	db "tests/ok/global_containing_negation/input-A.grug", 0
 init_globals_fn_name:
 	db "init_globals", 0
 

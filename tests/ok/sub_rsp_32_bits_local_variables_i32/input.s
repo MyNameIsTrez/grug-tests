@@ -9,7 +9,7 @@ on_fns:
 	dq on_a
 
 on_fn_path:
-	db "tests/ok/sub_rsp_32_bits_local_variables_i32/input-d.grug", 0
+	db "tests/ok/sub_rsp_32_bits_local_variables_i32/input-D.grug", 0
 on_fn_name:
 	db "on_a", 0
 

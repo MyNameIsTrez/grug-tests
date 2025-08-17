@@ -1,1 +1,1 @@
-Function call 'set_opponent' expected the type opponent for argument 'target', but got d
+Function call 'set_opponent' expected the type Opponent for argument 'target', but got D

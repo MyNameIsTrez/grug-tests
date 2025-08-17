@@ -1,0 +1,5 @@
+foo: any = get_opponent()
+
+on_a() {
+    store(foo)
+}

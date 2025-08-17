@@ -1,0 +1,3 @@
+on_a(timer: D) {
+    set_d(timer)
+}

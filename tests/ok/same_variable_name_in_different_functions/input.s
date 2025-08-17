@@ -10,7 +10,7 @@ on_fns:
 	dq on_b
 
 on_fn_path:
-	db "tests/ok/same_variable_name_in_different_functions/input-e.grug", 0
+	db "tests/ok/same_variable_name_in_different_functions/input-E.grug", 0
 on_fn_name_a:
 	db "on_a", 0
 on_fn_name_b:

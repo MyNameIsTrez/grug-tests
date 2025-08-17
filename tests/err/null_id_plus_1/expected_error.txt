@@ -1,1 +1,0 @@
-The left and right operand of a binary expression ('PLUS_TOKEN') must have the same type, but got null_id and i32

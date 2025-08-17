@@ -1,4 +1,0 @@
-on_a() {
-    foo: d = me
-    set_d(foo)
-}

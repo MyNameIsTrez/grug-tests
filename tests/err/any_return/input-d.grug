@@ -1,7 +1,0 @@
-on_a() {
-    set_opponent(helper_foo())
-}
-
-helper_foo() opponent {
-    return retrieve()
-}

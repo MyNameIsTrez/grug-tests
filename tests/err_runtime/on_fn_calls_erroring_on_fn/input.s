@@ -10,7 +10,7 @@ on_fns:
 	dq on_b
 
 on_fn_path:
-	db "tests/err_runtime/on_fn_calls_erroring_on_fn/input-e.grug", 0
+	db "tests/err_runtime/on_fn_calls_erroring_on_fn/input-E.grug", 0
 on_fn_name_a:
 	db "on_a", 0
 on_fn_name_b:
