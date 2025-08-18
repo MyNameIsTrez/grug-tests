@@ -1,6 +1,6 @@
 #define _XOPEN_SOURCE 700
 
-#include "grug/grug.h"
+#include "grug.h"
 
 #include "mod_api.h"
 

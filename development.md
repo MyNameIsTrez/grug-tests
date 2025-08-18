@@ -2,18 +2,18 @@
 
 ## Notes
 
-- If you want to see the detailed logs of `grug.c`, run `LOGGING= ./tests.sh`.
-- If you want the tests to be run in a shuffled order twice (within the same process), run `SHUFFLES=10 ./tests.sh`.
-- If you want to allow your compiler to optimize `grug.c` hard, run `OPTIMIZED= ./tests.sh`.
-- If you want to allow your compiler to statically analyze `grug.c` for problems, run `ANALYZE= ./tests.sh`.
-- If you want to debug the expected NASM output, run `DEBUG_EXPECTED_NASM= ./tests.sh`.
+- If you want to see the detailed logs of `grug.c`, run `LOGGING= ./tests.sh ../grug`.
+- If you want the tests to be run in a shuffled order twice (within the same process), run `SHUFFLES=10 ./tests.sh ../grug`.
+- If you want to allow your compiler to optimize `grug.c` hard, run `OPTIMIZED= ./tests.sh ../grug`.
+- If you want to allow your compiler to statically analyze `grug.c` for problems, run `ANALYZE= ./tests.sh ../grug`.
+- If you want to debug the expected NASM output, run `DEBUG_EXPECTED_NASM= ./tests.sh ../grug`.
 
 ## Generating coverage
 
 > [!IMPORTANT]
 > Make sure you have [gcovr](https://gcovr.com/en/stable/installation.html) (`pip install gcovr`) and [llvm-cov](https://llvm.org/docs/CommandGuide/llvm-cov.html) (`apt install llvm`)
 
-Run `COVERAGE= ./tests.sh`, and view the generated `coverage.html` with your browser.
+Run `COVERAGE= ./tests.sh ../grug`, and view the generated `coverage.html` with your browser.
 
 You should see that the program has nearly 100% line coverage.
 
@@ -85,7 +85,7 @@ plog-converter -a GA:1,2 -t json -o pvs.json pvs.log
 In order to visualize what grug.c contains when linked, follow these steps:
 
 1. Download [amap](https://www.sikorskiy.net/info/prj/amap/index.html)
-2. Run `LINKER_MAP= ./tests.sh`
+2. Run `LINKER_MAP= ./tests.sh ../grug`
 3. Run `./amap` in the cloned/unzipped directory of amap.
 4. Click the `File` button in the top-left corner, and then `Open file`
 5. Select the generated `output.map` using the file explorer popup

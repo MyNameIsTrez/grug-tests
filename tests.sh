@@ -1,6 +1,13 @@
 #!/bin/bash
 
-compiler_flags='-Igrug -g -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wmissing-prototypes -Wshadow -Wuninitialized -Wunused-macros -Wfatal-errors'
+# Require grug path as the first argument
+if [[ -z "$1" ]]; then
+    echo "Usage: $0 <path-to-grug> [test-args...]"
+    exit 1
+fi
+GRUG_PATH="$1"
+
+compiler_flags="-I${GRUG_PATH} -g -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wmissing-prototypes -Wshadow -Wuninitialized -Wunused-macros -Wfatal-errors"
 
 # This makes compilation quite a bit slower
 # compiler_flags+=' -Og'
@@ -86,10 +93,10 @@ then
     compiler_flags+=' -gdwarf-4' # build.yml requires this, for some reason
 fi
 
-if (! [[ grug/grug.c -ot grug.o ]]) || (! [[ grug/grug.h -ot grug.o ]]) || (! [[ tests.sh -ot grug.o ]])
+if (! [[ ${GRUG_PATH}/grug.c -ot grug.o ]]) || (! [[ ${GRUG_PATH}/grug.h -ot grug.o ]]) || (! [[ tests.sh -ot grug.o ]])
 then
     echo "Recompiling grug.o..."
-    "$CC" grug/grug.c -c -o grug.o $compiler_flags || { echo 'Recompiling grug.o failed :('; exit 1; }
+    "$CC" "${GRUG_PATH}/grug.c" -c -o grug.o $compiler_flags || { echo 'Recompiling grug.o failed :('; exit 1; }
 fi
 
 if (! [[ tests.c -ot tests.o ]]) || (! [[ tests.sh -ot tests.o ]])
@@ -115,9 +122,9 @@ echo "Running tests.out..."
 if [[ ${VALGRIND+x} ]]
 then
     # This makes compilation quite a bit slower
-    valgrind --quiet ./tests.out "$@"
+    valgrind --quiet ./tests.out "${@:2}"
 else
-    ./tests.out "$@"
+    ./tests.out "${@:2}"
 fi
 
 if [ $? -ne 0 ]; then
@@ -126,5 +133,5 @@ fi
 
 if [[ -v COVERAGE ]]
 then
-	gcovr --gcov-executable "llvm-cov gcov" --html-details coverage.html --html-theme github.green
+    gcovr --gcov-executable "llvm-cov gcov" --html-details coverage.html --html-theme github.green
 fi
