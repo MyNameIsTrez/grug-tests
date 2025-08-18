@@ -93,10 +93,12 @@ then
     compiler_flags+=' -gdwarf-4' # build.yml requires this, for some reason
 fi
 
-if (! [[ ${GRUG_PATH}/grug.c -ot grug.o ]]) || (! [[ ${GRUG_PATH}/grug.h -ot grug.o ]]) || (! [[ tests.sh -ot grug.o ]])
+if [[ $(find "$GRUG_PATH"/src -type f -newer grug.o) ]] \
+   || [[ "$GRUG_PATH"/grug.h -nt grug.o ]] \
+   || [[ tests.sh -nt grug.o ]]
 then
     echo "Recompiling grug.o..."
-    "$CC" "${GRUG_PATH}/grug.c" -c -o grug.o $compiler_flags || { echo 'Recompiling grug.o failed :('; exit 1; }
+    "$CC" "${GRUG_PATH}/src/15_hot_reloading.c" -c -o grug.o $compiler_flags || { echo 'Recompiling grug.o failed :('; exit 1; }
 fi
 
 if (! [[ tests.c -ot tests.o ]]) || (! [[ tests.sh -ot tests.o ]])
