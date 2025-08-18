@@ -15,13 +15,13 @@ jobs:
 
       - name: Clone the grug repo
         run: |
-          git clone https://github.com/MyNameIsTrez/grug ../grug-main
+          git clone https://github.com/MyNameIsTrez/grug ../grug
 
       - name: Install nasm
         run: sudo apt install nasm
 
       - name: Run the tests
-        run: ./tests.sh ../grug-main
+        run: ./tests.sh ../grug
 
   build-ubuntu-clang-asan:
     name: ubuntu-clang-asan
@@ -35,13 +35,13 @@ jobs:
 
       - name: Clone the grug repo
         run: |
-          git clone https://github.com/MyNameIsTrez/grug ../grug-main
+          git clone https://github.com/MyNameIsTrez/grug ../grug
 
       - name: Install nasm
         run: sudo apt install nasm
 
       - name: Run the tests
-        run: ./tests.sh ../grug-main
+        run: ./tests.sh ../grug
         env:
           ASAN: 1
           SHUFFLES: 10
@@ -58,7 +58,7 @@ jobs:
 
       - name: Clone the grug repo
         run: |
-          git clone https://github.com/MyNameIsTrez/grug ../grug-main
+          git clone https://github.com/MyNameIsTrez/grug ../grug
 
       - name: Install nasm
         run: sudo apt install nasm
@@ -67,7 +67,7 @@ jobs:
         run: sudo apt install valgrind
 
       - name: Run the tests
-        run: ./tests.sh ../grug-main
+        run: ./tests.sh ../grug
         env:
           VALGRIND: 1
           SHUFFLES: 10
@@ -84,10 +84,10 @@ jobs:
 
       - name: Clone the grug repo
         run: |
-          git clone https://github.com/MyNameIsTrez/grug ../grug-main
+          git clone https://github.com/MyNameIsTrez/grug ../grug
 
       - name: Compile executable
-        run: clang grug/grug.c fuzz.c -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -Wno-language-extension-token -Wno-unused-parameter -g -rdynamic -fsanitize=address,undefined,fuzzer -Og -DCRASH_ON_UNREACHABLE
+        run: clang ../grug/grug.c fuzz.c -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -Wno-language-extension-token -Wno-unused-parameter -g -rdynamic -fsanitize=address,undefined,fuzzer -Og -DCRASH_ON_UNREACHABLE
 
       - name: Create test_corpus directory
         run: mkdir -p test_corpus
@@ -116,13 +116,13 @@ jobs:
 
       - name: Clone the grug repo
         run: |
-          git clone https://github.com/MyNameIsTrez/grug ../grug-main
+          git clone https://github.com/MyNameIsTrez/grug ../grug
 
       - name: Install nasm
         run: sudo apt install nasm
 
       - name: Run the tests
-        run: ./tests.sh ../grug-main
+        run: ./tests.sh ../grug
         env:
           CC: gcc
 
@@ -138,13 +138,13 @@ jobs:
 
       - name: Clone the grug repo
         run: |
-          git clone https://github.com/MyNameIsTrez/grug ../grug-main
+          git clone https://github.com/MyNameIsTrez/grug ../grug
 
       - name: Install nasm
         run: sudo apt install nasm
 
       - name: Run the tests
-        run: ./tests.sh ../grug-main
+        run: ./tests.sh ../grug
         env:
           CC: gcc
           ASAN: 1
@@ -161,7 +161,7 @@ jobs:
 
       - name: Clone the grug repo
         run: |
-          git clone https://github.com/MyNameIsTrez/grug ../grug-main
+          git clone https://github.com/MyNameIsTrez/grug ../grug
 
       - name: Install nasm
         run: sudo apt install nasm
@@ -170,7 +170,7 @@ jobs:
         run: sudo apt install valgrind
 
       - name: Run the tests
-        run: ./tests.sh ../grug-main
+        run: ./tests.sh ../grug
         env:
           CC: gcc
           VALGRIND: 1
