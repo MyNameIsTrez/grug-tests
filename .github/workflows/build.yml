@@ -87,7 +87,7 @@ jobs:
           git clone https://github.com/MyNameIsTrez/grug ../grug
 
       - name: Compile executable
-        run: clang ../grug/grug.c fuzz.c -Igrug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -Wno-language-extension-token -Wno-unused-parameter -g -rdynamic -fsanitize=address,undefined,fuzzer -Og -DCRASH_ON_UNREACHABLE
+        run: clang ../grug/grug.c fuzz.c -I../grug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -Wno-language-extension-token -Wno-unused-parameter -g -rdynamic -fsanitize=address,undefined,fuzzer -Og -DCRASH_ON_UNREACHABLE
 
       - name: Create test_corpus directory
         run: mkdir -p test_corpus
