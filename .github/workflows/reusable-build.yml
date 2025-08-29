@@ -266,7 +266,6 @@ jobs:
   #     - name: Run demo_arm64_main
   #       run: ./demo_arm64_main
 
-  #     # TODO: Put this back!
   #     # - name: Run the tests
   #     #   run: ./tests.sh
 
