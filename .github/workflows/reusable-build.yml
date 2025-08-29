@@ -18,14 +18,15 @@ jobs:
       - &get-grug-source
         name: Get grug source
         run: |
-          if [ "${{ github.event_name }}" = "workflow_call" ]; then
+          if [ "${{ github.repository }}" = "MyNameIsTrez/grug-tests" ]; then
+            echo "Cloning grug repo from GitHub"
+            rm -rf ../grug
+            git clone https://github.com/MyNameIsTrez/grug ../grug
+          else
             echo "Using grug source from caller repo"
             mv ../grug-tests ../_grug-tests
             mv $GITHUB_WORKSPACE ../grug
             mv ../_grug-tests $GITHUB_WORKSPACE
-          else
-            echo "Cloning grug repo from GitHub"
-            git clone https://github.com/MyNameIsTrez/grug ../grug
           fi
 
       - &install-nasm
