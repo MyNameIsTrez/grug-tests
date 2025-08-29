@@ -47,10 +47,6 @@ jobs:
           echo "GRUG_PATH=$GRUG_PATH" >> $GITHUB_ENV
           echo "GRUG_PATH is $GRUG_PATH"
 
-      - &install-nasm
-        name: Install nasm
-        run: sudo apt install nasm
-
       - name: Run the tests
         run: |
           cd grug-tests
@@ -65,7 +61,6 @@ jobs:
       - *apt
       - *checkout-grug-tests
       - *get-grug-source
-      - *install-nasm
 
       - name: Run the tests
         run: |
@@ -84,7 +79,6 @@ jobs:
       - *apt
       - *checkout-grug-tests
       - *get-grug-source
-      - *install-nasm
 
       - &install-valgrind
         name: Install valgrind
@@ -147,7 +141,6 @@ jobs:
       - *apt
       - *checkout-grug-tests
       - *get-grug-source
-      - *install-nasm
 
       - name: Run the tests
         run: |
@@ -165,7 +158,6 @@ jobs:
       - *apt
       - *checkout-grug-tests
       - *get-grug-source
-      - *install-nasm
 
       - name: Run the tests
         run: |
@@ -184,7 +176,6 @@ jobs:
       - *apt
       - *checkout-grug-tests
       - *get-grug-source
-      - *install-nasm
       - *install-valgrind
 
       - name: Run the tests
