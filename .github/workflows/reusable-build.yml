@@ -16,6 +16,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /var/cache/apt/archives
+          # Use workflow hash to invalidate the cache only when the workflow changes.
           key: apt-cache-${{ runner.os }}-${{ hashFiles('**/build.yml') }}
           restore-keys: |
             apt-cache-${{ runner.os }}-
@@ -23,8 +24,8 @@ jobs:
       - &apt-install
         name: Update apt and install nasm
         run: |
-          sudo apt-get update
-          sudo apt-get install -y nasm
+          sudo apt-get update # Only downloads indexes, which is very fast.
+          sudo apt-get install -y nasm # Uses the cached .deb, if the nasm version hasn't changed.
 
       # This is needed for `./grug-tests/tests.sh` to work.
       # `./tests.sh` doesn't exist when this yml file is used by the grug repo's CI.
