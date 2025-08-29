@@ -11,15 +11,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - &apt
-        name: Cache apt packages and install nasm
+      - &apt-cache
+        name: Cache apt packages
         uses: actions/cache@v3
         with:
           path: /var/cache/apt/archives
           key: apt-cache-${{ runner.os }}-${{ hashFiles('**/build.yml') }}
           restore-keys: |
             apt-cache-${{ runner.os }}-
-      - run: |
+
+      - &apt-install
+        name: Update apt and install nasm
+        run: |
           sudo apt-get update
           sudo apt-get install -y nasm
 
@@ -58,7 +61,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - *apt
+      - *apt-cache
+      - *apt-install
       - *checkout-grug-tests
       - *get-grug-source
 
@@ -76,7 +80,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - *apt
+      - *apt-cache
+      - *apt-install
       - *checkout-grug-tests
       - *get-grug-source
 
@@ -98,7 +103,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - *apt
+      - *apt-cache
+      - *apt-install
       - *checkout-grug-tests
       - *get-grug-source
 
@@ -138,7 +144,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - *apt
+      - *apt-cache
+      - *apt-install
       - *checkout-grug-tests
       - *get-grug-source
 
@@ -155,7 +162,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - *apt
+      - *apt-cache
+      - *apt-install
       - *checkout-grug-tests
       - *get-grug-source
 
@@ -173,7 +181,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - *apt
+      - *apt-cache
+      - *apt-install
       - *checkout-grug-tests
       - *get-grug-source
       - *install-valgrind
