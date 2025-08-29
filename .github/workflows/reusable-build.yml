@@ -11,9 +11,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - &update-apt
-        name: Update apt
-        run: sudo apt-get update
+      - &apt
+        name: Cache apt packages and install nasm
+        uses: actions/cache@v3
+        with:
+          path: /var/cache/apt/archives
+          key: apt-cache-${{ runner.os }}-${{ hashFiles('**/build.yml') }}
+          restore-keys: |
+            apt-cache-${{ runner.os }}-
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y nasm
 
       # This is needed for `./grug-tests/tests.sh` to work.
       # `./tests.sh` doesn't exist when this yml file is used by the grug repo's CI.
@@ -54,7 +62,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - *update-apt
+      - *apt
       - *checkout-grug-tests
       - *get-grug-source
       - *install-nasm
@@ -73,7 +81,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - *update-apt
+      - *apt
       - *checkout-grug-tests
       - *get-grug-source
       - *install-nasm
@@ -96,7 +104,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - *update-apt
+      - *apt
       - *checkout-grug-tests
       - *get-grug-source
 
@@ -136,7 +144,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - *update-apt
+      - *apt
       - *checkout-grug-tests
       - *get-grug-source
       - *install-nasm
@@ -154,7 +162,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - *update-apt
+      - *apt
       - *checkout-grug-tests
       - *get-grug-source
       - *install-nasm
@@ -173,7 +181,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - *update-apt
+      - *apt
       - *checkout-grug-tests
       - *get-grug-source
       - *install-nasm
