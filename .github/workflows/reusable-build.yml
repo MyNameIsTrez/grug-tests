@@ -15,24 +15,36 @@ jobs:
         name: Update apt
         run: sudo apt-get update
 
+      # This is needed for `./grug-tests/tests.sh` to work.
+      # `./tests.sh` doesn't exist when this yml file is used by the grug repo's CI.
+      - &checkout-grug-tests
+        name: Checkout grug-tests workflow repo
+        uses: actions/checkout@v4
+        with:
+          repository: MyNameIsTrez/grug-tests
+          path: grug-tests
+
       - &get-grug-source
         name: Get grug source
         run: |
           if [ "${{ github.repository }}" = "MyNameIsTrez/grug-tests" ]; then
-            echo "Cloning grug repo from GitHub"
-            rm -rf grug
-            git clone https://github.com/MyNameIsTrez/grug grug
+            echo "Running standalone in grug-tests; clone grug"
+            rm -rf ../grug
+            git clone https://github.com/MyNameIsTrez/grug ../grug
+            export GRUG_PATH="../grug"
           else
-            echo "Using caller repo source (already checked out)"
-            # No cloning needed, $GITHUB_WORKSPACE already has grug code
+            echo "Running from grug; use caller repo"
+            export GRUG_PATH="$GITHUB_WORKSPACE"
           fi
+          # Make GRUG_PATH available to subsequent steps
+          echo "GRUG_PATH=$GRUG_PATH" >> $GITHUB_ENV
 
       - &install-nasm
         name: Install nasm
         run: sudo apt install nasm
 
       - name: Run the tests
-        run: ./tests.sh ${GITHUB_WORKSPACE}/grug
+        run: ./grug-tests/tests.sh $GRUG_PATH
 
   build-ubuntu-clang-asan:
     name: ubuntu-clang-asan
@@ -41,11 +53,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - *update-apt
+      - *checkout-grug-tests
       - *get-grug-source
       - *install-nasm
 
       - name: Run the tests
-        run: ./tests.sh ${GITHUB_WORKSPACE}/grug
+        run: ./tests.sh $GRUG_PATH
         env:
           ASAN: 1
           SHUFFLES: 10
@@ -57,6 +70,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - *update-apt
+      - *checkout-grug-tests
       - *get-grug-source
       - *install-nasm
 
@@ -65,7 +79,7 @@ jobs:
         run: sudo apt install valgrind
 
       - name: Run the tests
-        run: ./tests.sh ${GITHUB_WORKSPACE}/grug
+        run: ./tests.sh $GRUG_PATH
         env:
           VALGRIND: 1
           SHUFFLES: 10
@@ -77,6 +91,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - *update-apt
+      - *checkout-grug-tests
       - *get-grug-source
 
       - name: Compile executable
@@ -104,11 +119,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - *update-apt
+      - *checkout-grug-tests
       - *get-grug-source
       - *install-nasm
 
       - name: Run the tests
-        run: ./tests.sh ${GITHUB_WORKSPACE}/grug
+        run: ./tests.sh $GRUG_PATH
         env:
           CC: gcc
 
@@ -119,11 +135,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - *update-apt
+      - *checkout-grug-tests
       - *get-grug-source
       - *install-nasm
 
       - name: Run the tests
-        run: ./tests.sh ${GITHUB_WORKSPACE}/grug
+        run: ./tests.sh $GRUG_PATH
         env:
           CC: gcc
           ASAN: 1
@@ -135,12 +152,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - *update-apt
+      - *checkout-grug-tests
       - *get-grug-source
       - *install-nasm
       - *install-valgrind
 
       - name: Run the tests
-        run: ./tests.sh ${GITHUB_WORKSPACE}/grug
+        run: ./tests.sh $GRUG_PATH
         env:
           CC: gcc
           VALGRIND: 1
