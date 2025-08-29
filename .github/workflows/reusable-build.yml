@@ -20,13 +20,11 @@ jobs:
         run: |
           if [ "${{ github.repository }}" = "MyNameIsTrez/grug-tests" ]; then
             echo "Cloning grug repo from GitHub"
-            rm -rf ../grug
-            git clone https://github.com/MyNameIsTrez/grug ../grug
+            rm -rf grug
+            git clone https://github.com/MyNameIsTrez/grug grug
           else
-            echo "Using grug source from caller repo"
-            mv ../grug-tests ../_grug-tests
-            mv $GITHUB_WORKSPACE ../grug
-            mv ../_grug-tests $GITHUB_WORKSPACE
+            echo "Using caller repo source (already checked out)"
+            # No cloning needed, $GITHUB_WORKSPACE already has grug code
           fi
 
       - &install-nasm
@@ -34,7 +32,7 @@ jobs:
         run: sudo apt install nasm
 
       - name: Run the tests
-        run: ./tests.sh ../grug
+        run: ./tests.sh ${GITHUB_WORKSPACE}/grug
 
   build-ubuntu-clang-asan:
     name: ubuntu-clang-asan
@@ -47,7 +45,7 @@ jobs:
       - *install-nasm
 
       - name: Run the tests
-        run: ./tests.sh ../grug
+        run: ./tests.sh ${GITHUB_WORKSPACE}/grug
         env:
           ASAN: 1
           SHUFFLES: 10
@@ -67,7 +65,7 @@ jobs:
         run: sudo apt install valgrind
 
       - name: Run the tests
-        run: ./tests.sh ../grug
+        run: ./tests.sh ${GITHUB_WORKSPACE}/grug
         env:
           VALGRIND: 1
           SHUFFLES: 10
@@ -110,7 +108,7 @@ jobs:
       - *install-nasm
 
       - name: Run the tests
-        run: ./tests.sh ../grug
+        run: ./tests.sh ${GITHUB_WORKSPACE}/grug
         env:
           CC: gcc
 
@@ -125,7 +123,7 @@ jobs:
       - *install-nasm
 
       - name: Run the tests
-        run: ./tests.sh ../grug
+        run: ./tests.sh ${GITHUB_WORKSPACE}/grug
         env:
           CC: gcc
           ASAN: 1
@@ -142,7 +140,7 @@ jobs:
       - *install-valgrind
 
       - name: Run the tests
-        run: ./tests.sh ../grug
+        run: ./tests.sh ${GITHUB_WORKSPACE}/grug
         env:
           CC: gcc
           VALGRIND: 1
