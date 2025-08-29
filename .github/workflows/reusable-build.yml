@@ -30,10 +30,10 @@ jobs:
           if [ "${{ github.repository }}" = "MyNameIsTrez/grug-tests" ]; then
             echo "Running standalone in grug-tests; clone grug"
             git clone https://github.com/MyNameIsTrez/grug grug
-            export GRUG_PATH="../grug"
+            GRUG_PATH=$(realpath grug)
           else
             echo "Running from grug; use caller repo"
-            export GRUG_PATH=".."
+            GRUG_PATH=$(pwd)
           fi
           # Make GRUG_PATH available to subsequent steps
           echo "GRUG_PATH=$GRUG_PATH" >> $GITHUB_ENV
@@ -100,7 +100,7 @@ jobs:
       - *get-grug-source
 
       - name: Compile executable
-        run: clang ../grug/grug.c fuzz.c -I../grug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -Wno-language-extension-token -Wno-unused-parameter -g -rdynamic -fsanitize=address,undefined,fuzzer -Og -DCRASH_ON_UNREACHABLE
+        run: clang $GRUG_PATH/grug.c fuzz.c -I$GRUG_PATH -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -Wno-language-extension-token -Wno-unused-parameter -g -rdynamic -fsanitize=address,undefined,fuzzer -Og -DCRASH_ON_UNREACHABLE
 
       - name: Create test_corpus directory
         run: mkdir -p test_corpus
