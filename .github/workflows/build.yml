@@ -10,7 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Update apt
+      - &update-apt
+        name: Update apt
         run: sudo apt-get update
 
       - name: Clone the grug repo
@@ -30,8 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Update apt
-        run: sudo apt-get update
+      - *update-apt
 
       - name: Clone the grug repo
         run: |
