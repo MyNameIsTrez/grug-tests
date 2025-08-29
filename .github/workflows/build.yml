@@ -1,6 +1,9 @@
 name: CI Build
 
-on: push
+on:
+  push:
+  pull_request:
+  workflow_call:
 
 jobs:
   build-ubuntu-clang:
@@ -15,9 +18,17 @@ jobs:
         run: sudo apt-get update
 
       - &get-grug-source
-        name: Clone the grug repo
+        name: Get grug source
         run: |
-          git clone https://github.com/MyNameIsTrez/grug ../grug
+          if [ "${{ github.event_name }}" = "workflow_call" ]; then
+            echo "Using grug source from caller repo"
+            mv ../grug-tests ../_grug-tests
+            mv $GITHUB_WORKSPACE ../grug
+            mv ../_grug-tests $GITHUB_WORKSPACE
+          else
+            echo "Cloning grug repo from GitHub"
+            git clone https://github.com/MyNameIsTrez/grug ../grug
+          fi
 
       - &install-nasm
         name: Install nasm
