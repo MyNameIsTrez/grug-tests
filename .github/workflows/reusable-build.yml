@@ -92,6 +92,7 @@ jobs:
   build-ubuntu-libfuzzer:
     name: ubuntu-libfuzzer
     runs-on: ubuntu-latest
+    working-directory: grug-tests
 
     steps:
       - uses: actions/checkout@v4
