@@ -37,6 +37,7 @@ jobs:
           fi
           # Make GRUG_PATH available to subsequent steps
           echo "GRUG_PATH=$GRUG_PATH" >> $GITHUB_ENV
+          echo "GRUG_PATH is $GRUG_PATH"
 
       - &install-nasm
         name: Install nasm
@@ -266,7 +267,6 @@ jobs:
   #     - name: Run demo_arm64_main
   #       run: ./demo_arm64_main
 
-  #     # TODO: Put this back!
   #     # - name: Run the tests
   #     #   run: ./tests.sh
 
