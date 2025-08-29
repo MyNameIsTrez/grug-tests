@@ -11,9 +11,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - &update-apt
-        name: Update apt
-        run: sudo apt-get update
+      - &apt-cache
+        name: Cache apt packages
+        uses: actions/cache@v3
+        with:
+          path: /var/cache/apt/archives
+          # Use workflow hash to invalidate the cache only when the workflow changes.
+          key: apt-cache-${{ runner.os }}-${{ hashFiles('**/build.yml') }}
+          restore-keys: |
+            apt-cache-${{ runner.os }}-
+
+      - &apt-install
+        name: Update apt and install nasm
+        run: |
+          sudo apt-get update # Only downloads indexes, which is very fast.
+          sudo apt-get install -y nasm # Uses the cached .deb, if the nasm version hasn't changed.
 
       # This is needed for `./grug-tests/tests.sh` to work.
       # `./tests.sh` doesn't exist when this yml file is used by the grug repo's CI.
@@ -39,10 +51,6 @@ jobs:
           echo "GRUG_PATH=$GRUG_PATH" >> $GITHUB_ENV
           echo "GRUG_PATH is $GRUG_PATH"
 
-      - &install-nasm
-        name: Install nasm
-        run: sudo apt install nasm
-
       - name: Run the tests
         run: |
           cd grug-tests
@@ -54,10 +62,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - *update-apt
+      - *apt-cache
+      - *apt-install
       - *checkout-grug-tests
       - *get-grug-source
-      - *install-nasm
 
       - name: Run the tests
         run: |
@@ -73,10 +81,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - *update-apt
+      - *apt-cache
+      - *apt-install
       - *checkout-grug-tests
       - *get-grug-source
-      - *install-nasm
 
       - &install-valgrind
         name: Install valgrind
@@ -96,7 +104,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - *update-apt
+      - *apt-cache
+      - *apt-install
       - *checkout-grug-tests
       - *get-grug-source
 
@@ -136,10 +145,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - *update-apt
+      - *apt-cache
+      - *apt-install
       - *checkout-grug-tests
       - *get-grug-source
-      - *install-nasm
 
       - name: Run the tests
         run: |
@@ -154,10 +163,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - *update-apt
+      - *apt-cache
+      - *apt-install
       - *checkout-grug-tests
       - *get-grug-source
-      - *install-nasm
 
       - name: Run the tests
         run: |
@@ -173,10 +182,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - *update-apt
+      - *apt-cache
+      - *apt-install
       - *checkout-grug-tests
       - *get-grug-source
-      - *install-nasm
       - *install-valgrind
 
       - name: Run the tests
