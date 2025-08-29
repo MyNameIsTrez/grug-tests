@@ -14,11 +14,13 @@ jobs:
         name: Update apt
         run: sudo apt-get update
 
-      - name: Clone the grug repo
+      - &get-grug-source
+        name: Clone the grug repo
         run: |
           git clone https://github.com/MyNameIsTrez/grug ../grug
 
-      - name: Install nasm
+      - &install-nasm
+        name: Install nasm
         run: sudo apt install nasm
 
       - name: Run the tests
@@ -30,15 +32,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
       - *update-apt
-
-      - name: Clone the grug repo
-        run: |
-          git clone https://github.com/MyNameIsTrez/grug ../grug
-
-      - name: Install nasm
-        run: sudo apt install nasm
+      - *get-grug-source
+      - *install-nasm
 
       - name: Run the tests
         run: ./tests.sh ../grug
@@ -52,18 +48,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - *update-apt
+      - *get-grug-source
+      - *install-nasm
 
-      - name: Update apt
-        run: sudo apt-get update
-
-      - name: Clone the grug repo
-        run: |
-          git clone https://github.com/MyNameIsTrez/grug ../grug
-
-      - name: Install nasm
-        run: sudo apt install nasm
-
-      - name: Install valgrind
+      - &install-valgrind
+        name: Install valgrind
         run: sudo apt install valgrind
 
       - name: Run the tests
@@ -78,13 +68,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Update apt
-        run: sudo apt-get update
-
-      - name: Clone the grug repo
-        run: |
-          git clone https://github.com/MyNameIsTrez/grug ../grug
+      - *update-apt
+      - *get-grug-source
 
       - name: Compile executable
         run: clang ../grug/grug.c fuzz.c -I../grug -std=gnu2x -Wall -Wextra -Werror -Wpedantic -Wstrict-prototypes -Wshadow -Wuninitialized -Wfatal-errors -Wno-language-extension-token -Wno-unused-parameter -g -rdynamic -fsanitize=address,undefined,fuzzer -Og -DCRASH_ON_UNREACHABLE
@@ -110,16 +95,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Update apt
-        run: sudo apt-get update
-
-      - name: Clone the grug repo
-        run: |
-          git clone https://github.com/MyNameIsTrez/grug ../grug
-
-      - name: Install nasm
-        run: sudo apt install nasm
+      - *update-apt
+      - *get-grug-source
+      - *install-nasm
 
       - name: Run the tests
         run: ./tests.sh ../grug
@@ -132,16 +110,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Update apt
-        run: sudo apt-get update
-
-      - name: Clone the grug repo
-        run: |
-          git clone https://github.com/MyNameIsTrez/grug ../grug
-
-      - name: Install nasm
-        run: sudo apt install nasm
+      - *update-apt
+      - *get-grug-source
+      - *install-nasm
 
       - name: Run the tests
         run: ./tests.sh ../grug
@@ -155,19 +126,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Update apt
-        run: sudo apt-get update
-
-      - name: Clone the grug repo
-        run: |
-          git clone https://github.com/MyNameIsTrez/grug ../grug
-
-      - name: Install nasm
-        run: sudo apt install nasm
-
-      - name: Install valgrind
-        run: sudo apt install valgrind
+      - *update-apt
+      - *get-grug-source
+      - *install-nasm
+      - *install-valgrind
 
       - name: Run the tests
         run: ./tests.sh ../grug
