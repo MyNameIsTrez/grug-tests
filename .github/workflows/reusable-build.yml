@@ -11,13 +11,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # This is requires for `./grug-tests/tests.sh` and
+      # `hashFiles('grug-tests/.github/workflows/*.yml')`.
+      # `./tests.sh` doesn't exist when this yml file is used by the grug repo's CI.
+      - &checkout-grug-tests
+        name: Checkout grug-tests workflow repo
+        uses: actions/checkout@v4
+        with:
+          repository: MyNameIsTrez/grug-tests
+          path: grug-tests
+
       - &apt-cache
         name: Cache apt packages
         uses: actions/cache@v3
         with:
           path: /var/cache/apt/archives
           # Use workflow hash to invalidate the cache only when the workflow changes.
-          key: apt-cache-${{ runner.os }}-${{ hashFiles('**/build.yml') }}
+          key: apt-cache-${{ runner.os }}-${{ hashFiles('grug-tests/.github/workflows/*.yml') }}
           restore-keys: |
             apt-cache-${{ runner.os }}-
 
@@ -30,15 +40,6 @@ jobs:
           sudo apt-get update
           # Uses the cached .deb, if the nasm version hasn't changed.
           sudo apt-get install -y -o Dir::Cache::archives=$PWD/.apt-cache nasm
-
-      # This is needed for `./grug-tests/tests.sh` to work.
-      # `./tests.sh` doesn't exist when this yml file is used by the grug repo's CI.
-      - &checkout-grug-tests
-        name: Checkout grug-tests workflow repo
-        uses: actions/checkout@v4
-        with:
-          repository: MyNameIsTrez/grug-tests
-          path: grug-tests
 
       - &get-grug-source
         name: Get grug source
@@ -66,9 +67,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - *checkout-grug-tests
       - *apt-cache
       - *apt-install
-      - *checkout-grug-tests
       - *get-grug-source
 
       - name: Run the tests
@@ -85,9 +86,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - *checkout-grug-tests
       - *apt-cache
       - *apt-install
-      - *checkout-grug-tests
       - *get-grug-source
 
       - &install-valgrind
@@ -108,9 +109,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - *checkout-grug-tests
       - *apt-cache
       - *apt-install
-      - *checkout-grug-tests
       - *get-grug-source
 
       - name: Compile executable
@@ -149,9 +150,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - *checkout-grug-tests
       - *apt-cache
       - *apt-install
-      - *checkout-grug-tests
       - *get-grug-source
 
       - name: Run the tests
@@ -167,9 +168,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - *checkout-grug-tests
       - *apt-cache
       - *apt-install
-      - *checkout-grug-tests
       - *get-grug-source
 
       - name: Run the tests
@@ -186,9 +187,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - *checkout-grug-tests
       - *apt-cache
       - *apt-install
-      - *checkout-grug-tests
       - *get-grug-source
       - *install-valgrind
 
