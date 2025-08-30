@@ -3586,7 +3586,7 @@ static void ok_global_2_does_not_have_error_handling(void *on_fns, void *g, size
 	assert(entities == NULL);
 	assert(entity_types == NULL);
 }
-
+	
 static void ok_global_call_using_me(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
 	(void)on_fns;
 
@@ -3619,6 +3619,21 @@ static void ok_global_can_use_earlier_global(void *on_fns, void *g, size_t resou
 
 	assert(streq(grug_fn_name, "on_a"));
 	assert(streq(grug_fn_path, "tests/ok/global_can_use_earlier_global/input-D.grug"));
+
+	assert(resources_size == 0);
+	assert(resources == NULL);
+
+	assert(entities_size == 0);
+	assert(entities == NULL);
+	assert(entity_types == NULL);
+}
+
+static void ok_global_config_call_runs(void *on_fns, void *g, size_t resources_size, const char **resources, size_t entities_size, const char **entities, const char **entity_types) {
+	(void)on_fns;
+
+	assert(game_fn_initialize_call_count == 1);
+
+	free(g);
 
 	assert(resources_size == 0);
 	assert(resources == NULL);
@@ -6436,6 +6451,11 @@ static void add_error_tests(void) {
 	ADD_TEST_ERROR(global_cant_call_helper_fn, "A");
 	ADD_TEST_ERROR(global_cant_call_on_fn, "D");
 	ADD_TEST_ERROR(global_cant_use_later_global, "A");
+	ADD_TEST_ERROR(global_call_no_newline_before_on_fns, "D");
+	ADD_TEST_ERROR(global_call_no_newline_before_globals, "A");
+	ADD_TEST_ERROR(global_call_after_global_variable, "A");
+	ADD_TEST_ERROR(global_call_after_on_fn, "D");
+	ADD_TEST_ERROR(global_call_after_global_variable_and_on_fn, "D");
 	ADD_TEST_ERROR(global_id_cant_be_reassigned, "D");
 	ADD_TEST_ERROR(global_variable_after_on_fns, "D");
 	ADD_TEST_ERROR(global_variable_already_uses_local_variable_name, "D");
@@ -6667,6 +6687,7 @@ static void add_ok_tests(void) {
 	ADD_TEST_OK(global_2_does_not_have_error_handling, "A", 16);
 	ADD_TEST_OK(global_call_using_me, "A", 16);
 	ADD_TEST_OK(global_can_use_earlier_global, "D", 16);
+	ADD_TEST_OK(global_config_call_runs, "A", 8);
 	ADD_TEST_OK(global_containing_negation, "A", 12);
 	ADD_TEST_OK(global_id, "A", 16);
 	ADD_TEST_OK(globals, "A", 16);
