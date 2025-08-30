@@ -50,7 +50,6 @@ int main(void) {
   void (*define)(void) = get(dll, "define");
   assert(define_fn_call_count == 0);
   define();
-
   // TODO: Add this back!
   // assert(define_fn_call_count == 1);
 
