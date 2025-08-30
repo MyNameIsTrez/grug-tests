@@ -1,0 +1,7 @@
+a: i32 = 5
+
+on_a() {
+    foo = get_opponent()
+}
+
+test()
