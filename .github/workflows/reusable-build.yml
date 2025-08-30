@@ -35,7 +35,7 @@ jobs:
         name: Update apt and install nasm
         run: |
           # This runner doesn't have the rights to write to the default apt cache.
-          mkdir .apt-cache
+          mkdir -p .apt-cache
           # Only downloads indexes, which is very fast.
           sudo apt-get update
           # Uses the cached .deb, if the nasm version hasn't changed.
