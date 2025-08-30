@@ -11,23 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - &apt-cache
-        name: Cache apt packages
-        uses: actions/cache@v3
-        with:
-          path: /var/cache/apt/archives
-          # Use workflow hash to invalidate the cache only when the workflow changes.
-          key: apt-cache-${{ runner.os }}-${{ hashFiles('**/build.yml') }}
-          restore-keys: |
-            apt-cache-${{ runner.os }}-
-
-      - &apt-install
-        name: Update apt and install nasm
-        run: |
-          sudo apt-get update # Only downloads indexes, which is very fast.
-          sudo apt-get install -y nasm # Uses the cached .deb, if the nasm version hasn't changed.
-
-      # This is needed for `./grug-tests/tests.sh` to work.
+      # This is required for `./grug-tests/tests.sh` and
+      # `hashFiles('grug-tests/.github/workflows/*.yml')`.
       # `./tests.sh` doesn't exist when this yml file is used by the grug repo's CI.
       - &checkout-grug-tests
         name: Checkout grug-tests workflow repo
@@ -35,6 +20,28 @@ jobs:
         with:
           repository: MyNameIsTrez/grug-tests
           path: grug-tests
+
+      - &apt-cache
+        name: Cache workspace-local apt packages
+        uses: actions/cache@v3
+        with:
+          # System-wide apt cache .deb files can't be read by tar.
+          path: .apt-cache/*.deb
+          # Use workflow hash to invalidate the cache only when the workflow changes.
+          key: apt-cache-${{ runner.os }}-${{ hashFiles('grug-tests/.github/workflows/*.yml') }}
+          restore-keys: |
+            apt-cache-${{ runner.os }}-
+
+      - &apt-install
+        name: Update apt and install nasm
+        run: |
+          # Only downloads indexes, which is very fast.
+          sudo apt-get update
+          # This prevents stalling on man-db updates.
+          # See https://askubuntu.com/a/1476024/1597486
+          echo "set man-db/auto-update false" | sudo debconf-communicate; sudo dpkg-reconfigure man-db
+          # Uses the cached .deb, if the nasm version hasn't changed.
+          sudo apt-get install -y -o Dir::Cache::archives=$PWD/.apt-cache nasm
 
       - &get-grug-source
         name: Get grug source
@@ -62,9 +69,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - *checkout-grug-tests
       - *apt-cache
       - *apt-install
-      - *checkout-grug-tests
       - *get-grug-source
 
       - name: Run the tests
@@ -81,9 +88,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - *checkout-grug-tests
       - *apt-cache
       - *apt-install
-      - *checkout-grug-tests
       - *get-grug-source
 
       - &install-valgrind
@@ -104,9 +111,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - *checkout-grug-tests
       - *apt-cache
       - *apt-install
-      - *checkout-grug-tests
       - *get-grug-source
 
       - name: Compile executable
@@ -145,9 +152,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - *checkout-grug-tests
       - *apt-cache
       - *apt-install
-      - *checkout-grug-tests
       - *get-grug-source
 
       - name: Run the tests
@@ -163,9 +170,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - *checkout-grug-tests
       - *apt-cache
       - *apt-install
-      - *checkout-grug-tests
       - *get-grug-source
 
       - name: Run the tests
@@ -182,9 +189,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - *checkout-grug-tests
       - *apt-cache
       - *apt-install
-      - *checkout-grug-tests
       - *get-grug-source
       - *install-valgrind
 
