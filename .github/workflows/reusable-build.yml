@@ -35,6 +35,8 @@ jobs:
       - &apt-install
         name: Update apt and install nasm
         run: |
+          # This runner doesn't have the rights to write to the default apt cache.
+          mkdir -p .apt-cache
           # Only downloads indexes, which is very fast.
           sudo apt-get update
           # This prevents stalling on man-db updates.
