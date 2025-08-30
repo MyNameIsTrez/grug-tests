@@ -22,10 +22,11 @@ jobs:
           path: grug-tests
 
       - &apt-cache
-        name: Cache apt packages
+        name: Cache workspace-local apt packages
         uses: actions/cache@v3
         with:
-          path: /var/cache/apt/archives/*.deb
+          # System-wide apt cache .deb files can't be read by tar.
+          path: .apt-cache/*.deb
           # Use workflow hash to invalidate the cache only when the workflow changes.
           key: apt-cache-${{ runner.os }}-${{ hashFiles('grug-tests/.github/workflows/*.yml') }}
           restore-keys: |
@@ -37,7 +38,11 @@ jobs:
           # Only downloads indexes, which is very fast.
           sudo apt-get update
           # Uses the cached .deb, if the nasm version hasn't changed.
-          sudo apt-get install -y nasm
+          # The DEBIAN_FRONTEND and --no-triggers prevents man-db updates.
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            -o Dpkg::Options::="--no-triggers" \
+            -o Dir::Cache::archives=$PWD/.apt-cache \
+            nasm
 
       - &get-grug-source
         name: Get grug source
