@@ -25,7 +25,7 @@ jobs:
         name: Cache workspace-local apt packages
         uses: actions/cache@v3
         with:
-          path: grug-tests/.apt-cache
+          path: grug-tests/.apt-cache/*.deb
           # Use workflow hash to invalidate the cache only when the workflow changes.
           key: apt-cache-${{ runner.os }}-${{ hashFiles('grug-tests/.github/workflows/*.yml') }}
           restore-keys: |
