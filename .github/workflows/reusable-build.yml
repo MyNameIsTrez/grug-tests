@@ -38,9 +38,9 @@ jobs:
           # Only downloads indexes, which is very fast.
           sudo apt-get update
           # Uses the cached .deb, if the nasm version hasn't changed.
-          # The DEBIAN_FRONTEND and --no-triggers prevents man-db updates.
+          # The DEBIAN_FRONTEND and --no-install-recommends prevents man-db updates.
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
-            -o Dpkg::Options::="--no-triggers" \
+            --no-install-recommends \
             -o Dir::Cache::archives=$PWD/.apt-cache \
             nasm
 
