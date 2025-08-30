@@ -38,9 +38,8 @@ jobs:
           # Only downloads indexes, which is very fast.
           sudo apt-get update
           # This prevents stalling on man-db updates.
-          # See https://askubuntu.com/a/1437819/1597486
-          sudo debconf-set man-db/auto-update false
-          sudo rm /var/lib/man-db/auto-update
+          # See https://askubuntu.com/a/1476024/1597486
+          echo "set man-db/auto-update false" | debconf-communicate; dpkg-reconfigure man-db
           # Uses the cached .deb, if the nasm version hasn't changed.
           sudo apt-get install -y -o Dir::Cache::archives=$PWD/.apt-cache nasm
 
