@@ -22,10 +22,10 @@ jobs:
           path: grug-tests
 
       - &apt-cache
-        name: Cache workspace-local apt packages
+        name: Cache apt packages
         uses: actions/cache@v3
         with:
-          path: .apt-cache/*.deb
+          path: /var/cache/apt/archives/*.deb
           # Use workflow hash to invalidate the cache only when the workflow changes.
           key: apt-cache-${{ runner.os }}-${{ hashFiles('grug-tests/.github/workflows/*.yml') }}
           restore-keys: |
@@ -34,12 +34,10 @@ jobs:
       - &apt-install
         name: Update apt and install nasm
         run: |
-          # This runner doesn't have the rights to write to the default apt cache.
-          mkdir -p .apt-cache
           # Only downloads indexes, which is very fast.
           sudo apt-get update
           # Uses the cached .deb, if the nasm version hasn't changed.
-          sudo apt-get install -y -o Dir::Cache::archives=$PWD/.apt-cache nasm
+          sudo apt-get install -y nasm
 
       - &get-grug-source
         name: Get grug source
